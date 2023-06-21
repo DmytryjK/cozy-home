@@ -1,9 +1,10 @@
+import MainPage from './pages/MainPage/MainPage';
 import './App.scss';
 
 const App = () => {
     return (
         <div>
-            <div>App</div>
+            <MainPage />
         </div>
     );
 };
