@@ -1,5 +1,11 @@
-import './App.css';
+import './App.scss';
 
-const App = () => <div>App</div>;
+const App = () => {
+    return (
+        <div>
+            <div>App</div>
+        </div>
+    );
+};
 
 export default App;
