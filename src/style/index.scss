@@ -1,0 +1,14 @@
+@import '../assets/fonts/fonts.scss';
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: 'Montserrat';
+}
+
+.container {
+	max-width: 1312px;
+	padding: 0 20px;
+	margin: 0 auto;
+}
