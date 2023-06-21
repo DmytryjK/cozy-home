@@ -16,10 +16,13 @@
     }
     &__favorite-btn {
         position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         right: 12px;
         top: 12px;
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         border: none;
         background-color: $light-color;
@@ -28,8 +31,14 @@
         transform: translateX(calc(100% + 12px));
         z-index: 2;
         &:hover {
-            background-color: $accent-color;
+            .product-card__favorite-icon path {
+                transition: 0.2s ease-out fill;
+                fill: $accent-color;
+            }
         }
+    }
+    &__favorite-icon path {
+        transition: 0.2s ease-out fill;
     }
     &__card-slider {
         display: block;
