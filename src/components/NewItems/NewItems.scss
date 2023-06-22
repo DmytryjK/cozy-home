@@ -1,0 +1,28 @@
+.new-items {
+    margin-top: 130px;
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__title {
+        font-size: 28px;
+        font-family: Montserrat Alternates;
+        font-weight: 600;
+    }
+    &__see-all {
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: underline;
+        text-decoration-skip-ink: none;
+        text-underline-offset: 2px;
+    }
+    &__cards {
+        max-width: 100%;
+        width: 100%;
+        margin-top: 42px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+    }
+}
