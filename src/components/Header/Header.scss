@@ -1,22 +1,25 @@
 @import '../../assets/fonts/fonts.scss';
 @import '../../style/variables.scss';
 
+.wrapper {
+	position: fixed;
+	background: $light-color;
+  width: 100%;
+	top: 0;
+  left: 0;
+  right: 0;
+	z-index: 1000;
+}
+
 .header {
 	max-width: 1352px;
-  padding: 25px 20px;
+  padding: 15px 20px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: $light-color;	
-	position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin-left: auto;
+	margin-left: auto;
   margin-right: auto;
-  width: 100%;
-	z-index: 1000;
-
+	
 	&__logo {
 		cursor: pointer;
 	}
