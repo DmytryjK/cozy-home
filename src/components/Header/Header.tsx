@@ -7,7 +7,7 @@ import logoIcon from '../../assets/icons/header/logo-icon.svg';
 
 const Header = () => {
     return (
-        <div className="container">
+        <div className="wrapper">
             <div className="header">
                 <div className="header__logo">
                     <a href="/">
@@ -50,15 +50,21 @@ const Header = () => {
                     </label>
                 </div>
                 <div className="header__icons">
-                    <img src={profileIcon} alt="Profile" />
+                    <a href="/">
+                        <img src={profileIcon} alt="Profile" />
+                    </a>
                     <div>
-                        <img src={favoriteIcon} alt="Favorite" />
+                        <a href="/">
+                            <img src={favoriteIcon} alt="Favorite" />
+                        </a>
                         <span className="header__icons_favorite-counter">
                             10
                         </span>
                     </div>
                     <div>
-                        <img src={cardIcon} alt="Card" />
+                        <a href="/">
+                            <img src={cardIcon} alt="Card" />
+                        </a>
                         <span className="header__icons_card-counter">20</span>
                     </div>
                 </div>
