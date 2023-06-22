@@ -1,10 +1,10 @@
-import ProductCard from '../../components/ProductCard/ProductCard';
+import NewItems from '../../components/NewItems/NewItems';
 import './MainPage.scss';
 
 const MainPage = () => {
     return (
         <div>
-            <ProductCard />
+            <NewItems />
         </div>
     );
 };
