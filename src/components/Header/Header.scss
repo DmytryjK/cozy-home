@@ -1,0 +1,81 @@
+@import '../../assets/fonts/fonts.scss';
+@import '../../style/variables.scss';
+
+.header {
+	padding: 25px 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&__nav_list {
+		display: flex;
+		gap: 27px;
+		color: $dark-color;
+
+		li {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-width: 78px;
+			font-family: 'Montserrat Alternates';
+			font-weight: 400;
+			font-size: 14px;
+		}
+	}
+	
+	.active {
+		font-weight: 600;
+	}
+	
+	&__search {
+		position: relative;
+	}
+
+	&__search_input {
+		width: 320px;
+		padding: 8px 12px 8px 33px;
+		border-radius: 16px;
+	}
+
+	&__search_icon {
+		position: absolute;
+		top: 10px;
+		padding-left: 13px;
+	}
+
+	&__icons {
+		display: flex;
+		gap: 27px;
+		position: relative;
+
+		img {
+			width: 20px;
+			height: 20px;
+		}
+	}
+}
+
+.header__icons_favorite-counter,
+.header__icons_card-counter {
+	font-size: 10px;
+	font-weight: 500;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	width: 16px;
+	height: 16px;
+	background-color: #C57100;
+	border-radius: 100%;
+}
+
+.header__icons_favorite-counter {
+	top: -5px;
+	right: 38px;
+}
+
+.header__icons_card-counter {
+	top: -5px;
+	right: -7px;
+}
