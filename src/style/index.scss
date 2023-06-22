@@ -8,7 +8,21 @@
 }
 
 .container {
-	max-width: 1312px;
+	max-width: 1352px;
 	padding: 0 20px;
 	margin: 0 auto;
+}
+
+ul, li {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
 }
