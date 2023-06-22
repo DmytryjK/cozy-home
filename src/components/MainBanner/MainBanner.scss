@@ -1,0 +1,57 @@
+@import '../../assets/fonts/fonts.scss';
+@import '../../style/variables.scss';
+
+.mainBanner {
+	margin-top: 92px;
+	background: url('../../assets/images/main-banner/main-banner.png');
+	background-size: cover;
+  background-repeat: no-repeat;
+	height: 700px;
+	position: relative;
+
+	&__content {
+		position: absolute;
+		width: 690px;
+		margin-top: 130px;
+		margin-left: 176px;
+
+		&_subtitle {
+			color: $dark-white;
+			font-size: 16px;
+			font-family: 'Montserrat';
+			letter-spacing: 5px;
+			text-transform: uppercase;
+		}
+		
+		&_title {
+			color: $light-color;
+			font-size: 80px;
+			font-family: 'Montserrat';
+			font-weight: 700;
+			text-transform: uppercase;
+			margin-top: 20px;
+		}
+
+		&_text {
+			color: $dark-white;
+			font-family: 'Montserrat';
+			font-weight: 500;
+			line-height: 24px;
+			margin-top: 20px;
+		}
+
+		&_button {
+			text-align: center;
+			font-size: 18px;
+			font-family: 'Montserrat';
+			font-weight: 700;
+			color: $light-color;
+			background-color: $accent-color;
+			margin-top: 40px;
+			border: none;
+			border-radius: 3px;
+			padding: 16px 56px;
+			cursor: pointer;
+		}
+	}
+}
