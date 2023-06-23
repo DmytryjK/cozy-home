@@ -7,19 +7,31 @@ import logoIcon from '../../assets/icons/header/logo-icon.svg';
 
 const Header = () => {
     return (
-        <div className="container">
-            <div className="header">
+        <div className="wrapper">
+            <header className="header">
                 <div className="header__logo">
-                    <img src={logoIcon} alt="Store logo" />
+                    <a href="/">
+                        <img src={logoIcon} alt="Store logo" />
+                    </a>
                 </div>
                 <div className="header__nav">
                     <nav>
                         <ul className="header__nav_list">
-                            <li className="active">Головна</li>
-                            <li>Каталог</li>
-                            <li>Доставка і оплата</li>
-                            <li>Контакти</li>
-                            <li>Про нас</li>
+                            <a href="/">
+                                <li className="active">Головна</li>
+                            </a>
+                            <a href="/">
+                                <li>Каталог</li>
+                            </a>
+                            <a href="/">
+                                <li>Доставка і оплата</li>
+                            </a>
+                            <a href="/">
+                                <li>Контакти</li>
+                            </a>
+                            <a href="/">
+                                <li>Про нас</li>
+                            </a>
                         </ul>
                     </nav>
                 </div>
@@ -38,19 +50,25 @@ const Header = () => {
                     </label>
                 </div>
                 <div className="header__icons">
-                    <img src={profileIcon} alt="Profile" />
+                    <a href="/">
+                        <img src={profileIcon} alt="Profile" />
+                    </a>
                     <div>
-                        <img src={favoriteIcon} alt="Favorite" />
+                        <a href="/">
+                            <img src={favoriteIcon} alt="Favorite" />
+                        </a>
                         <span className="header__icons_favorite-counter">
-                            0
+                            10
                         </span>
                     </div>
                     <div>
-                        <img src={cardIcon} alt="Card" />
-                        <span className="header__icons_card-counter">0</span>
+                        <a href="/">
+                            <img src={cardIcon} alt="Card" />
+                        </a>
+                        <span className="header__icons_card-counter">20</span>
                     </div>
                 </div>
-            </div>
+            </header>
         </div>
     );
 };
