@@ -8,12 +8,12 @@
   background-repeat: no-repeat;
 	height: 700px;
 	position: relative;
-
+	
 	&__content {
 		position: absolute;
 		width: 690px;
 		margin-top: 130px;
-		margin-left: 176px;
+		margin-left: 150px;
 
 		&_subtitle {
 			color: $dark-white;
@@ -52,6 +52,11 @@
 			border-radius: 3px;
 			padding: 16px 56px;
 			cursor: pointer;
+			transition: background-color .2s;
+
+			&:hover {
+				background-color: $accent-color-hover;
+			}
 		}
 	}
 }
