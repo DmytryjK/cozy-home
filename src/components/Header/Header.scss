@@ -3,7 +3,7 @@
 
 .wrapper {
 	position: fixed;
-	background: $light-color;
+	background: $white;
   width: 100%;
 	top: 0;
   left: 0;
@@ -54,7 +54,7 @@
 			height: 2px;
 			background-color: $accent-color;
 			transform: scaleX(0);
-			transition: transform 0.5s ease-in-out;
+			transition: transform 0.2s ease-in-out;
 		}
 
 		li:hover::after {
@@ -74,6 +74,8 @@
 		width: 320px;
 		padding: 8px 12px 8px 33px;
 		border-radius: 16px;
+		outline: none;
+		border: 1px solid $dark-color;
 	}
 
 	&__search_icon {

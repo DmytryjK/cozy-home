@@ -8,7 +8,7 @@ import logoIcon from '../../assets/icons/header/logo-icon.svg';
 const Header = () => {
     return (
         <div className="wrapper">
-            <div className="header">
+            <header className="header">
                 <div className="header__logo">
                     <a href="/">
                         <img src={logoIcon} alt="Store logo" />
@@ -68,7 +68,7 @@ const Header = () => {
                         <span className="header__icons_card-counter">20</span>
                     </div>
                 </div>
-            </div>
+            </header>
         </div>
     );
 };
