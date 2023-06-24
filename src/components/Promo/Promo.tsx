@@ -16,24 +16,25 @@ const Promo = () => {
                     modules={[Pagination]}
                     pagination={{ clickable: false }}
                     breakpoints={{
-                        340: {
+                        0: {
                             slidesPerView: 'auto',
-                            spaceBetween: '12px',
-                            pagination: {
-                                clickable: true,
-                            },
+                            spaceBetween: '16px',
+                        },
+                        360: {
+                            slidesPerView: 1,
+                            spaceBetween: '16px',
                         },
                         550: {
-                            width: 580,
+                            slidesPerView: 'auto',
+                            spaceBetween: '16px',
+                        },
+                        768: {
                             slidesPerView: 'auto',
                             spaceBetween: '24px',
                         },
-                        768: {
-                            width: 710,
-                            slidesPerView: 'auto',
-                        },
-                        1160: {
+                        1024: {
                             slidesPerView: 2,
+                            spaceBetween: '32px',
                         },
                     }}
                 >
