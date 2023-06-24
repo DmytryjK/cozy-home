@@ -18,23 +18,22 @@ const NewItems = () => {
                 <ul className="new-items__cards">
                     <Swiper
                         className="new-items__slider"
-                        spaceBetween={32}
+                        spaceBetween={0}
                         breakpoints={{
                             340: {
-                                width: 304,
+                                width: 320,
                                 slidesPerView: 1,
-                                spaceBetween: '24px',
                             },
                             640: {
-                                width: 710,
+                                width: 640,
                                 slidesPerView: 2,
                             },
                             1024: {
-                                width: 985,
+                                width: 1024,
                                 slidesPerView: 3,
                             },
                             1352: {
-                                width: 1310,
+                                width: 1344,
                                 slidesPerView: 4,
                             },
                         }}
