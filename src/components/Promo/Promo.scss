@@ -2,14 +2,25 @@
 .promo {
     margin-top: 130px;
     &__slider {
+        margin-left: auto;
+        margin-right: auto;
+        height: 100%;
+        width: 100%;
+        .swiper-wrapper {
+            flex-direction: row !important;
+            height: 100%;
+        }
         .swiper-slide {
+            margin-top: 0 !important;
+            width: 100%;
+            max-width: 640px;
             height: auto;
-            flex-direction: column;
-            max-width: 640px !important;
+            display: flex;
+            align-items: center;
         }
         .swiper-pagination {
             display: none;
-            bottom: -6px;
+            bottom: -4px;
             .swiper-pagination-bullet {
                 width: 5px;
                 height: 5px;
@@ -26,17 +37,16 @@
     }
     .add-link {
         position: relative;
-        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         max-width: 640px;
-        height: 100%;
+        width: 100%;
         gap: 12px;
         min-height: 370px;
+        height: 100%;
         padding: 109px 84px 109px 84px;
         color: $light-color;
-        font-weight: 600;
         overflow: hidden;
         &:hover {
             .add-link__bg-img {
@@ -50,12 +60,14 @@
             font-family: Montserrat Alternates;
             max-width: 366px;
             font-size: 36px;
+            font-weight: 600;
         }
         &__decorative-text {
-            font-family: Montserrat Alternates;
+            font-family: Montserrat;
             position: relative;
             display: inline-block;
             font-size: 16px;
+            font-weight: 600;
             &:after {
                 content: '';
                 position: absolute;
@@ -85,7 +97,7 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 991px) {
     .promo {
         .add-link:hover {
             .add-link__bg-img {
@@ -106,19 +118,24 @@
             padding-right: 0;
         }
         &__slider {
-            padding-bottom: 14px;
+            padding-bottom: 16px;
             .swiper-slide {
                 width: 100% !important;
             }
         }
-        &__add-link {
+        .add-link {
             width: 100%;
+            min-height: 270px;
+            &__title {
+                font-size: 28px;
+            }
         }
     }
 }
 
 @media screen and (max-width: 480px) {
     .promo {
+        margin-top: 64px;
         .add-link {
             padding: 46px 64px 66px 30px;
             min-height: 200px;
