@@ -23,9 +23,6 @@
         max-width: 100%;
         width: 100%;
         margin-top: 42px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 32px;
     }
 
     &__slider {
@@ -36,10 +33,11 @@
         .swiper-wrapper {
             flex-direction: row !important;
             row-gap: 80px;
-            column-gap: 32px;
             min-width: 100%;
         }
         .swiper-slide {
+            display: flex;
+            align-items: center;
             margin-top: 0 !important;
             margin-right: 0 !important;
         }
@@ -48,13 +46,12 @@
 
 @media screen and (max-width: 450px) {
     .new-items {
+        margin-top: 74px;
         .container_pd-right-off {
             padding-right: 0;
         }
-        &__slider {
-            .swiper-wrapper {
-                column-gap: 24px;
-            }
+        &__title {
+            font-size: 20px;
         }
         &__card {
             width: 100%;
