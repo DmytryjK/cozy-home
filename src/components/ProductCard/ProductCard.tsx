@@ -112,7 +112,7 @@ const ProductCard = () => {
                     })}
                 </Swiper>
             </a>
-            <div className="product-card__content">
+            <div className="product-card__content swiper-no-swiping">
                 <div className="product-card__content-top">
                     <h2 className="product-card__title">
                         <a className="product-card__title-link" href="/">
