@@ -81,7 +81,6 @@ const ProductCard = () => {
             <a className="product-card__slider-link" href="/">
                 <Swiper
                     className="product-card__slider"
-                    spaceBetween={20}
                     slidesPerView={1}
                     navigation
                     allowTouchMove={false}

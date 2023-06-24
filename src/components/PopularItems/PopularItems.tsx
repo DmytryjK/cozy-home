@@ -145,33 +145,35 @@ const PopularItems = () => {
                         grid={{
                             rows: 2,
                         }}
-                        spaceBetween={32}
+                        spaceBetween={0}
                         breakpoints={{
                             340: {
-                                width: 304,
+                                width: 320,
                                 slidesPerView: 1,
-                                spaceBetween: '24px',
                                 grid: {
                                     rows: 1,
                                 },
                             },
                             640: {
-                                width: 710,
+                                width: 640,
                                 slidesPerView: 2,
                                 grid: {
                                     rows: 1,
                                 },
                             },
                             1024: {
-                                width: 985,
+                                width: 1024,
                                 slidesPerView: 3,
                                 grid: {
                                     rows: 1,
                                 },
                             },
                             1352: {
-                                width: 1310,
+                                width: 1344,
                                 slidesPerView: 4,
+                                grid: {
+                                    rows: 2,
+                                },
                             },
                         }}
                     >
