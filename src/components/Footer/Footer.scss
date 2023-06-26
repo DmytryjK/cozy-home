@@ -1,0 +1,140 @@
+@import '../../assets/fonts/fonts.scss';
+@import '../../style/variables.scss';
+
+.footer {
+	margin-top: 130px;
+
+	&__bg {
+		background: $dark-white;
+		height: 362px;
+
+		.container {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			padding: 50px 20px;
+		}
+	}
+
+	&__list {
+		&_title {
+			font-family: 'Montserrat Alternates';
+			font-size: 16px;
+			font-weight: 600;
+			text-align: left;
+			margin-bottom: 18px;
+		}
+
+		&_text {
+
+			display: inline-block;
+			font-family: 'Montserrat';
+			font-size: 16px;
+			font-weight: 400;
+			text-align: left;
+			margin-bottom: 8px;
+
+		}
+
+		&_category {
+			display: flex;
+			flex-direction: column;
+		}
+
+		&_link {
+			width: fit-content;
+			position: relative;
+			&::after {
+				content: "";
+			position: absolute;
+			bottom: 8px;
+			left: 0;
+			width: 100%;
+			height: 1px;
+			background-color: $dark-color;
+			transform: scaleX(0);
+			transition: transform 0.2s ease-in-out;
+			}
+
+			&:hover::after {
+				transform: scaleX(1);
+			}
+		}
+		
+		&_icons {
+			margin-top: 18px;
+			display: flex;
+			gap: 10px;
+			cursor: pointer;
+
+			&_telegram, &_instagram, &_facebook path {
+        transition: 0.2s ease-out fill;
+    }
+
+		&_telegram, &_instagram, &_facebook {
+			&:hover {
+				background-color: $dark-color;
+				border: 1px solid $dark-color;
+				border-radius: 50%;
+
+				path {
+					fill: $white
+				}
+			}
+		}
+		}
+	}
+
+	&__terms-policy {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 18px;
+
+		&_text {
+			position: relative;
+			display: flex;
+			align-items: center;
+			font-family: 'Montserrat';
+			font-size: 16px;
+			font-weight: 400;
+
+			&_year {
+				margin-right: 16px;
+			}
+
+			&_slash {
+				margin: 0 8px;
+			}
+
+			&_link {
+				width: fit-content;
+				position: relative;
+				&::after {
+					content: "";
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: 1px;
+				background-color: $dark-color;
+				transform: scaleX(0);
+				transition: transform 0.2s ease-in-out;
+				}
+	
+				&:hover::after {
+					transform: scaleX(1);
+				}
+			}
+		}
+
+		&_icons {
+			display: flex;
+			gap: 20px;
+		}
+	}
+}
+
+.margin {
+	margin-bottom: 30px;
+}

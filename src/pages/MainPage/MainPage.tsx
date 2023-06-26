@@ -5,6 +5,7 @@ import NewItems from '../../components/NewItems/NewItems';
 import Promo from '../../components/Promo/Promo';
 import './MainPage.scss';
 import CatalogueBlock from '../../components/CatalogueBlock/CatalogueBlock';
+import Footer from '../../components/Footer/Footer';
 
 const MainPage = () => {
     return (
@@ -15,6 +16,7 @@ const MainPage = () => {
             <NewItems />
             <PopularItems />
             <Promo />
+            <Footer />
         </div>
     );
 };
