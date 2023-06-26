@@ -48,7 +48,7 @@
     }
 
     &__products {
-        min-height: 1050px;
+        min-height: 1044px;
         margin-top: 30px;
         visibility: hidden;
         display: flex;
@@ -90,7 +90,7 @@
 
 @media screen and (max-width: 1350px) {
     .popular-items__products {
-        min-height: 525px;
+        min-height: 483px;
     }
 }
 @media screen and (max-width: 450px) {
