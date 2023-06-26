@@ -9,16 +9,16 @@ import CatalogueItem from './CatalogueItem/CatalogueItem';
 
 const CatalogueBlock = () => {
     return (
-        <div className="container">
-            <section className="catalogue">
+        <section className="catalogue">
+            <div className="container">
                 <CatalogueItem title="Дивани" alt="Дивани" src={Sofas} />
                 <CatalogueItem title="Крісла" alt="Крісла" src={Chairs} />
                 <CatalogueItem title="Столи" alt="Столи" src={Tables} />
                 <CatalogueItem title="Комоди" alt="Комоди" src={Dressers} />
                 <CatalogueItem title="Стільці" alt="Стільці" src={Сhairs_v2} />
                 <CatalogueItem title="Ліжка" alt="Ліжка" src={Beds} />
-            </section>
-        </div>
+            </div>
+        </section>
     );
 };
 
