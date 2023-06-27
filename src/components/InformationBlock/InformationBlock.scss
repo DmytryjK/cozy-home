@@ -1,0 +1,45 @@
+@import '../../assets/fonts/fonts.scss';
+@import '../../style/variables.scss';
+
+.information {
+	margin-top: 130px;
+	color: $dark-color;
+
+	&__content {
+		text-align: center;
+		margin-bottom: 80px;
+		
+		&_title {
+			font-family: 'Montserrat Alternates';
+			font-size: 28px;
+			font-weight: 600;
+		}
+		
+		&_text {
+			margin: 12px auto 0;
+			width: 640px;
+		}
+
+		&_pros {
+			width: 304px;
+
+			&_info {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				margin-bottom: 20px;
+			}
+
+			&_description {
+				color: $grey;
+			}
+		}
+	}
+}
+
+.flex {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 32px;
+}
