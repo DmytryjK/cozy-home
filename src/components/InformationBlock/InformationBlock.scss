@@ -28,6 +28,13 @@
 				align-items: center;
 				gap: 10px;
 				margin-bottom: 20px;
+
+				&_title {
+					font-family: 'Montserrat Alternates';
+					font-size: 38px;
+					font-weight: 500;
+
+				}
 			}
 
 			&_description {
