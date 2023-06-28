@@ -39,8 +39,7 @@
 			justify-content: center;
 			align-items: center;
 			min-width: 78px;
-			font-family: 'Montserrat Alternates';
-			font-weight: 400;
+			font-family: 'Montserrat';
 			font-size: 14px;
 			padding: 5px;
 			position: relative;
@@ -55,7 +54,7 @@
 			height: 2px;
 			background-color: $accent-color;
 			transform: scaleX(0);
-			transition: transform 0.2s ease-in-out;
+			transition: transform 0.2s linear;
 		}
 
 		li:hover::after {
@@ -99,7 +98,7 @@
 }
 
 .header__icons_favorite-counter,
-.header__icons_card-counter {
+.header__icons_cart-counter {
 	font-size: 10px;
 	font-weight: 500;
 	position: absolute;
@@ -118,7 +117,7 @@
 	right: 38px;
 }
 
-.header__icons_card-counter {
+.header__icons_cart-counter {
 	top: -5px;
 	right: -7px;
 }
