@@ -1,13 +1,25 @@
 import './Header.scss';
+import { useState } from 'react';
 import searchIcon from '../../assets/icons/header/search-icon.svg';
 import profileIcon from '../../assets/icons/header/profile-icon.svg';
 import favoriteIcon from '../../assets/icons/header/favorite-icon.svg';
-import cardIcon from '../../assets/icons/header/card-icon.svg';
+import cartIcon from '../../assets/icons/header/card-icon.svg';
 import logoIcon from '../../assets/icons/header/logo-icon.svg';
+import DropdownMenu from './DropdownMenu/DropdownMenu';
 
 const Header = () => {
+    const [showDropdown, setShowDropdown] = useState<boolean>(false);
+
+    const handleMouseEnter = () => {
+        setShowDropdown(true);
+    };
+
+    const handleMouseLeave = () => {
+        setShowDropdown(false);
+    };
+
     return (
-        <div className="wrapper">
+        <div className="wrapper" onMouseEnter={handleMouseLeave}>
             <header className="header">
                 <div className="header__logo">
                     <a href="/">
@@ -17,21 +29,27 @@ const Header = () => {
                 <div className="header__nav">
                     <nav>
                         <ul className="header__nav_list">
-                            <a href="/">
-                                <li className="active">Головна</li>
-                            </a>
-                            <a href="/">
-                                <li>Каталог</li>
-                            </a>
-                            <a href="/">
-                                <li>Доставка і оплата</li>
-                            </a>
-                            <a href="/">
-                                <li>Контакти</li>
-                            </a>
-                            <a href="/">
-                                <li>Про нас</li>
-                            </a>
+                            <li
+                                className="active"
+                                onMouseEnter={handleMouseLeave}
+                            >
+                                <a href="/">Головна</a>
+                            </li>
+                            <li
+                                className="li-dropdown"
+                                onMouseEnter={handleMouseEnter}
+                            >
+                                <a href="/">Каталог</a>
+                            </li>
+                            <li onMouseEnter={handleMouseLeave}>
+                                <a href="/">Доставка і оплата</a>
+                            </li>
+                            <li onMouseEnter={handleMouseLeave}>
+                                <a href="/">Контакти</a>
+                            </li>
+                            <li onMouseEnter={handleMouseLeave}>
+                                <a href="/">Про нас</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -63,12 +81,16 @@ const Header = () => {
                     </div>
                     <div>
                         <a href="/">
-                            <img src={cardIcon} alt="Card" />
+                            <img src={cartIcon} alt="Cart" />
                         </a>
-                        <span className="header__icons_card-counter">20</span>
+                        <span className="header__icons_cart-counter">20</span>
                     </div>
                 </div>
             </header>
+            {showDropdown && (
+                <DropdownMenu handleMouseLeave={handleMouseLeave} />
+            )}
+            {/* <DropdownMenu handleMouseLeave={handleMouseLeave} /> */}
         </div>
     );
 };
