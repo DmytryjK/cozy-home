@@ -17,6 +17,7 @@
 		&_text {
 			margin: 12px auto 0;
 			max-width: 640px;
+			font-weight: 400;
 			color: $grey;
 		}
 
@@ -38,6 +39,7 @@
 			}
 
 			&_description {
+				font-weight: 400;
 				color: $grey;
 			}
 		}
@@ -114,6 +116,9 @@
 	};
 	.information {
 		&__content {
+			&_pros {
+				max-width: 100%;
+			}
 			&_text {
 				font-size: 12px;
 			}
