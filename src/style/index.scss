@@ -45,3 +45,9 @@ a {
 	border-left: 2px  $dark-white solid;
   background-clip: padding-box;
 }
+
+@media screen and (max-width: 767px) {
+  .container {
+    padding: 0 16px;
+  }
+}
