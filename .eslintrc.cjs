@@ -25,5 +25,6 @@ module.exports = {
         'react/function-component-definition': 0,
         'jsx-a11y/label-has-associated-control': 0,
         'react/no-unescaped-entities': 0,
+        'jsx-a11y/mouse-events-have-key-events': 0,
     },
 };

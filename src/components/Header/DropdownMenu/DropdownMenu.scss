@@ -2,16 +2,19 @@
 @import '../../../style/variables.scss';
 
 .dropdown-menu {
+	display: block;
 	position: absolute;
 	width: 100%;
 	border: 1px solid $dark-white;
 	background-color: $white;
 	box-shadow: 0px 4px 4px 0px #0000001A;
-	top: 68px;
+	top: 72px;
 	font-size: 14px;
 	font-weight: 400;
 	color: $grey;
-
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity .2s ease-out, visibility .2s ease-out;
 
 	.container {
 		display: flex;
@@ -22,12 +25,16 @@
 	&__list {
 		padding: 30px 0 60px 0;
 		width: 122px;
-
 		&_title {
 			font-size: 16px;
 			font-weight: 600;
 			margin-bottom: 24px;
 			color: $dark-color;
+			transition: color .2s ease-out;
+
+			&:hover {
+				color: $accent-color
+			}
 		}
 
 		&_items {
@@ -63,4 +70,9 @@
 		}
 	}
 }
+}
+
+.dropdown-menu-active {
+	opacity: 1;
+	visibility: visible;
 }

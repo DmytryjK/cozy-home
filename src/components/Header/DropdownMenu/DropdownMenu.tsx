@@ -1,13 +1,16 @@
 import './DropdownMenu.scss';
+import '../Header.scss';
+import { MouseEvent } from 'react';
 
 type Props = {
-    handleMouseLeave: () => void;
+    handleMouseOut: (event: MouseEvent) => void;
+    className: string;
 };
 
 const DropdownMenu = (props: Props) => {
-    const { handleMouseLeave } = props;
+    const { className, handleMouseOut } = props;
     return (
-        <div className="dropdown-menu" onMouseLeave={handleMouseLeave}>
+        <div className={className} onMouseLeave={handleMouseOut}>
             <div className="container">
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
