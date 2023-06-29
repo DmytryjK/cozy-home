@@ -45,12 +45,78 @@
 
 			&_title {
 				font-size: 18px;
-				font-family: Montserrat Alternates;
+				font-family: 'Montserrat Alternates';
 				font-weight: 500;
 				text-transform: uppercase;
 				bottom: 16px;
 				left: 0;
 			}
+		}
+	}
+}
+
+@media (max-width: 1330px) {
+	.catalogue {
+		margin-top: 100px;
+	
+		.container {
+			justify-content: center;
+			gap: 12px;
+		}
+	
+		&__item {
+
+			&_content {
+	
+				&_title {
+					font-size: 12px;
+					bottom: 22px;
+				}
+			}
+		}
+
+		.item1 {
+			flex-basis: 32%;
+		}
+		.item2, .item3 {
+			flex-basis: 32%;
+		}
+		.item4, .item5 {
+			flex-basis: 32%;
+		}
+
+		.item6 {
+			flex-basis: 32%;
+		}
+	}
+}
+
+@media (max-width: 760px) {
+	.catalogue {
+
+		.item1 {
+			flex-basis: 100%;
+		}
+		.item2, .item3 {
+			flex-basis: 48%;
+		}
+		.item4, .item5 {
+			flex-basis: 48%;
+		}
+
+		.item6 {
+			flex-basis: 100%;
+		}
+	}
+}
+
+@media (max-width: 640px) {
+	.catalogue {
+		margin-top: 64px;
+	
+		.container {
+			justify-content: space-between;
+			gap: 12px;
 		}
 	}
 }

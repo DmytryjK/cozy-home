@@ -11,12 +11,42 @@ const CatalogueBlock = () => {
     return (
         <section className="catalogue">
             <div className="container">
-                <CatalogueItem title="Дивани" alt="Дивани" src={Sofas} />
-                <CatalogueItem title="Крісла" alt="Крісла" src={Chairs} />
-                <CatalogueItem title="Столи" alt="Столи" src={Tables} />
-                <CatalogueItem title="Комоди" alt="Комоди" src={Dressers} />
-                <CatalogueItem title="Стільці" alt="Стільці" src={Сhairs_v2} />
-                <CatalogueItem title="Ліжка" alt="Ліжка" src={Beds} />
+                <CatalogueItem
+                    title="Дивани"
+                    alt="Дивани"
+                    src={Sofas}
+                    className="catalogue__item item1"
+                />
+                <CatalogueItem
+                    title="Крісла"
+                    alt="Крісла"
+                    src={Chairs}
+                    className="catalogue__item item2"
+                />
+                <CatalogueItem
+                    title="Столи"
+                    alt="Столи"
+                    src={Tables}
+                    className="catalogue__item item3"
+                />
+                <CatalogueItem
+                    title="Комоди"
+                    alt="Комоди"
+                    src={Dressers}
+                    className="catalogue__item item4"
+                />
+                <CatalogueItem
+                    title="Стільці"
+                    alt="Стільці"
+                    src={Сhairs_v2}
+                    className="catalogue__item item5"
+                />
+                <CatalogueItem
+                    title="Ліжка"
+                    alt="Ліжка"
+                    src={Beds}
+                    className="catalogue__item item6"
+                />
             </div>
         </section>
     );
