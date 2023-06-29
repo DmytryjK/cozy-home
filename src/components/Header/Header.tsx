@@ -1,5 +1,5 @@
 import './Header.scss';
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import searchIcon from '../../assets/icons/header/search-icon.svg';
 import profileIcon from '../../assets/icons/header/profile-icon.svg';
 import favoriteIcon from '../../assets/icons/header/favorite-icon.svg';
@@ -10,16 +10,36 @@ import DropdownMenu from './DropdownMenu/DropdownMenu';
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-    const handleMouseEnter = () => {
-        setShowDropdown(true);
+    const handleMouseOver = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        const liDropdown = document.querySelector('.li-dropdown');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        if (liDropdown?.contains(target) || dropdownMenu?.contains(target)) {
+            dropdownMenu?.classList.add('dropdown-menu-active');
+            setShowDropdown(true);
+        }
     };
 
-    const handleMouseLeave = () => {
-        setShowDropdown(false);
+    const handleMouseOut = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        const liDropdown = document.querySelector('.li-dropdown');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        if (
+            !(liDropdown?.contains(target) || dropdownMenu?.contains(target)) ||
+            event.type === 'mouseleave'
+        ) {
+            dropdownMenu?.classList.remove('dropdown-menu-active');
+            setShowDropdown(false);
+        }
     };
 
     return (
-        <div className="wrapper" onMouseEnter={handleMouseLeave}>
+        <div
+            className="wrapper"
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+        >
             <header className="header">
                 <div className="header__logo">
                     <a href="/">
@@ -29,25 +49,25 @@ const Header = () => {
                 <div className="header__nav">
                     <nav>
                         <ul className="header__nav_list">
-                            <li
-                                className="active"
-                                onMouseEnter={handleMouseLeave}
-                            >
+                            <li className="active">
                                 <a href="/">Головна</a>
                             </li>
                             <li
-                                className="li-dropdown"
-                                onMouseEnter={handleMouseEnter}
+                                className={
+                                    showDropdown
+                                        ? 'li-dropdown li-dropdown-active'
+                                        : 'li-dropdown'
+                                }
                             >
                                 <a href="/">Каталог</a>
                             </li>
-                            <li onMouseEnter={handleMouseLeave}>
+                            <li>
                                 <a href="/">Доставка і оплата</a>
                             </li>
-                            <li onMouseEnter={handleMouseLeave}>
+                            <li>
                                 <a href="/">Контакти</a>
                             </li>
-                            <li onMouseEnter={handleMouseLeave}>
+                            <li>
                                 <a href="/">Про нас</a>
                             </li>
                         </ul>
@@ -87,10 +107,12 @@ const Header = () => {
                     </div>
                 </div>
             </header>
-            {showDropdown && (
-                <DropdownMenu handleMouseLeave={handleMouseLeave} />
-            )}
-            {/* <DropdownMenu handleMouseLeave={handleMouseLeave} /> */}
+            <div>
+                <DropdownMenu
+                    handleMouseOut={handleMouseOut}
+                    className="dropdown-menu"
+                />
+            </div>
         </div>
     );
 };
