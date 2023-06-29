@@ -16,7 +16,7 @@ const InformationBlock = () => {
                         відпочинку та натхнення.
                     </p>
                 </div>
-                <div className="flex">
+                <div className="grid">
                     <div className="information__content_pros">
                         <div className="information__content_pros_info">
                             <img
