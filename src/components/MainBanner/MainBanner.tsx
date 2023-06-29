@@ -12,17 +12,14 @@ const MainBanner = () => {
                         TRENDY LOFT FURNITURE
                     </h1>
                     <p className="mainBanner__content_text">
-                        Відчуйте привабливість нашої колекції Trendy Loft
-                        Furniture, яка ідеально поєднує в собі елегантність і
-                        сучасність.{' '}
+                        Відчуйте привабливість нашої колекції{' '}
+                        <span className="mainBanner__content_text_bold">
+                            Trendy Loft Furniture
+                        </span>
+                        , яка ідеально поєднує в собі елегантність і сучасність.{' '}
                     </p>
-                    <a href="/">
-                        <button
-                            className="mainBanner__content_button"
-                            type="button"
-                        >
-                            Детальніше
-                        </button>
+                    <a href="/" className="mainBanner__content_link">
+                        Детальніше
                     </a>
                 </div>
             </div>
