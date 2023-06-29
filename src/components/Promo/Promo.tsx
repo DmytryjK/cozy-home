@@ -32,7 +32,7 @@ const Promo = () => {
                             slidesPerView: 'auto',
                             spaceBetween: '24px',
                         },
-                        1024: {
+                        1101: {
                             slidesPerView: 2,
                             spaceBetween: '32px',
                         },
