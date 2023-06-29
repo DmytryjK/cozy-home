@@ -102,31 +102,14 @@
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
-			font-size: 16px;
+			font-size: 12px;
+			color: $dark-color;
 			font-weight: 400;
 			&_year {
 				margin-right: 16px;
 			}
 			&_slash {
 				margin: 0 8px;
-			}
-			&_link {
-				width: fit-content;
-				position: relative;
-				&::after {
-					content: "";
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					width: 100%;
-					height: 1px;
-					background-color: $dark-color;
-					transform: scaleX(0);
-					transition: transform 0.2s ease-in-out;
-				}
-				&:hover::after {
-					transform: scaleX(1);
-				}
 			}
 		}
 		&_icons {
@@ -146,13 +129,13 @@
 		&__list {
 			flex-basis: calc(50% - 40px);
 			&_order1 {
-				order: 1;
+				order: 3;
 			}
 			&_order2 {
 				order: 2;
 			}
 			&_order3 {
-				order: 3;
+				order: 1;
 			}
 			&_order4 {
 				order: 4;
@@ -166,9 +149,6 @@
 			.footer__icons_image path {
 				fill: $dark-color;
 			}
-		}
-		&__terms-policy_text_link:hover::after {
-			transform: scaleX(0);
 		}
 	}
 }
@@ -225,6 +205,12 @@
 		margin-top: 64px;
 		&__list {
 			flex-basis: 100%;
+			&_order1 {
+				order: 1;
+			}
+			&_order3 {
+				order: 3;
+			}
 			&_link, &_worktime {
 				font-size: 14px;
 			}
