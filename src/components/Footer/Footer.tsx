@@ -21,22 +21,17 @@ const Footer = () => {
                             <ul className="footer__list_category">
                                 <li className="footer__list_item">
                                     <a href="/" className="footer__list_link">
-                                        Про нас
+                                        Поширені питання
                                     </a>
                                 </li>
                                 <li className="footer__list_item">
                                     <a href="/" className="footer__list_link">
-                                        Доставка і оплата
+                                        Гарантії та повернення
                                     </a>
                                 </li>
                                 <li className="footer__list_item">
                                     <a href="/" className="footer__list_link">
-                                        Допомога
-                                    </a>
-                                </li>
-                                <li className="footer__list_item">
-                                    <a href="/" className="footer__list_link">
-                                        Сервіс
+                                        Умови співпраці
                                     </a>
                                 </li>
                             </ul>
