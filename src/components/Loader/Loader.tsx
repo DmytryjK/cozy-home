@@ -1,9 +1,10 @@
+import loader from '../../assets/icons/loading/loader.svg';
 import './Loader.scss';
 
 const LoadingContent = () => {
     return (
         <div className="content-loader">
-            <p className="content-loader_text">Loading...</p>
+            <img className="content-loader_image" src={loader} alt="" />
         </div>
     );
 };
