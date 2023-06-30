@@ -4,7 +4,7 @@ import { Grid } from 'swiper';
 import nextId from 'react-id-generator';
 import useFetch from '../../hooks/useFetch';
 import ProductCard from '../ProductCard/ProductCard';
-import LoadingContent from '../LoadingContent/LoadingContent';
+import Loader from '../Loader/Loader';
 import { Product } from '../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
@@ -172,7 +172,7 @@ const PopularItems = () => {
                             },
                         }}
                     >
-                        {loading ? <LoadingContent /> : renderedProducts()}
+                        {loading ? <Loader /> : renderedProducts()}
                     </Swiper>
                 </ul>
             </div>

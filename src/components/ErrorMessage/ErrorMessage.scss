@@ -1,0 +1,20 @@
+.error-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    height: 100px;
+    &_text {
+        font-weight: 500;
+        font-size: 20px;
+        color: rgb(54, 54, 54);
+    }
+    &_reload-page {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        font-size: 16px;
+        font-weight: 500;
+        color: rgb(54, 54, 54);
+    }
+}

@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import nextId from 'react-id-generator';
 import ProductCard from '../ProductCard/ProductCard';
-import LoadingContent from '../LoadingContent/LoadingContent';
+import Loader from '../Loader/Loader';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import useFetch from '../../hooks/useFetch';
 import { Product } from '../../types/types';
 import './NewItems.scss';
 
 const NewItems = () => {
     const [products, setProducts] = useState<Product[]>([]);
-    const { data, loading, errorFetch } = useFetch('product/popular');
+    const { data, loading, errorFetch } = useFetch('product/new');
 
     useEffect(() => {
         setProducts(data);
@@ -26,6 +27,18 @@ const NewItems = () => {
                 </SwiperSlide>
             );
         });
+    };
+
+    const renderedContent = () => {
+        let resTemporary;
+        if (errorFetch) {
+            resTemporary = <ErrorMessage />;
+        } else if (loading && !errorFetch) {
+            resTemporary = <Loader />;
+        } else if (!loading && !errorFetch) {
+            resTemporary = renderedItems();
+        }
+        return resTemporary;
     };
 
     return (
@@ -62,7 +75,7 @@ const NewItems = () => {
                             },
                         }}
                     >
-                        {loading ? <LoadingContent /> : renderedItems()}
+                        {renderedContent()}
                     </Swiper>
                 </ul>
             </div>
