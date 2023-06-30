@@ -1,57 +1,35 @@
 import { useState, useEffect, useRef } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import nextId from 'react-id-generator';
-import { TSwiper } from '../../types/types';
-import productPhoto1 from '../../assets/images/productcard/photo1.png';
-import productPhoto2 from '../../assets/images/productcard/photo2.png';
-import productPhoto3 from '../../assets/images/productcard/photo3.png';
+import { TSwiper, Product } from '../../types/types';
+import imageNotFound from '../../assets/images/error-images/image-not-found_small.png';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ProductCard.scss';
 
-const ProductCard = () => {
+const ProductCard = ({ product }: { product: Product }) => {
     const [currentColor, setCurrentColor] = useState<string>('');
     const [isColorChosen, setIsColorChosen] = useState(false);
     const uniqIdForInputName = nextId('color-');
-    interface CardObject {
-        title: string;
-        description: string;
-        price: string;
-        mediaInfo: MediaInfo[];
-    }
 
-    interface MediaInfo {
-        color: string;
-        image: string;
-    }
+    const {
+        id,
+        name,
+        description,
+        price,
+        discountPrice,
+        discount,
+        category,
+        colors,
+    } = product;
 
-    const cardData: CardObject = {
-        title: 'Крісло COIN',
-        description:
-            'Lörem ipsum smartboard supraktig. Disade hesk i degen. Padda ådev väkaktig sobyr. Pesm saren. Lörem ipsum smartboard supraktig. Disade hesk i degen. Padda ådev väkaktig sobyr. Pesm saren.Lörem ipsum smartboard supraktig. Disade hesk i degen. Padda ådev väkaktig sobyr. Pesm saren. Lörem ipsum smartboard supraktig. Disade hesk i degen. Padda ådev väkaktig sobyr. Pesm saren.',
-        price: '2000',
-        mediaInfo: [
-            {
-                color: 'black',
-                image: productPhoto1,
-            },
-            {
-                color: 'orange',
-                image: productPhoto2,
-            },
-            {
-                color: 'grey',
-                image: productPhoto3,
-            },
-        ],
-    };
     const cardSliderRef = useRef<TSwiper>();
 
     useEffect(() => {
-        if (!isColorChosen && cardData.mediaInfo.length > 0) {
-            setCurrentColor(cardData.mediaInfo[0].color);
+        if (!isColorChosen && colors.length > 0) {
+            setCurrentColor(colors[0].colorName);
         }
-    }, [isColorChosen, cardData.mediaInfo]);
+    }, [isColorChosen, colors]);
 
     const handleSlideChange = (color: string, index: number) => {
         setCurrentColor(color);
@@ -88,23 +66,28 @@ const ProductCard = () => {
                         cardSliderRef.current = swiper as TSwiper;
                     }}
                     onSlideChange={(swiper) => {
-                        cardData?.mediaInfo?.forEach((item, index) => {
+                        colors?.forEach((item, index) => {
                             if (swiper.activeIndex === index) {
-                                setCurrentColor(item.color);
+                                setCurrentColor(item.colorName);
                             }
                         });
                         setIsColorChosen(true);
                     }}
                 >
-                    {cardData?.mediaInfo?.map((item) => {
-                        const { image } = item;
+                    {colors?.map((item) => {
+                        const { photoPath } = item;
                         return (
                             <SwiperSlide key={nextId('productCard-slide')}>
                                 <div className="product-card__image-wrapper">
                                     <img
                                         className="product-card__image"
-                                        src={image}
-                                        alt="крісло coin"
+                                        src={
+                                            photoPath === 'path1' ||
+                                            photoPath === null
+                                                ? imageNotFound
+                                                : photoPath
+                                        }
+                                        alt={name}
                                     />
                                 </div>
                             </SwiperSlide>
@@ -116,32 +99,32 @@ const ProductCard = () => {
                 <div className="product-card__content-top">
                     <h2 className="product-card__title">
                         <a className="product-card__title-link" href="/">
-                            Крісло COIN
+                            {name}
                         </a>
                     </h2>
                     <fieldset className="product-card__color-checkboxes">
-                        {cardData?.mediaInfo?.map((item, index) => {
-                            const { color } = item;
+                        {colors.map((item, index) => {
+                            const { colorName } = item;
                             return (
                                 <label
                                     className="product-card__checkbox-label"
                                     key={nextId('color-radio')}
                                 >
                                     <input
-                                        className={`product-card__color-checkbox ${color}`}
+                                        className={`product-card__color-checkbox ${colorName}`}
                                         type="radio"
                                         name={uniqIdForInputName}
-                                        value={color}
+                                        value={colorName}
                                         checked={
-                                            currentColor === color ||
+                                            currentColor === colorName ||
                                             (!isColorChosen && index === 0)
                                         }
                                         onChange={() =>
-                                            handleSlideChange(color, index)
+                                            handleSlideChange(colorName, index)
                                         }
                                     />
                                     <span
-                                        className={`product-card__checked-checkbox ${color}`}
+                                        className={`product-card__checked-checkbox ${colorName}`}
                                     />
                                 </label>
                             );
@@ -149,11 +132,11 @@ const ProductCard = () => {
                     </fieldset>
                 </div>
                 <p className="product-card__description">
-                    {`${cardData?.description.substring(0, 92)}...`}
+                    {`${description?.substring(0, 92)}...`}
                 </p>
                 <div className="product-card__purchase-block purchase-block">
                     <span className="purchase-block__price">
-                        2000
+                        {price}
                         <span className="purchase-block__current-currency">
                             UAH
                         </span>

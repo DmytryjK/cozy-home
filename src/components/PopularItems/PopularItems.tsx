@@ -2,41 +2,30 @@ import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid } from 'swiper';
 import nextId from 'react-id-generator';
+import useFetch from '../../hooks/useFetch';
 import ProductCard from '../ProductCard/ProductCard';
+import LoadingContent from '../LoadingContent/LoadingContent';
+import { Product } from '../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
 import 'swiper/css/grid';
 
 const PopularItems = () => {
     const [activeCategory, setActiveCategory] = useState<string>('Всі товари');
-    interface Product {
-        prodName: string;
-        category_id: number;
-    }
-    interface Categories {
-        id: number;
-        name: string;
-    }
-    const products: Product[] = [
-        { prodName: 'test', category_id: 1 },
-        { prodName: 'test', category_id: 1 },
-        { prodName: 'test', category_id: 2 },
-        { prodName: 'test', category_id: 3 },
-        { prodName: 'test', category_id: 4 },
-        { prodName: 'test', category_id: 5 },
-        { prodName: 'test', category_id: 6 },
-        { prodName: 'test', category_id: 1 },
-        { prodName: 'test', category_id: 3 },
-        { prodName: 'test', category_id: 2 },
-        { prodName: 'test', category_id: 5 },
-    ];
-    const categories: Categories[] = [
-        { id: 1, name: 'Дивани' },
-        { id: 2, name: 'Крісла' },
-        { id: 3, name: 'Столи' },
-        { id: 4, name: 'Шафи' },
-        { id: 5, name: 'Комоди' },
-        { id: 6, name: 'Декор' },
+    const [products, setProducts] = useState<Product[]>([]);
+    const { data, loading, errorFetch } = useFetch('product/popular');
+
+    useEffect(() => {
+        setProducts(data);
+    }, [data]);
+
+    const categories: string[] = [
+        'Дивани',
+        'Крісла',
+        'Столи',
+        'Шафи',
+        'Комоди',
+        'Декор',
     ];
     const handleChangeTab = (e: React.MouseEvent<HTMLButtonElement>) => {
         const currentCategory = e.currentTarget.getAttribute('data-value');
@@ -50,7 +39,7 @@ const PopularItems = () => {
                 return productIndex < 8 ? (
                     <SwiperSlide key={nextId('card-of-category')}>
                         <li className="popular-items__products-item">
-                            <ProductCard />
+                            <ProductCard product={product} />
                         </li>
                     </SwiperSlide>
                 ) : null;
@@ -58,22 +47,22 @@ const PopularItems = () => {
         } else {
             renderResult = categories?.map((category) => {
                 let temporary;
-                if (category.name === activeCategory) {
+                if (category === activeCategory) {
                     const categoryItemsForRender: Product[] = [];
                     temporary = products.map((product, productIndex) => {
                         let result;
-                        if (product.category_id === category.id) {
+                        if (product.category === category) {
                             categoryItemsForRender.push(product);
                         }
                         if (productIndex === products.length - 1) {
                             const renderedItems = categoryItemsForRender.map(
-                                () => {
+                                (item) => {
                                     return (
                                         <SwiperSlide
                                             key={nextId('card-of-category')}
                                         >
                                             <li className="popular-items__products-item">
-                                                <ProductCard />
+                                                <ProductCard product={item} />
                                             </li>
                                         </SwiperSlide>
                                     );
@@ -96,7 +85,7 @@ const PopularItems = () => {
         if (Object.keys(categories).length !== 0) {
             renderResult.push(
                 'Всі товари',
-                ...categories.map((category) => category.name)
+                ...categories.map((category) => category)
             );
         } else {
             renderResult = [''];
@@ -183,7 +172,7 @@ const PopularItems = () => {
                             },
                         }}
                     >
-                        {renderedProducts()}
+                        {loading ? <LoadingContent /> : renderedProducts()}
                     </Swiper>
                 </ul>
             </div>
