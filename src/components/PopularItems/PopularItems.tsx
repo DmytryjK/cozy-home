@@ -5,6 +5,7 @@ import nextId from 'react-id-generator';
 import useFetch from '../../hooks/useFetch';
 import ProductCard from '../ProductCard/ProductCard';
 import Loader from '../Loader/Loader';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { Product } from '../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
@@ -93,6 +94,18 @@ const PopularItems = () => {
         return renderResult;
     };
 
+    const renderedContent = () => {
+        let resTemporary;
+        if (errorFetch) {
+            resTemporary = <ErrorMessage />;
+        } else if (loading && !errorFetch) {
+            resTemporary = <Loader />;
+        } else if (!loading && !errorFetch) {
+            resTemporary = renderedProducts();
+        }
+        return resTemporary;
+    };
+
     return (
         <section className="popular-items">
             <div className="container">
@@ -172,7 +185,7 @@ const PopularItems = () => {
                             },
                         }}
                     >
-                        {loading ? <Loader /> : renderedProducts()}
+                        {renderedContent()}
                     </Swiper>
                 </ul>
             </div>
