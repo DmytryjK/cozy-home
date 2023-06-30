@@ -1,0 +1,11 @@
+.content-loader {
+    display: flex;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    &_text {
+        font-size: 20px;
+        font-weight: 500;
+        color: rgb(54, 54, 54);
+    }
+}

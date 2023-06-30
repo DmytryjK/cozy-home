@@ -1,9 +1,33 @@
+import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import nextId from 'react-id-generator';
 import ProductCard from '../ProductCard/ProductCard';
+import LoadingContent from '../LoadingContent/LoadingContent';
+import useFetch from '../../hooks/useFetch';
+import { Product } from '../../types/types';
 import './NewItems.scss';
 
 const NewItems = () => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const { data, loading, errorFetch } = useFetch('product/popular');
+
+    useEffect(() => {
+        setProducts(data);
+    }, [data]);
+
+    const renderedItems = () => {
+        return products?.map((product, index) => {
+            if (index > 3) return null;
+            return (
+                <SwiperSlide key={nextId('card-of-newItems')}>
+                    <li className="new-items__card">
+                        <ProductCard product={product} />
+                    </li>
+                </SwiperSlide>
+            );
+        });
+    };
+
     return (
         <section className="new-items">
             <div className="container">
@@ -38,26 +62,7 @@ const NewItems = () => {
                             },
                         }}
                     >
-                        <SwiperSlide key={nextId('card-of-newItems')}>
-                            <li className="new-items__card">
-                                <ProductCard />
-                            </li>
-                        </SwiperSlide>
-                        <SwiperSlide key={nextId('card-of-newItems')}>
-                            <li className="new-items__card">
-                                <ProductCard />
-                            </li>
-                        </SwiperSlide>
-                        <SwiperSlide key={nextId('card-of-newItems')}>
-                            <li className="new-items__card">
-                                <ProductCard />
-                            </li>
-                        </SwiperSlide>
-                        <SwiperSlide key={nextId('card-of-newItems')}>
-                            <li className="new-items__card">
-                                <ProductCard />
-                            </li>
-                        </SwiperSlide>
+                        {loading ? <LoadingContent /> : renderedItems()}
                     </Swiper>
                 </ul>
             </div>
