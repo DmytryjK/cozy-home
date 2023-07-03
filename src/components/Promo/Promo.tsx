@@ -1,8 +1,10 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import nextId from 'react-id-generator';
-import promoImg1 from '../../assets/images/promo/promo-1.jpg';
-import promoImg2 from '../../assets/images/promo/promo-2.jpg';
+import promoImg1_webp from '../../assets/images/promo/promo-1.webp';
+import promoImg2_webp from '../../assets/images/promo/promo-2.webp';
+import promoImg1 from '../../assets/images/promo/promo-1_opt.png';
+import promoImg2 from '../../assets/images/promo/promo-2_opt.png';
 import 'swiper/css/pagination';
 import './Promo.scss';
 
@@ -48,11 +50,18 @@ const Promo = () => {
                                     Детальніше
                                 </span>
                             </span>
-                            <img
-                                className="add-link__bg-img"
-                                src={promoImg1}
-                                alt="Vintage Loft Heritage Collection"
-                            />
+                            <picture>
+                                <source
+                                    className="add-link__bg-img"
+                                    type="image/webp"
+                                    srcSet={promoImg1_webp}
+                                />
+                                <img
+                                    className="add-link__bg-img"
+                                    src={promoImg1}
+                                    alt="Vintage Loft Heritage Collection"
+                                />
+                            </picture>
                         </a>
                     </SwiperSlide>
                     <SwiperSlide key={nextId('card-of-newItems')}>
@@ -65,11 +74,18 @@ const Promo = () => {
                                     Детальніше
                                 </span>
                             </span>
-                            <img
-                                className="add-link__bg-img"
-                                src={promoImg2}
-                                alt="Vintage Loft Heritage Collection"
-                            />
+                            <picture>
+                                <source
+                                    className="add-link__bg-img"
+                                    type="image/webp"
+                                    srcSet={promoImg2_webp}
+                                />
+                                <img
+                                    className="add-link__bg-img"
+                                    src={promoImg2}
+                                    alt="Vintage Loft Heritage Collection"
+                                />
+                            </picture>
                         </a>
                     </SwiperSlide>
                 </Swiper>
