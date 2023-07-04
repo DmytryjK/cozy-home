@@ -1,3 +1,7 @@
+import mainMannerImage from '../../assets/images/main-banner/main-banner_opt.png';
+import mainMannerImageWebp from '../../assets/images/main-banner/main-banner.webp';
+import mainMannerImagePhone from '../../assets/images/main-banner/main-banner_phone_opt.png';
+import mainMannerImageWebpPhone from '../../assets/images/main-banner/main-banner_phone.webp';
 import './MainBanner.scss';
 
 const MainBanner = () => {
@@ -23,6 +27,30 @@ const MainBanner = () => {
                     </a>
                 </div>
             </div>
+            <picture>
+                <source
+                    className="mainBanner__background-img"
+                    media="(max-width: 768px)"
+                    type="image/webp"
+                    srcSet={mainMannerImageWebpPhone}
+                />
+                <source
+                    className="mainBanner__background-img"
+                    media="(max-width: 768px)"
+                    type="image/png"
+                    srcSet={mainMannerImagePhone}
+                />
+                <source
+                    className="mainBanner__background-img"
+                    type="image/webp"
+                    srcSet={mainMannerImageWebp}
+                />
+                <img
+                    className="mainBanner__background-img"
+                    src={mainMannerImage}
+                    alt="Vintage Loft Heritage Collection"
+                />
+            </picture>
         </div>
     );
 };
