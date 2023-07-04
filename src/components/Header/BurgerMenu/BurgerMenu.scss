@@ -46,18 +46,44 @@
 	}
 }
 
+.layout {
+	height: 100%;
+	background: $white;
+}
+
 .burger-menu {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	position: fixed;
 	width: 100%;
-	height: calc(100vh - 58px);
-	margin-top: 6px;
-	top: 52px;
+	max-height: calc(100vh - 60px);
+	top: 60px;
 	left: 0;
+	bottom: 0;
+	right: 0;
 	border-top: 1px solid $dark-white;
 	background: $white;
 	transform: translateX(100%);
 	transition: transform .2s ease-out;
-	overflow: auto;
+	
+	.container {
+		margin: 0;
+		overflow: auto;
+	}
+
+	&__all-items {
+			padding: 0;
+	
+			&_info {
+				display: flex;
+				align-items: center;
+				min-height: 48px;
+				font-size: 14px;
+				font-weight: 600;
+				border-bottom: 1px solid $dark-white;
+			}
+	}
 
 	button {
 		border: none;

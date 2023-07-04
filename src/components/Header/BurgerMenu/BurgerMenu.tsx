@@ -262,6 +262,13 @@ const BurgerMenu = (props: Props) => {
             </button>
             <div className="burger-menu">
                 <div className="container">
+                    <a href="/">
+                        <div className="burger-menu__all-items">
+                            <div className="burger-menu__all-items_info">
+                                Всі товари
+                            </div>
+                        </div>
+                    </a>
                     {menuItems.map((item) => (
                         <ul key={item.id} className="burger-menu__list">
                             <button
