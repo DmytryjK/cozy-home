@@ -1,10 +1,6 @@
 import './Header.scss';
 import { useState, MouseEvent } from 'react';
-import searchIcon_header from '../../assets/icons/header/search-icon-header.svg';
-import searchIcon from '../../assets/icons/header/search-icon.svg';
-import profileIcon from '../../assets/icons/header/profile-icon.svg';
-import favoriteIcon from '../../assets/icons/header/favorite-icon.svg';
-import cartIcon from '../../assets/icons/header/card-icon.svg';
+import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import logoIcon from '../../assets/icons/header/logo-icon.svg';
 import DropdownMenu from './DropdownMenu/DropdownMenu';
 import SearchBlock from './SearchBlock/SearchBlock';
@@ -139,11 +135,13 @@ const Header = () => {
                 </div>
                 <div className="header__search">
                     <label>
-                        <img
-                            src={searchIcon_header}
-                            alt="Search"
+                        <svg
                             className="header__search_icon"
-                        />
+                            width="27"
+                            height="27"
+                        >
+                            <use href={`${headerSprite}#search-icon-header`} />
+                        </svg>
                         <input
                             type="text"
                             placeholder="Пошук"
@@ -153,22 +151,24 @@ const Header = () => {
                 </div>
                 <div className="header__icons">
                     <a href="/">
-                        <img src={profileIcon} alt="Profile" />
+                        <svg width="21" height="21">
+                            <use href={`${headerSprite}#profile-icon`} />
+                        </svg>
                     </a>
-                    <div>
-                        <a href="/">
-                            <img src={favoriteIcon} alt="Favorite" />
-                        </a>
+                    <a href="/">
+                        <svg width="21" height="21">
+                            <use href={`${headerSprite}#favorite-icon`} />
+                        </svg>
                         <span className="header__icons_favorite-counter">
                             0
                         </span>
-                    </div>
-                    <div>
-                        <a href="/">
-                            <img src={cartIcon} alt="Cart" />
-                        </a>
+                    </a>
+                    <a href="/">
+                        <svg width="21" height="21">
+                            <use href={`${headerSprite}#card-icon`} />
+                        </svg>
                         <span className="header__icons_cart-counter">0</span>
-                    </div>
+                    </a>
                 </div>
                 <div className="header__mobile_icons">
                     <button
@@ -176,15 +176,19 @@ const Header = () => {
                         className="header__mobile_icons_search_button"
                         onClick={handleSearchShow}
                     >
-                        <img
-                            src={searchIcon}
-                            alt="Search"
+                        <svg
                             className="header__mobile_icons_search_icon"
-                        />
+                            width="22"
+                            height="22"
+                        >
+                            <use href={`${headerSprite}#search-icon-header`} />
+                        </svg>
                     </button>
                     <div>
                         <a href="/">
-                            <img src={cartIcon} alt="Cart" />
+                            <svg width="21" height="21">
+                                <use href={`${headerSprite}#card-icon`} />
+                            </svg>
                         </a>
                         <span className="header__mobile_icons_cart-counter">
                             0

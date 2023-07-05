@@ -1,6 +1,5 @@
 import './SearchBlock.scss';
-import searchIcon from '../../../assets/icons/header/search-icon.svg';
-import closeIcon from '../../../assets/icons/header/close-icon.svg';
+import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 
 type Props = {
     handleSearchHide: () => void;
@@ -11,11 +10,13 @@ const SearchBlock = (props: Props) => {
     return (
         <div className="mobileSearch">
             <label className="mobileSearch__block">
-                <img
-                    src={searchIcon}
-                    alt="Search"
+                <svg
                     className="mobileSearch__block_searchIcon"
-                />
+                    width="21"
+                    height="21"
+                >
+                    <use href={`${headerSprite}#search-icon`} />
+                </svg>
                 <input
                     type="text"
                     placeholder="Пошук"
@@ -26,7 +27,9 @@ const SearchBlock = (props: Props) => {
                     className="mobileSearch__block_closeIcon"
                     onClick={handleSearchHide}
                 >
-                    <img src={closeIcon} alt="Close" />
+                    <svg width="12" height="12">
+                        <use href={`${headerSprite}#close-icon`} />
+                    </svg>
                 </button>
             </label>
         </div>

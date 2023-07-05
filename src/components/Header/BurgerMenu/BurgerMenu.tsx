@@ -1,8 +1,6 @@
 import './BurgerMenu.scss';
 import { useState } from 'react';
-import downWardArrow from '../../../assets/icons/header/burger-menu-arrow.svg';
-import favoriteIcon from '../../../assets/icons/header/favorite-icon.svg';
-import profileIcon from '../../../assets/icons/header/profile-icon.svg';
+import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 
 type Props = {
     handleShowBurgerMenu: () => void;
@@ -279,15 +277,19 @@ const BurgerMenu = (props: Props) => {
                                     <p className="burger-menu__list_item_title">
                                         <a href="/">{item.title}</a>
                                     </p>
-                                    <img
-                                        src={downWardArrow}
-                                        alt="See more"
+                                    <svg
                                         className={
                                             selectedCategory === item.id
                                                 ? 'burger-menu__list_item_arrow active'
                                                 : 'burger-menu__list_item_arrow'
                                         }
-                                    />
+                                        width="15"
+                                        height="8"
+                                    >
+                                        <use
+                                            href={`${headerSprite}#burger-menu-arrow`}
+                                        />
+                                    </svg>
                                 </li>
                             </button>
                             {selectedCategory && (
@@ -330,13 +332,21 @@ const BurgerMenu = (props: Props) => {
                     <div className="container">
                         <a href="/">
                             <div className="burger-menu__infoWrapper_info bordered">
-                                <img src={favoriteIcon} alt="Favorite" />
+                                <svg width="19" height="16">
+                                    <use
+                                        href={`${headerSprite}#favorite-icon`}
+                                    />
+                                </svg>
                                 <div>Обране</div>
                             </div>
                         </a>
                         <a href="/">
                             <div className="burger-menu__infoWrapper_info">
-                                <img src={profileIcon} alt="Profile" />
+                                <svg width="18" height="18">
+                                    <use
+                                        href={`${headerSprite}#profile-icon`}
+                                    />
+                                </svg>
                                 <div>Вхід / Реєстрація</div>
                             </div>
                         </a>
