@@ -17,6 +17,24 @@
             color: $accent-color;
         }
     }
+    &__sales-text {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 10px;
+        top: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background-color: $accent-color;
+        color: $light-color;
+        font-size: 14px;
+        font-family: Montserrat Alternates;
+        font-weight: 500;
+        z-index: 2;
+    }
     &__favorite-btn {
         position: absolute;
         display: flex;
@@ -34,13 +52,13 @@
         transform: translateX(calc(100% + 12px));
         z-index: 2;
         &:hover {
-            .product-card__favorite-icon path {
+            .product-card__favorite-icon {
                 transition: 0.2s ease-out fill;
                 fill: $accent-color;
             }
         }
     }
-    &__favorite-icon path {
+    &__favorite-icon {
         transition: 0.2s ease-out fill;
     }
     &__slider-link {
@@ -162,11 +180,28 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
+        padding-bottom: 1px;
+        color: $dark-color;
+        &__price-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 42px;
+            gap: 4px;
+        }
         &__price {
             font-weight: 600;
-            font-size: 20px;
-            line-height: 24px;
-            color: $accent-color;
+            font-size: 18px;
+            color: inherit;
+            &_sale {
+                font-size: 13px;
+                font-weight: 500;
+                color: $light-grey;
+                text-decoration: line-through;
+            }
+        }
+        &__price-block_sale {
+            color: $accent-color; 
         }
         &__current-currency {
             padding-left: 6px;
@@ -185,12 +220,13 @@
             transition: 0.2s ease-out background;
             &:hover {
                 background-color: $dark-color;
-                .purchase-block__cart-icon path {
+                .purchase-block__cart-icon {
                     fill: $light-color;
                 }
             }
         }
-        &__cart-icon path {
+        &__cart-icon {
+            fill: $dark-color;
             transition: 0.2s ease-out fill;
         }
     }
@@ -215,7 +251,7 @@
         }
         &__favorite-btn {
             &:hover {
-                .product-card__favorite-icon path {
+                .product-card__favorite-icon {
                     transition: 0.2s ease-out fill;
                     fill: $dark-color;
                 }
@@ -224,7 +260,7 @@
 
         .purchase-block__cart-btn:hover {
             background-color: transparent;
-            .purchase-block__cart-icon path {
+            .purchase-block__cart-icon {
                 fill: $dark-color;
             }
         }   
