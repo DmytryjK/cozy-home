@@ -29,20 +29,10 @@
 		}
 		&_link {
 			display: inline-block;
+			position: relative;
 			font-size: 16px;
 			font-weight: 400;
 			text-align: left;
-			color: inherit;
-		}
-		&_category {
-			display: flex;
-			flex-direction: column;
-			row-gap: 8px;
-		}
-		&_item {
-			width: fit-content;
-			position: relative;
-			display: block;
 			color: $grey;
 			&::after {
 				content: "";
@@ -50,14 +40,19 @@
 				bottom: 0;
 				left: 0;
 				width: 100%;
+				transform: scaleX(0);
 				height: 1px;
 				background-color: $grey;
-				transform: scaleX(0);
 				transition: transform 0.2s ease-in-out;
 			}
 			&:hover::after {
 				transform: scaleX(1);
 			}
+		}
+		&_category {
+			display: flex;
+			flex-direction: column;
+			row-gap: 8px;
 		}
 		&_worktime {
 			font-size: 16px;
@@ -75,20 +70,23 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			width: 30px;
+			height: 30px;
 			background-color: transparent;
 			border-radius: 50%;
+			border: 1px solid $dark-color;
 			transition: 0.2s ease-out background-color;
 			&:hover {
 				background-color: $dark-color;
-				.footer__icons_image path {
+				.footer__icons_image {
 					fill: $white;
 				}
 			}
 		}
-		&_image path {
+		&_image {
+			fill: $dark-color;
 			transition: 0.2s ease-out fill;
 		}
-
 	}
 
 	&__terms-policy {
@@ -141,12 +139,12 @@
 				order: 4;
 			}
 		}
-		&__list_item:hover::after {
+		&__list_link:hover::after {
 			transform: scaleX(0);
 		}
 		&__icons_link:hover {
-			background-color:transparent;
-			.footer__icons_image path {
+			background-color: transparent;
+			.footer__icons_image {
 				fill: $dark-color;
 			}
 		}
