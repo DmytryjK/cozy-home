@@ -142,16 +142,14 @@ const ProductCard = ({ product }: { product: Product }) => {
                     >
                         {discount ? (
                             <span className="purchase-block__price purchase-block__price_sale">
-                                {discountPrice}
-                                <span className="purchase-block__current-currency">
-                                    UAH
+                                <span className="purchase-block__current-currency purchase-block__current-currency_pd0">
+                                    {price} UAH
                                 </span>
                             </span>
                         ) : null}
                         <span className="purchase-block__price">
-                            {price}
                             <span className="purchase-block__current-currency">
-                                UAH
+                                {discount ? discountPrice : price} UAH
                             </span>
                         </span>
                     </div>
