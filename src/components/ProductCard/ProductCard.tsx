@@ -11,6 +11,8 @@ import './ProductCard.scss';
 const ProductCard = ({ product }: { product: Product }) => {
     const [currentColor, setCurrentColor] = useState<string>('');
     const [isColorChosen, setIsColorChosen] = useState(false);
+    const [priceSpaced, setPriceSpaced] = useState<string>('');
+    const [discountPriceSpaced, setDiscountPriceSpaced] = useState<string>('');
     const uniqIdForInputName = nextId('color-');
 
     const {
@@ -25,6 +27,26 @@ const ProductCard = ({ product }: { product: Product }) => {
     } = product;
 
     const cardSliderRef = useRef<TSwiper>();
+
+    const addSpaceToPrice = (
+        currentPrice: string,
+        currentDiscountPrice: string
+    ) => {
+        if (+currentPrice >= 1000) {
+            const temporary = +currentPrice;
+            const res = temporary.toLocaleString().replace(',', ' ');
+            setPriceSpaced(res);
+        }
+        if (+currentDiscountPrice >= 1000) {
+            const temporary = +currentDiscountPrice;
+            const res = temporary.toLocaleString().replace(',', ' ');
+            setDiscountPriceSpaced(res);
+        }
+    };
+
+    useEffect(() => {
+        addSpaceToPrice(price, discountPrice);
+    }, [price, discountPrice]);
 
     useEffect(() => {
         if (!isColorChosen && colors.length > 0) {
@@ -143,13 +165,16 @@ const ProductCard = ({ product }: { product: Product }) => {
                         {discount ? (
                             <span className="purchase-block__price purchase-block__price_sale">
                                 <span className="purchase-block__current-currency purchase-block__current-currency_pd0">
-                                    {price} UAH
+                                    {priceSpaced || price} UAH
                                 </span>
                             </span>
                         ) : null}
                         <span className="purchase-block__price">
                             <span className="purchase-block__current-currency">
-                                {discount ? discountPrice : price} UAH
+                                {discount
+                                    ? discountPriceSpaced || discountPrice
+                                    : priceSpaced || price}
+                                {' UAH'}
                             </span>
                         </span>
                     </div>
