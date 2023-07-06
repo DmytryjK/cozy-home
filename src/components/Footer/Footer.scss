@@ -34,19 +34,14 @@
 			font-weight: 400;
 			text-align: left;
 			color: $grey;
-			&::after {
-				content: "";
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				width: 100%;
-				transform: scaleX(0);
-				height: 1px;
-				background-color: $grey;
-				transition: transform 0.2s ease-in-out;
-			}
-			&:hover::after {
-				transform: scaleX(1);
+			text-decoration: underline;
+			text-underline-offset: 3px;
+			text-decoration-thickness: 1px;
+			text-decoration-skip-ink: none;
+			text-decoration-color: transparent;
+			transition: 0.2s ease-out text-decoration;
+			&:hover {
+				text-decoration-color: inherit;
 			}
 		}
 		&_category {
@@ -139,8 +134,8 @@
 				order: 4;
 			}
 		}
-		&__list_link:hover::after {
-			transform: scaleX(0);
+		&__list_link, &__list_link:hover {
+			text-decoration: none;
 		}
 		&__icons_link:hover {
 			background-color: transparent;
