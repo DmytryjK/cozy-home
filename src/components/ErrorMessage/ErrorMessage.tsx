@@ -4,10 +4,10 @@ const ErrorMessage = () => {
     return (
         <div className="error-message">
             <p className="error-message_text">
-                Sorry, something went wrong. Try again!
+                Упс... Щось пішло не так. Спробуйте ще раз.
             </p>
             <a className="error-message_reload-page" href="/">
-                Reload page
+                Оновити сторінку
             </a>
         </div>
     );

@@ -18,3 +18,29 @@
         color: rgb(54, 54, 54);
     }
 }
+
+@media screen and (max-width: 500px) {
+    .error-message {
+        padding-right: 16px;
+        min-height: 60px;
+        gap: 15px;
+        &_text {
+            text-align: center;
+            font-size: 16px;
+        }
+        &_reload-page {
+            font-size: 14px;
+        }
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .error-message {
+        &_text {
+            font-size: 14px;
+        }
+        &_reload-page {
+            font-size: 12px;
+        }
+    }
+}
