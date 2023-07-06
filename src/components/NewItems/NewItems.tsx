@@ -55,23 +55,43 @@ const NewItems = () => {
                 <ul className="new-items__cards">
                     <Swiper
                         className="new-items__slider"
-                        spaceBetween={0}
+                        spaceBetween={32}
+                        slidesPerView={4}
                         breakpoints={{
+                            0: {
+                                slidesPerView: 'auto',
+                            },
                             340: {
-                                width: 320,
-                                slidesPerView: 1,
+                                slidesPerView: 1.12,
+                                spaceBetween: 16,
                             },
-                            640: {
-                                width: 640,
-                                slidesPerView: 2,
+                            400: {
+                                slidesPerView: 1.2,
+                                spaceBetween: 24,
                             },
-                            1024: {
-                                width: 1024,
-                                slidesPerView: 3,
+                            424: {
+                                slidesPerView: 1.3,
+                                spaceBetween: 24,
                             },
-                            1352: {
-                                width: 1344,
+                            546: {
+                                slidesPerView: 1.7,
+                                spaceBetween: 24,
+                            },
+                            700: {
+                                slidesPerView: 2.2,
+                                spaceBetween: 24,
+                            },
+                            810: {
+                                slidesPerView: 2.5,
+                                spaceBetween: 24,
+                            },
+                            1100: {
+                                slidesPerView: 3.4,
+                                spaceBetween: 32,
+                            },
+                            1294: {
                                 slidesPerView: 4,
+                                spaceBetween: 32,
                             },
                         }}
                     >
