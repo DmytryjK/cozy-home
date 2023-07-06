@@ -1,7 +1,6 @@
 import './Header.scss';
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
-import logoIcon from '../../assets/icons/header/logo-icon.svg';
 import DropdownMenu from './DropdownMenu/DropdownMenu';
 import SearchBlock from './SearchBlock/SearchBlock';
 import BurgerMenu from './BurgerMenu/BurgerMenu';
@@ -10,6 +9,7 @@ const Header = () => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [showBurgerMenu, setShowBurgerMenu] = useState<boolean>(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const handleMouseOver = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
@@ -91,6 +91,23 @@ const Header = () => {
         }
     };
 
+    useEffect(() => {
+        let prevScrollPos =
+            window.pageYOffset || document.documentElement.scrollTop;
+        const handleScroll = () => {
+            const currentScrollPos =
+                window.pageYOffset || document.documentElement.scrollTop;
+            if (currentScrollPos < prevScrollPos) {
+                setIsScrolled(false);
+            } else {
+                setIsScrolled(true);
+            }
+            prevScrollPos = currentScrollPos;
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <div
             className="wrapper"
@@ -100,12 +117,12 @@ const Header = () => {
             <div className="searchBlock">
                 <SearchBlock handleSearchHide={handleSearchHide} />
             </div>
-            <header className="header">
-                <div className="header__logo">
-                    <a href="/">
-                        <img src={logoIcon} alt="Store logo" />
-                    </a>
-                </div>
+            <header className={isScrolled ? 'header header-active' : 'header'}>
+                <a href="/" className="header__logo">
+                    <svg className="header__logo_img">
+                        <use href={`${headerSprite}#logo-icon`} />
+                    </svg>
+                </a>
                 <div className="header__nav">
                     <nav>
                         <ul className="header__nav_list">
@@ -198,6 +215,7 @@ const Header = () => {
                         handleShowBurgerMenu={handleShowBurgerMenu}
                         handleHideBurgerMenu={handleHideBurgerMenu}
                         showBurgerMenu={showBurgerMenu}
+                        isScrolled={isScrolled}
                     />
                 </div>
             </header>
