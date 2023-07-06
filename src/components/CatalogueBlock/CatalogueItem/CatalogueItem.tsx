@@ -1,4 +1,4 @@
-import arrowIcon from '../../../assets/icons/catalogue/arrow-catalogue.svg';
+import catalogueSprite from '../../../assets/icons/catalogue/catalogue-sprite.svg';
 
 type Props = {
     srcImg: string;
@@ -22,7 +22,9 @@ const CatalogueItem = (props: Props) => {
             </picture>
             <div className="catalogue__item_content">
                 <h2 className="catalogue__item_content_title">{title}</h2>
-                <img src={arrowIcon} alt="Детальніше" />
+                <svg width="21" height="21">
+                    <use href={`${catalogueSprite}#arrow-catalogue`} />
+                </svg>
             </div>
         </a>
     );
