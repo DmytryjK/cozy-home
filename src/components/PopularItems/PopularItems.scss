@@ -59,29 +59,16 @@
             opacity: 1;
         }
     }
-    &__products-item {
-        width: 304px;
-    }
     
     &__slider {
-        margin-left: auto;
-        margin-right: auto;
         height: 100%;
         width: 100%;
         .swiper-wrapper {
             flex-direction: row !important;
             row-gap: 80px;
-            min-width: 100%;
         }
         .swiper-slide {
             margin-top: 0 !important;
-            margin-right: 0 !important;
-            display: flex;
-            align-items: center;
-            .popular-items__products-item {
-                display: block;
-                height: 100%;
-            }
         }
     }
 }
@@ -89,9 +76,6 @@
 @media screen and (max-width: 450px) {
     .popular-items {
         margin-top: 64px;
-        .container_pd-right-off {
-            padding-right: 0;
-        }
         &__title {
             font-size: 20px;
         }

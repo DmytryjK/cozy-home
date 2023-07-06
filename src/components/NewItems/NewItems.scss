@@ -26,31 +26,14 @@
     }
 
     &__slider {
-        // margin-left: auto;
-        // margin-right: auto;
         width: 100%;
         height: 100%;
-        .swiper-wrapper {
-            // flex-direction: row !important;
-            // flex-shrink: 100 !important;
-            // row-gap: 80px;
-            // min-width: 100%;
-        }
-        .swiper-slide {
-            // display: flex;
-            // align-items: center;
-            // margin-top: 0 !important;
-            // margin-right: 0 !important;
-        }
     }
 }
 
 @media screen and (max-width: 450px) {
     .new-items {
         margin-top: 64px;
-        .container_pd-right-off {
-            // padding-right: 0px;
-        }
         &__cards {
             margin-top: 24px;
         }
