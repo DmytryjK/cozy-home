@@ -45,7 +45,7 @@ const InformationBlock = () => {
                         </div>
                         <p className="information__content_pros_description">
                             з дати замовлення і воно вже у вас в квартирі.
-                            Швидке виготовлення та доставка
+                            Швидке виготовлення та доставка.
                         </p>
                     </div>
                     <div className="information__content_pros">
@@ -61,7 +61,7 @@ const InformationBlock = () => {
                         </div>
                         <p className="information__content_pros_description">
                             за доставку. Безкоштовно доставимо вам товар до
-                            дверей квартири
+                            дверей квартири.
                         </p>
                     </div>
                     <div className="information__content_pros">
@@ -77,7 +77,7 @@ const InformationBlock = () => {
                         </div>
                         <p className="information__content_pros_description">
                             які надають безкоштовну консультацію по вашому
-                            інтер'єру та допоможуть з вибором
+                            інтер'єру та допоможуть з вибором.
                         </p>
                     </div>
                 </div>
