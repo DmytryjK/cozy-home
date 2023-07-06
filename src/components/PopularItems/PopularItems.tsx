@@ -151,34 +151,59 @@ const PopularItems = () => {
                         breakpoints={{
                             0: {
                                 slidesPerView: 'auto',
-                                grid: {
-                                    rows: 1,
-                                },
                             },
                             340: {
-                                width: 320,
-                                slidesPerView: 1,
+                                slidesPerView: 1.12,
+                                spaceBetween: 16,
                                 grid: {
                                     rows: 1,
                                 },
                             },
-                            640: {
-                                width: 640,
-                                slidesPerView: 2,
+                            400: {
+                                slidesPerView: 1.2,
+                                spaceBetween: 24,
                                 grid: {
                                     rows: 1,
                                 },
                             },
-                            1024: {
-                                width: 1024,
-                                slidesPerView: 3,
+                            424: {
+                                slidesPerView: 1.3,
+                                spaceBetween: 24,
                                 grid: {
                                     rows: 1,
                                 },
                             },
-                            1352: {
-                                width: 1344,
+                            546: {
+                                slidesPerView: 1.7,
+                                spaceBetween: 24,
+                                grid: {
+                                    rows: 1,
+                                },
+                            },
+                            700: {
+                                slidesPerView: 2.2,
+                                spaceBetween: 24,
+                                grid: {
+                                    rows: 1,
+                                },
+                            },
+                            810: {
+                                slidesPerView: 2.5,
+                                spaceBetween: 24,
+                                grid: {
+                                    rows: 1,
+                                },
+                            },
+                            1100: {
+                                slidesPerView: 3.4,
+                                spaceBetween: 32,
+                                grid: {
+                                    rows: 1,
+                                },
+                            },
+                            1294: {
                                 slidesPerView: 4,
+                                spaceBetween: 32,
                                 grid: {
                                     rows: 2,
                                 },
