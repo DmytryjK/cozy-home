@@ -6,11 +6,16 @@ type Props = {
     handleShowBurgerMenu: () => void;
     handleHideBurgerMenu: () => void;
     showBurgerMenu: boolean;
+    isScrolled: boolean;
 };
 
 const BurgerMenu = (props: Props) => {
-    const { handleShowBurgerMenu, handleHideBurgerMenu, showBurgerMenu } =
-        props;
+    const {
+        handleShowBurgerMenu,
+        handleHideBurgerMenu,
+        showBurgerMenu,
+        isScrolled,
+    } = props;
 
     const [selectedCategory, setSelectedCategory] = useState<number | null>(
         null
@@ -258,7 +263,11 @@ const BurgerMenu = (props: Props) => {
                 <span />
                 <span />
             </button>
-            <div className="burger-menu">
+            <div
+                className={`burger-menu ${
+                    isScrolled ? 'burger-menu-scrolled' : ''
+                }`}
+            >
                 <div className="container">
                     <a href="/" className="burger-menu__all-items">
                         Всі товари

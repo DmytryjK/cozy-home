@@ -152,6 +152,11 @@
 	transform: translateX(0);
 }
 
+.burger-menu-scrolled {
+	top: 40px;
+	max-height: calc(100vh - 40px);
+}
+
 .bordered {
 	border-bottom: 1px solid #D5D5D5;
 }
