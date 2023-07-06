@@ -111,6 +111,10 @@
 			&_link {
 				margin-top: 70px;
 				cursor: none;
+
+				&:hover {
+				background-color: $accent-color;
+			}
 			}
 		}
 	}
