@@ -35,7 +35,7 @@
 		&_img {
 			width: 80px;
 			height: 40px;
-			transition: width .3s ease-in-out, height .3s ease-in-out;
+			transition: width .1s ease-out, height .1s ease-out;
 		}
 	}
 
@@ -188,7 +188,10 @@
 
 	.header {
 		height: 60px;
-		transition: height .3s ease-in-out;
+		transition: height .1s ease-out;
+		&-active {
+			transition: height .3s ease-in-out;
+		}
 
 		&__nav_list {
 			display: none;
@@ -232,7 +235,7 @@
 .header__mobile_icons_cart-counter {
 	top: 13px;
 	right: 52px;
-	transition: top .3s ease-in-out;
+	transition: top .1s ease-out;
 }
 
 .display-none {
@@ -245,11 +248,13 @@
 	.header__logo_img {
 		width: 55px;
 		height: 26px;
+		transition: width .3s ease-in-out, height .3s ease-in-out;
 	}
 	
 	.header__mobile_icons_cart-counter {
 		top: 3px;
 		right: 52px;
+		transition: top .3s ease-in-out;
 	}
 }
 }
