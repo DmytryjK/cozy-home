@@ -111,16 +111,24 @@
 
 @media screen and (max-width: 450px) {
 	.grid {
-		grid-template-columns: 1fr;
-		row-gap: 28px;
+		row-gap: 24px;
 	};
 	.information {
 		&__content {
-			&_pros {
-				max-width: 100%;
+			&_title {
+				font-size: 20px;
 			}
 			&_text {
 				font-size: 12px;
+			}
+			&_pros {
+				max-width: 100%;
+				&_info_title {
+					font-size: 18px;
+				}
+				&_description {
+					font-size: 11px;
+				}
 			}
 			&_pros_info {
 				flex-direction: row;
@@ -129,5 +137,11 @@
 				gap: 8px;
 			}
 		}
+	}
+}
+
+@media screen and (max-width: 359px) {
+	.grid {
+		grid-template-columns: 1fr;
 	}
 }
