@@ -151,6 +151,10 @@ const PopularItems = () => {
                         breakpoints={{
                             0: {
                                 slidesPerView: 'auto',
+                                spaceBetween: 32,
+                                grid: {
+                                    rows: 1,
+                                },
                             },
                             340: {
                                 slidesPerView: 1.12,
