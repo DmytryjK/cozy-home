@@ -66,6 +66,7 @@
         .swiper-wrapper {
             flex-direction: row !important;
             row-gap: 80px;
+            min-width: 100% !important;
         }
         .swiper-slide {
             margin-top: 0 !important;
