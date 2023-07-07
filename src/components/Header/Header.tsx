@@ -73,8 +73,10 @@ const Header = () => {
         setShowBurgerMenu(true);
         if (!burgerMenu?.classList.contains('burger-menu-active')) {
             document.body.style.overflow = 'visible';
+            document.body.style.paddingRight = '0';
         } else {
             document.body.style.overflow = 'hidden';
+            document.body.style.paddingRight = '10px';
         }
     };
 
@@ -86,14 +88,14 @@ const Header = () => {
         setShowBurgerMenu(false);
         if (!burgerMenu?.classList.contains('burger-menu-active')) {
             document.body.style.overflow = 'visible';
+            document.body.style.paddingRight = '0';
         } else {
             document.body.style.overflow = 'hidden';
+            document.body.style.paddingRight = '10px';
         }
     };
 
     useEffect(() => {
-        let prevScrollPos =
-            window.pageYOffset || document.documentElement.scrollTop;
         const handleScroll = () => {
             const currentScrollPos =
                 window.pageYOffset || document.documentElement.scrollTop;
@@ -102,7 +104,6 @@ const Header = () => {
             } else if (currentScrollPos > 60) {
                 setIsScrolled(true);
             }
-            prevScrollPos = currentScrollPos;
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -117,7 +118,10 @@ const Header = () => {
             <div className="searchBlock">
                 <SearchBlock handleSearchHide={handleSearchHide} />
             </div>
-            <header className={isScrolled ? 'header header-active' : 'header'}>
+            <header
+                className={isScrolled ? 'header header-active' : 'header'}
+                style={{ paddingRight: showBurgerMenu ? '26px' : '16px' }}
+            >
                 <a href="/" className="header__logo">
                     <svg className="header__logo_img">
                         <use href={`${headerSprite}#logo-icon`} />
@@ -207,7 +211,10 @@ const Header = () => {
                                 <use href={`${headerSprite}#card-icon`} />
                             </svg>
                         </a>
-                        <span className="header__mobile_icons_cart-counter">
+                        <span
+                            className="header__mobile_icons_cart-counter"
+                            style={{ right: showBurgerMenu ? '62px' : '52px' }}
+                        >
                             0
                         </span>
                     </div>
