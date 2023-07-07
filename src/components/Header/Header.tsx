@@ -97,9 +97,9 @@ const Header = () => {
         const handleScroll = () => {
             const currentScrollPos =
                 window.pageYOffset || document.documentElement.scrollTop;
-            if (currentScrollPos < prevScrollPos) {
+            if (currentScrollPos < 60) {
                 setIsScrolled(false);
-            } else {
+            } else if (currentScrollPos > 60) {
                 setIsScrolled(true);
             }
             prevScrollPos = currentScrollPos;
