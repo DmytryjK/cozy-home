@@ -1,44 +1,67 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid } from 'swiper';
 import nextId from 'react-id-generator';
-import useFetch from '../../hooks/useFetch';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import {
+    fetchPopularItemsAllProducts,
+    fetchPopularItemsAllСategories,
+    fetchPopularItemsProductsByСategories,
+} from './PopularItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import { Product } from '../../types/types';
+import { ProductCategory } from '../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
 import 'swiper/css/grid';
 
-const PopularItems = () => {
+const PopularItems: FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>('Всі товари');
-    const [products, setProducts] = useState<Product[]>([]);
-    const { data, loading, errorFetch } = useFetch('product/popular');
+    const dispatch = useAppDispatch();
+    const { products, categories, loading, error } = useAppSelector(
+        (state) => state.popularItems
+    );
 
     useEffect(() => {
-        setProducts(data);
-    }, [data]);
+        dispatch(fetchPopularItemsAllProducts());
+        dispatch(fetchPopularItemsAllСategories());
+    }, [dispatch]);
 
-    const categories: string[] = [
-        'Дивани',
-        'Крісла',
-        'Столи',
-        'Шафи',
-        'Комоди',
-        'Декор',
-    ];
-    const handleChangeTab = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleGetItemsByCategoryId = (id: string) => {
+        if (id) {
+            dispatch(fetchPopularItemsProductsByСategories(id));
+        } else {
+            dispatch(fetchPopularItemsAllProducts());
+        }
+    };
+
+    const handleChangeTab = (
+        e: React.MouseEvent<HTMLButtonElement>,
+        id: string
+    ) => {
         const currentCategory = e.currentTarget.getAttribute('data-value');
         if (currentCategory) setActiveCategory(currentCategory);
+
+        handleGetItemsByCategoryId(id);
+    };
+
+    const renderedCategories = () => {
+        const renderResult: ProductCategory[] = [
+            { id: '', name: 'Всі товари' },
+        ];
+        if (Object.keys(categories).length !== 0) {
+            renderResult.push(...categories);
+        }
+        return renderResult;
     };
 
     const renderedProducts = () => {
         let renderResult;
         if (activeCategory === 'Всі товари') {
-            renderResult = products.map((product, productIndex) => {
+            renderResult = products?.map((product, productIndex) => {
                 return productIndex < 8 ? (
-                    <SwiperSlide key={nextId('card-of-category')}>
+                    <SwiperSlide key={nextId('card-of-categorys')}>
                         <li className="popular-items__products-item">
                             <ProductCard product={product} />
                         </li>
@@ -46,64 +69,29 @@ const PopularItems = () => {
                 ) : null;
             });
         } else {
-            renderResult = categories?.map((category) => {
-                let temporary;
-                if (category === activeCategory) {
-                    const categoryItemsForRender: Product[] = [];
-                    temporary = products.map((product, productIndex) => {
-                        let result;
-                        if (product.category === category) {
-                            categoryItemsForRender.push(product);
-                        }
-                        if (productIndex === products.length - 1) {
-                            const renderedItems = categoryItemsForRender.map(
-                                (item) => {
-                                    return (
-                                        <SwiperSlide
-                                            key={nextId('card-of-category')}
-                                        >
-                                            <li className="popular-items__products-item">
-                                                <ProductCard product={item} />
-                                            </li>
-                                        </SwiperSlide>
-                                    );
-                                }
-                            );
-                            result =
-                                renderedItems.length > 0 ? renderedItems : null;
-                        }
-                        return result;
-                    });
-                }
-                return temporary;
+            renderResult = products?.map((product) => {
+                return (
+                    <SwiperSlide key={nextId('card-of-category')}>
+                        <li className="popular-items__products-item">
+                            <ProductCard product={product} />
+                        </li>
+                    </SwiperSlide>
+                );
             });
         }
         return renderResult;
     };
 
-    const renderedCategories = () => {
-        let renderResult: string[] = [];
-        if (Object.keys(categories).length !== 0) {
-            renderResult.push(
-                'Всі товари',
-                ...categories.map((category) => category)
-            );
-        } else {
-            renderResult = [''];
-        }
-        return renderResult;
-    };
-
     const renderedContent = () => {
-        let resTemporary;
-        if (errorFetch) {
-            resTemporary = <ErrorMessage />;
-        } else if (loading && !errorFetch) {
-            resTemporary = <Loader />;
-        } else if (!loading && !errorFetch) {
-            resTemporary = renderedProducts();
+        let content;
+        if (error) {
+            content = <ErrorMessage />;
+        } else if (loading === 'pending' && !error) {
+            content = <Loader />;
+        } else if (loading === 'succeeded' && !error) {
+            content = renderedProducts();
         }
-        return resTemporary;
+        return content;
     };
 
     return (
@@ -113,6 +101,7 @@ const PopularItems = () => {
                 <nav className="popular-items__nav">
                     <ul className="popular-items__nav-list">
                         {renderedCategories().map((category) => {
+                            const { name, id } = category;
                             return (
                                 <li
                                     key={nextId('category-nav')}
@@ -120,15 +109,15 @@ const PopularItems = () => {
                                 >
                                     <button
                                         className={
-                                            activeCategory === category
+                                            activeCategory === name
                                                 ? 'popular-items__nav-btn active'
                                                 : 'popular-items__nav-btn'
                                         }
                                         type="button"
-                                        data-value={category}
-                                        onClick={handleChangeTab}
+                                        data-value={name}
+                                        onClick={(e) => handleChangeTab(e, id)}
                                     >
-                                        {category}
+                                        {name}
                                     </button>
                                 </li>
                             );

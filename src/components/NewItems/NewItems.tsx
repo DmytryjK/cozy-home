@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import nextId from 'react-id-generator';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchNewItemsAllProducts } from './NewItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import useFetch from '../../hooks/useFetch';
-import { Product } from '../../types/types';
 import './NewItems.scss';
 
-const NewItems = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const { data, loading, errorFetch } = useFetch('product/new');
+const NewItems: FC = () => {
+    const { products, loading, error } = useAppSelector(
+        (state) => state.newItems
+    );
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        setProducts(data);
-    }, [data]);
+        dispatch(fetchNewItemsAllProducts());
+    }, [dispatch]);
 
     const renderedItems = () => {
         return products?.map((product, index) => {
@@ -30,15 +32,15 @@ const NewItems = () => {
     };
 
     const renderedContent = () => {
-        let resTemporary;
-        if (errorFetch) {
-            resTemporary = <ErrorMessage />;
-        } else if (loading && !errorFetch) {
-            resTemporary = <Loader />;
-        } else if (!loading && !errorFetch) {
-            resTemporary = renderedItems();
+        let content;
+        if (error) {
+            content = <ErrorMessage />;
+        } else if (loading === 'pending' && !error) {
+            content = <Loader />;
+        } else if (loading === 'succeeded' && !error) {
+            content = renderedItems();
         }
-        return resTemporary;
+        return content;
     };
 
     return (

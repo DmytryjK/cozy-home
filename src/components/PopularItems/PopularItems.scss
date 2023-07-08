@@ -63,13 +63,24 @@
     &__slider {
         height: 100%;
         width: 100%;
+        margin-left: auto;
+        margin-right: auto;
         .swiper-wrapper {
             flex-direction: row !important;
             row-gap: 80px;
-            min-width: 100% !important;
+            width: calc(100% + 45px) !important;
         }
         .swiper-slide {
             margin-top: 0 !important;
+            height: calc((100% - 30px) / 2) !important;
+        }
+    }
+}
+
+@media screen and (max-width: 1293px) {
+    .popular-items__slider {
+        .swiper-wrapper {
+            width: 100% !important;
         }
     }
 }
