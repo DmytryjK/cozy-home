@@ -150,40 +150,40 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     </fieldset>
                 </div>
                 <p className="product-card__description">{shortDescription}</p>
-                <div className="product-card__purchase-block purchase-block">
-                    <div
-                        className={
-                            discount
-                                ? 'purchase-block__price-block purchase-block__price-block_sale'
-                                : 'purchase-block__price-block'
-                        }
-                    >
-                        {discount ? (
-                            <span className="purchase-block__price purchase-block__price_sale">
-                                <span className="purchase-block__current-currency purchase-block__current-currency_pd0">
-                                    {priceSpaced || price} UAH
-                                </span>
-                            </span>
-                        ) : null}
-                        <span className="purchase-block__price">
-                            <span className="purchase-block__current-currency">
-                                {discount
-                                    ? discountPriceSpaced || priceWithDiscount
-                                    : priceSpaced || price}
-                                {' UAH'}
+            </div>
+            <div className="product-card__purchase-block purchase-block swiper-no-swiping">
+                <div
+                    className={
+                        discount
+                            ? 'purchase-block__price-block purchase-block__price-block_sale'
+                            : 'purchase-block__price-block'
+                    }
+                >
+                    {discount ? (
+                        <span className="purchase-block__price purchase-block__price_sale">
+                            <span className="purchase-block__current-currency purchase-block__current-currency_pd0">
+                                {priceSpaced || price} UAH
                             </span>
                         </span>
-                    </div>
-                    <button className="purchase-block__cart-btn" type="button">
-                        <svg
-                            className="purchase-block__cart-icon"
-                            width="20"
-                            height="20"
-                        >
-                            <use href={`${headerSprites}#card-icon`} />
-                        </svg>
-                    </button>
+                    ) : null}
+                    <span className="purchase-block__price">
+                        <span className="purchase-block__current-currency">
+                            {discount
+                                ? discountPriceSpaced || priceWithDiscount
+                                : priceSpaced || price}
+                            {' UAH'}
+                        </span>
+                    </span>
                 </div>
+                <button className="purchase-block__cart-btn" type="button">
+                    <svg
+                        className="purchase-block__cart-icon"
+                        width="20"
+                        height="20"
+                    >
+                        <use href={`${headerSprites}#card-icon`} />
+                    </svg>
+                </button>
             </div>
         </div>
     );

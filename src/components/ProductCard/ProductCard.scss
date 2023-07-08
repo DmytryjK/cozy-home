@@ -5,7 +5,9 @@
     display: block;
     text-decoration: none;
     max-width: 450px;
+    width: 100%;
     overflow: hidden;
+    padding-bottom: 52px;
     &:hover {
         .product-card__favorite-btn {
             transform: translateX(0);
@@ -176,7 +178,11 @@
     }
 
     .purchase-block {
-        margin-top: 10px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;

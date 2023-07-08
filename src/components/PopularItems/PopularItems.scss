@@ -58,6 +58,10 @@
             visibility: visible;
             opacity: 1;
         }
+        &-item {
+            display: flex;
+            height: 100%;
+        }
     }
     
     &__slider {
@@ -72,7 +76,7 @@
         }
         .swiper-slide {
             margin-top: 0 !important;
-            height: calc((100% - 30px) / 2) !important;
+            height: auto;
         }
     }
 }
