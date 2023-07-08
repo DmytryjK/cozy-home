@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import nextId from 'react-id-generator';
-import { TSwiper, Product } from '../../types/types';
+import { TSwiper, ProductCardType } from '../../types/types';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import imageNotFound from '../../assets/images/error-images/image-not-found_small.png';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ProductCard.scss';
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [currentColor, setCurrentColor] = useState<string>('');
     const [isColorChosen, setIsColorChosen] = useState(false);
     const [priceSpaced, setPriceSpaced] = useState<string>('');
@@ -16,28 +16,33 @@ const ProductCard = ({ product }: { product: Product }) => {
     const uniqIdForInputName = nextId('color-');
 
     const {
-        id,
+        skuCode,
         name,
-        description,
+        shortDescription,
         price,
-        discountPrice,
+        priceWithDiscount,
         discount,
-        category,
-        colors,
+        imageDtoList,
     } = product;
 
     const cardSliderRef = useRef<TSwiper>();
 
+    useEffect(() => {
+        if (!isColorChosen && imageDtoList.length > 0) {
+            setCurrentColor(imageDtoList[0].color);
+        }
+    }, [isColorChosen, imageDtoList]);
+
     const addSpaceToPrice = (
-        currentPrice: string,
-        currentDiscountPrice: string
+        currentPrice: number,
+        currentDiscountPrice: number | null
     ) => {
-        if (+currentPrice >= 1000) {
+        if (currentPrice >= 1000) {
             const temporary = +currentPrice;
             const res = temporary.toLocaleString().replace(',', ' ');
             setPriceSpaced(res);
         }
-        if (+currentDiscountPrice >= 1000) {
+        if (currentDiscountPrice && currentDiscountPrice >= 1000) {
             const temporary = +currentDiscountPrice;
             const res = temporary.toLocaleString().replace(',', ' ');
             setDiscountPriceSpaced(res);
@@ -45,14 +50,8 @@ const ProductCard = ({ product }: { product: Product }) => {
     };
 
     useEffect(() => {
-        addSpaceToPrice(price, discountPrice);
-    }, [price, discountPrice]);
-
-    useEffect(() => {
-        if (!isColorChosen && colors.length > 0) {
-            setCurrentColor(colors[0].colorName);
-        }
-    }, [isColorChosen, colors]);
+        addSpaceToPrice(price, priceWithDiscount);
+    }, [price, priceWithDiscount]);
 
     const handleSlideChange = (color: string, index: number) => {
         setCurrentColor(color);
@@ -86,26 +85,25 @@ const ProductCard = ({ product }: { product: Product }) => {
                         cardSliderRef.current = swiper as TSwiper;
                     }}
                     onSlideChange={(swiper) => {
-                        colors?.forEach((item, index) => {
+                        imageDtoList?.forEach((item, index) => {
                             if (swiper.activeIndex === index) {
-                                setCurrentColor(item.colorName);
+                                setCurrentColor(item.color);
                             }
                         });
                         setIsColorChosen(true);
                     }}
                 >
-                    {colors?.map((item) => {
-                        const { photoPath } = item;
+                    {imageDtoList?.map((item) => {
+                        const { imagePath } = item;
                         return (
                             <SwiperSlide key={nextId('productCard-slide')}>
                                 <div className="product-card__image-wrapper">
                                     <img
                                         className="product-card__image"
                                         src={
-                                            photoPath === 'path1' ||
-                                            photoPath === null
+                                            imagePath === null
                                                 ? imageNotFound
-                                                : photoPath
+                                                : imagePath
                                         }
                                         alt={name}
                                     />
@@ -123,37 +121,35 @@ const ProductCard = ({ product }: { product: Product }) => {
                         </a>
                     </h2>
                     <fieldset className="product-card__color-checkboxes">
-                        {colors.map((item, index) => {
-                            const { colorName } = item;
+                        {imageDtoList.map((item, index) => {
+                            const { color } = item;
                             return (
                                 <label
                                     className="product-card__checkbox-label"
                                     key={nextId('color-radio')}
                                 >
                                     <input
-                                        className={`product-card__color-checkbox ${colorName}`}
+                                        className={`product-card__color-checkbox ${color}`}
                                         type="radio"
                                         name={uniqIdForInputName}
-                                        value={colorName}
+                                        value={color}
                                         checked={
-                                            currentColor === colorName ||
+                                            currentColor === color ||
                                             (!isColorChosen && index === 0)
                                         }
                                         onChange={() =>
-                                            handleSlideChange(colorName, index)
+                                            handleSlideChange(color, index)
                                         }
                                     />
                                     <span
-                                        className={`product-card__checked-checkbox ${colorName}`}
+                                        className={`product-card__checked-checkbox ${color}`}
                                     />
                                 </label>
                             );
                         })}
                     </fieldset>
                 </div>
-                <p className="product-card__description">
-                    {`${description?.substring(0, 92)}...`}
-                </p>
+                <p className="product-card__description">{shortDescription}</p>
                 <div className="product-card__purchase-block purchase-block">
                     <div
                         className={
@@ -172,7 +168,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                         <span className="purchase-block__price">
                             <span className="purchase-block__current-currency">
                                 {discount
-                                    ? discountPriceSpaced || discountPrice
+                                    ? discountPriceSpaced || priceWithDiscount
                                     : priceSpaced || price}
                                 {' UAH'}
                             </span>
