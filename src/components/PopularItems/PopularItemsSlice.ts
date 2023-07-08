@@ -17,7 +17,7 @@ export const fetchPopularItemsAllProducts = createAsyncThunk(
     async function (_, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASE_URL}product?status=popular`
+                `https://cozy-home.onrender.com/api/v1/product?status=popular`
             );
             const result = await response.json();
 
@@ -35,7 +35,7 @@ export const fetchPopularItemsAllСategories = createAsyncThunk(
     async function (_, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASE_URL}category`
+                `https://cozy-home.onrender.com/api/v1/category`
             );
             const result = await response.json();
 
@@ -53,7 +53,7 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASE_URL}product/category_status?status=popular&categoryId=${id}`
+                `https://cozy-home.onrender.com/api/v1/product/category_status?status=popular&categoryId=${id}`
             );
             const result = await response.json();
 

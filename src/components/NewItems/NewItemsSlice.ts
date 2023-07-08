@@ -12,7 +12,7 @@ export const fetchNewItemsAllProducts = createAsyncThunk(
     async function (_, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BASE_URL}product?status=new`
+                `https://cozy-home.onrender.com/api/v1/product?status=new`
             );
             const result = await response.json();
 
