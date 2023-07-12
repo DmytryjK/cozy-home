@@ -1,12 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import nextId from 'react-id-generator';
-import { TSwiper, ProductCardType } from '../../types/types';
+import type swiper from 'swiper';
+import { ProductCardType } from '../../types/types';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import imageNotFound from '../../assets/images/error-images/image-not-found_small.png';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ProductCard.scss';
+
+export type TSwiper = swiper & {
+    slides: {
+        swiperSlideSize: number;
+    }[];
+};
 
 const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [currentColor, setCurrentColor] = useState<string>('');
