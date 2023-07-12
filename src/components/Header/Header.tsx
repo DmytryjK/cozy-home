@@ -8,14 +8,14 @@ import './Header.scss';
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [showSearch, setShowSearch] = useState<boolean>(false);
-    const [showBurgerMenu, setShowBurgerMenu] = useState<boolean>(false);
+    const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
 
     useEffect(() => {
-        if (showSearch) setShowBurgerMenu(false);
+        if (showSearch) setIsBurgerOpen(false);
     }, [showSearch]);
 
     useEffect(() => {
@@ -67,7 +67,7 @@ const Header = () => {
             />
             <header
                 className={isScrolled ? 'header header-active' : 'header'}
-                style={{ paddingRight: showBurgerMenu ? '26px' : '16px' }}
+                style={{ paddingRight: isBurgerOpen ? '26px' : '16px' }}
             >
                 <a href="/" className="header__logo">
                     <svg className="header__logo_img">
@@ -162,14 +162,14 @@ const Header = () => {
                             className={`header__mobile_icons_cart-counter ${
                                 showSearch ? 'display-none' : ''
                             }`}
-                            style={{ right: showBurgerMenu ? '62px' : '52px' }}
+                            style={{ right: isBurgerOpen ? '62px' : '52px' }}
                         >
                             0
                         </span>
                     </div>
                     <BurgerMenu
-                        showBurgerMenu={showBurgerMenu}
-                        setShowBurgerMenu={setShowBurgerMenu}
+                        isOpen={isBurgerOpen}
+                        setIsOpen={setIsBurgerOpen}
                         isScrolled={isScrolled}
                     />
                 </div>

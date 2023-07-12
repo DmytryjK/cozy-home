@@ -5,50 +5,37 @@ import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 
 type Props = {
     isScrolled: boolean;
-    showBurgerMenu: boolean;
-    setShowBurgerMenu: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const BurgerMenu = (props: Props) => {
-    const { isScrolled, showBurgerMenu, setShowBurgerMenu } = props;
+    const { isScrolled, isOpen, setIsOpen } = props;
     const [selectedCategory, setSelectedCategory] = useState<number | null>(
         null
     );
     const { menuItems } = burgerMenuDataItems();
 
     useEffect(() => {
-        document.body.style.overflow = showBurgerMenu ? 'hidden' : 'visible';
-        document.body.style.paddingRight = showBurgerMenu ? '10px' : '0';
-    }, [showBurgerMenu]);
-
-    const handleToggleSubMenu = (id: number) => {
-        setSelectedCategory(id);
-        if (id === selectedCategory) {
-            setSelectedCategory(null);
-        }
-    };
+        document.body.style.overflow = isOpen ? 'hidden' : 'visible';
+        document.body.style.paddingRight = isOpen ? '10px' : '0';
+    }, [isOpen]);
 
     return (
         <>
             <button
                 type="button"
-                onClick={() =>
-                    showBurgerMenu
-                        ? setShowBurgerMenu(false)
-                        : setShowBurgerMenu(true)
-                }
-                className={`menu-btn ${
-                    showBurgerMenu ? 'menu-btn__active' : ''
-                }`}
+                onClick={() => (isOpen ? setIsOpen(false) : setIsOpen(true))}
+                className={`menu-btn ${isOpen ? 'menu-btn__active' : ''}`}
             >
                 <span />
                 <span />
                 <span />
             </button>
             <div
-                className={`burger-menu ${
-                    showBurgerMenu ? 'burger-menu-active' : ''
-                } ${isScrolled ? 'burger-menu-scrolled' : ''}`}
+                className={`burger-menu ${isOpen ? 'burger-menu-active' : ''} ${
+                    isScrolled ? 'burger-menu-scrolled' : ''
+                }`}
             >
                 <div className="container">
                     <a href="/" className="burger-menu__all-items">
@@ -58,7 +45,13 @@ const BurgerMenu = (props: Props) => {
                         <ul key={item.id} className="burger-menu__list">
                             <button
                                 type="button"
-                                onClick={() => handleToggleSubMenu(item.id)}
+                                onClick={() =>
+                                    setSelectedCategory(
+                                        item.id === selectedCategory
+                                            ? null
+                                            : item.id
+                                    )
+                                }
                             >
                                 <li className="burger-menu__list_item">
                                     <p className="burger-menu__list_item_title">
