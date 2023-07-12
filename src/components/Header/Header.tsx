@@ -1,9 +1,9 @@
-import './Header.scss';
 import { useState, MouseEvent, useEffect } from 'react';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
-import DropdownMenu from './DropdownMenu/DropdownMenu';
-import SearchBlock from './SearchBlock/SearchBlock';
-import BurgerMenu from './BurgerMenu/BurgerMenu';
+import DropdownMenu from './DropdownMenu';
+import SearchBlock from './SearchBlock';
+import BurgerMenu from './BurgerMenu';
+import './Header.scss';
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -11,89 +11,12 @@ const Header = () => {
     const [showBurgerMenu, setShowBurgerMenu] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
-    const handleMouseOver = (event: MouseEvent) => {
-        const target = event.target as HTMLElement;
-        const liDropdown = document.querySelector('.li-dropdown');
-        const dropdownMenu = document.querySelector('.dropdown-menu');
+    const dropdownLink = document.getElementsByClassName('link-dropdown');
+    const dropdownMenu = document.getElementsByClassName('dropdown-menu');
 
-        if (liDropdown?.contains(target) || dropdownMenu?.contains(target)) {
-            dropdownMenu?.classList.add('dropdown-menu-active');
-            setShowDropdown(true);
-        }
-    };
-
-    const handleMouseOut = (event: MouseEvent) => {
-        const target = event.target as HTMLElement;
-        const liDropdown = document.querySelector('.li-dropdown');
-        const dropdownMenu = document.querySelector('.dropdown-menu');
-        if (
-            !(liDropdown?.contains(target) || dropdownMenu?.contains(target)) ||
-            event.type === 'mouseleave'
-        ) {
-            dropdownMenu?.classList.remove('dropdown-menu-active');
-            setShowDropdown(false);
-        }
-    };
-
-    const handleSearchShow = () => {
-        const searchBlock = document.querySelector('.searchBlock');
-        const counter = document.querySelector(
-            '.header__mobile_icons_cart-counter'
-        );
-        const burgerMenu = document.querySelector('.burger-menu');
-        const burgerBtn = document.querySelector('.menu-btn');
-        document.body.style.overflow = 'hidden';
-        searchBlock?.classList.add('searchBlock-active');
-        counter?.classList.add('display-none');
-        burgerBtn?.classList.remove('menu-btn__active');
-        setShowSearch(true);
-        setShowBurgerMenu(false);
-
-        if (burgerMenu?.classList.contains('burger-menu-active')) {
-            burgerMenu?.classList.remove('burger-menu-active');
-        }
-    };
-
-    const handleSearchHide = () => {
-        const searchBlock = document.querySelector('.searchBlock');
-        const counter = document.querySelector(
-            '.header__mobile_icons_cart-counter'
-        );
-        document.body.style.overflow = 'visible';
-        counter?.classList.remove('display-none');
-        searchBlock?.classList.remove('searchBlock-active');
-        setShowSearch(false);
-    };
-
-    const handleShowBurgerMenu = () => {
-        const burgerMenu = document.querySelector('.burger-menu');
-        const burgerBtn = document.querySelector('.menu-btn');
-        burgerBtn?.classList.add('menu-btn__active');
-        burgerMenu?.classList.add('burger-menu-active');
-        setShowBurgerMenu(true);
-        if (!burgerMenu?.classList.contains('burger-menu-active')) {
-            document.body.style.overflow = 'visible';
-            document.body.style.paddingRight = '0';
-        } else {
-            document.body.style.overflow = 'hidden';
-            document.body.style.paddingRight = '10px';
-        }
-    };
-
-    const handleHideBurgerMenu = () => {
-        const burgerMenu = document.querySelector('.burger-menu');
-        const burgerBtn = document.querySelector('.menu-btn');
-        burgerBtn?.classList.remove('menu-btn__active');
-        burgerMenu?.classList.remove('burger-menu-active');
-        setShowBurgerMenu(false);
-        if (!burgerMenu?.classList.contains('burger-menu-active')) {
-            document.body.style.overflow = 'visible';
-            document.body.style.paddingRight = '0';
-        } else {
-            document.body.style.overflow = 'hidden';
-            document.body.style.paddingRight = '10px';
-        }
-    };
+    useEffect(() => {
+        if (showSearch) setShowBurgerMenu(false);
+    }, [showSearch]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -109,15 +32,39 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const handleMouseOver = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (
+            dropdownLink[0]?.contains(target) ||
+            dropdownMenu[0]?.contains(target)
+        ) {
+            setShowDropdown(true);
+        }
+    };
+
+    const handleMouseOut = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (
+            !(
+                dropdownLink[0]?.contains(target) ||
+                dropdownMenu[0]?.contains(target)
+            ) ||
+            event.type === 'mouseleave'
+        ) {
+            setShowDropdown(false);
+        }
+    };
+
     return (
         <div
             className="wrapper"
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
         >
-            <div className="searchBlock">
-                <SearchBlock handleSearchHide={handleSearchHide} />
-            </div>
+            <SearchBlock
+                setShowSearch={setShowSearch}
+                showSearch={showSearch}
+            />
             <header
                 className={isScrolled ? 'header header-active' : 'header'}
                 style={{ paddingRight: showBurgerMenu ? '26px' : '16px' }}
@@ -134,13 +81,13 @@ const Header = () => {
                                 <a href="/">Головна</a>
                             </li>
                             <li
-                                className={
-                                    showDropdown
-                                        ? 'li-dropdown li-dropdown-active'
-                                        : 'li-dropdown'
-                                }
+                                className={`li-dropdown ${
+                                    showDropdown ? 'li-dropdown-active' : ''
+                                }`}
                             >
-                                <a href="/">Каталог</a>
+                                <a className="link-dropdown" href="/">
+                                    Каталог
+                                </a>
                             </li>
                             <li>
                                 <a href="/">Доставка і оплата</a>
@@ -195,7 +142,7 @@ const Header = () => {
                     <button
                         type="button"
                         className="header__mobile_icons_search_button"
-                        onClick={handleSearchShow}
+                        onClick={() => setShowSearch(true)}
                     >
                         <svg
                             className="header__mobile_icons_search_icon"
@@ -212,16 +159,17 @@ const Header = () => {
                             </svg>
                         </a>
                         <span
-                            className="header__mobile_icons_cart-counter"
+                            className={`header__mobile_icons_cart-counter ${
+                                showSearch ? 'display-none' : ''
+                            }`}
                             style={{ right: showBurgerMenu ? '62px' : '52px' }}
                         >
                             0
                         </span>
                     </div>
                     <BurgerMenu
-                        handleShowBurgerMenu={handleShowBurgerMenu}
-                        handleHideBurgerMenu={handleHideBurgerMenu}
                         showBurgerMenu={showBurgerMenu}
+                        setShowBurgerMenu={setShowBurgerMenu}
                         isScrolled={isScrolled}
                     />
                 </div>
@@ -229,7 +177,7 @@ const Header = () => {
             <div>
                 <DropdownMenu
                     handleMouseOut={handleMouseOut}
-                    className="dropdown-menu"
+                    showDropdown={showDropdown}
                 />
             </div>
         </div>

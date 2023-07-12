@@ -1,16 +1,22 @@
+import { MouseEvent } from 'react';
 import './DropdownMenu.scss';
 import '../Header.scss';
-import { MouseEvent } from 'react';
 
 type Props = {
     handleMouseOut: (event: MouseEvent) => void;
-    className: string;
+    showDropdown: boolean;
 };
 
 const DropdownMenu = (props: Props) => {
-    const { className, handleMouseOut } = props;
+    const { showDropdown, handleMouseOut } = props;
+
     return (
-        <div className={className} onMouseLeave={handleMouseOut}>
+        <div
+            className={`dropdown-menu ${
+                showDropdown ? 'dropdown-menu-active' : ''
+            }`}
+            onMouseLeave={handleMouseOut}
+        >
             <div className="container">
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">

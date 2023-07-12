@@ -1,263 +1,45 @@
+import { useState, useEffect } from 'react';
+import burgerMenuDataItems from './BurgerMenuDataItems';
 import './BurgerMenu.scss';
-import { useState } from 'react';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 
 type Props = {
-    handleShowBurgerMenu: () => void;
-    handleHideBurgerMenu: () => void;
-    showBurgerMenu: boolean;
     isScrolled: boolean;
+    showBurgerMenu: boolean;
+    setShowBurgerMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const BurgerMenu = (props: Props) => {
-    const {
-        handleShowBurgerMenu,
-        handleHideBurgerMenu,
-        showBurgerMenu,
-        isScrolled,
-    } = props;
-
+    const { isScrolled, showBurgerMenu, setShowBurgerMenu } = props;
     const [selectedCategory, setSelectedCategory] = useState<number | null>(
         null
     );
+    const { menuItems } = burgerMenuDataItems();
 
-    const [showSubMenu, setShowSubMenu] = useState<boolean>(false);
+    useEffect(() => {
+        document.body.style.overflow = showBurgerMenu ? 'hidden' : 'visible';
+        document.body.style.paddingRight = showBurgerMenu ? '10px' : '0';
+    }, [showBurgerMenu]);
 
-    const menuItems = [
-        {
-            id: 1,
-            title: 'Крісла',
-            subItem: [
-                {
-                    id: 1.1,
-                    title: 'М’які крісла',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 1.2,
-                    title: 'Крісла-качалки',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 1.3,
-                    title: 'Підвісні крісла',
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-        {
-            id: 2,
-            title: 'Дивани',
-            subItem: [
-                {
-                    id: 2.1,
-                    title: 'Прямі дивани',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 2.2,
-                    title: 'Кутові дивани',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 2.3,
-                    title: 'Модульні дивани',
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-        {
-            id: 3,
-            title: 'Столи',
-            subItem: [
-                {
-                    id: 3.1,
-                    title: 'Обідні столи',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 3.2,
-                    title: 'Компютерні столи',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 3.3,
-                    title: 'Кавові столики',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 3.4,
-                    title: 'Туалетні столи',
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-        {
-            id: 4,
-            title: 'Стільці',
-            subItem: [
-                {
-                    id: 4.1,
-                    title: 'Барні стільці',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 4.2,
-                    title: "Дерев'яні лавки",
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 4.3,
-                    title: 'Банкетки',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 4.4,
-                    title: 'Стільці з ротангу',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 4.5,
-                    title: "Дерев'яні стільці",
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-        {
-            id: 5,
-            title: 'Шафи',
-            subItem: [
-                {
-                    id: 5.1,
-                    title: 'Гардеробні шафи',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 5.2,
-                    title: 'Шафи-купе',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 5.3,
-                    title: 'Шафи для кухні',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 5.4,
-                    title: 'Книжкові шафи',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 5.5,
-                    title: 'Вбудовані шафи',
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-        {
-            id: 6,
-            title: 'Комоди',
-            subItem: [
-                {
-                    id: 6.1,
-                    title: 'Комоди з дверцятами',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 6.2,
-                    title: 'Пеленальні комоди',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 6.3,
-                    title: 'Комоди з 2-3 шухлядами',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 6.4,
-                    title: 'Комоди з 4 шухлядами та більше',
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-        {
-            id: 7,
-            title: 'Ліжка',
-            subItem: [
-                {
-                    id: 7.1,
-                    title: 'Односпальні ліжка',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 7.2,
-                    title: 'Двоспальні ліжка',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 7.3,
-                    title: 'Дитячі ліжка',
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-        {
-            id: 8,
-            title: 'Декор',
-            subItem: [
-                {
-                    id: 8.1,
-                    title: 'Подушки та покривала',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 8.2,
-                    title: 'Картини та постери',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 8.4,
-                    title: 'Дзеркала',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 8.5,
-                    title: 'Свічки та світильники',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 8.6,
-                    title: 'Горщики та вази',
-                    style: 'burger-menu__list_subItems',
-                },
-                {
-                    id: 8.7,
-                    title: 'Текстильні елементи',
-                    style: 'burger-menu__list_subItems',
-                },
-            ],
-        },
-    ];
-
-    const handleShowSubMenu = (id: number) => {
+    const handleToggleSubMenu = (id: number) => {
         setSelectedCategory(id);
         if (id === selectedCategory) {
             setSelectedCategory(null);
         }
     };
 
-    const handleHideSubMenu = () => {
-        setSelectedCategory(null);
-    };
-
     return (
         <>
             <button
                 type="button"
-                onClick={
-                    showBurgerMenu ? handleHideBurgerMenu : handleShowBurgerMenu
+                onClick={() =>
+                    showBurgerMenu
+                        ? setShowBurgerMenu(false)
+                        : setShowBurgerMenu(true)
                 }
-                className="menu-btn"
+                className={`menu-btn ${
+                    showBurgerMenu ? 'menu-btn__active' : ''
+                }`}
             >
                 <span />
                 <span />
@@ -265,8 +47,8 @@ const BurgerMenu = (props: Props) => {
             </button>
             <div
                 className={`burger-menu ${
-                    isScrolled ? 'burger-menu-scrolled' : ''
-                }`}
+                    showBurgerMenu ? 'burger-menu-active' : ''
+                } ${isScrolled ? 'burger-menu-scrolled' : ''}`}
             >
                 <div className="container">
                     <a href="/" className="burger-menu__all-items">
@@ -276,11 +58,7 @@ const BurgerMenu = (props: Props) => {
                         <ul key={item.id} className="burger-menu__list">
                             <button
                                 type="button"
-                                onClick={
-                                    showSubMenu === true
-                                        ? handleHideSubMenu
-                                        : () => handleShowSubMenu(item.id)
-                                }
+                                onClick={() => handleToggleSubMenu(item.id)}
                             >
                                 <li className="burger-menu__list_item">
                                     <p className="burger-menu__list_item_title">
