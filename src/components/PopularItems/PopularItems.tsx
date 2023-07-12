@@ -7,7 +7,7 @@ import {
     fetchPopularItemsAllProducts,
     fetchPopularItemsAllСategories,
     fetchPopularItemsProductsByСategories,
-} from './PopularItemsSlice';
+} from '../../store/reducers/PopularItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';

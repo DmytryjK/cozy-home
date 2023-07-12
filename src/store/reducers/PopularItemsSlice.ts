@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-    ProductCategory,
-    ProductCardType,
-    PopularItemsInitialState,
-} from '../../types/types';
+import { ProductCategory, ProductCardType } from '../../types/types';
+
+interface PopularItemsInitialState {
+    products: ProductCardType[];
+    categories: ProductCategory[];
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+    error: null | unknown;
+}
 
 const initialState: PopularItemsInitialState = {
     products: [],

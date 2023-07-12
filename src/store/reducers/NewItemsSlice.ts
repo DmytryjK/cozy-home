@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { NewItemsInitialState, ProductCardType } from '../../types/types';
+import { ProductCardType } from '../../types/types';
+
+interface NewItemsInitialState {
+    products: ProductCardType[];
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+    error: null | unknown;
+}
 
 const initialState: NewItemsInitialState = {
     products: [],

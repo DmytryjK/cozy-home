@@ -16,16 +16,3 @@ export interface ProductCategory {
     id: string;
     name: string;
 }
-
-export interface PopularItemsInitialState {
-    products: ProductCardType[];
-    categories: ProductCategory[];
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed';
-    error: null | unknown;
-}
-
-export interface NewItemsInitialState {
-    products: ProductCardType[];
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed';
-    error: null | unknown;
-}
