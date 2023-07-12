@@ -6,8 +6,8 @@ import BurgerMenu from './BurgerMenu';
 import './Header.scss';
 
 const Header = () => {
-    const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const [showSearch, setShowSearch] = useState<boolean>(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+    const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -15,8 +15,8 @@ const Header = () => {
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
 
     useEffect(() => {
-        if (showSearch) setIsBurgerOpen(false);
-    }, [showSearch]);
+        if (isSearchOpen) setIsBurgerOpen(false);
+    }, [isSearchOpen]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -38,7 +38,7 @@ const Header = () => {
             dropdownLink[0]?.contains(target) ||
             dropdownMenu[0]?.contains(target)
         ) {
-            setShowDropdown(true);
+            setIsDropdownOpen(true);
         }
     };
 
@@ -51,7 +51,7 @@ const Header = () => {
             ) ||
             event.type === 'mouseleave'
         ) {
-            setShowDropdown(false);
+            setIsDropdownOpen(false);
         }
     };
 
@@ -61,10 +61,7 @@ const Header = () => {
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
         >
-            <SearchBlock
-                setShowSearch={setShowSearch}
-                showSearch={showSearch}
-            />
+            <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
             <header
                 className={isScrolled ? 'header header-active' : 'header'}
                 style={{ paddingRight: isBurgerOpen ? '26px' : '16px' }}
@@ -82,7 +79,7 @@ const Header = () => {
                             </li>
                             <li
                                 className={`li-dropdown ${
-                                    showDropdown ? 'li-dropdown-active' : ''
+                                    isDropdownOpen ? 'li-dropdown-active' : ''
                                 }`}
                             >
                                 <a className="link-dropdown" href="/">
@@ -142,7 +139,7 @@ const Header = () => {
                     <button
                         type="button"
                         className="header__mobile_icons_search_button"
-                        onClick={() => setShowSearch(true)}
+                        onClick={() => setIsSearchOpen(true)}
                     >
                         <svg
                             className="header__mobile_icons_search_icon"
@@ -160,7 +157,7 @@ const Header = () => {
                         </a>
                         <span
                             className={`header__mobile_icons_cart-counter ${
-                                showSearch ? 'display-none' : ''
+                                isSearchOpen ? 'display-none' : ''
                             }`}
                             style={{ right: isBurgerOpen ? '62px' : '52px' }}
                         >
@@ -177,7 +174,7 @@ const Header = () => {
             <div>
                 <DropdownMenu
                     handleMouseOut={handleMouseOut}
-                    showDropdown={showDropdown}
+                    isOpen={isDropdownOpen}
                 />
             </div>
         </div>

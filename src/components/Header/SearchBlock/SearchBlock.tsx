@@ -3,21 +3,19 @@ import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 import './SearchBlock.scss';
 
 type Props = {
-    setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
-    showSearch: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
 };
 
 const SearchBlock = (props: Props) => {
-    const { setShowSearch, showSearch } = props;
+    const { setIsOpen, isOpen } = props;
 
     useEffect(() => {
-        document.body.style.overflow = showSearch ? 'hidden' : 'visible';
-    }, [showSearch]);
+        document.body.style.overflow = isOpen ? 'hidden' : 'visible';
+    }, [isOpen]);
 
     return (
-        <div
-            className={`searchBlock ${showSearch ? 'searchBlock-active' : ''}`}
-        >
+        <div className={`searchBlock ${isOpen ? 'searchBlock-active' : ''}`}>
             <div className="mobileSearch">
                 <label className="mobileSearch__block">
                     <svg
@@ -35,7 +33,7 @@ const SearchBlock = (props: Props) => {
                     <button
                         type="button"
                         className="mobileSearch__block_closeIcon"
-                        onClick={() => setShowSearch(false)}
+                        onClick={() => setIsOpen(false)}
                     >
                         <svg width="12" height="12">
                             <use href={`${headerSprite}#close-icon`} />

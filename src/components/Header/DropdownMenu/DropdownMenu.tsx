@@ -4,17 +4,15 @@ import '../Header.scss';
 
 type Props = {
     handleMouseOut: (event: MouseEvent) => void;
-    showDropdown: boolean;
+    isOpen: boolean;
 };
 
 const DropdownMenu = (props: Props) => {
-    const { showDropdown, handleMouseOut } = props;
+    const { isOpen, handleMouseOut } = props;
 
     return (
         <div
-            className={`dropdown-menu ${
-                showDropdown ? 'dropdown-menu-active' : ''
-            }`}
+            className={`dropdown-menu ${isOpen ? 'dropdown-menu-active' : ''}`}
             onMouseLeave={handleMouseOut}
         >
             <div className="container">
