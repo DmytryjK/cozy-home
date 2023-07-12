@@ -2,7 +2,7 @@ import { useEffect, FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchNewItemsAllProducts } from './NewItemsSlice';
+import { fetchNewItemsAllProducts } from '../../store/reducers/NewItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
