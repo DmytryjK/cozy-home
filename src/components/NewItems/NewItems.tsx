@@ -4,8 +4,7 @@ import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchNewItemsAllProducts } from '../../store/reducers/NewItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
-import Loader from '../Loader/Loader';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import RenderContent from '../RenderContent/RenderContent';
 import './NewItems.scss';
 
 const NewItems: FC = () => {
@@ -29,18 +28,6 @@ const NewItems: FC = () => {
                 </SwiperSlide>
             );
         });
-    };
-
-    const renderedContent = () => {
-        let content;
-        if (error) {
-            content = <ErrorMessage />;
-        } else if (loading === 'pending' && !error) {
-            content = <Loader />;
-        } else if (loading === 'succeeded' && !error) {
-            content = renderedItems();
-        }
-        return content;
     };
 
     return (
@@ -97,7 +84,11 @@ const NewItems: FC = () => {
                             },
                         }}
                     >
-                        {renderedContent()}
+                        <RenderContent
+                            loading={loading}
+                            error={error}
+                            renderProducts={renderedItems}
+                        />
                     </Swiper>
                 </ul>
             </div>

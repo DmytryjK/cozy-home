@@ -9,8 +9,7 @@ import {
     fetchPopularItemsProductsByСategories,
 } from '../../store/reducers/PopularItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
-import Loader from '../Loader/Loader';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import RenderContent from '../RenderContent/RenderContent';
 import { ProductCategory } from '../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
@@ -80,18 +79,6 @@ const PopularItems: FC = () => {
             });
         }
         return renderResult;
-    };
-
-    const renderedContent = () => {
-        let content;
-        if (error) {
-            content = <ErrorMessage />;
-        } else if (loading === 'pending' && !error) {
-            content = <Loader />;
-        } else if (loading === 'succeeded' && !error) {
-            content = renderedProducts();
-        }
-        return content;
     };
 
     return (
@@ -203,7 +190,11 @@ const PopularItems: FC = () => {
                             },
                         }}
                     >
-                        {renderedContent()}
+                        <RenderContent
+                            loading={loading}
+                            error={error}
+                            renderProducts={renderedProducts}
+                        />
                     </Swiper>
                 </ul>
             </div>
