@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType } from '../../types/types';
+import API_BASE from '../../utils/API_BASE';
 
 interface NewItemsInitialState {
     products: ProductCardType[];
@@ -17,9 +18,7 @@ export const fetchNewItemsAllProducts = createAsyncThunk(
     'newItems/fetchNewItemsAllProducts',
     async function (_, { rejectWithValue }) {
         try {
-            const response = await fetch(
-                `https://cozy-home.onrender.com/api/v1/product?status=new`
-            );
+            const response = await fetch(`${API_BASE()}product?status=new`);
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
