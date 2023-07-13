@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { ProductCardType } from '../../types/types';
+import { ProductCardType, Loading } from '../../types/types';
 import API_BASE from '../../utils/API_BASE';
 
-interface NewItemsInitialState {
+export interface NewItemsInitialState {
     products: ProductCardType[];
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+    loading: Loading;
     error: null | unknown;
 }
 

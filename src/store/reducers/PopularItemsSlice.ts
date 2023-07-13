@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { ProductCategory, ProductCardType } from '../../types/types';
+import { ProductCategory, ProductCardType, Loading } from '../../types/types';
 import API_BASE from '../../utils/API_BASE';
 
 interface PopularItemsInitialState {
     products: ProductCardType[];
     categories: ProductCategory[];
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+    loading: Loading;
+    loadingCategory: Loading;
     error: null | unknown;
 }
 
@@ -13,6 +14,7 @@ const initialState: PopularItemsInitialState = {
     products: [],
     categories: [],
     loading: 'idle',
+    loadingCategory: 'idle',
     error: null,
 };
 
@@ -90,20 +92,20 @@ export const popularItemsSlice = createSlice({
             }
         );
         builder.addCase(fetchPopularItemsAllСategories.pending, (state) => {
-            state.loading = 'pending';
+            state.loadingCategory = 'pending';
             state.error = null;
         });
         builder.addCase(
             fetchPopularItemsAllСategories.fulfilled,
             (state, action: PayloadAction<ProductCategory[]>) => {
-                state.loading = 'succeeded';
+                state.loadingCategory = 'succeeded';
                 state.categories = action.payload;
             }
         );
         builder.addCase(
             fetchPopularItemsAllСategories.rejected,
             (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
+                state.loadingCategory = 'failed';
                 state.error = action.payload;
             }
         );
