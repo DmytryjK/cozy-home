@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
+import API_BASE from '../utils/API_BASE';
 
 function useFetch(apiQuery: string) {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [errorFetch, setErrorFetch] = useState<unknown | null>(null);
 
-    const globalApiURL = 'https://cozy-home.onrender.com/api/v1/';
-    const url = globalApiURL + apiQuery;
+    const url = `${API_BASE}${apiQuery}`;
 
     useEffect(() => {
         async function fetchData() {

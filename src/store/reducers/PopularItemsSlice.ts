@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCategory, ProductCardType, Loading } from '../../types/types';
+import API_BASE from '../../utils/API_BASE';
 
 interface PopularItemsInitialState {
     products: ProductCardType[];
@@ -21,9 +22,7 @@ export const fetchPopularItemsAllProducts = createAsyncThunk(
     'popularItems/fetchPopularItemsAllProducts',
     async function (_, { rejectWithValue }) {
         try {
-            const response = await fetch(
-                `https://cozy-home.onrender.com/api/v1/product?status=popular`
-            );
+            const response = await fetch(`${API_BASE()}product?status=popular`);
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
@@ -39,9 +38,7 @@ export const fetchPopularItemsAllСategories = createAsyncThunk(
     'popularItems/fetchPopularItemsAllСategories',
     async function (_, { rejectWithValue }) {
         try {
-            const response = await fetch(
-                `https://cozy-home.onrender.com/api/v1/category`
-            );
+            const response = await fetch(`${API_BASE()}category`);
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
@@ -58,7 +55,7 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `https://cozy-home.onrender.com/api/v1/product/category_status?status=popular&categoryId=${id}`
+                `${API_BASE()}category_status?status=popular&categoryId=${id}`
             );
             const result = await response.json();
 
