@@ -55,7 +55,7 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}category_status?status=popular&categoryId=${id}`
+                `${API_BASE()}product/category_status?status=popular&categoryId=${id}`
             );
             const result = await response.json();
 
