@@ -9,7 +9,7 @@ import {
     fetchPopularItemsProductsByСategories,
 } from '../../store/reducers/PopularItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
-import RenderContent from '../RenderContent/RenderContent';
+import renderServerData from '../../helpers/renderServerData';
 import { ProductCategory } from '../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
@@ -55,30 +55,18 @@ const PopularItems: FC = () => {
         return renderResult;
     };
 
-    const renderedProducts = () => {
-        let renderResult;
-        if (activeCategory === 'Всі товари') {
-            renderResult = products?.map((product, productIndex) => {
-                return productIndex < 8 ? (
-                    <SwiperSlide key={nextId('card-of-categorys')}>
-                        <li className="popular-items__products-item">
-                            <ProductCard product={product} />
-                        </li>
-                    </SwiperSlide>
-                ) : null;
-            });
-        } else {
-            renderResult = products?.map((product) => {
-                return (
-                    <SwiperSlide key={nextId('card-of-category')}>
-                        <li className="popular-items__products-item">
-                            <ProductCard product={product} />
-                        </li>
-                    </SwiperSlide>
-                );
-            });
+    const items = () => {
+        const content = [];
+        for (let i = 0; i < Math.min(products.length, 8); i += 1) {
+            content.push(
+                <SwiperSlide key={nextId('card-all-categories')}>
+                    <li className="popular-items__products-item">
+                        <ProductCard product={products[i]} />
+                    </li>
+                </SwiperSlide>
+            );
         }
-        return renderResult;
+        return content;
     };
 
     return (
@@ -190,11 +178,11 @@ const PopularItems: FC = () => {
                             },
                         }}
                     >
-                        <RenderContent
-                            loading={loading}
-                            error={error}
-                            renderProducts={renderedProducts}
-                        />
+                        {renderServerData({
+                            error,
+                            loading,
+                            content: items,
+                        })}
                     </Swiper>
                 </ul>
             </div>

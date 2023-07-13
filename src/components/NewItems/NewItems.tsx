@@ -4,7 +4,7 @@ import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchNewItemsAllProducts } from '../../store/reducers/NewItemsSlice';
 import ProductCard from '../ProductCard/ProductCard';
-import RenderContent from '../RenderContent/RenderContent';
+import renderServerData from '../../helpers/renderServerData';
 import './NewItems.scss';
 
 const NewItems: FC = () => {
@@ -17,17 +17,18 @@ const NewItems: FC = () => {
         dispatch(fetchNewItemsAllProducts());
     }, [dispatch]);
 
-    const renderedItems = () => {
-        return products?.map((product, index) => {
-            if (index > 3) return null;
-            return (
+    const items = () => {
+        const content = [];
+        for (let i = 0; i < Math.min(products.length, 4); i += 1) {
+            content.push(
                 <SwiperSlide key={nextId('card-of-newItems')}>
                     <li className="new-items__card">
-                        <ProductCard product={product} />
+                        <ProductCard product={products[i]} />
                     </li>
                 </SwiperSlide>
             );
-        });
+        }
+        return content;
     };
 
     return (
@@ -84,11 +85,11 @@ const NewItems: FC = () => {
                             },
                         }}
                     >
-                        <RenderContent
-                            loading={loading}
-                            error={error}
-                            renderProducts={renderedItems}
-                        />
+                        {renderServerData({
+                            error,
+                            loading,
+                            content: items,
+                        })}
                     </Swiper>
                 </ul>
             </div>
