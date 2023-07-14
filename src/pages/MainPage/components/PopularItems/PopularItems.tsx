@@ -2,18 +2,18 @@ import { useEffect, useState, FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid } from 'swiper';
 import nextId from 'react-id-generator';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     fetchPopularItemsAllProducts,
     fetchPopularItemsAllСategories,
     fetchPopularItemsProductsByСategories,
-} from '../../store/reducers/PopularItemsSlice';
-import ProductCard from '../ProductCard/ProductCard';
-import renderServerData from '../../helpers/renderServerData';
-import { ProductCategory } from '../../types/types';
+} from '../../../../store/reducers/PopularItemsSlice';
+import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
+import renderServerData from '../../../../helpers/renderServerData';
 import './PopularItems.scss';
 import 'swiper/css';
 import 'swiper/css/grid';
+import { ProductCategory } from './types';
 
 const PopularItems: FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>('Всі товари');

@@ -1,10 +1,10 @@
 import { useEffect, FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import nextId from 'react-id-generator';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchNewItemsAllProducts } from '../../store/reducers/NewItemsSlice';
-import ProductCard from '../ProductCard/ProductCard';
-import renderServerData from '../../helpers/renderServerData';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { fetchNewItemsAllProducts } from '../../../../store/reducers/NewItemsSlice';
+import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
+import renderServerData from '../../../../helpers/renderServerData';
 import './NewItems.scss';
 
 const NewItems: FC = () => {

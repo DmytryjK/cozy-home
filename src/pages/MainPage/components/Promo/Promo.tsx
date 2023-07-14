@@ -1,10 +1,10 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import nextId from 'react-id-generator';
-import promoImg1_webp from '../../assets/images/promo/promo-1.webp';
-import promoImg2_webp from '../../assets/images/promo/promo-2.webp';
-import promoImg1 from '../../assets/images/promo/promo-1_opt.png';
-import promoImg2 from '../../assets/images/promo/promo-2_opt.png';
+import promoImg1_webp from '../../../../assets/images/promo/promo-1.webp';
+import promoImg2_webp from '../../../../assets/images/promo/promo-2.webp';
+import promoImg1 from '../../../../assets/images/promo/promo-1_opt.png';
+import promoImg2 from '../../../../assets/images/promo/promo-2_opt.png';
 import 'swiper/css/pagination';
 import './Promo.scss';
 

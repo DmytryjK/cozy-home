@@ -12,8 +12,5 @@ export interface ProductCardType {
     discount: number | null;
     imageDtoList: ImageDtoList[];
 }
-export interface ProductCategory {
-    id: string;
-    name: string;
-}
+
 export type Loading = 'idle' | 'pending' | 'succeeded' | 'failed';
