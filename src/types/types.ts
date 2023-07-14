@@ -3,6 +3,7 @@ interface ImageDtoList {
     imagePath: string;
     color: string;
 }
+
 export interface ProductCardType {
     skuCode: string;
     name: string;
