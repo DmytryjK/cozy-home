@@ -7,7 +7,7 @@ import {
     fetchPopularItemsAllProducts,
     fetchPopularItemsAllСategories,
     fetchPopularItemsProductsByСategories,
-} from '../../../../store/reducers/popularItemsSlice';
+} from '../../../../store/reducers/PopularItemsSlice';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import renderServerData from '../../../../helpers/renderServerData';
 import './PopularItems.scss';
