@@ -1,16 +1,16 @@
 import './CatalogueBlock.scss';
-import Sofas from '../../assets/images/catalogue/image_1.png';
-import Chairs from '../../assets/images/catalogue/image_2.png';
-import Tables from '../../assets/images/catalogue/image_3.png';
-import Dressers from '../../assets/images/catalogue/image_4.png';
-import Сhairs_v2 from '../../assets/images/catalogue/image_5.png';
-import Beds from '../../assets/images/catalogue/image_6.png';
-import SofasWebp from '../../assets/images/catalogue/image_1.webp';
-import ChairsWebp from '../../assets/images/catalogue/image_2.webp';
-import TablesWebp from '../../assets/images/catalogue/image_3.webp';
-import DressersWebp from '../../assets/images/catalogue/image_4.webp';
-import Сhairs_v2Webp from '../../assets/images/catalogue/image_5.webp';
-import BedsWebp from '../../assets/images/catalogue/image_6.webp';
+import Sofas from '../../../../assets/images/catalogue/image_1.png';
+import Chairs from '../../../../assets/images/catalogue/image_2.png';
+import Tables from '../../../../assets/images/catalogue/image_3.png';
+import Dressers from '../../../../assets/images/catalogue/image_4.png';
+import Сhairs_v2 from '../../../../assets/images/catalogue/image_5.png';
+import Beds from '../../../../assets/images/catalogue/image_6.png';
+import SofasWebp from '../../../../assets/images/catalogue/image_1.webp';
+import ChairsWebp from '../../../../assets/images/catalogue/image_2.webp';
+import TablesWebp from '../../../../assets/images/catalogue/image_3.webp';
+import DressersWebp from '../../../../assets/images/catalogue/image_4.webp';
+import Сhairs_v2Webp from '../../../../assets/images/catalogue/image_5.webp';
+import BedsWebp from '../../../../assets/images/catalogue/image_6.webp';
 import CatalogueItem from './CatalogueItem/CatalogueItem';
 
 const CatalogueBlock = () => {

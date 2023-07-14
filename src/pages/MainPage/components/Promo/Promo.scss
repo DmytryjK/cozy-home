@@ -1,4 +1,4 @@
-@use '../../style/variables.scss' as *;
+@use '../../../../style/variables.scss' as *;
 .promo {
     margin-top: 130px;
     &__slider {
@@ -72,7 +72,7 @@
                 top: 50%;
                 right: -39px;
                 transform: translateY(-50%);
-                background: url('../../assets/icons/promo/promo-arrow.svg') center center no-repeat;
+                background: url('../../../../assets/icons/promo/promo-arrow.svg') center center no-repeat;
                 width: 21px;
                 height: 10px;   
                 transition: 0.2s ease-out right;

@@ -1,4 +1,4 @@
-import catalogueSprite from '../../../assets/icons/catalogue/catalogue-sprite.svg';
+import catalogueSprite from '../../../../../assets/icons/catalogue/catalogue-sprite.svg';
 
 type Props = {
     srcImg: string;

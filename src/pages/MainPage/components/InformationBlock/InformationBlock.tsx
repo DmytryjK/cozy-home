@@ -1,8 +1,8 @@
 import './InformationBlock.scss';
-import sevenIcon from '../../assets/icons/information/seven-icon.svg';
-import fourteenIcon from '../../assets/icons/information/fourteen-icon.svg';
-import zeroIcon from '../../assets/icons/information/zero-icon.svg';
-import fiveIcon from '../../assets/icons/information/five-icon.svg';
+import sevenIcon from '../../../../assets/icons/information/seven-icon.svg';
+import fourteenIcon from '../../../../assets/icons/information/fourteen-icon.svg';
+import zeroIcon from '../../../../assets/icons/information/zero-icon.svg';
+import fiveIcon from '../../../../assets/icons/information/five-icon.svg';
 
 const InformationBlock = () => {
     return (

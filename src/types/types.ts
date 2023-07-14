@@ -3,6 +3,7 @@ interface ImageDtoList {
     imagePath: string;
     color: string;
 }
+
 export interface ProductCardType {
     skuCode: string;
     name: string;
@@ -12,8 +13,5 @@ export interface ProductCardType {
     discount: number | null;
     imageDtoList: ImageDtoList[];
 }
-export interface ProductCategory {
-    id: string;
-    name: string;
-}
+
 export type Loading = 'idle' | 'pending' | 'succeeded' | 'failed';

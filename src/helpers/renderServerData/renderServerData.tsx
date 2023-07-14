@@ -1,5 +1,5 @@
-import ErrorMessage from '../../components/ErrorMessage';
-import Loader from '../../components/Loader';
+import ErrorMessage from '../../shared-components/ErrorMessage';
+import Loader from '../../shared-components/Loader';
 
 type Props = {
     error: null | unknown;

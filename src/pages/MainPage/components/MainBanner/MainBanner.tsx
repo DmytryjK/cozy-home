@@ -1,7 +1,7 @@
-import mainMannerImage from '../../assets/images/main-banner/main-banner_opt.png';
-import mainMannerImageWebp from '../../assets/images/main-banner/main-banner.webp';
-import mainMannerImagePhone from '../../assets/images/main-banner/main-banner_phone_opt.png';
-import mainMannerImageWebpPhone from '../../assets/images/main-banner/main-banner_phone.webp';
+import mainMannerImage from '../../../../assets/images/main-banner/main-banner_opt.png';
+import mainMannerImageWebp from '../../../../assets/images/main-banner/main-banner.webp';
+import mainMannerImagePhone from '../../../../assets/images/main-banner/main-banner_phone_opt.png';
+import mainMannerImageWebpPhone from '../../../../assets/images/main-banner/main-banner_phone.webp';
 import './MainBanner.scss';
 
 const MainBanner = () => {
