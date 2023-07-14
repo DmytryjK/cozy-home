@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import popularItemsReducer from './reducers/PopularItemsSlice';
-import newItemsReducer from './reducers/NewItemsSlice';
+import popularItemsReducer from './reducers/popularItemsSlice';
+import newItemsReducer from './reducers/newItemsSlice';
 
 export const store = configureStore({
     reducer: {
