@@ -8,7 +8,7 @@
 	border: 1px solid $dark-white;
 	background-color: $white;
 	box-shadow: 0px 4px 4px 0px #0000001A;
-	top: 72px;
+	top: 100%;
 	font-size: 14px;
 	font-weight: 400;
 	color: $grey;
@@ -67,10 +67,4 @@
 .dropdown-menu-active {
 	opacity: 1;
 	visibility: visible;
-}
-
-@media (max-width: 1130px) {
-	.dropdown-menu {
-		top: 58px;
-	}
 }
