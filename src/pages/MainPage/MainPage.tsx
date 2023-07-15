@@ -10,7 +10,7 @@ import InformationBlock from './components/InformationBlock/InformationBlock';
 
 const MainPage = () => {
     return (
-        <div>
+        <>
             <Header />
             <MainBanner />
             <CatalogueBlock />
@@ -19,7 +19,7 @@ const MainPage = () => {
             <PopularItems />
             <Promo />
             <Footer />
-        </div>
+        </>
     );
 };
 

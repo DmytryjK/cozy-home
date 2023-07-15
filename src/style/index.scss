@@ -9,6 +9,10 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
+body {
+  padding-top: 70px;
+}
+
 .container {
   max-width: 1352px;
   padding: 0 20px;
@@ -45,6 +49,12 @@ a {
 	border-right: 2px  $dark-white solid;
 	border-left: 2px  $dark-white solid;
   background-clip: padding-box;
+}
+
+@media screen and (max-width: 1130px) {
+  body {
+    padding-top: 60px;
+  }
 }
 
 @media screen and (max-width: 767px) {

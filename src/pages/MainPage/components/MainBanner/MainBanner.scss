@@ -2,7 +2,6 @@
 @import '../../../../style/variables.scss';
 
 .mainBanner {
-	margin-top: 73px;
 	min-height: 700px;
 	position: relative;
 
@@ -73,12 +72,6 @@
 				background-color: $accent-color-hover;
 			}
 		}
-	}
-}
-
-@media (max-width: 1130px) {
-	.mainBanner {
-		margin-top: 60px;
 	}
 }
 
