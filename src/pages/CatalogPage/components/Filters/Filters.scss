@@ -1,0 +1,11 @@
+@use '../../../../style/variables.scss' as *;
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 244px;
+    padding: 24px 24px 80px;
+    max-height: calc(100vh - 200px);
+    overflow-y: scroll;
+    background-color: $filter-background;
+}
