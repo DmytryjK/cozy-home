@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import burgerMenuDataItems from './BurgerMenuDataItems';
+import userScrollWidth from '../../../utils/userScrollWidth';
 import './BurgerMenu.scss';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 
@@ -17,8 +18,10 @@ const BurgerMenu = (props: Props) => {
     const { menuItems } = burgerMenuDataItems();
 
     useEffect(() => {
+        document.body.style.paddingRight = isOpen
+            ? `${userScrollWidth()}px`
+            : '0';
         document.body.style.overflow = isOpen ? 'hidden' : 'visible';
-        document.body.style.paddingRight = isOpen ? '10px' : '0';
     }, [isOpen]);
 
     return (

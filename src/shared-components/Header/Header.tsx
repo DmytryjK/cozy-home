@@ -3,13 +3,14 @@ import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';
+import userScrollWidth from '../../utils/userScrollWidth';
 import './Header.scss';
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
@@ -64,7 +65,11 @@ const Header = () => {
             <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
             <header
                 className={isScrolled ? 'header header-active' : 'header'}
-                style={{ paddingRight: isBurgerOpen ? '26px' : '16px' }}
+                style={{
+                    paddingRight: isBurgerOpen
+                        ? `${16 + userScrollWidth()}px`
+                        : '16px',
+                }}
             >
                 <a href="/" className="header__logo">
                     <svg className="header__logo_img">
@@ -159,7 +164,11 @@ const Header = () => {
                             className={`header__mobile_icons_cart-counter ${
                                 isSearchOpen ? 'display-none' : ''
                             }`}
-                            style={{ right: isBurgerOpen ? '62px' : '52px' }}
+                            style={{
+                                right: isBurgerOpen
+                                    ? `${52 + userScrollWidth()}px`
+                                    : '52px',
+                            }}
                         >
                             0
                         </span>
