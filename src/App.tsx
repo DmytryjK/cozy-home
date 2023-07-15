@@ -1,10 +1,11 @@
-import MainPage from './pages/MainPage/MainPage';
+import { MainPage, CatalogPage } from './pages';
 import './App.scss';
 
 const App = () => {
     return (
         <div>
-            <MainPage />
+            {/* <MainPage /> */}
+            <CatalogPage />
         </div>
     );
 };

@@ -1,0 +1,72 @@
+@use '../../../../style/variables.scss' as *;
+.category {
+    margin-top: 40px;
+    &-list {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        &__item {
+            width: 12.5%;
+            border-left: 1px solid $dark-white;
+            &:last-child {
+                border-right: 1px solid $dark-white;
+            }
+        }
+        &__link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 10px;
+            color: $light-grey;
+            &:hover {
+                color: $accent-color;
+            }
+            &.active {
+                color: $accent-color;
+                .category-list__icon {
+                    stroke: $accent-color;
+                }
+            }
+        }
+        &__icon {
+            max-width: 100%;
+            fill: white;
+            stroke: $light-grey;
+            transition: 0.2s ease-out stroke;
+        }
+        &__title {
+            font-family: Montserrat Alternates;
+            font-size: 14px;
+            font-weight: 500;
+            color: inherit;
+            transition: 0.2s ease-out color;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .category{
+        margin-top: 10px;
+        &-list {
+            flex-wrap: wrap;
+            &__item {
+                width: 25%;
+                &:nth-child(4n+1) {
+                    border-left: none;
+                }
+                &:last-child {
+                    border-right: none;
+                }
+                &:nth-child(-n + 4) {
+                    border-bottom: 1px solid $dark-white;
+                }
+            }
+            &__title {
+                font-size: 12px;
+            }
+        }
+    }
+}
