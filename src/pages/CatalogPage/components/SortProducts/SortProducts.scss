@@ -1,7 +1,6 @@
 @use '../../../../style/variables.scss' as *;
 .sort {
     display: inline-flex;
-    padding: 12px 0;
     &__custom-select {
         width: 100%;
         position: relative;

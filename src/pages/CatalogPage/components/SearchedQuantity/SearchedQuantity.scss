@@ -1,0 +1,14 @@
+@use '../../../../style/variables.scss' as *;
+.search-quantity {
+    &__title {
+        font-size: 14px;
+        font-weight: 600;
+        color: $grey;
+    }
+    &__result {
+        font-size: 14px;
+        font-weight: 500;
+        color: $light-grey;
+        margin-left: 10px;
+    }
+}
