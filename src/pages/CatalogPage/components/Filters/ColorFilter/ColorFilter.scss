@@ -1,5 +1,5 @@
 @use '../../../../../style/variables.scss' as *;
-.color-filter {
+.filter {
     &__button {
         position: relative;
         padding-bottom: 11px;
@@ -32,10 +32,10 @@
         }
     }
     &.active {
-        .color-filter__button:before {
+        .filter__button:before {
             display: none;
         }
-        .color-filter__list {
+        .filter__list {
             margin-top: 18px;
             height: 100%;
             overflow: visible;
@@ -46,7 +46,7 @@
         height: 0;
         overflow: hidden;
     }
-    &__item {
+    &__item_color {
         &:not(:first-child) {
             margin-top: 14px;
         }
@@ -66,9 +66,7 @@
             }
         }
     }
-}
 
-.filter {
     &__label {
         position: relative;
         display: inline-flex;

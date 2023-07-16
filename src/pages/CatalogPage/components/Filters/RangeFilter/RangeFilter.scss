@@ -1,0 +1,59 @@
+@use '../../../../../style/variables.scss' as *;
+.filter {
+    &__range {
+        &-inputs {
+            display: flex;
+            gap: 18px;
+            border: none;
+        }
+        &-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 18px;
+
+        }
+        &-title {
+            font-size: 12px;
+        }
+        &-input {
+            width: 100%;
+            padding: 8px 12px;
+            text-align: center;
+            border: 1px solid $light-grey;
+            color: $light-grey;
+            -moz-appearance:textfield;
+            &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+
+        &-slider {
+            margin-top: 18px;
+
+            .rc-slider-rail {
+                height: 2px;
+                background-color:$dark-white;
+            }
+            .rc-slider-track {
+                height: 2px;
+                background-color: $dark-color;
+            }
+            .rc-slider-handle {
+                width: 10px;
+                height: 10px;
+                opacity: 1;
+                margin-top: -4px;
+                background-color: $dark-color;
+                border: none;
+                &-dragging {
+                    width: 14px !important;
+                    height: 14px !important;
+                    margin-top: -6px;
+                    border-color: black !important;
+                    box-shadow: none !important;
+                }
+            }
+        }
+    }
+}
