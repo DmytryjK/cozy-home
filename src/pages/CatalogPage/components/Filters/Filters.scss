@@ -2,6 +2,7 @@
 .filters {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     gap: 28px;
     width: 292px;
     padding: 24px 24px 80px;
