@@ -6,6 +6,6 @@
     width: 292px;
     padding: 24px 24px 80px;
     max-height: calc(100vh - 200px);
-    overflow-y: scroll;
+    overflow-y: auto;
     background-color: $filter-background;
 }
