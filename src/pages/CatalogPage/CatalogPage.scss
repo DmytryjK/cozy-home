@@ -10,4 +10,12 @@
         max-width: 976px;
         width: 100%;
     }
+
+    .main-content {
+        &__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
 }
