@@ -1,0 +1,13 @@
+.catalog-content {
+    .container_content-wrapper {
+        margin-top: 30px;
+        display: flex;
+        gap: 40px;
+        justify-content: space-between;
+    }
+
+    .catalog__main-content {
+        max-width: 976px;
+        width: 100%;
+    }
+}
