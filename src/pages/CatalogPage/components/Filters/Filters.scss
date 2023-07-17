@@ -9,6 +9,21 @@
     max-height: calc(100vh - 230px);
     overflow-y: auto;
     background-color: $filter-background;
+    &::-webkit-scrollbar {
+        width: 3px;
+    }
+    &::-webkit-scrollbar-track {
+        background: $dark-white;
+        margin-bottom: 80px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba($dark-color, 0.7); 
+        border-radius: 50px;
+        border-right: 1.5px  rgba($dark-color, 0.7) solid;
+        border-left: 1.5px  rgba($dark-color, 0.7) solid;
+        background-clip: padding-box;
+    }
+   
 }
 
 .filter {
