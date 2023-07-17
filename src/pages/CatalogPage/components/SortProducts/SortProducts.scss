@@ -17,7 +17,7 @@
         position: relative;
         padding: 12px 24px 12px 0;
         min-width: 280px;
-        text-align: left;
+        text-align: right;
         border: none;
         background-color: transparent;
         color: $dark-color;
@@ -44,7 +44,7 @@
         display: none;
         flex-direction: column;
         position: absolute;
-        left: 0;
+        min-width: 224px;
         right: 0;
         border: none;
         background-color: #fff;
