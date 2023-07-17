@@ -8,11 +8,11 @@
 		display: flex;
 		gap: 40px;
 
-		&_link {
-			position: relative;
+		&_item {
 			color: $light-grey;
-
-			&_item {
+			position: relative;
+			
+			&_link {
 				font-size: 14px;
 			}
 
@@ -32,7 +32,7 @@
 			}
 		}
 
-		&_link:last-child {
+		&_item:last-child {
 			color: $dark-color;
 		}
 	}
