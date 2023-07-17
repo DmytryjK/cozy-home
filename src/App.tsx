@@ -1,12 +1,13 @@
 import { MainPage, CatalogPage } from './pages';
 import './App.scss';
+import Layout from './shared-components/Layout/Layout';
 
 const App = () => {
     return (
-        <div>
+        <Layout>
             {/* <MainPage /> */}
             <CatalogPage />
-        </div>
+        </Layout>
     );
 };
 

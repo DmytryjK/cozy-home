@@ -10,7 +10,7 @@ import './CatalogPage.scss';
 const CatalogPage = () => {
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <CategoryList />
             <section className="catalog-content">
                 <div className="container container_content-wrapper ">
@@ -29,7 +29,7 @@ const CatalogPage = () => {
                     </div>
                 </div>
             </section>
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 };
