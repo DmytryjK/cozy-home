@@ -1,0 +1,39 @@
+@import '../../style/variables.scss';
+
+.breadcrumbs {
+	margin-top: 20px;
+	margin-bottom: 40px;
+
+	&__list {
+		display: flex;
+		gap: 40px;
+
+		&_link {
+			position: relative;
+			color: $light-grey;
+
+			&_item {
+				font-size: 14px;
+			}
+
+			&::after {
+				content: "";
+				position: absolute;
+				background: url('../../assets/icons/catalogue/arrow-test.svg');
+				background-repeat: no-repeat;
+				width: 14px;
+				height: 7px;
+				top: 6px;
+				right: -25px;
+			}
+
+			&:last-child::after {
+				display: none;
+			}
+		}
+
+		&_link:last-child {
+			color: $dark-color;
+		}
+	}
+}

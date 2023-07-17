@@ -6,11 +6,13 @@ import SortProducts from './components/SortProducts/SortProducts';
 import SearchedQuantity from './components/SearchedQuantity/SearchedQuantity';
 import Pagination from './components/Pagination/Pagination';
 import './CatalogPage.scss';
+import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 
 const CatalogPage = () => {
+    const crumbs = ['Головна', 'Каталог', 'Дивани'];
     return (
         <>
-            {/* <Header /> */}
+            <Breadcrumbs crumbs={crumbs} />
             <CategoryList />
             <section className="catalog-content">
                 <div className="container container_content-wrapper ">
@@ -29,7 +31,6 @@ const CatalogPage = () => {
                     </div>
                 </div>
             </section>
-            {/* <Footer /> */}
         </>
     );
 };
