@@ -7,6 +7,7 @@ import './MainPage.scss';
 import CatalogueBlock from './components/CatalogueBlock/CatalogueBlock';
 import Footer from '../../shared-components/Footer/Footer';
 import InformationBlock from './components/InformationBlock/InformationBlock';
+import ArrowUp from '../CatalogPage/components/ArrowUp/ArrowUp';
 
 const MainPage = () => {
     return (
@@ -19,6 +20,7 @@ const MainPage = () => {
             <PopularItems />
             <Promo />
             <Footer />
+            <ArrowUp />
         </>
     );
 };
