@@ -16,7 +16,6 @@ const MainPage = () => {
             <InformationBlock />
             <PopularItems />
             <Promo />
-            <Footer />
             <ArrowUp />
         </>
     );
