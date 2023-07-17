@@ -5,6 +5,7 @@ import Promo from './components/Promo/Promo';
 import './MainPage.scss';
 import CatalogueBlock from './components/CatalogueBlock/CatalogueBlock';
 import InformationBlock from './components/InformationBlock/InformationBlock';
+import ArrowUp from '../CatalogPage/components/ArrowUp/ArrowUp';
 
 const MainPage = () => {
     return (
@@ -15,6 +16,8 @@ const MainPage = () => {
             <InformationBlock />
             <PopularItems />
             <Promo />
+            <Footer />
+            <ArrowUp />
         </>
     );
 };
