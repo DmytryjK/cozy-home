@@ -6,7 +6,72 @@
     gap: 28px;
     width: 292px;
     padding: 24px 24px 80px;
-    max-height: calc(100vh - 220px);
+    max-height: calc(100vh - 230px);
     overflow-y: auto;
     background-color: $filter-background;
+    &::-webkit-scrollbar {
+        width: 3px;
+    }
+    &::-webkit-scrollbar-track {
+        background: $dark-white;
+        margin-bottom: 80px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba($dark-color, 0.7); 
+        border-radius: 50px;
+        border-right: 1.5px  rgba($dark-color, 0.7) solid;
+        border-left: 1.5px  rgba($dark-color, 0.7) solid;
+        background-clip: padding-box;
+    }
+   
+}
+
+.filter {
+    &__button {
+        position: relative;
+        padding-bottom: 11px;
+        padding-right: 20px;
+        width: 100%;
+        color: $grey;
+        font-size: 14px;
+        font-weight: 600;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid $grey;
+        text-align: left;
+        cursor: pointer;
+        &:after, &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            background-color:$light-grey;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        &:after {
+            right: 0;
+            width: 12px;
+            height: 2px;
+        }
+        &:before {
+            right: 5px;
+            width: 2px;
+            height: 12px;
+        }
+    }
+    &.active {
+        .filter__button:before {
+            display: none;
+        }
+        .filter__list {
+            margin-top: 18px;
+            height: 100%;
+            overflow: visible;
+        }
+    }
+    &__list {
+        margin-top: 0px;
+        height: 0;
+        overflow: hidden;
+    }
 }
