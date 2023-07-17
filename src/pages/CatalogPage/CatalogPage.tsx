@@ -1,5 +1,3 @@
-import { Header } from '../../shared-components/Header';
-import Footer from '../../shared-components/Footer/Footer';
 import CategoryList from './components/CategoryList/CategoryList';
 import Filters from './components/Filters/Filters';
 import SortProducts from './components/SortProducts/SortProducts';
@@ -7,11 +5,13 @@ import SearchedQuantity from './components/SearchedQuantity/SearchedQuantity';
 import Pagination from './components/Pagination/Pagination';
 import ArrowUp from './components/ArrowUp/ArrowUp';
 import './CatalogPage.scss';
+import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 
 const CatalogPage = () => {
+    const crumbs = ['Головна', 'Каталог', 'Дивани'];
     return (
         <>
-            {/* <Header /> */}
+            <Breadcrumbs crumbs={crumbs} />
             <CategoryList />
             <section className="catalog-content">
                 <div className="container container_content-wrapper ">
@@ -31,7 +31,6 @@ const CatalogPage = () => {
                 </div>
             </section>
             <ArrowUp />
-            {/* <Footer /> */}
         </>
     );
 };
