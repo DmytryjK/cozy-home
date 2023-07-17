@@ -8,18 +8,18 @@
 		display: flex;
 		gap: 40px;
 
-		&_link {
-			position: relative;
+		&_item {
 			color: $light-grey;
-
-			&_item {
+			position: relative;
+			
+			&_link {
 				font-size: 14px;
 			}
 
 			&::after {
 				content: "";
 				position: absolute;
-				background: url('../../assets/icons/catalogue/arrow-test.svg');
+				background: url('../../assets/icons/catalogue/routing-arrow.svg');
 				background-repeat: no-repeat;
 				width: 14px;
 				height: 7px;
@@ -32,7 +32,7 @@
 			}
 		}
 
-		&_link:last-child {
+		&_item:last-child {
 			color: $dark-color;
 		}
 	}

@@ -11,15 +11,11 @@ const Breadcrumbs = ({ crumbs }: CrubmsProps) => {
             <nav className="breadcrumbs">
                 <ol className="breadcrumbs__list">
                     {crumbs.map((crumb) => (
-                        <a
-                            href="/"
-                            key={crumb}
-                            className="breadcrumbs__list_link"
-                        >
-                            <li className="breadcrumbs__list_link_item">
+                        <li className="breadcrumbs__list_item" key={crumb}>
+                            <a href="/" className="breadcrumbs__list_item_link">
                                 {crumb}
-                            </li>
-                        </a>
+                            </a>
+                        </li>
                     ))}
                 </ol>
             </nav>
