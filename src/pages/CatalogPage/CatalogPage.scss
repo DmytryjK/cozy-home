@@ -17,5 +17,12 @@
             justify-content: space-between;
             align-items: center;
         }
+        &__bottom {
+            display: flex;
+            justify-content: center;
+        }
+        &__pagination {
+            margin-top: 50px;
+        }
     }
 }

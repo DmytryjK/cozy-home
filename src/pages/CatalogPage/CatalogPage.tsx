@@ -4,6 +4,7 @@ import CategoryList from './components/CategoryList/CategoryList';
 import Filters from './components/Filters/Filters';
 import SortProducts from './components/SortProducts/SortProducts';
 import SearchedQuantity from './components/SearchedQuantity/SearchedQuantity';
+import Pagination from './components/Pagination/Pagination';
 import './CatalogPage.scss';
 
 const CatalogPage = () => {
@@ -19,8 +20,12 @@ const CatalogPage = () => {
                             <SearchedQuantity quantityResults={1005} />
                             <SortProducts />
                         </div>
-                        <div className="main-content__products">dsfasdfa</div>
-                        <div className="main-content__pagination">asdfasf</div>
+                        <div className="main-content__products">
+                            Products Products Products Products
+                        </div>
+                        <div className="main-content__bottom">
+                            <Pagination />
+                        </div>
                     </div>
                 </div>
             </section>
