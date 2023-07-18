@@ -13,14 +13,18 @@
                 border-right: 1px solid $dark-white;
             }
         }
-        &__link {
+        &__button {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
             gap: 8px;
             padding: 10px 10px;
             color: $light-grey;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
             &:hover {
                 color: $accent-color;
             }
@@ -28,12 +32,13 @@
                 color: $accent-color;
                 .category-list__icon {
                     stroke: $accent-color;
+                    fill: $accent-color;
                 }
             }
         }
         &__icon {
             max-width: 100%;
-            fill: white;
+            fill: $light-grey;
             stroke: $light-grey;
             transition: 0.2s ease-out stroke;
         }
