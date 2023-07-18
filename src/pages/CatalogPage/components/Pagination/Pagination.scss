@@ -7,6 +7,9 @@
         display: flex;
         gap: 16px;
     }
+    &__item {
+        display: flex;
+    }
     &__page-btn {
         display: flex;
         justify-content: center;
@@ -32,8 +35,11 @@
         }
     }
     &__dots {
+        align-self: flex-end;
         user-select: none;
         pointer-events: none;
+        padding-bottom: 7px;
+        color: $light-grey;
     }
 
     &__prev-btn, &__next-btn {
