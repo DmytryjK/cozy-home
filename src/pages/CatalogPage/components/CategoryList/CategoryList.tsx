@@ -1,107 +1,82 @@
+import { useState } from 'react';
+import nextId from 'react-id-generator';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import './CategoryList.scss';
 
 const CategoryList = () => {
+    const [activeCategoryNumber, setActiveCategoryNumber] = useState<number>(1);
+    const categories = [
+        {
+            name: 'ДИВАНИ',
+            spriteIcon: 'sofas',
+        },
+        {
+            name: 'КРІСЛА',
+            spriteIcon: 'arm-chairs',
+        },
+        {
+            name: 'КОМОДИ',
+            spriteIcon: 'dressers',
+        },
+        {
+            name: 'ДЕКОР',
+            spriteIcon: 'decor',
+        },
+        {
+            name: 'ШАФИ',
+            spriteIcon: 'cabinets',
+        },
+        {
+            name: 'СТОЛИ',
+            spriteIcon: 'tables',
+        },
+        {
+            name: 'СТІЛЬЦІ',
+            spriteIcon: 'chairs',
+        },
+        {
+            name: 'ЛІЖКА',
+            spriteIcon: 'bed',
+        },
+    ];
     return (
         <section className="category">
             <div className="container">
                 <ul className="category-list">
-                    <li className="category-list__item">
-                        <a className="category-list__link active" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
+                    {categories.map((category, index) => {
+                        const { name, spriteIcon } = category;
+                        return (
+                            <li
+                                className="category-list__item"
+                                key={nextId('catalog-category')}
                             >
-                                <use href={`${categoriesSprite}#sofas`} />
-                            </svg>
-                            <h2 className="category-list__title">ДИВАНИ</h2>
-                        </a>
-                    </li>
-                    <li className="category-list__item">
-                        <a className="category-list__link" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
-                            >
-                                <use href={`${categoriesSprite}#arm-chairs`} />
-                            </svg>
-                            <h2 className="category-list__title">КРІСЛА</h2>
-                        </a>
-                    </li>
-                    <li className="category-list__item">
-                        <a className="category-list__link" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
-                            >
-                                <use href={`${categoriesSprite}#dressers`} />
-                            </svg>
-                            <h2 className="category-list__title">КОМОДИ</h2>
-                        </a>
-                    </li>
-                    <li className="category-list__item">
-                        <a className="category-list__link" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
-                            >
-                                <use href={`${categoriesSprite}#decor`} />
-                            </svg>
-                            <h2 className="category-list__title">ДЕКОР</h2>
-                        </a>
-                    </li>
-                    <li className="category-list__item">
-                        <a className="category-list__link" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
-                            >
-                                <use href={`${categoriesSprite}#cabinets`} />
-                            </svg>
-                            <h2 className="category-list__title">ШАФИ</h2>
-                        </a>
-                    </li>
-                    <li className="category-list__item">
-                        <a className="category-list__link" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
-                            >
-                                <use href={`${categoriesSprite}#tables`} />
-                            </svg>
-                            <h2 className="category-list__title">СТОЛИ</h2>
-                        </a>
-                    </li>
-                    <li className="category-list__item">
-                        <a className="category-list__link" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
-                            >
-                                <use href={`${categoriesSprite}#chairs`} />
-                            </svg>
-                            <h2 className="category-list__title">СТІЛЬЦІ</h2>
-                        </a>
-                    </li>
-                    <li className="category-list__item">
-                        <a className="category-list__link" href="/">
-                            <svg
-                                className="category-list__icon"
-                                width="44"
-                                height="44"
-                            >
-                                <use href={`${categoriesSprite}#bed`} />
-                            </svg>
-                            <h2 className="category-list__title">ЛІЖКА</h2>
-                        </a>
-                    </li>
+                                <button
+                                    className={`category-list__button ${
+                                        activeCategoryNumber === index + 1
+                                            ? 'active'
+                                            : ''
+                                    }`}
+                                    type="button"
+                                    onClick={() =>
+                                        setActiveCategoryNumber(index + 1)
+                                    }
+                                >
+                                    <svg
+                                        className="category-list__icon"
+                                        width="44"
+                                        height="44"
+                                    >
+                                        <use
+                                            href={`${categoriesSprite}#${spriteIcon}`}
+                                        />
+                                    </svg>
+                                    <span className="category-list__title">
+                                        {name}
+                                    </span>
+                                </button>
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
         </section>
