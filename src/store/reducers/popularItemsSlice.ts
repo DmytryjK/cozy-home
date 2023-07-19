@@ -11,6 +11,12 @@ interface PopularItemsInitialState {
     error: null | unknown;
 }
 
+type GetProductsByCategoryType = {
+    status: string;
+    categoryId: string;
+    countOfProducts: string;
+};
+
 const initialState: PopularItemsInitialState = {
     products: [],
     categories: [],
@@ -23,7 +29,9 @@ export const fetchPopularItemsAllProducts = createAsyncThunk(
     'popularItems/fetchPopularItemsAllProducts',
     async function (_, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_BASE()}product?status=popular`);
+            const response = await fetch(
+                `${API_BASE()}product/homepage/status?status=1&countOfProducts=8`
+            );
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
@@ -53,11 +61,16 @@ export const fetchPopularItemsAllСategories = createAsyncThunk(
 
 export const fetchPopularItemsProductsByСategories = createAsyncThunk(
     'popularItems/fetchPopularItemsProductsByСategories',
-    async function (id: string, { rejectWithValue }) {
+    async function (
+        currentData: GetProductsByCategoryType,
+        { rejectWithValue }
+    ) {
         try {
+            const queryParams = new URLSearchParams({ ...currentData });
             const response = await fetch(
-                `${API_BASE()}product/category_status?status=popular&categoryId=${id}`
+                `${API_BASE()}product/homepage/category_status?${queryParams}`
             );
+
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');

@@ -21,15 +21,23 @@ const PopularItems: FC = () => {
     const { products, categories, loading, error } = useAppSelector(
         (state) => state.popularItems
     );
+    const countOfProducts = '8';
+    const status = '1'; // popular
 
     useEffect(() => {
         dispatch(fetchPopularItemsAllProducts());
         dispatch(fetchPopularItemsAllСategories());
     }, [dispatch]);
 
-    const handleGetItemsByCategoryId = (id: string) => {
-        if (id) {
-            dispatch(fetchPopularItemsProductsByСategories(id));
+    const handleGetItemsByCategoryId = (categoryId: string) => {
+        if (categoryId) {
+            dispatch(
+                fetchPopularItemsProductsByСategories({
+                    status,
+                    categoryId,
+                    countOfProducts,
+                })
+            );
         } else {
             dispatch(fetchPopularItemsAllProducts());
         }

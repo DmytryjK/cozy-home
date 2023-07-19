@@ -100,24 +100,36 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                         setIsColorChosen(true);
                     }}
                 >
-                    {imageDtoList?.map((item) => {
-                        const { imagePath } = item;
-                        return (
-                            <SwiperSlide key={nextId('productCard-slide')}>
-                                <div className="product-card__image-wrapper">
-                                    <img
-                                        className="product-card__image"
-                                        src={
-                                            imagePath === null
-                                                ? imageNotFound
-                                                : imagePath
-                                        }
-                                        alt={name}
-                                    />
-                                </div>
-                            </SwiperSlide>
-                        );
-                    })}
+                    {imageDtoList.length === 0 ? (
+                        <SwiperSlide>
+                            <div className="product-card__image-wrapper">
+                                <img
+                                    className="product-card__image"
+                                    src={imageNotFound}
+                                    alt={name}
+                                />
+                            </div>
+                        </SwiperSlide>
+                    ) : (
+                        imageDtoList.map((item) => {
+                            const { imagePath } = item;
+                            return (
+                                <SwiperSlide key={nextId('productCard-slide')}>
+                                    <div className="product-card__image-wrapper">
+                                        <img
+                                            className="product-card__image"
+                                            src={
+                                                imagePath === null
+                                                    ? imageNotFound
+                                                    : imagePath
+                                            }
+                                            alt={name}
+                                        />
+                                    </div>
+                                </SwiperSlide>
+                            );
+                        })
+                    )}
                 </Swiper>
             </a>
             <div className="product-card__content swiper-no-swiping">

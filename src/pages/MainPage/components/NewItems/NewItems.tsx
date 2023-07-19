@@ -18,17 +18,15 @@ const NewItems: FC = () => {
     }, [dispatch]);
 
     const items = () => {
-        const content = [];
-        for (let i = 0; i < Math.min(products.length, 4); i += 1) {
-            content.push(
+        return products.map((product) => {
+            return (
                 <SwiperSlide key={nextId('card-of-newItems')}>
                     <li className="new-items__card">
-                        <ProductCard product={products[i]} />
+                        <ProductCard product={product} />
                     </li>
                 </SwiperSlide>
             );
-        }
-        return content;
+        });
     };
 
     return (

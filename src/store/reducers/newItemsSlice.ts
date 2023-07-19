@@ -18,7 +18,9 @@ export const fetchNewItemsAllProducts = createAsyncThunk(
     'newItems/fetchNewItemsAllProducts',
     async function (_, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_BASE()}product?status=new`);
+            const response = await fetch(
+                `${API_BASE()}product/homepage/status?status=0&countOfProducts=4`
+            );
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
