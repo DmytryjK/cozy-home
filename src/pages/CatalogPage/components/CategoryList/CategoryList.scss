@@ -13,7 +13,7 @@
                 border-right: 1px solid $dark-white;
             }
         }
-        &__button {
+        &__link {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -47,6 +47,7 @@
             font-size: 14px;
             font-weight: 500;
             color: inherit;
+            text-transform: uppercase;
             transition: 0.2s ease-out color;
         }
     }
