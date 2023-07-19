@@ -1,0 +1,32 @@
+.categories-page {
+    margin-top: 0;
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        justify-self: center;
+        align-self: center;
+        justify-content: center;
+        gap: 50px 32px;
+    }
+    &__item {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 590px) {
+    .categories-page {
+        &__list {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px 16px;
+        }
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .categories-page {
+        &__list {
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 24px 16px;
+        }
+    }
+}
