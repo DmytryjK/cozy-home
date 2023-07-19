@@ -45,8 +45,7 @@ const Category = ({ category }: { category: CategoryType }) => {
         <div className="categories-page__card category-card">
             <a
                 className="category-card__img-link"
-                href="
-            "
+                href={`/catalog/${parentName}`}
             >
                 <img
                     className="category-card__img"
@@ -55,7 +54,10 @@ const Category = ({ category }: { category: CategoryType }) => {
                 />
             </a>
             <div className="category-card__content">
-                <a className="category-card__main-link" href="/">
+                <a
+                    className="category-card__main-link"
+                    href={`/catalog/${parentName}`}
+                >
                     {parentName}
                 </a>
                 <ul

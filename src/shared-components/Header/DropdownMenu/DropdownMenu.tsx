@@ -18,7 +18,7 @@ const DropdownMenu = (props: Props) => {
             <div className="container">
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Крісла</a>
+                        <a href={`/catalog/${'Крісла'}`}>Крісла</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">
@@ -38,7 +38,7 @@ const DropdownMenu = (props: Props) => {
                 {/*  */}
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Дивани</a>
+                        <a href={`/catalog/${'Дивани'}`}>Дивани</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">
@@ -58,7 +58,7 @@ const DropdownMenu = (props: Props) => {
                 {/*  */}
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Столи</a>
+                        <a href={`/catalog/${'Столи'}`}>Столи</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">
@@ -81,7 +81,7 @@ const DropdownMenu = (props: Props) => {
                 {/*  */}
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Стільці</a>
+                        <a href={`/catalog/${'Стільці'}`}>Стільці</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">
@@ -107,7 +107,7 @@ const DropdownMenu = (props: Props) => {
                 {/*  */}
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Шафи</a>
+                        <a href={`/catalog/${'Шафи'}`}>Шафи</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">
@@ -133,7 +133,7 @@ const DropdownMenu = (props: Props) => {
                 {/*  */}
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Комоди</a>
+                        <a href={`/catalog/${'Комоди'}`}>Комоди</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">
@@ -156,7 +156,7 @@ const DropdownMenu = (props: Props) => {
                 {/*  */}
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Ліжка</a>
+                        <a href={`/catalog/${'Ліжка'}`}>Ліжка</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">
@@ -176,7 +176,7 @@ const DropdownMenu = (props: Props) => {
                 {/*  */}
                 <ul className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
-                        <a href="/">Декор</a>
+                        <a href={`/catalog/${'Декор'}`}>Декор</a>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         <li className="dropdown-menu__list_items_item">

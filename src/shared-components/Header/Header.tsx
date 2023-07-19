@@ -1,4 +1,5 @@
 import { useState, MouseEvent, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
@@ -87,7 +88,7 @@ const Header = () => {
                                     isDropdownOpen ? 'li-dropdown-active' : ''
                                 }`}
                             >
-                                <a className="link-dropdown" href="/">
+                                <a className="link-dropdown" href="/catalog">
                                     Каталог
                                 </a>
                             </li>

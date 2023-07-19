@@ -1,41 +1,42 @@
 import { useState } from 'react';
 import nextId from 'react-id-generator';
+import { NavLink } from 'react-router-dom';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import './CategoryList.scss';
 
 const CategoryList = () => {
-    const [activeCategoryNumber, setActiveCategoryNumber] = useState<number>(1);
+    // const [activeCategoryNumber, setActiveCategoryNumber] = useState<number>(1);
     const categories = [
         {
-            name: 'ДИВАНИ',
+            name: 'Дивани',
             spriteIcon: 'sofas',
         },
         {
-            name: 'КРІСЛА',
+            name: 'Крісла',
             spriteIcon: 'arm-chairs',
         },
         {
-            name: 'КОМОДИ',
+            name: 'Комоди',
             spriteIcon: 'dressers',
         },
         {
-            name: 'ДЕКОР',
+            name: 'Декор',
             spriteIcon: 'decor',
         },
         {
-            name: 'ШАФИ',
+            name: 'Шафи',
             spriteIcon: 'cabinets',
         },
         {
-            name: 'СТОЛИ',
+            name: 'Столи',
             spriteIcon: 'tables',
         },
         {
-            name: 'СТІЛЬЦІ',
+            name: 'Стільці',
             spriteIcon: 'chairs',
         },
         {
-            name: 'ЛІЖКА',
+            name: 'Ліжка',
             spriteIcon: 'bed',
         },
     ];
@@ -43,22 +44,19 @@ const CategoryList = () => {
         <section className="category">
             <div className="container">
                 <ul className="category-list">
-                    {categories.map((category, index) => {
+                    {categories.map((category) => {
                         const { name, spriteIcon } = category;
                         return (
                             <li
                                 className="category-list__item"
                                 key={nextId('catalog-category')}
                             >
-                                <button
-                                    className={`category-list__button ${
-                                        activeCategoryNumber === index + 1
-                                            ? 'active'
-                                            : ''
-                                    }`}
-                                    type="button"
-                                    onClick={() =>
-                                        setActiveCategoryNumber(index + 1)
+                                <NavLink
+                                    to={`/catalog/${name}`}
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'category-list__link active'
+                                            : 'category-list__link'
                                     }
                                 >
                                     <svg
@@ -73,7 +71,7 @@ const CategoryList = () => {
                                     <span className="category-list__title">
                                         {name}
                                     </span>
-                                </button>
+                                </NavLink>
                             </li>
                         );
                     })}
