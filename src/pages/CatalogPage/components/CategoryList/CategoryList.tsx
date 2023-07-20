@@ -5,7 +5,6 @@ import categoriesSprite from '../../../../assets/icons/categories/categories-spr
 import './CategoryList.scss';
 
 const CategoryList = () => {
-    // const [activeCategoryNumber, setActiveCategoryNumber] = useState<number>(1);
     const categories = [
         {
             name: 'Дивани',
