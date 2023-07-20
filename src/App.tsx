@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { MainPage, CatalogPage, CategoryPage } from './pages';
 import Layout from './shared-components/Layout/Layout';
 import routes from './routes';
 import './App.scss';
