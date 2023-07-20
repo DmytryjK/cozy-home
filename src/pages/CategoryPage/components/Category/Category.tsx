@@ -3,27 +3,27 @@ import './Category.scss';
 import { useState, useEffect } from 'react';
 
 type CategoryType = {
-    parentId: string;
-    parentName: string;
+    id: string;
+    name: string;
     categoryImagePath: string;
-    list: { id: string; name: string }[];
+    categoryNameDtos: { id: string; name: string }[];
 };
 
 const Category = ({ category }: { category: CategoryType }) => {
     const [isSubCategoriesHide, setIsSubCategoriesHide] = useState<boolean>();
-    const { parentName, categoryImagePath, list } = category;
+    const { id, name, categoryImagePath, categoryNameDtos } = category;
 
     useEffect(() => {
-        if (list.length > 3) {
+        if (categoryNameDtos.length > 3) {
             setIsSubCategoriesHide(true);
         } else {
             setIsSubCategoriesHide(false);
         }
-    }, [list.length]);
+    }, [categoryNameDtos]);
 
     const showHideBtn = () => {
         let button;
-        if (list.length > 3) {
+        if (categoryNameDtos.length > 3) {
             button = (
                 <li className="category-card__subcategories-btn">
                     <button
@@ -43,29 +43,28 @@ const Category = ({ category }: { category: CategoryType }) => {
 
     return (
         <div className="categories-page__card category-card">
-            <a
-                className="category-card__img-link"
-                href={`/catalog/${parentName}`}
-            >
+            <a className="category-card__img-link" href={`/catalog/${name}`}>
                 <img
                     className="category-card__img"
+                    width={304}
+                    height={200}
                     src={categoryImagePath}
-                    alt={parentName}
+                    alt={name}
                 />
             </a>
             <div className="category-card__content">
                 <a
                     className="category-card__main-link"
-                    href={`/catalog/${parentName}`}
+                    href={`/catalog/${name}`}
                 >
-                    {parentName}
+                    {name}
                 </a>
                 <ul
                     className={`category-card__subcategories-list ${
                         isSubCategoriesHide ? 'hide' : ''
                     }`}
                 >
-                    {list.map((subcategory) => {
+                    {categoryNameDtos.map((subcategory) => {
                         return (
                             <li
                                 className="category-card__subcategories-item"
