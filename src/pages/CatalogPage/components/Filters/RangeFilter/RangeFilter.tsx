@@ -11,33 +11,44 @@ type Props = {
 
 const RangeFilter = (props: Props) => {
     const { minValue, maxValue, title } = props;
-
     const [isActive, setIsActive] = useState<boolean>(true);
-    const [firstInputValue, setFirstInputValue] = useState<number>(minValue);
-    const [secondInputValue, setSecondInputValue] = useState<number>(maxValue);
+    const [firstInputValue, setFirstInputValue] = useState<number | ''>(
+        minValue
+    );
+    const [secondInputValue, setSecondInputValue] = useState<number | ''>(
+        maxValue
+    );
     const [values, setValues] = useState<number[]>([minValue, maxValue]);
 
     const handleMinInputCheck = () => {
-        if (firstInputValue > values[1]) {
+        if (firstInputValue === '') {
+            setValues([values[0], values[1]]);
+            setFirstInputValue(values[0]);
+        } else if (firstInputValue > values[1]) {
             setValues([values[1] - 1, values[1]]);
             setFirstInputValue(values[1] - 1);
         } else if (firstInputValue < minValue) {
             setValues([minValue, values[1]]);
             setFirstInputValue(minValue);
         } else {
-            setValues([firstInputValue, values[1]]);
+            setFirstInputValue(Math.round(firstInputValue));
+            setValues([Math.round(firstInputValue), values[1]]);
         }
     };
 
     const handleMaxInputCheck = () => {
-        if (secondInputValue < values[0]) {
+        if (secondInputValue === '') {
+            setValues([values[0], values[1]]);
+            setSecondInputValue(values[1]);
+        } else if (secondInputValue < values[0]) {
             setValues([values[0], values[0] + 1]);
             setSecondInputValue(values[0] + 1);
         } else if (secondInputValue > maxValue) {
             setValues([values[0], maxValue]);
             setSecondInputValue(maxValue);
         } else {
-            setValues([values[0], secondInputValue]);
+            setSecondInputValue(Math.round(secondInputValue));
+            setValues([values[0], Math.round(secondInputValue)]);
         }
     };
 
@@ -66,8 +77,11 @@ const RangeFilter = (props: Props) => {
                             className="filter__range-input"
                             type="number"
                             onBlur={handleMinInputCheck}
+                            onKeyDown={(e) =>
+                                e.code === 'Enter' && handleMinInputCheck()
+                            }
                             onChange={(e) =>
-                                setFirstInputValue(+e.target.value)
+                                setFirstInputValue(+e.target.value || '')
                             }
                             value={firstInputValue}
                         />
@@ -78,8 +92,11 @@ const RangeFilter = (props: Props) => {
                             className="filter__range-input"
                             type="number"
                             onBlur={handleMaxInputCheck}
+                            onKeyDown={(e) =>
+                                e.code === 'Enter' && handleMaxInputCheck()
+                            }
                             onChange={(e) =>
-                                setSecondInputValue(+e.target.value)
+                                setSecondInputValue(+e.target.value || '')
                             }
                             value={secondInputValue}
                         />
