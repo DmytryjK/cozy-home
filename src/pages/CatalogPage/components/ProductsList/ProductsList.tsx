@@ -3,14 +3,18 @@ import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogFilterSlice';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
+import renderServerData from '../../../../helpers/renderServerData';
+import './ProductsList.scss';
 
 const ProductsList = () => {
     const dispatch = useAppDispatch();
-    const { catalogProducts } = useAppSelector((state) => state.catalogFilters);
+    const { catalogProducts, error, loading } = useAppSelector(
+        (state) => state.catalogFilters
+    );
 
     useEffect(() => {
         const id = '64b6ddea032a9002059bdaee';
-        const page = '';
+        const page = '1';
         const size = '4';
 
         dispatch(
@@ -22,16 +26,12 @@ const ProductsList = () => {
         );
     }, [dispatch]);
 
-    useEffect(() => {
-        console.log(catalogProducts);
-    }, [catalogProducts]);
-
     const items = () => {
         return catalogProducts.map((catalogProduct) => {
             return (
                 <li
                     key={nextId('card-of-catalogItem')}
-                    className="new-items__card"
+                    className="catalog-products__card"
                 >
                     <ProductCard product={catalogProduct} />
                 </li>
@@ -39,7 +39,17 @@ const ProductsList = () => {
         });
     };
 
-    return <div>{items()}</div>;
+    return (
+        <section className="catalog-products">
+            <ul className="catalog-products__list">
+                {renderServerData({
+                    error,
+                    loading,
+                    content: items,
+                })}
+            </ul>
+        </section>
+    );
 };
 
 export default ProductsList;
