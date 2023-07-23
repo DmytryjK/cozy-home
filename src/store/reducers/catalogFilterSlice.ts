@@ -10,12 +10,16 @@ type CurrentData = {
 
 interface CatalogFilterState {
     catalogProducts: ProductCardType[];
+    currentPage: string;
+    amountOfProducts: string;
     loading: Loading;
     error: null | unknown;
 }
 
 const initialState: CatalogFilterState = {
     catalogProducts: [],
+    currentPage: '0',
+    amountOfProducts: '12',
     loading: 'idle',
     error: null,
 };
@@ -43,7 +47,11 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
 export const catalogFilterSlice = createSlice({
     name: 'catalogFilter',
     initialState,
-    reducers: {},
+    reducers: {
+        updateCurrentPage(state, action: PayloadAction<string>) {
+            state.currentPage = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchCatalogProductsByFilters.pending, (state) => {
             state.loading = 'pending';
@@ -66,4 +74,5 @@ export const catalogFilterSlice = createSlice({
     },
 });
 
+export const { updateCurrentPage } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;
