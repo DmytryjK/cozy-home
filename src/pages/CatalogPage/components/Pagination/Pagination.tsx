@@ -4,15 +4,21 @@ import { useState } from 'react';
 import nextId from 'react-id-generator';
 import paginationSprite from '../../../../assets/icons/pagination/pagination-sprites.svg';
 import './Pagination.scss';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
 
 const Pagination = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const dispatch = useAppDispatch();
+
     const handleCurrentPage = (e: React.MouseEvent<HTMLUListElement>) => {
         const target = e.target as HTMLButtonElement;
         if (target.type === 'button') {
             const page = target.getAttribute('data-value');
             setCurrentPage(page ? +page : currentPage);
+            const updatedPage = ((page ? +page : currentPage) - 1).toString();
+            dispatch(updateCurrentPage(updatedPage));
         }
     };
 

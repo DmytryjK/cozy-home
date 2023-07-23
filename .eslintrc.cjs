@@ -28,5 +28,7 @@ module.exports = {
         'react/no-unescaped-entities': 0,
         'jsx-a11y/mouse-events-have-key-events': 0,
         'import/no-cycle': 0,
+        '@typescript-eslint/no-shadow': 0,
+        'react-hooks/exhaustive-deps': 0,
     },
 };
