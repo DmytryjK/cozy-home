@@ -1,7 +1,11 @@
 interface ImageDtoList {
     id: string;
     imagePath: string;
-    color: string;
+}
+
+interface ColorDtoList {
+    id: string;
+    name: string;
 }
 
 export interface ProductCardType {
@@ -12,6 +16,7 @@ export interface ProductCardType {
     priceWithDiscount: number | null;
     discount: number | null;
     imageDtoList: ImageDtoList[];
+    colorDtoList: ColorDtoList[];
 }
 
 export type Loading = 'idle' | 'pending' | 'succeeded' | 'failed';

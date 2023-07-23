@@ -30,13 +30,14 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
         priceWithDiscount,
         discount,
         imageDtoList,
+        colorDtoList,
     } = product;
 
     const cardSliderRef = useRef<TSwiper>();
 
     useEffect(() => {
         if (!isColorChosen && imageDtoList.length > 0) {
-            setCurrentColor(imageDtoList[0].color);
+            setCurrentColor(colorDtoList[0].name);
         }
     }, [isColorChosen, imageDtoList]);
 
@@ -60,7 +61,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
         addSpaceToPrice(price, priceWithDiscount);
     }, [price, priceWithDiscount]);
 
-    const handleSlideChange = (color: string, index: number) => {
+    const handleSlideChange = (color: string, index: number, id: string) => {
         setCurrentColor(color);
         setIsColorChosen(true);
         if (cardSliderRef?.current) {
@@ -92,15 +93,15 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                         cardSliderRef.current = swiper as TSwiper;
                     }}
                     onSlideChange={(swiper) => {
-                        imageDtoList?.forEach((item, index) => {
+                        colorDtoList?.forEach((item, index) => {
                             if (swiper.activeIndex === index) {
-                                setCurrentColor(item.color);
+                                setCurrentColor(item.name);
                             }
                         });
                         setIsColorChosen(true);
                     }}
                 >
-                    {imageDtoList.length === 0 ? (
+                    {/* {imageDtoList.length === 0 ? (
                         <SwiperSlide>
                             <div className="product-card__image-wrapper">
                                 <img
@@ -129,6 +130,32 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                                 </SwiperSlide>
                             );
                         })
+                    )} */}
+                    {imageDtoList.length === 0 ? (
+                        <SwiperSlide>
+                            <div className="product-card__image-wrapper">
+                                <img
+                                    className="product-card__image"
+                                    src={imageNotFound}
+                                    alt={name}
+                                />
+                            </div>
+                        </SwiperSlide>
+                    ) : (
+                        colorDtoList.map(() => {
+                            const { imagePath } = imageDtoList[0];
+                            return (
+                                <SwiperSlide key={nextId('productCard-slides')}>
+                                    <div className="product-card__image-wrapper">
+                                        <img
+                                            className="product-card__image"
+                                            src={imagePath}
+                                            alt={name}
+                                        />
+                                    </div>
+                                </SwiperSlide>
+                            );
+                        })
                     )}
                 </Swiper>
             </a>
@@ -140,28 +167,28 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                         </a>
                     </h2>
                     <fieldset className="product-card__color-checkboxes">
-                        {imageDtoList.map((item, index) => {
-                            const { color } = item;
+                        {colorDtoList.map((color, index) => {
+                            const { name, id } = color;
                             return (
                                 <label
                                     className="product-card__checkbox-label"
                                     key={nextId('color-radio')}
                                 >
                                     <input
-                                        className={`product-card__color-checkbox ${color}`}
+                                        className={`product-card__color-checkbox ${name}`}
                                         type="radio"
                                         name={uniqIdForInputName}
-                                        value={color}
+                                        value={name}
                                         checked={
-                                            currentColor === color ||
+                                            currentColor === name ||
                                             (!isColorChosen && index === 0)
                                         }
                                         onChange={() =>
-                                            handleSlideChange(color, index)
+                                            handleSlideChange(name, index, id)
                                         }
                                     />
                                     <span
-                                        className={`product-card__checked-checkbox ${color}`}
+                                        className={`product-card__checked-checkbox ${name}`}
                                     />
                                 </label>
                             );
