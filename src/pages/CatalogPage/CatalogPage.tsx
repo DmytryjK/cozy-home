@@ -6,6 +6,7 @@ import Pagination from './components/Pagination/Pagination';
 import ArrowUp from './components/ArrowUp/ArrowUp';
 import './CatalogPage.scss';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
+import ProductsList from './components/ProductsList/ProductsList';
 
 const CatalogPage = () => {
     const crumbs = ['Головна', 'Каталог', 'Дивани'];
@@ -22,7 +23,7 @@ const CatalogPage = () => {
                             <SortProducts />
                         </div>
                         <div className="main-content__products">
-                            Products Products Products Products
+                            <ProductsList />
                         </div>
                         <div className="main-content__bottom">
                             <Pagination />
