@@ -11,6 +11,7 @@ type CurrentData = {
 interface CatalogFilterState {
     catalogProducts: ProductCardType[];
     currentPage: string;
+    currentProductCategoryId: string;
     amountOfProducts: string;
     loading: Loading;
     error: null | unknown;
@@ -19,6 +20,7 @@ interface CatalogFilterState {
 const initialState: CatalogFilterState = {
     catalogProducts: [],
     currentPage: '0',
+    currentProductCategoryId: '64bd341e5cbf64609a807ffb', // Дивани
     amountOfProducts: '12',
     loading: 'idle',
     error: null,
@@ -51,6 +53,9 @@ export const catalogFilterSlice = createSlice({
         updateCurrentPage(state, action: PayloadAction<string>) {
             state.currentPage = action.payload;
         },
+        updateCurrentProductCategory(state, action: PayloadAction<string>) {
+            state.currentProductCategoryId = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchCatalogProductsByFilters.pending, (state) => {
@@ -75,4 +80,5 @@ export const catalogFilterSlice = createSlice({
 });
 
 export const { updateCurrentPage } = catalogFilterSlice.actions;
+export const { updateCurrentProductCategory } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;

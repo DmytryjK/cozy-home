@@ -8,11 +8,17 @@ import './ProductsList.scss';
 
 const ProductsList = () => {
     const dispatch = useAppDispatch();
-    const { catalogProducts, error, loading, currentPage, amountOfProducts } =
-        useAppSelector((state) => state.catalogFilters);
+    const {
+        catalogProducts,
+        error,
+        loading,
+        currentPage,
+        amountOfProducts,
+        currentProductCategoryId,
+    } = useAppSelector((state) => state.catalogFilters);
 
     useEffect(() => {
-        const id = '64bd341e5cbf64609a807ffb';
+        const id = currentProductCategoryId;
         const size = amountOfProducts;
         const page = currentPage;
 
@@ -23,7 +29,7 @@ const ProductsList = () => {
                 size,
             })
         );
-    }, [currentPage, dispatch]);
+    }, [currentProductCategoryId, currentPage, dispatch]);
 
     const items = () => {
         return catalogProducts.map((catalogProduct) => {
