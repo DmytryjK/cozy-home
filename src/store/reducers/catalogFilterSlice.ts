@@ -20,7 +20,7 @@ interface CatalogFilterState {
 const initialState: CatalogFilterState = {
     catalogProducts: [],
     currentPage: '0',
-    currentProductCategoryId: '64bd341e5cbf64609a807ffb', // Дивани
+    currentProductCategoryId: '',
     amountOfProducts: '12',
     loading: 'idle',
     error: null,
@@ -30,6 +30,7 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogFilter/fetchCatalogProductsByFilters',
     async function (currentData: CurrentData, { rejectWithValue }) {
         try {
+            console.log(currentData);
             const queryParams = new URLSearchParams({ ...currentData });
             const response = await fetch(
                 `${API_BASE()}product/catalog/category?${queryParams}`

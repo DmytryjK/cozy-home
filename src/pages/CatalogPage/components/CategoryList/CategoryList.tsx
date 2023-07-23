@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useParams, NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
-import { NavLink } from 'react-router-dom';
+
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import './CategoryList.scss';
 import { useAppDispatch } from '../../../../hooks/hooks';
 import { updateCurrentProductCategory } from '../../../../store/reducers/catalogFilterSlice';
 
 const CategoryList = () => {
+    const currentCategory = useParams();
     const dispatch = useAppDispatch();
     const categories = [
         {
@@ -50,19 +52,21 @@ const CategoryList = () => {
             id: '64bd34915cbf64609a808090',
         },
     ];
-    const [currentProductCategory, setCurrentProductCategory] =
-        useState<string>(categories[0].id);
 
     useEffect(() => {
-        dispatch(updateCurrentProductCategory(currentProductCategory));
-    }, [currentProductCategory]);
+        categories.forEach((category) => {
+            if (currentCategory.name === category.name) {
+                dispatch(updateCurrentProductCategory(category.id));
+            }
+        });
+    }, [currentCategory]);
 
     return (
         <section className="category">
             <div className="container">
                 <ul className="category-list">
                     {categories.map((category) => {
-                        const { name, spriteIcon } = category;
+                        const { name, spriteIcon, id } = category;
                         return (
                             <li
                                 className="category-list__item"
@@ -70,7 +74,9 @@ const CategoryList = () => {
                             >
                                 <NavLink
                                     onClick={() =>
-                                        setCurrentProductCategory(category.id)
+                                        dispatch(
+                                            updateCurrentProductCategory(id)
+                                        )
                                     }
                                     to={`/catalog/${name}`}
                                     className={({ isActive }) =>

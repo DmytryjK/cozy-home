@@ -21,14 +21,15 @@ const ProductsList = () => {
         const id = currentProductCategoryId;
         const size = amountOfProducts;
         const page = currentPage;
-
-        dispatch(
-            fetchCatalogProductsByFilters({
-                id,
-                page,
-                size,
-            })
-        );
+        if (id) {
+            dispatch(
+                fetchCatalogProductsByFilters({
+                    id,
+                    page,
+                    size,
+                })
+            );
+        }
     }, [currentProductCategoryId, currentPage, dispatch]);
 
     const items = () => {

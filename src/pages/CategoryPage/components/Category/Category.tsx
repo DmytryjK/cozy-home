@@ -1,6 +1,12 @@
 import nextId from 'react-id-generator';
-import './Category.scss';
 import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import {
+    fetchCatalogProductsByFilters,
+    updateCurrentProductCategory,
+} from '../../../../store/reducers/catalogFilterSlice';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import './Category.scss';
 
 type CategoryType = {
     id: string;
@@ -12,6 +18,8 @@ type CategoryType = {
 const Category = ({ category }: { category: CategoryType }) => {
     const [isSubCategoriesHide, setIsSubCategoriesHide] = useState<boolean>();
     const { id, name, categoryImagePath, categoryNameDtos } = category;
+
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (categoryNameDtos.length > 3) {
@@ -43,7 +51,11 @@ const Category = ({ category }: { category: CategoryType }) => {
 
     return (
         <div className="categories-page__card category-card">
-            <a className="category-card__img-link" href={`/catalog/${name}`}>
+            <NavLink
+                className="category-card__img-link"
+                to={`/catalog/${name}`}
+                onClick={() => dispatch(updateCurrentProductCategory(id))}
+            >
                 <img
                     className="category-card__img"
                     width={304}
@@ -51,14 +63,15 @@ const Category = ({ category }: { category: CategoryType }) => {
                     src={categoryImagePath}
                     alt={name}
                 />
-            </a>
+            </NavLink>
             <div className="category-card__content">
-                <a
+                <NavLink
                     className="category-card__main-link"
-                    href={`/catalog/${name}`}
+                    to={`/catalog/${name}`}
+                    onClick={() => dispatch(updateCurrentProductCategory(id))}
                 >
                     {name}
-                </a>
+                </NavLink>
                 <ul
                     className={`category-card__subcategories-list ${
                         isSubCategoriesHide ? 'hide' : ''
