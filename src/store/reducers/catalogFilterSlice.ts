@@ -30,7 +30,6 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogFilter/fetchCatalogProductsByFilters',
     async function (currentData: CurrentData, { rejectWithValue }) {
         try {
-            console.log(currentData);
             const queryParams = new URLSearchParams({ ...currentData });
             const response = await fetch(
                 `${API_BASE()}product/catalog/category?${queryParams}`
