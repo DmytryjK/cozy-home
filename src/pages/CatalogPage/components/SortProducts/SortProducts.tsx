@@ -35,8 +35,10 @@ const SortProducts = () => {
                     type="button"
                     onClick={() => setIsActive(!isActive)}
                 >
-                    <span>Сортувати</span>{' '}
-                    {currentSortOption || 'за популярністю'}
+                    <span className="btn__text">Сортувати</span>{' '}
+                    <span className="btn__current-option">
+                        {currentSortOption || 'за популярністю'}
+                    </span>
                 </button>
                 <fieldset
                     className="sort__custom-fields"
