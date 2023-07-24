@@ -79,7 +79,7 @@
         background-clip: padding-box;
     }
     &__navigation {
-        display: flex;
+        display: none;
         justify-content: space-between;
         align-items: center;
         margin-bottom: -15px;
@@ -197,6 +197,9 @@
             border-right: 1.5px  rgba($dark-color, 0.7) solid;
             border-left: 1.5px  rgba($dark-color, 0.7) solid;
             background-clip: padding-box;
+        }
+        &__navigation {
+            display: flex;
         }
     }
     .buttons {
