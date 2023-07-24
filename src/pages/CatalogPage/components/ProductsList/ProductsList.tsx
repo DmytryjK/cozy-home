@@ -45,6 +45,8 @@ const ProductsList = () => {
         });
     };
 
+    // catalog-products__list
+
     return (
         <section className="catalog-products">
             <ul className="catalog-products__list">

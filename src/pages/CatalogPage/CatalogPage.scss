@@ -26,3 +26,49 @@
         }
     }
 }
+
+@media (max-width: 1012px) {
+	.catalog-content {
+
+    .main-content {
+        &__top {
+            max-width: 450px;
+						margin: auto;
+        }
+    }
+}
+}
+
+@media (max-width: 840px) {
+	.catalog-content {
+
+    .main-content {
+        &__top {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+}
+
+@media (max-width: 768px) {
+	.catalog-content {
+	.main-content {
+		&__top {
+				margin-bottom: 20px;
+				max-width: 100%;
+		}
+}
+}
+}
+
+@media (max-width: 672px) {
+	.catalog-content {
+	.main-content {
+		&__top {
+				margin-bottom: 20px;
+				max-width: 450px;
+		}
+}
+}
+}
