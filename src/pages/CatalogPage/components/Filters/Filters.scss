@@ -166,7 +166,7 @@
         position: fixed;
         z-index: 10;
         max-height: 100vh;
-        height: 100vh;
+        height: 100%;
         top: 0;
         left: -100%;
         right: 0;
@@ -182,7 +182,7 @@
         top: 0;
         width: 100%;
         bottom: 0;
-        max-height: calc(100% - 60px);
+        max-height: calc(100% - 90px);
         background-color: white;
         padding: 10px 16px 6px 16px;
         &::-webkit-scrollbar {
