@@ -25,7 +25,7 @@
         font-weight: 400;
         user-select: none;
         cursor: pointer;
-        span {
+        .btn__text {
             font-weight: 500;
         }
         &:after {
@@ -49,7 +49,7 @@
         border: none;
         background-color: #fff;
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
-        z-index: 2;
+        z-index: 3;
     }
     &__field {
         display: flex;
@@ -78,6 +78,14 @@
 
 @media (max-width: 768px) {
 	.sort {
-		display: none;
+        &__open-btn {
+            min-width: auto;
+            width: 100%;
+        }
 	}
+}
+@media (max-width: 410px) {
+    .btn__current-option {
+        display: none;
+    }
 }
