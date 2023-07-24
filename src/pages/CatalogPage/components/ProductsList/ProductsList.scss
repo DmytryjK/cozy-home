@@ -2,10 +2,54 @@
 
 	&__list {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		justify-self: center;
 		align-self: center;
 		justify-content: center;
 		gap: 50px 32px;
+
+		.content-loader {
+			grid-column: 1 / 4;
+		}
 }
+}
+
+@media (max-width: 1012px) {
+	.catalog-products {
+
+		&__list {
+
+			.catalog-products__card {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+	}
+	}
+}
+
+@media (max-width: 768px) {
+	.catalog-products {
+
+		&__list {
+
+			.catalog-products__card {
+				display: initial;
+			}
+	}
+	}
+}
+
+@media (max-width: 673px) {
+	.catalog-products {
+
+		&__list {
+
+			.catalog-products__card {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+	}
+	}
 }

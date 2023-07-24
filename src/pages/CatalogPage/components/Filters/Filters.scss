@@ -128,3 +128,9 @@
         overflow: hidden;
     }
 }
+
+@media (max-width: 768px) {
+	.filters-wrapper {
+		display: none;
+	}
+}

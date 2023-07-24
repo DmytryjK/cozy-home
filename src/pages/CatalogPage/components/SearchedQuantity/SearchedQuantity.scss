@@ -12,3 +12,15 @@
         margin-left: 10px;
     }
 }
+
+@media (max-width: 1012px) {
+	.search-quantity {
+    &__title {
+        display: none;
+    }
+    &__result {
+				font-size: 12px;
+        margin-left: 0px;
+    }
+}
+}
