@@ -4,6 +4,7 @@
 	position: relative;
 	padding-bottom: 80px;
 	max-height: calc(100vh - 280px);
+    background-color: white;
 }
 
 .buttons {
@@ -61,7 +62,7 @@
     flex-shrink: 0;
     gap: 28px;
     width: 292px;
-		height: 100%;
+    height: 100%;
     padding: 24px 24px;
     overflow-y: auto;
     &::-webkit-scrollbar {
@@ -76,6 +77,37 @@
         border-right: 1.5px  rgba($dark-color, 0.7) solid;
         border-left: 1.5px  rgba($dark-color, 0.7) solid;
         background-clip: padding-box;
+    }
+    &__navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: -15px;
+    }
+    &__title-mobile {
+        padding: 0;
+        margin: 0;
+        color: $dark-color;
+        font-size: 20px;
+        font-weight: 500;
+    }
+    &__close-filter {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        &:after {
+            content: '';
+            position: absolute;
+            background: url('../../../../assets/icons/filters/close-filters.svg') center center/cover no-repeat;
+            width: 40px;
+            height: 40px;
+            top: 0;
+            right: -10px;
+            bottom: 0;
+        }
     }
 }
 
@@ -131,6 +163,68 @@
 
 @media (max-width: 768px) {
 	.filters-wrapper {
-		display: none;
+        position: fixed;
+        z-index: 10;
+        max-height: 100vh;
+        height: 100vh;
+        top: 0;
+        left: -100%;
+        right: 0;
+        width: 100%;
+        z-index: 1000;
+        transition: 0.2s ease-out left;
+        &.active {
+            left: 0;
+        }
 	}
+    .filters {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        bottom: 0;
+        max-height: calc(100% - 60px);
+        background-color: white;
+        padding: 10px 16px 6px 16px;
+        &::-webkit-scrollbar {
+            width: 3px;
+        }
+        &::-webkit-scrollbar-track {
+            background: rgba($light-grey, 0.4);
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba($dark-color, 0.7); 
+            border-radius: 50px;
+            border-right: 1.5px  rgba($dark-color, 0.7) solid;
+            border-left: 1.5px  rgba($dark-color, 0.7) solid;
+            background-clip: padding-box;
+        }
+    }
+    .buttons {
+        min-height: 90px;
+        bottom: 0;
+        width: 100%;
+        justify-content: center;
+        gap: 0;
+        padding: 20px 16px;
+        background-color: white;
+        z-index: 1000;
+        &__reject, &__submit {
+            font-size: 14px;
+            width: 50%;
+            justify-content: center;
+            padding: 14px 10px;
+            border: 2px solid $dark-color;
+            border-radius: 0;
+        }
+        &__reject {
+            border-right: none;
+            padding: 14px 20px;
+            &:after {
+                right: 15px;
+            }
+        }
+        &__submit {
+            border-left: none;
+        }
+    }
 }

@@ -1,4 +1,5 @@
 .catalog-content {
+    position: relative;
     .container_content-wrapper {
         margin-top: 30px;
         display: flex;
@@ -16,6 +17,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+        &__filters-btn {
+            position: relative;
+            display: none;
+            padding: 12px 24px 12px 0;
+            margin-left: auto;
+            margin-right: 14px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            &:after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                display: block;
+                width: 16px;
+                height: 16px;
+                background: url('../../assets/icons/filters/filter-icon.svg') center center/cover no-repeat;
+            }
         }
         &__bottom {
             display: flex;
@@ -41,34 +63,51 @@
 
 @media (max-width: 840px) {
 	.catalog-content {
-
-    .main-content {
-        &__top {
-            display: flex;
-            justify-content: space-between;
+        .main-content {
+            &__top {
+                display: flex;
+                justify-content: space-between;
+            }
         }
     }
-}
 }
 
 @media (max-width: 768px) {
 	.catalog-content {
-	.main-content {
-		&__top {
-				margin-bottom: 20px;
-				max-width: 100%;
-		}
-}
-}
+        .main-content {
+            &__top {
+                margin-bottom: 20px;
+                max-width: 100%;
+            }
+            &__filters-btn {
+                display: block;
+            }
+        }
+    }
 }
 
 @media (max-width: 672px) {
 	.catalog-content {
-	.main-content {
-		&__top {
-				margin-bottom: 20px;
-				max-width: 450px;
-		}
+        .main-content {
+            &__top {
+                margin-bottom: 20px;
+            }
+        }
+    }
 }
-}
+@media (max-width: 320px) {
+    .catalog-content {
+        .main-content {
+            &__top {
+                column-gap: 20px;
+                flex-wrap: wrap;
+            }
+            &__search-quantity {
+                order: 1;
+            }
+            &__filters-btn {
+                margin: 0;
+            }
+        }
+    }
 }
