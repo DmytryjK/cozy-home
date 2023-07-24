@@ -1,3 +1,5 @@
+import { SetStateAction, useEffect, Dispatch } from 'react';
+import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColectionFilter from './ColectionFilter/ColectionFilter';
 import ColorFilter from './ColorFilter/ColorFilter';
 import './Filters.scss';
@@ -9,10 +11,43 @@ import SaleFilter from './SaleFilter/SaleFilter';
 import TransformationFilter from './TransformationFilter/TransformationFilter';
 import TypeOfProductFilter from './TypeOfProductFilter/TypeOfProductFilter';
 
-const Filters = () => {
+const Filters = ({
+    showFilter,
+    setShowFilter,
+}: {
+    showFilter: boolean;
+    setShowFilter: Dispatch<SetStateAction<boolean>>;
+}) => {
+    useEffect(() => {
+        const header = document.querySelector('.header') as HTMLElement;
+        const headerCart = document.querySelector(
+            '.header__mobile_icons_cart-counter'
+        ) as HTMLElement;
+
+        if (showFilter) {
+            header.style.paddingRight = `${userScrollWidth() + 16}px`;
+            headerCart.style.right = `${userScrollWidth() + 52}px`;
+            document.body.style.paddingRight = `${userScrollWidth()}px`;
+        } else {
+            header.style.paddingRight = '16px';
+            headerCart.style.right = '52px';
+            document.body.style.paddingRight = '0';
+        }
+        document.body.style.overflow = showFilter ? 'hidden' : 'visible';
+    }, [showFilter]);
+
     return (
-        <div className="filters-wrapper">
+        <div className={`filters-wrapper ${showFilter ? 'active' : ''}`}>
             <div className="filters">
+                <div className="filters__navigation">
+                    <h2 className="filters__title-mobile">Фільтри</h2>
+                    <button
+                        className="filters__close-filter"
+                        type="button"
+                        aria-label="закрити фільтри"
+                        onClick={() => setShowFilter(!showFilter)}
+                    />
+                </div>
                 <ColorFilter />
                 <MaterialsFilter title="Матеріали" />
                 <RangeFilter minValue={20} maxValue={50} title="Ціна (грн)" />
