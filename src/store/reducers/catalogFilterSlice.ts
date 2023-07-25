@@ -33,7 +33,6 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
         globalFiltersQuery: GlobalFiltersQuery,
         { rejectWithValue }
     ) {
-        console.log(globalFiltersQuery);
         try {
             const queryParams = new URLSearchParams({ ...globalFiltersQuery });
             const response = await fetch(
