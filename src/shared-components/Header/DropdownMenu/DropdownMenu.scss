@@ -52,13 +52,6 @@
 				&:hover {
 				text-decoration-color: inherit;
 			}
-			
-			&_item {
-				
-				&_link {
-					font-size: 14px;
-				}
-			}
 		}
 	}
 }
@@ -67,4 +60,8 @@
 .dropdown-menu-active {
 	opacity: 1;
 	visibility: visible;
+}
+
+.dropdown-menu__list_items_item {
+	padding: 5px 0 5px 0;
 }

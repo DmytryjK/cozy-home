@@ -7,6 +7,11 @@ import BurgerMenu from './BurgerMenu';
 import userScrollWidth from '../../utils/userScrollWidth';
 import './Header.scss';
 
+export type SubCategoryType = {
+    id: string;
+    name: string;
+};
+
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
