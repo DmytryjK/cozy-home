@@ -3,12 +3,6 @@ import { ProductCardType, Loading } from '../../types/types';
 import { GlobalFiltersQuery } from '../../types/catalogFiltersTypes';
 import API_BASE from '../../utils/API_BASE';
 
-type CurrentData = {
-    id: string;
-    page: string;
-    size: string;
-};
-
 interface CatalogFilterState {
     catalogProducts: ProductCardType[];
     globalFiltersQuery: GlobalFiltersQuery;
@@ -20,7 +14,7 @@ const initialState: CatalogFilterState = {
     catalogProducts: [],
     globalFiltersQuery: {
         id: '',
-        page: '1',
+        page: '0',
         size: '12',
     },
     loading: 'idle',
@@ -34,9 +28,13 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
         { rejectWithValue }
     ) {
         try {
-            const queryParams = new URLSearchParams({ ...globalFiltersQuery });
+            const { extraEndpoint } = globalFiltersQuery;
+            const cloneGlobalQuery = { ...globalFiltersQuery };
+
+            delete cloneGlobalQuery.extraEndpoint;
+            const queryParams = new URLSearchParams({ ...cloneGlobalQuery });
             const response = await fetch(
-                `${API_BASE()}product/catalog/category?${queryParams}`
+                `${API_BASE()}product/${extraEndpoint}${queryParams}`
             );
 
             const result = await response.json();
@@ -54,11 +52,14 @@ export const catalogFilterSlice = createSlice({
     name: 'catalogFilter',
     initialState,
     reducers: {
-        updateCurrentPage(state, action: PayloadAction<string>) {
-            state.globalFiltersQuery.page = action.payload;
-        },
-        updateCurrentProductCategory(state, action: PayloadAction<string>) {
-            state.globalFiltersQuery.id = action.payload;
+        updateGlobalFiltersQuery(
+            state,
+            action: PayloadAction<GlobalFiltersQuery>
+        ) {
+            state.globalFiltersQuery = {
+                ...state.globalFiltersQuery,
+                ...action.payload,
+            };
         },
     },
     extraReducers: (builder) => {
@@ -83,6 +84,5 @@ export const catalogFilterSlice = createSlice({
     },
 });
 
-export const { updateCurrentPage } = catalogFilterSlice.actions;
-export const { updateCurrentProductCategory } = catalogFilterSlice.actions;
+export const { updateGlobalFiltersQuery } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;

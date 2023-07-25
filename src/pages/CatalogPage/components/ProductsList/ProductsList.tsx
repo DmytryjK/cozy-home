@@ -10,16 +10,17 @@ const ProductsList = () => {
     const dispatch = useAppDispatch();
     const { catalogProducts, error, loading, globalFiltersQuery } =
         useAppSelector((state) => state.catalogFilters);
-
-    const { id } = globalFiltersQuery;
+    const { id, page } = globalFiltersQuery;
 
     useEffect(() => {
         if (id) {
             dispatch(
-                fetchCatalogProductsByFilters({ ...globalFiltersQuery, id })
+                fetchCatalogProductsByFilters({
+                    ...globalFiltersQuery,
+                })
             );
         }
-    }, [id]);
+    }, [id, page]);
 
     const items = () => {
         return catalogProducts.map((catalogProduct) => {

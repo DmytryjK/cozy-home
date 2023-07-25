@@ -5,10 +5,10 @@ import nextId from 'react-id-generator';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import './CategoryList.scss';
 import { useAppDispatch } from '../../../../hooks/hooks';
-import { updateCurrentProductCategory } from '../../../../store/reducers/catalogFilterSlice';
+import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
 
 const CategoryList = () => {
-    const currentCategory = useParams();
+    const { categoryName, subCategoryName } = useParams();
     const dispatch = useAppDispatch();
     const categories = [
         {
@@ -54,12 +54,20 @@ const CategoryList = () => {
     ];
 
     useEffect(() => {
-        categories.forEach((category) => {
-            if (currentCategory.name === category.name) {
-                dispatch(updateCurrentProductCategory(category.id));
-            }
-        });
-    }, [currentCategory]);
+        if (!subCategoryName) {
+            categories.forEach((category) => {
+                if (categoryName === category.name) {
+                    const { id } = category;
+                    dispatch(
+                        updateGlobalFiltersQuery({
+                            id,
+                            extraEndpoint: 'catalog/category?',
+                        })
+                    );
+                }
+            });
+        }
+    }, [categoryName, subCategoryName]);
 
     return (
         <section className="category">
@@ -75,7 +83,11 @@ const CategoryList = () => {
                                 <NavLink
                                     onClick={() =>
                                         dispatch(
-                                            updateCurrentProductCategory(id)
+                                            updateGlobalFiltersQuery({
+                                                id,
+                                                extraEndpoint:
+                                                    'catalog/category?',
+                                            })
                                         )
                                     }
                                     to={`/catalog/${name}`}

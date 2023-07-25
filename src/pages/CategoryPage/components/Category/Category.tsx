@@ -1,10 +1,7 @@
 import nextId from 'react-id-generator';
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import {
-    fetchCatalogProductsByFilters,
-    updateCurrentProductCategory,
-} from '../../../../store/reducers/catalogFilterSlice';
+import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
 import { useAppDispatch } from '../../../../hooks/hooks';
 import './Category.scss';
 
@@ -54,7 +51,14 @@ const Category = ({ category }: { category: CategoryType }) => {
             <NavLink
                 className="category-card__img-link"
                 to={`/catalog/${name}`}
-                onClick={() => dispatch(updateCurrentProductCategory(id))}
+                onClick={() =>
+                    dispatch(
+                        updateGlobalFiltersQuery({
+                            extraEndpoint: 'catalog/category?',
+                            id,
+                        })
+                    )
+                }
             >
                 <img
                     className="category-card__img"
@@ -68,7 +72,14 @@ const Category = ({ category }: { category: CategoryType }) => {
                 <NavLink
                     className="category-card__main-link"
                     to={`/catalog/${name}`}
-                    onClick={() => dispatch(updateCurrentProductCategory(id))}
+                    onClick={() =>
+                        dispatch(
+                            updateGlobalFiltersQuery({
+                                extraEndpoint: 'catalog/category?',
+                                id,
+                            })
+                        )
+                    }
                 >
                     {name}
                 </NavLink>
@@ -78,17 +89,28 @@ const Category = ({ category }: { category: CategoryType }) => {
                     }`}
                 >
                     {categoryNameDtos.map((subcategory) => {
+                        const subName = subcategory.name;
+                        const subId = subcategory.id;
                         return (
                             <li
                                 className="category-card__subcategories-item"
                                 key={nextId('subcategory-link')}
                             >
-                                <a
+                                <NavLink
                                     className="category-card__subcategories-link"
-                                    href="/"
+                                    to={`/catalog/${name}/${subName}`}
+                                    onClick={() =>
+                                        dispatch(
+                                            updateGlobalFiltersQuery({
+                                                extraEndpoint:
+                                                    'catalog/category/category?',
+                                                id: subId,
+                                            })
+                                        )
+                                    }
                                 >
                                     {subcategory.name}
-                                </a>
+                                </NavLink>
                             </li>
                         );
                     })}

@@ -1,5 +1,6 @@
 export type GlobalFiltersQuery = {
-    id: string;
+    extraEndpoint?: string;
+    id?: string;
     page?: string;
     size?: string;
     fieldName?: string;
