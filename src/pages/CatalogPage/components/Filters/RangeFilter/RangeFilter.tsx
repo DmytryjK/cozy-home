@@ -1,5 +1,7 @@
 import { useState, useEffect, MouseEvent } from 'react';
 import Slider from 'rc-slider';
+import { useAppDispatch } from '../../../../../hooks/hooks';
+import { updateGlobalFiltersQuery } from '../../../../../store/reducers/catalogFilterSlice';
 import 'rc-slider/assets/index.css';
 import './RangeFilter.scss';
 
@@ -7,10 +9,12 @@ type Props = {
     minValue: number;
     maxValue: number;
     title: string;
+    rangeMinName: string;
+    rangeMaxName: string;
 };
 
 const RangeFilter = (props: Props) => {
-    const { minValue, maxValue, title } = props;
+    const { minValue, maxValue, title, rangeMinName, rangeMaxName } = props;
     const [isActive, setIsActive] = useState<boolean>(true);
     const [firstInputValue, setFirstInputValue] = useState<number | ''>(
         minValue
@@ -19,6 +23,18 @@ const RangeFilter = (props: Props) => {
         maxValue
     );
     const [values, setValues] = useState<number[]>([minValue, maxValue]);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (firstInputValue && secondInputValue) {
+            dispatch(
+                updateGlobalFiltersQuery({
+                    [rangeMinName]: firstInputValue.toString(),
+                    [rangeMaxName]: secondInputValue.toString(),
+                })
+            );
+        }
+    }, [values]);
 
     const handleMinInputCheck = () => {
         if (firstInputValue === '') {

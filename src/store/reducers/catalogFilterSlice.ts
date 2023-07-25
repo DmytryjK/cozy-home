@@ -6,6 +6,7 @@ import API_BASE from '../../utils/API_BASE';
 interface CatalogFilterState {
     catalogProducts: ProductCardType[];
     globalFiltersQuery: GlobalFiltersQuery;
+    isFiltersActive: boolean;
     loading: Loading;
     error: null | unknown;
 }
@@ -13,10 +14,10 @@ interface CatalogFilterState {
 const initialState: CatalogFilterState = {
     catalogProducts: [],
     globalFiltersQuery: {
-        id: '',
         page: '0',
         size: '12',
     },
+    isFiltersActive: false,
     loading: 'idle',
     error: null,
 };
@@ -30,9 +31,20 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
         try {
             const { extraEndpoint } = globalFiltersQuery;
             const cloneGlobalQuery = { ...globalFiltersQuery };
-
             delete cloneGlobalQuery.extraEndpoint;
-            const queryParams = new URLSearchParams({ ...cloneGlobalQuery });
+
+            const filteredObjectQueries: { [key: string]: any } = {};
+            Object.entries(cloneGlobalQuery).forEach(
+                ([key, value]: [key: string, value: string]) => {
+                    if (value !== '') {
+                        filteredObjectQueries[key] = value;
+                    }
+                }
+            );
+
+            const queryParams = new URLSearchParams({
+                ...filteredObjectQueries,
+            });
             const response = await fetch(
                 `${API_BASE()}product/${extraEndpoint}${queryParams}`
             );
@@ -61,6 +73,9 @@ export const catalogFilterSlice = createSlice({
                 ...action.payload,
             };
         },
+        resetFilters(state, action: PayloadAction<boolean>) {
+            state.isFiltersActive = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchCatalogProductsByFilters.pending, (state) => {
@@ -84,5 +99,6 @@ export const catalogFilterSlice = createSlice({
     },
 });
 
-export const { updateGlobalFiltersQuery } = catalogFilterSlice.actions;
+export const { updateGlobalFiltersQuery, resetFilters } =
+    catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;
