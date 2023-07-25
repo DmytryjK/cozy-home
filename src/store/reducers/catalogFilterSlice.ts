@@ -1,38 +1,40 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
+import { GlobalFiltersQuery } from '../../types/catalogFiltersTypes';
 import API_BASE from '../../utils/API_BASE';
-
-type CurrentData = {
-    id: string;
-    page: string;
-    size: string;
-};
 
 interface CatalogFilterState {
     catalogProducts: ProductCardType[];
-    currentPage: string;
-    currentProductCategoryId: string;
-    amountOfProducts: string;
+    globalFiltersQuery: GlobalFiltersQuery;
     loading: Loading;
     error: null | unknown;
 }
 
 const initialState: CatalogFilterState = {
     catalogProducts: [],
-    currentPage: '0',
-    currentProductCategoryId: '',
-    amountOfProducts: '12',
+    globalFiltersQuery: {
+        id: '',
+        page: '0',
+        size: '12',
+    },
     loading: 'idle',
     error: null,
 };
 
 export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogFilter/fetchCatalogProductsByFilters',
-    async function (currentData: CurrentData, { rejectWithValue }) {
+    async function (
+        globalFiltersQuery: GlobalFiltersQuery,
+        { rejectWithValue }
+    ) {
         try {
-            const queryParams = new URLSearchParams({ ...currentData });
+            const { extraEndpoint } = globalFiltersQuery;
+            const cloneGlobalQuery = { ...globalFiltersQuery };
+
+            delete cloneGlobalQuery.extraEndpoint;
+            const queryParams = new URLSearchParams({ ...cloneGlobalQuery });
             const response = await fetch(
-                `${API_BASE()}product/catalog/category?${queryParams}`
+                `${API_BASE()}product/${extraEndpoint}${queryParams}`
             );
 
             const result = await response.json();
@@ -50,11 +52,14 @@ export const catalogFilterSlice = createSlice({
     name: 'catalogFilter',
     initialState,
     reducers: {
-        updateCurrentPage(state, action: PayloadAction<string>) {
-            state.currentPage = action.payload;
-        },
-        updateCurrentProductCategory(state, action: PayloadAction<string>) {
-            state.currentProductCategoryId = action.payload;
+        updateGlobalFiltersQuery(
+            state,
+            action: PayloadAction<GlobalFiltersQuery>
+        ) {
+            state.globalFiltersQuery = {
+                ...state.globalFiltersQuery,
+                ...action.payload,
+            };
         },
     },
     extraReducers: (builder) => {
@@ -79,6 +84,5 @@ export const catalogFilterSlice = createSlice({
     },
 });
 
-export const { updateCurrentPage } = catalogFilterSlice.actions;
-export const { updateCurrentProductCategory } = catalogFilterSlice.actions;
+export const { updateGlobalFiltersQuery } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;

@@ -1,26 +1,31 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import nextId from 'react-id-generator';
 import paginationSprite from '../../../../assets/icons/pagination/pagination-sprites.svg';
 import './Pagination.scss';
-import { useAppDispatch } from '../../../../hooks/hooks';
-import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
 
 const Pagination = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const dispatch = useAppDispatch();
+    const { id } = useAppSelector(
+        (state) => state.catalogFilters.globalFiltersQuery
+    );
 
-    const handleCurrentPage = (e: React.MouseEvent<HTMLUListElement>) => {
-        const target = e.target as HTMLButtonElement;
-        if (target.type === 'button') {
-            const page = target.getAttribute('data-value');
-            setCurrentPage(page ? +page : currentPage);
-            const updatedPage = ((page ? +page : currentPage) - 1).toString();
-            dispatch(updateCurrentPage(updatedPage));
+    useEffect(() => {
+        if (currentPage !== 1) {
+            setCurrentPage(1);
+            dispatch(updateGlobalFiltersQuery({ page: '0' }));
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        const updatedPage = (currentPage - 1).toString();
+        dispatch(updateGlobalFiltersQuery({ page: updatedPage }));
+    }, [currentPage]);
 
     const getDots = () => {
         return (
@@ -39,6 +44,7 @@ const Pagination = () => {
                     }`}
                     type="button"
                     data-value={page}
+                    onClick={() => setCurrentPage(page)}
                 >
                     {page}
                 </button>
@@ -84,9 +90,7 @@ const Pagination = () => {
 
     return (
         <div className="main-content__pagination pagination">
-            <ul className=" pagination__list" onClick={handleCurrentPage}>
-                {renderPagination()}
-            </ul>
+            <ul className=" pagination__list">{renderPagination()}</ul>
             <button
                 className="pagination__prev-btn"
                 type="button"
