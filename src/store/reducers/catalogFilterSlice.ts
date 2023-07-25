@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
+import { GlobalFiltersQuery } from '../../types/catalogFiltersTypes';
 import API_BASE from '../../utils/API_BASE';
 
 type CurrentData = {
@@ -10,27 +11,31 @@ type CurrentData = {
 
 interface CatalogFilterState {
     catalogProducts: ProductCardType[];
-    currentPage: string;
-    currentProductCategoryId: string;
-    amountOfProducts: string;
+    globalFiltersQuery: GlobalFiltersQuery;
     loading: Loading;
     error: null | unknown;
 }
 
 const initialState: CatalogFilterState = {
     catalogProducts: [],
-    currentPage: '0',
-    currentProductCategoryId: '',
-    amountOfProducts: '12',
+    globalFiltersQuery: {
+        id: '',
+        page: '1',
+        size: '12',
+    },
     loading: 'idle',
     error: null,
 };
 
 export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogFilter/fetchCatalogProductsByFilters',
-    async function (currentData: CurrentData, { rejectWithValue }) {
+    async function (
+        globalFiltersQuery: GlobalFiltersQuery,
+        { rejectWithValue }
+    ) {
+        console.log(globalFiltersQuery);
         try {
-            const queryParams = new URLSearchParams({ ...currentData });
+            const queryParams = new URLSearchParams({ ...globalFiltersQuery });
             const response = await fetch(
                 `${API_BASE()}product/catalog/category?${queryParams}`
             );
@@ -51,10 +56,10 @@ export const catalogFilterSlice = createSlice({
     initialState,
     reducers: {
         updateCurrentPage(state, action: PayloadAction<string>) {
-            state.currentPage = action.payload;
+            state.globalFiltersQuery.page = action.payload;
         },
         updateCurrentProductCategory(state, action: PayloadAction<string>) {
-            state.currentProductCategoryId = action.payload;
+            state.globalFiltersQuery.id = action.payload;
         },
     },
     extraReducers: (builder) => {
