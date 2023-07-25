@@ -1,8 +1,14 @@
+import { NavLink } from 'react-router-dom';
+import nextId from 'react-id-generator';
 import { useState, useEffect } from 'react';
-import burgerMenuDataItems from './BurgerMenuDataItems';
 import userScrollWidth from '../../../utils/userScrollWidth';
 import './BurgerMenu.scss';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
+import renderServerData from '../../../helpers/renderServerData';
+import useFetch from '../../../hooks/useFetch';
+import { useAppDispatch } from '../../../hooks/hooks';
+import { SubCategoryType } from '../Header';
+import { updateGlobalFiltersQuery } from '../../../store/reducers/catalogFilterSlice';
 
 type Props = {
     isScrolled: boolean;
@@ -12,10 +18,11 @@ type Props = {
 
 const BurgerMenu = (props: Props) => {
     const { isScrolled, isOpen, setIsOpen } = props;
-    const [selectedCategory, setSelectedCategory] = useState<number | null>(
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
-    const { menuItems } = burgerMenuDataItems();
+    const { loading, error, data } = useFetch('category/categories');
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         document.body.style.paddingRight = isOpen
@@ -23,6 +30,95 @@ const BurgerMenu = (props: Props) => {
             : '0';
         document.body.style.overflow = isOpen ? 'hidden' : 'visible';
     }, [isOpen]);
+
+    const renderedCategories = () => {
+        return data.map((category) => {
+            const { name, id } = category;
+            return (
+                <ul
+                    key={nextId('burger-menu-category')}
+                    className="burger-menu__list"
+                >
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setSelectedCategory(
+                                id === selectedCategory ? null : id
+                            )
+                        }
+                    >
+                        <li className="burger-menu__list_item">
+                            <NavLink
+                                to={`/catalog/${name}`}
+                                className="burger-menu__list_item_title"
+                                onClick={() => {
+                                    dispatch(
+                                        updateGlobalFiltersQuery({
+                                            extraEndpoint: 'catalog/category?',
+                                            id,
+                                        })
+                                    );
+                                    setIsOpen(false);
+                                }}
+                            >
+                                {name}
+                            </NavLink>
+                            <svg
+                                className={
+                                    selectedCategory === id
+                                        ? 'burger-menu__list_item_arrow active'
+                                        : 'burger-menu__list_item_arrow'
+                                }
+                                width="15"
+                                height="8"
+                            >
+                                <use
+                                    href={`${headerSprite}#burger-menu-arrow`}
+                                />
+                            </svg>
+                        </li>
+                    </button>
+                    {selectedCategory && (
+                        <ul
+                            className={
+                                selectedCategory === id
+                                    ? 'burger-menu__list_subItems burger-menu__list_subItems-active'
+                                    : 'burger-menu__list_subItems'
+                            }
+                        >
+                            {category.categoryNameDtos.map(
+                                (subCategory: SubCategoryType) => {
+                                    const subName = subCategory.name;
+                                    const subId = subCategory.id;
+                                    return (
+                                        <NavLink
+                                            to={`/catalog/${name}/${subName}`}
+                                            key={nextId(
+                                                'burger-menu-subCategory'
+                                            )}
+                                            className="burger-menu__list_subItems_subItem"
+                                            onClick={() => {
+                                                dispatch(
+                                                    updateGlobalFiltersQuery({
+                                                        extraEndpoint:
+                                                            'catalog/category/category?',
+                                                        id: subId,
+                                                    })
+                                                );
+                                                setIsOpen(false);
+                                            }}
+                                        >
+                                            {subName}
+                                        </NavLink>
+                                    );
+                                }
+                            )}
+                        </ul>
+                    )}
+                </ul>
+            );
+        });
+    };
 
     return (
         <>
@@ -41,64 +137,19 @@ const BurgerMenu = (props: Props) => {
                 }`}
             >
                 <div className="container">
-                    <a href="/" className="burger-menu__all-items">
+                    <NavLink
+                        to="/catalog"
+                        className="burger-menu__all-items"
+                        onClick={() => setIsOpen(false)}
+                    >
                         Всі товари
-                    </a>
-                    {menuItems.map((item) => (
-                        <ul key={item.id} className="burger-menu__list">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setSelectedCategory(
-                                        item.id === selectedCategory
-                                            ? null
-                                            : item.id
-                                    )
-                                }
-                            >
-                                <li className="burger-menu__list_item">
-                                    <p className="burger-menu__list_item_title">
-                                        <a href="/">{item.title}</a>
-                                    </p>
-                                    <svg
-                                        className={
-                                            selectedCategory === item.id
-                                                ? 'burger-menu__list_item_arrow active'
-                                                : 'burger-menu__list_item_arrow'
-                                        }
-                                        width="15"
-                                        height="8"
-                                    >
-                                        <use
-                                            href={`${headerSprite}#burger-menu-arrow`}
-                                        />
-                                    </svg>
-                                </li>
-                            </button>
-                            {selectedCategory && (
-                                <ul
-                                    className={
-                                        selectedCategory === item.id
-                                            ? 'burger-menu__list_subItems burger-menu__list_subItems-active'
-                                            : 'burger-menu__list_subItems'
-                                    }
-                                >
-                                    {menuItems
-                                        .find(
-                                            (menuItem) =>
-                                                menuItem.id === selectedCategory
-                                        )
-                                        ?.subItem.map((subItem) => (
-                                            <a href="/" key={subItem.id}>
-                                                <li className="burger-menu__list_subItems_subItem">
-                                                    {subItem.title}
-                                                </li>
-                                            </a>
-                                        ))}
-                                </ul>
-                            )}
-                        </ul>
-                    ))}
+                    </NavLink>
+
+                    {renderServerData({
+                        error,
+                        loading,
+                        content: renderedCategories,
+                    })}
                     <a
                         href="/"
                         className="burger-menu__list_item burger-menu__list"
