@@ -1,4 +1,9 @@
 import { SetStateAction, useEffect, Dispatch } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import {
+    fetchCatalogProductsByFilters,
+    resetFilters,
+} from '../../../../store/reducers/catalogFilterSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColectionFilter from './ColectionFilter/ColectionFilter';
 import ColorFilter from './ColorFilter/ColorFilter';
@@ -18,6 +23,12 @@ const Filters = ({
     showFilter: boolean;
     setShowFilter: Dispatch<SetStateAction<boolean>>;
 }) => {
+    const dispatch = useAppDispatch();
+    const { globalFiltersQuery, isFiltersActive } = useAppSelector(
+        (state) => state.catalogFilters
+    );
+    const { id } = globalFiltersQuery;
+
     useEffect(() => {
         const header = document.querySelector('.header') as HTMLElement;
         const headerCart = document.querySelector(
@@ -50,9 +61,15 @@ const Filters = ({
                 </div>
                 <ColorFilter />
                 <MaterialsFilter title="Матеріали" />
-                <RangeFilter minValue={20} maxValue={50} title="Ціна (грн)" />
+                <RangeFilter
+                    minValue={20}
+                    maxValue={12420}
+                    rangeMinName="priceMin"
+                    rangeMaxName="priceMax"
+                    title="Ціна (грн)"
+                />
                 <TypeOfProductFilter title="Вид" />
-                <RangeFilter minValue={36} maxValue={200} title="Ширина (см)" />
+                {/* <RangeFilter minValue={36} maxValue={200} title="Ширина (см)" />
                 <RangeFilter
                     minValue={36}
                     maxValue={200}
@@ -71,13 +88,13 @@ const Filters = ({
                 <RangeFilter
                     minValue={36}
                     maxValue={200}
-                    title="Ширина  спального місця (см)"
+                    title="Ширина спального місця (см)"
                 />
                 <RangeFilter
                     minValue={1}
                     maxValue={10}
                     title="Кількість шухляд (шт)"
-                />
+                /> */}
                 <TransformationFilter title="Механізм трансформації" />
                 <HeightRegulationFilter title="Регулювання за висотою" />
                 <LoadWeightFilter title="Навантаження (кг)" />
@@ -85,10 +102,37 @@ const Filters = ({
                 <SaleFilter title="SALE" />
             </div>
             <div className="buttons">
-                <button type="button" className="buttons__reject">
+                <button
+                    type="button"
+                    className="buttons__reject"
+                    onClick={() => {
+                        dispatch(resetFilters(false));
+                        dispatch(
+                            fetchCatalogProductsByFilters({
+                                ...globalFiltersQuery,
+                                extraEndpoint: 'catalog/category?',
+                                parentCategoryId: '',
+                            })
+                        );
+                    }}
+                >
                     скасувати
                 </button>
-                <button type="button" className="buttons__submit">
+                <button
+                    type="button"
+                    className="buttons__submit"
+                    onClick={() => {
+                        dispatch(resetFilters(true));
+                        dispatch(
+                            fetchCatalogProductsByFilters({
+                                ...globalFiltersQuery,
+                                extraEndpoint: 'filter?',
+                                parentCategoryId: id,
+                                id: '',
+                            })
+                        );
+                    }}
+                >
                     застосувати
                 </button>
             </div>
