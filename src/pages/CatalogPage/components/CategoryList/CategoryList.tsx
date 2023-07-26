@@ -5,61 +5,70 @@ import nextId from 'react-id-generator';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import './CategoryList.scss';
 import { useAppDispatch } from '../../../../hooks/hooks';
-import { updateCurrentProductCategory } from '../../../../store/reducers/catalogFilterSlice';
+import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
 
 const CategoryList = () => {
-    const currentCategory = useParams();
+    const { categoryName, subCategoryName } = useParams();
     const dispatch = useAppDispatch();
+
     const categories = [
         {
             name: 'Дивани',
             spriteIcon: 'sofas',
-            id: '64bd341e5cbf64609a807ffb',
+            id: '64c02276a433c341db700c40',
         },
         {
             name: 'Крісла',
             spriteIcon: 'arm-chairs',
-            id: '64bd34075cbf64609a807fd8',
+            id: '64c0225da433c341db700c1d',
         },
         {
             name: 'Комоди',
             spriteIcon: 'dressers',
-            id: '64bd348b5cbf64609a808087',
+            id: '64c022e9a433c341db700ccc',
         },
         {
             name: 'Декор',
             spriteIcon: 'decor',
-            id: '64bd34955cbf64609a808096',
+            id: '64c022f3a433c341db700cdb',
         },
         {
             name: 'Шафи',
             spriteIcon: 'cabinets',
-            id: '64bd34705cbf64609a808067',
+            id: '64c022cba433c341db700cac',
         },
         {
             name: 'Столи',
             spriteIcon: 'tables',
-            id: '64bd34505cbf64609a80803e',
+            id: '64c022aaa433c341db700c83',
         },
         {
             name: 'Стільці',
             spriteIcon: 'chairs',
-            id: '64bd33f75cbf64609a807fc3',
+            id: '64c0224ca433c341db700c08',
         },
         {
             name: 'Ліжка',
             spriteIcon: 'bed',
-            id: '64bd34915cbf64609a808090',
+            id: '64c022eea433c341db700cd5',
         },
     ];
 
     useEffect(() => {
-        categories.forEach((category) => {
-            if (currentCategory.name === category.name) {
-                dispatch(updateCurrentProductCategory(category.id));
-            }
-        });
-    }, [currentCategory]);
+        if (!subCategoryName) {
+            categories.forEach((category) => {
+                if (categoryName === category.name) {
+                    const { id } = category;
+                    dispatch(
+                        updateGlobalFiltersQuery({
+                            id,
+                            extraEndpoint: 'catalog/category?',
+                        })
+                    );
+                }
+            });
+        }
+    }, [categoryName, subCategoryName]);
 
     return (
         <section className="category">
@@ -75,7 +84,11 @@ const CategoryList = () => {
                                 <NavLink
                                     onClick={() =>
                                         dispatch(
-                                            updateCurrentProductCategory(id)
+                                            updateGlobalFiltersQuery({
+                                                id,
+                                                extraEndpoint:
+                                                    'catalog/category?',
+                                            })
                                         )
                                     }
                                     to={`/catalog/${name}`}

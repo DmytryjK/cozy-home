@@ -13,7 +13,11 @@ const routes = [
         element: <CategoryPage />,
     },
     {
-        path: '/catalog/:name',
+        path: '/catalog/:categoryName',
+        element: <CatalogPage />,
+    },
+    {
+        path: '/catalog/:categoryName/:subCategoryName',
         element: <CatalogPage />,
     },
     // {

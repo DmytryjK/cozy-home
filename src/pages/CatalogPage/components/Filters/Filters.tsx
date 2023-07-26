@@ -1,4 +1,10 @@
 import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import {
+    resetFilters,
+    showHideFilters,
+} from '../../../../store/reducers/catalogFilterSlice';
+import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColectionFilter from './ColectionFilter/ColectionFilter';
 import ColorFilter from './ColorFilter/ColorFilter';
@@ -10,17 +16,20 @@ import RangeFilter from './RangeFilter/RangeFilter';
 import SaleFilter from './SaleFilter/SaleFilter';
 import TransformationFilter from './TransformationFilter/TransformationFilter';
 import TypeOfProductFilter from './TypeOfProductFilter/TypeOfProductFilter';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { showHideFilters } from '../../../../store/reducers/catalogFilterSlice';
 
 const Filters = () => {
     const dispatch = useAppDispatch();
     const { isFiltersShowed } = useAppSelector((state) => state.catalogFilters);
+    const { globalFiltersQuery, isFiltersActive } = useAppSelector(
+        (state) => state.catalogFilters
+    );
+    const { id } = globalFiltersQuery;
     useEffect(() => {
         const header = document.querySelector('.header') as HTMLElement;
         const headerCart = document.querySelector(
             '.header__mobile_icons_cart-counter'
         ) as HTMLElement;
+
         if (isFiltersShowed) {
             header.style.paddingRight = `${userScrollWidth() + 16}px`;
             headerCart.style.right = `${userScrollWidth() + 52}px`;
@@ -49,9 +58,15 @@ const Filters = () => {
                 </div>
                 <ColorFilter />
                 <MaterialsFilter title="Матеріали" />
-                <RangeFilter minValue={20} maxValue={50} title="Ціна (грн)" />
+                <RangeFilter
+                    minValue={20}
+                    maxValue={60000}
+                    rangeMinName="priceMin"
+                    rangeMaxName="priceMax"
+                    title="Ціна (грн)"
+                />
                 <TypeOfProductFilter title="Вид" />
-                <RangeFilter minValue={36} maxValue={200} title="Ширина (см)" />
+                {/* <RangeFilter minValue={36} maxValue={200} title="Ширина (см)" />
                 <RangeFilter
                     minValue={36}
                     maxValue={200}
@@ -70,13 +85,13 @@ const Filters = () => {
                 <RangeFilter
                     minValue={36}
                     maxValue={200}
-                    title="Ширина  спального місця (см)"
+                    title="Ширина спального місця (см)"
                 />
                 <RangeFilter
                     minValue={1}
                     maxValue={10}
                     title="Кількість шухляд (шт)"
-                />
+                /> */}
                 <TransformationFilter title="Механізм трансформації" />
                 <HeightRegulationFilter title="Регулювання за висотою" />
                 <LoadWeightFilter title="Навантаження (кг)" />
@@ -84,10 +99,37 @@ const Filters = () => {
                 <SaleFilter title="SALE" />
             </div>
             <div className="buttons">
-                <button type="button" className="buttons__reject">
+                <button
+                    type="button"
+                    className="buttons__reject"
+                    onClick={() => {
+                        dispatch(resetFilters(false));
+                        dispatch(
+                            fetchCatalogProductsByFilters({
+                                ...globalFiltersQuery,
+                                extraEndpoint: 'catalog/category?',
+                                parentCategoryId: '',
+                            })
+                        );
+                    }}
+                >
                     скасувати
                 </button>
-                <button type="button" className="buttons__submit">
+                <button
+                    type="button"
+                    className="buttons__submit"
+                    onClick={() => {
+                        dispatch(resetFilters(true));
+                        dispatch(
+                            fetchCatalogProductsByFilters({
+                                ...globalFiltersQuery,
+                                extraEndpoint: 'filter?',
+                                parentCategoryId: id,
+                                id: '',
+                            })
+                        );
+                    }}
+                >
                     застосувати
                 </button>
             </div>

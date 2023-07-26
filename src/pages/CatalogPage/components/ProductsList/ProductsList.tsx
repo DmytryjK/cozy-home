@@ -1,36 +1,38 @@
 import React, { useEffect } from 'react';
 import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogFilterSlice';
+import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import renderServerData from '../../../../helpers/renderServerData';
 import './ProductsList.scss';
 
 const ProductsList = () => {
     const dispatch = useAppDispatch();
-    const {
-        catalogProducts,
-        error,
-        loading,
-        currentPage,
-        amountOfProducts,
-        currentProductCategoryId,
-    } = useAppSelector((state) => state.catalogFilters);
+    const { catalogProducts, error, loading } = useAppSelector(
+        (state) => state.catalogProducts
+    );
+    const endpoint = useAppSelector(
+        (state) => state.catalogFilters.globalFiltersQuery.extraEndpoint
+    );
+    const categoryId = useAppSelector(
+        (state) => state.catalogFilters.globalFiltersQuery.id
+    );
+    const currentPage = useAppSelector(
+        (state) => state.catalogFilters.globalFiltersQuery.page
+    );
 
     useEffect(() => {
-        const id = currentProductCategoryId;
-        const size = amountOfProducts;
-        const page = currentPage;
-        if (id) {
+        if (categoryId) {
             dispatch(
                 fetchCatalogProductsByFilters({
-                    id,
-                    page,
-                    size,
+                    extraEndpoint: endpoint,
+                    id: categoryId,
+                    page: currentPage,
+                    size: '12',
                 })
             );
         }
-    }, [currentProductCategoryId, currentPage, dispatch]);
+    }, [categoryId, currentPage]);
 
     const items = () => {
         return catalogProducts.map((catalogProduct) => {

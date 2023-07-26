@@ -3,6 +3,7 @@ import popularItemsReducer from './reducers/popularItemsSlice';
 import newItemsReducer from './reducers/newItemsSlice';
 import catalogFiltersReducer from './reducers/catalogFilterSlice';
 import productCardReducer from './reducers/productCardSlice';
+import catalogProductsReducer from './reducers/catalogProductsSlice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         newItems: newItemsReducer,
         catalogFilters: catalogFiltersReducer,
         productCard: productCardReducer,
+        catalogProducts: catalogProductsReducer,
     },
 });
 
