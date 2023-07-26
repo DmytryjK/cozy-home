@@ -22,7 +22,7 @@ const ProductsList = () => {
     );
 
     useEffect(() => {
-        if (categoryId) {
+        if (currentPage && categoryId) {
             dispatch(
                 fetchCatalogProductsByFilters({
                     extraEndpoint: endpoint,
@@ -32,7 +32,7 @@ const ProductsList = () => {
                 })
             );
         }
-    }, [categoryId, currentPage]);
+    }, [currentPage, categoryId]);
 
     const items = () => {
         return catalogProducts.map((catalogProduct) => {
