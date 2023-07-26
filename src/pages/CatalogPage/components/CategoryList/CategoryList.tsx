@@ -10,46 +10,47 @@ import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilt
 const CategoryList = () => {
     const { categoryName, subCategoryName } = useParams();
     const dispatch = useAppDispatch();
+
     const categories = [
         {
             name: 'Дивани',
             spriteIcon: 'sofas',
-            id: '64bd341e5cbf64609a807ffb',
+            id: '64c02276a433c341db700c40',
         },
         {
             name: 'Крісла',
             spriteIcon: 'arm-chairs',
-            id: '64bd34075cbf64609a807fd8',
+            id: '64c0225da433c341db700c1d',
         },
         {
             name: 'Комоди',
             spriteIcon: 'dressers',
-            id: '64bd348b5cbf64609a808087',
+            id: '64c022e9a433c341db700ccc',
         },
         {
             name: 'Декор',
             spriteIcon: 'decor',
-            id: '64bd34955cbf64609a808096',
+            id: '64c022f3a433c341db700cdb',
         },
         {
             name: 'Шафи',
             spriteIcon: 'cabinets',
-            id: '64bd34705cbf64609a808067',
+            id: '64c022cba433c341db700cac',
         },
         {
             name: 'Столи',
             spriteIcon: 'tables',
-            id: '64bd34505cbf64609a80803e',
+            id: '64c022aaa433c341db700c83',
         },
         {
             name: 'Стільці',
             spriteIcon: 'chairs',
-            id: '64bd33f75cbf64609a807fc3',
+            id: '64c0224ca433c341db700c08',
         },
         {
             name: 'Ліжка',
             spriteIcon: 'bed',
-            id: '64bd34915cbf64609a808090',
+            id: '64c022eea433c341db700cd5',
         },
     ];
 

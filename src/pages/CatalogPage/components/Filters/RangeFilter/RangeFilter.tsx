@@ -1,6 +1,6 @@
 import { useState, useEffect, MouseEvent } from 'react';
 import Slider from 'rc-slider';
-import { useAppDispatch } from '../../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
 import { updateGlobalFiltersQuery } from '../../../../../store/reducers/catalogFilterSlice';
 import 'rc-slider/assets/index.css';
 import './RangeFilter.scss';

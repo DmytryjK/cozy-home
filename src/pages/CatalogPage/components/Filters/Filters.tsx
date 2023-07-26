@@ -1,9 +1,7 @@
 import { SetStateAction, useEffect, Dispatch } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import {
-    fetchCatalogProductsByFilters,
-    resetFilters,
-} from '../../../../store/reducers/catalogFilterSlice';
+import { resetFilters } from '../../../../store/reducers/catalogFilterSlice';
+import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColectionFilter from './ColectionFilter/ColectionFilter';
 import ColorFilter from './ColorFilter/ColorFilter';
@@ -63,7 +61,7 @@ const Filters = ({
                 <MaterialsFilter title="Матеріали" />
                 <RangeFilter
                     minValue={20}
-                    maxValue={12420}
+                    maxValue={60000}
                     rangeMinName="priceMin"
                     rangeMaxName="priceMax"
                     title="Ціна (грн)"

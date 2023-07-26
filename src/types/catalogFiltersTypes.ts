@@ -7,7 +7,7 @@ export type GlobalFiltersQuery = {
     direction?: 'asc' | 'desc';
     parentCategoryId?: string;
     categoriesIds?: string;
-    colorsIds?: string;
+    colorsIds?: string[];
     materialsIds?: string;
     collectionsIds?: string;
     priceMin?: string;
