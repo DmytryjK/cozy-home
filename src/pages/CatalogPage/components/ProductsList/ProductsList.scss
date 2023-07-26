@@ -12,6 +12,10 @@
 			grid-column: 1 / 4;
 		}
 }
+
+	&__card {
+		display: flex;
+	}
 }
 
 @media (max-width: 1012px) {
@@ -34,7 +38,9 @@
 		&__list {
 
 			.catalog-products__card {
-				display: initial;
+				display: flex;
+				justify-content: initial;
+				align-items: initial;
 			}
 	}
 	}
