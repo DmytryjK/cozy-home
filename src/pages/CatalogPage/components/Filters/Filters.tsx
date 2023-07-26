@@ -1,6 +1,9 @@
-import { SetStateAction, useEffect, Dispatch } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { resetFilters } from '../../../../store/reducers/catalogFilterSlice';
+import {
+    resetFilters,
+    showHideFilters,
+} from '../../../../store/reducers/catalogFilterSlice';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColectionFilter from './ColectionFilter/ColectionFilter';
@@ -14,26 +17,20 @@ import SaleFilter from './SaleFilter/SaleFilter';
 import TransformationFilter from './TransformationFilter/TransformationFilter';
 import TypeOfProductFilter from './TypeOfProductFilter/TypeOfProductFilter';
 
-const Filters = ({
-    showFilter,
-    setShowFilter,
-}: {
-    showFilter: boolean;
-    setShowFilter: Dispatch<SetStateAction<boolean>>;
-}) => {
+const Filters = () => {
     const dispatch = useAppDispatch();
+    const { isFiltersShowed } = useAppSelector((state) => state.catalogFilters);
     const { globalFiltersQuery, isFiltersActive } = useAppSelector(
         (state) => state.catalogFilters
     );
     const { id } = globalFiltersQuery;
-
     useEffect(() => {
         const header = document.querySelector('.header') as HTMLElement;
         const headerCart = document.querySelector(
             '.header__mobile_icons_cart-counter'
         ) as HTMLElement;
 
-        if (showFilter) {
+        if (isFiltersShowed) {
             header.style.paddingRight = `${userScrollWidth() + 16}px`;
             headerCart.style.right = `${userScrollWidth() + 52}px`;
             document.body.style.paddingRight = `${userScrollWidth()}px`;
@@ -42,11 +39,11 @@ const Filters = ({
             headerCart.style.right = '52px';
             document.body.style.paddingRight = '0';
         }
-        document.body.style.overflow = showFilter ? 'hidden' : 'visible';
-    }, [showFilter]);
+        document.body.style.overflow = isFiltersShowed ? 'hidden' : 'visible';
+    }, [isFiltersShowed]);
 
     return (
-        <div className={`filters-wrapper ${showFilter ? 'active' : ''}`}>
+        <div className={`filters-wrapper ${isFiltersShowed ? 'active' : ''}`}>
             <div className="filters">
                 <div className="filters__navigation">
                     <h2 className="filters__title-mobile">Фільтри</h2>
@@ -54,7 +51,9 @@ const Filters = ({
                         className="filters__close-filter"
                         type="button"
                         aria-label="закрити фільтри"
-                        onClick={() => setShowFilter(!showFilter)}
+                        onClick={() =>
+                            dispatch(showHideFilters(!isFiltersShowed))
+                        }
                     />
                 </div>
                 <ColorFilter />

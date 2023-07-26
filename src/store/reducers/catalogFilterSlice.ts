@@ -6,6 +6,7 @@ interface CatalogFilterState {
     catalogFilterParametersDto: CatalogFilterParametersType | null;
     globalFiltersQuery: GlobalFiltersQuery;
     isFiltersActive: boolean;
+    isFiltersShowed: boolean;
 }
 
 const initialState: CatalogFilterState = {
@@ -15,6 +16,7 @@ const initialState: CatalogFilterState = {
         size: '12',
     },
     isFiltersActive: false,
+    isFiltersShowed: false,
 };
 
 export const catalogFilterSlice = createSlice({
@@ -33,9 +35,12 @@ export const catalogFilterSlice = createSlice({
         resetFilters(state, action: PayloadAction<boolean>) {
             state.isFiltersActive = action.payload;
         },
+        showHideFilters(state, action: PayloadAction<boolean>) {
+            state.isFiltersShowed = action.payload;
+        },
     },
 });
 
-export const { updateGlobalFiltersQuery, resetFilters } =
+export const { updateGlobalFiltersQuery, resetFilters, showHideFilters } =
     catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;
