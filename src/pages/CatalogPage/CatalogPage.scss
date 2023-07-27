@@ -1,3 +1,4 @@
+@use '../../style/variables.scss' as *;
 .catalog-content {
     position: relative;
     .container_content-wrapper {
@@ -17,7 +18,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-						margin-bottom: 20px;
+            margin-bottom: 20px;
         }
         &__filters-btn {
             position: relative;
@@ -27,6 +28,9 @@
             margin-right: 14px;
             border: none;
             background-color: transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: $dark-color;
             cursor: pointer;
             &:after {
                 content: '';

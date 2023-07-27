@@ -113,7 +113,7 @@ const Filters = () => {
                         );
                     }}
                 >
-                    скасувати
+                    <span className="buttons__reject_text">скасувати</span>
                 </button>
                 <button
                     type="button"
