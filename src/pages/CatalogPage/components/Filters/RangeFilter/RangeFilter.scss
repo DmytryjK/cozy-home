@@ -65,3 +65,18 @@
         }
     }
 }
+
+@media screen and (max-width: 768px) {
+    .filter__range-slider {
+        .rc-slider-handle {
+            width: 14px;
+            height: 14px;
+            margin-top: -6px;
+            &-dragging {
+                width: 16px !important;
+                height: 16px !important;
+                margin-top: -7px;
+            }
+        } 
+    }
+}

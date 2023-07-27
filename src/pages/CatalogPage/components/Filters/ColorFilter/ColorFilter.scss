@@ -38,6 +38,7 @@
         appearance: none;
         width: 16px;
         height: 16px;
+        border-radius: 50%;
         &:checked ~ .filter__input-custom > .filter__input-checked {
             display: block;
         }
@@ -57,7 +58,7 @@
         height: 16px;
         border-radius: 50%;
         overflow: hidden;
-        transform: translateY(-50%);
+        transform: translateY(-50%) translateZ(0);
         cursor: pointer;
     }
     &__input-checked, &__input-default {
