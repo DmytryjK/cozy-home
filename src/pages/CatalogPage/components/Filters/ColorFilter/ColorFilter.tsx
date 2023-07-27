@@ -41,7 +41,7 @@ const ColorFilter = () => {
                 <li className="filter__item filter__item_color black">
                     <label className="filter__label">
                         <input
-                            className="filter__input"
+                            className="filter__input filter__input_color"
                             type="checkbox"
                             value="64c02249a433c341db700bfa"
                             onChange={handleInputChange}
@@ -56,7 +56,7 @@ const ColorFilter = () => {
                 <li className="filter__item filter__item_color grey">
                     <label className="filter__label">
                         <input
-                            className="filter__input"
+                            className="filter__input filter__input_color"
                             type="checkbox"
                             value="64c02248a433c341db700bf9"
                             onChange={handleInputChange}
@@ -71,7 +71,7 @@ const ColorFilter = () => {
                 <li className="filter__item filter__item_color orange">
                     <label className="filter__label">
                         <input
-                            className="filter__input"
+                            className="filter__input filter__input_color"
                             type="checkbox"
                             value="64c02249a433c341db700bfb"
                             onChange={handleInputChange}

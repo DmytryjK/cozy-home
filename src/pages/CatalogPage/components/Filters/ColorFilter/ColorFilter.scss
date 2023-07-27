@@ -38,7 +38,6 @@
         appearance: none;
         width: 16px;
         height: 16px;
-        border-radius: 50%;
         &:checked ~ .filter__input-custom > .filter__input-checked {
             display: block;
         }
@@ -47,6 +46,9 @@
         }
         &:focus {
             outline-color: $dark-color;
+        }
+        &_color {
+            border-radius: 50% !important;
         }
     }
     &__input-custom {
