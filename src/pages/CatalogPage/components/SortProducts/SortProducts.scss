@@ -70,6 +70,7 @@
     }
     &__input {
         appearance: none;
+        position: absolute;
         &:checked ~ .sort__label {
             background-color: $dark-white;
         }
