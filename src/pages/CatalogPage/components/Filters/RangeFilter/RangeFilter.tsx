@@ -96,9 +96,9 @@ const RangeFilter = (props: Props) => {
                             onKeyDown={(e) =>
                                 e.code === 'Enter' && handleMinInputCheck()
                             }
-                            onChange={(e) =>
-                                setFirstInputValue(+e.target.value || '')
-                            }
+                            onChange={(e) => {
+                                setFirstInputValue(+e.target.value || '');
+                            }}
                             value={firstInputValue}
                         />
                     </label>

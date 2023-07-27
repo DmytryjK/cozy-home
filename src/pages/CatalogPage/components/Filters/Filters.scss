@@ -128,6 +128,7 @@
         &:after, &:before {
             content: '';
             display: block;
+            border: none;
             position: absolute;
             background-color:$light-grey;
             top: 50%;
@@ -136,12 +137,15 @@
         &:after {
             right: 0;
             width: 12px;
-            height: 2px;
+            height: 1px;
         }
         &:before {
-            right: 5px;
-            width: 2px;
+            right: 5.5px;
+            width: 1px;
             height: 12px;
+        }
+        &:focus {
+            outline: none;
         }
     }
     &.active {
