@@ -28,6 +28,9 @@
         &:checked ~ .filter__label-title {
             font-weight: 600 !important;
         }
+        &:focus {
+            outline-color: $dark-color;
+        }
     }
     &__input_custom-input {
         position: absolute;
