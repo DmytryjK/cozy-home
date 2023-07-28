@@ -28,7 +28,7 @@
             -moz-appearance:textfield;
             &:focus {
                 border: 1px solid $dark-color;
-                box-shadow: 0px 0px 0px 0.5px $dark-color;
+                box-shadow: 0px 0px 0px 1px $dark-color;
                 outline: none;
             }
             &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {

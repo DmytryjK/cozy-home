@@ -1,5 +1,4 @@
 export type GlobalFiltersQuery = {
-    extraEndpoint?: string;
     id?: string;
     page?: string;
     size?: string;

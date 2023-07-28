@@ -7,6 +7,10 @@ import useFetch from '../../../hooks/useFetch';
 import renderServerData from '../../../helpers/renderServerData';
 import { useAppDispatch } from '../../../hooks/hooks';
 import { updateGlobalFiltersQuery } from '../../../store/reducers/catalogFilterSlice';
+import {
+    fetchCatalogProductsBySubCategories,
+    fetchCatalogProductsByCategories,
+} from '../../../store/reducers/catalogProductsSlice';
 import { SubCategoryType } from '../Header';
 
 type Props = {
@@ -30,14 +34,14 @@ const DropdownMenu = (props: Props) => {
                     <li className="dropdown-menu__list_title">
                         <NavLink
                             to={`/catalog/${name}`}
-                            onClick={() =>
+                            onClick={() => {
                                 dispatch(
                                     updateGlobalFiltersQuery({
-                                        extraEndpoint: 'catalog/category?',
                                         id,
                                     })
-                                )
-                            }
+                                );
+                                dispatch(fetchCatalogProductsByCategories(id));
+                            }}
                         >
                             {name}
                         </NavLink>
@@ -54,15 +58,18 @@ const DropdownMenu = (props: Props) => {
                                     >
                                         <NavLink
                                             to={`/catalog/${name}/${subName}`}
-                                            onClick={() =>
+                                            onClick={() => {
                                                 dispatch(
                                                     updateGlobalFiltersQuery({
-                                                        extraEndpoint:
-                                                            'catalog/category/category?',
                                                         id: subId,
                                                     })
-                                                )
-                                            }
+                                                );
+                                                dispatch(
+                                                    fetchCatalogProductsBySubCategories(
+                                                        subId
+                                                    )
+                                                );
+                                            }}
                                         >
                                             {subName}
                                         </NavLink>

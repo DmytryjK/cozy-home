@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import renderServerData from '../../../../helpers/renderServerData';
 import './ProductsList.scss';
@@ -11,28 +10,6 @@ const ProductsList = () => {
     const { catalogProducts, error, loading } = useAppSelector(
         (state) => state.catalogProducts
     );
-    const endpoint = useAppSelector(
-        (state) => state.catalogFilters.globalFiltersQuery.extraEndpoint
-    );
-    const categoryId = useAppSelector(
-        (state) => state.catalogFilters.globalFiltersQuery.id
-    );
-    const currentPage = useAppSelector(
-        (state) => state.catalogFilters.globalFiltersQuery.page
-    );
-
-    useEffect(() => {
-        if (currentPage && categoryId) {
-            dispatch(
-                fetchCatalogProductsByFilters({
-                    extraEndpoint: endpoint,
-                    id: categoryId,
-                    page: currentPage,
-                    size: '12',
-                })
-            );
-        }
-    }, [currentPage, categoryId]);
 
     const items = () => {
         return catalogProducts.map((catalogProduct) => {
