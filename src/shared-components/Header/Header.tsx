@@ -12,6 +12,13 @@ export type SubCategoryType = {
     name: string;
 };
 
+interface Tab {
+    id: number;
+    title: string;
+    style: string;
+    url: string;
+}
+
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
@@ -20,6 +27,36 @@ const Header = () => {
 
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
+
+    const navTabs: Tab[] = [
+        { id: 1, title: 'Головна', style: 'header__nav_list_link', url: '/' },
+        {
+            id: 2,
+            title: 'Каталог',
+            style: `header__nav_list_link link-dropdown ${
+                isDropdownOpen ? 'li-dropdown-active' : ''
+            }`,
+            url: '/catalog',
+        },
+        {
+            id: 3,
+            title: 'Доставка і оплата',
+            style: 'header__nav_list_link',
+            url: '/payment',
+        },
+        {
+            id: 4,
+            title: 'Контакти',
+            style: 'header__nav_list_link',
+            url: '/contacts',
+        },
+        {
+            id: 5,
+            title: 'Про нас',
+            style: 'header__nav_list_link',
+            url: '/about',
+        },
+    ];
 
     useEffect(() => {
         if (isSearchOpen) setIsBurgerOpen(false);
@@ -85,27 +122,11 @@ const Header = () => {
                 <div className="header__nav">
                     <nav>
                         <ul className="header__nav_list">
-                            <li className="active">
-                                <a href="/">Головна</a>
-                            </li>
-                            <li
-                                className={`li-dropdown ${
-                                    isDropdownOpen ? 'li-dropdown-active' : ''
-                                }`}
-                            >
-                                <a className="link-dropdown" href="/catalog">
-                                    Каталог
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/">Доставка і оплата</a>
-                            </li>
-                            <li>
-                                <a href="/">Контакти</a>
-                            </li>
-                            <li>
-                                <a href="/">Про нас</a>
-                            </li>
+                            {navTabs.map((tab) => (
+                                <li key={tab.id} className={tab.style}>
+                                    <NavLink to={tab.url}>{tab.title}</NavLink>
+                                </li>
+                            ))}
                         </ul>
                     </nav>
                 </div>
@@ -195,4 +216,5 @@ const Header = () => {
         </div>
     );
 };
+
 export default Header;
