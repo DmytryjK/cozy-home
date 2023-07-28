@@ -9,6 +9,10 @@ import useFetch from '../../../hooks/useFetch';
 import { useAppDispatch } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
 import { updateGlobalFiltersQuery } from '../../../store/reducers/catalogFilterSlice';
+import {
+    fetchCatalogProductsByCategories,
+    fetchCatalogProductsBySubCategories,
+} from '../../../store/reducers/catalogProductsSlice';
 
 type Props = {
     isScrolled: boolean;
@@ -54,9 +58,11 @@ const BurgerMenu = (props: Props) => {
                                 onClick={() => {
                                     dispatch(
                                         updateGlobalFiltersQuery({
-                                            extraEndpoint: 'catalog/category?',
                                             id,
                                         })
+                                    );
+                                    dispatch(
+                                        fetchCatalogProductsByCategories(id)
                                     );
                                     setIsOpen(false);
                                 }}
@@ -100,10 +106,13 @@ const BurgerMenu = (props: Props) => {
                                             onClick={() => {
                                                 dispatch(
                                                     updateGlobalFiltersQuery({
-                                                        extraEndpoint:
-                                                            'catalog/category/category?',
                                                         id: subId,
                                                     })
+                                                );
+                                                dispatch(
+                                                    fetchCatalogProductsBySubCategories(
+                                                        subId
+                                                    )
                                                 );
                                                 setIsOpen(false);
                                             }}

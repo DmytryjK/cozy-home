@@ -4,7 +4,10 @@ import {
     resetFilters,
     showHideFilters,
 } from '../../../../store/reducers/catalogFilterSlice';
-import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
+import {
+    fetchCatalogProductsByCategories,
+    fetchCatalogProductsByFilters,
+} from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColectionFilter from './ColectionFilter/ColectionFilter';
 import ColorFilter from './ColorFilter/ColorFilter';
@@ -104,13 +107,7 @@ const Filters = () => {
                     className="buttons__reject"
                     onClick={() => {
                         dispatch(resetFilters(false));
-                        dispatch(
-                            fetchCatalogProductsByFilters({
-                                ...globalFiltersQuery,
-                                extraEndpoint: 'catalog/category?',
-                                parentCategoryId: '',
-                            })
-                        );
+                        dispatch(fetchCatalogProductsByCategories(id || ''));
                     }}
                 >
                     <span className="buttons__reject_text">скасувати</span>
@@ -123,9 +120,8 @@ const Filters = () => {
                         dispatch(
                             fetchCatalogProductsByFilters({
                                 ...globalFiltersQuery,
-                                extraEndpoint: 'filter?',
-                                parentCategoryId: id,
                                 id: '',
+                                parentCategoryId: id,
                             })
                         );
                     }}

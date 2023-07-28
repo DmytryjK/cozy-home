@@ -3,9 +3,9 @@ import { useParams, NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import renderServerData from '../../../../helpers/renderServerData';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
-import { useAppDispatch } from '../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
-import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
+import { fetchCatalogProductsByCategories } from '../../../../store/reducers/catalogProductsSlice';
 import useFetch from '../../../../hooks/useFetch';
 import './CategoryList.scss';
 import { Loading } from '../../../../types/types';
@@ -68,13 +68,13 @@ const CategoryList = () => {
                     dispatch(
                         updateGlobalFiltersQuery({
                             id,
-                            extraEndpoint: 'catalog/category?',
                         })
                     );
+                    dispatch(fetchCatalogProductsByCategories(id));
                 }
             });
         }
-    }, [categoryName, data]);
+    }, [categoryName, data, subCategoryName]);
 
     const renderedItems = () => {
         return data.map((category) => {
@@ -92,7 +92,6 @@ const CategoryList = () => {
                             dispatch(
                                 updateGlobalFiltersQuery({
                                     id,
-                                    extraEndpoint: 'catalog/category?',
                                 })
                             )
                         }
