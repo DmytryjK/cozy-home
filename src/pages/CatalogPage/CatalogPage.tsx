@@ -10,10 +10,9 @@ import OpenFiltersButton from './components/OpenFiltersButton/OpenFiltersButton'
 import './CatalogPage.scss';
 
 const CatalogPage = () => {
-    const crumbs = ['Головна', 'Каталог', 'Дивани'];
     return (
         <>
-            <Breadcrumbs crumbs={crumbs} />
+            <Breadcrumbs />
             <CategoryList />
             <section className="catalog-content">
                 <div className="container container_content-wrapper ">
