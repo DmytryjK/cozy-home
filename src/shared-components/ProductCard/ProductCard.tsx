@@ -38,7 +38,11 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
 
     return (
         <div className="product-card">
-            <button className="product-card__favorite-btn" type="button">
+            <button
+                className="product-card__favorite-btn"
+                type="button"
+                aria-label="додати в обране"
+            >
                 <svg
                     className="product-card__favorite-icon"
                     width="21"
@@ -79,7 +83,11 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                         </span>
                     </span>
                 </div>
-                <button className="purchase-block__cart-btn" type="button">
+                <button
+                    className="purchase-block__cart-btn"
+                    type="button"
+                    aria-label="додати в кошик"
+                >
                     <svg
                         className="purchase-block__cart-icon"
                         width="20"
