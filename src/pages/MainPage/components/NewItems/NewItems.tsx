@@ -45,6 +45,7 @@ const NewItems: FC = () => {
                         <button
                             className="new-items__prev-btn"
                             type="button"
+                            aria-label="попередній слайд"
                             ref={prevRef}
                         >
                             <svg
@@ -67,6 +68,7 @@ const NewItems: FC = () => {
                         <button
                             className="new-items__next-btn"
                             type="button"
+                            aria-label="наступний слайд"
                             ref={nextRef}
                         >
                             <svg
