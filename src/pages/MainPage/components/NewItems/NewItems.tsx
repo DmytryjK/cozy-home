@@ -21,9 +21,9 @@ const NewItems: FC = () => {
         return products.map((product) => {
             return (
                 <SwiperSlide key={nextId('card-of-newItems')}>
-                    <li className="new-items__card">
+                    <div className="new-items__card">
                         <ProductCard product={product} />
-                    </li>
+                    </div>
                 </SwiperSlide>
             );
         });
@@ -40,7 +40,7 @@ const NewItems: FC = () => {
                 </div>
             </div>
             <div className="container container_pd-right-off">
-                <ul className="new-items__cards">
+                <div className="new-items__cards">
                     <Swiper
                         className="new-items__slider"
                         spaceBetween={32}
@@ -89,7 +89,7 @@ const NewItems: FC = () => {
                             content: items,
                         })}
                     </Swiper>
-                </ul>
+                </div>
             </div>
         </section>
     );
