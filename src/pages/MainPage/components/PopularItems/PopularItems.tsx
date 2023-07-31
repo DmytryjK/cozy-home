@@ -68,9 +68,9 @@ const PopularItems: FC = () => {
         for (let i = 0; i < Math.min(products.length, 8); i += 1) {
             content.push(
                 <SwiperSlide key={nextId('card-all-categories')}>
-                    <li className="popular-items__products-item">
+                    <div className="popular-items__products-item">
                         <ProductCard product={products[i]} />
-                    </li>
+                    </div>
                 </SwiperSlide>
             );
         }
@@ -109,7 +109,7 @@ const PopularItems: FC = () => {
                 </nav>
             </div>
             <div className="container container_pd-right-off">
-                <ul
+                <div
                     key={nextId('category-block')}
                     className="popular-items__products active"
                 >
@@ -192,7 +192,7 @@ const PopularItems: FC = () => {
                             content: items,
                         })}
                     </Swiper>
-                </ul>
+                </div>
             </div>
         </section>
     );
