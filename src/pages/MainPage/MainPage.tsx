@@ -5,7 +5,7 @@ import Promo from './components/Promo/Promo';
 import './MainPage.scss';
 import CatalogueBlock from './components/CatalogueBlock/CatalogueBlock';
 import InformationBlock from './components/InformationBlock/InformationBlock';
-import ArrowUp from '../CatalogPage/components/ArrowUp/ArrowUp';
+import ArrowUp from '../../shared-components/ArrowUp';
 
 const MainPage = () => {
     return (

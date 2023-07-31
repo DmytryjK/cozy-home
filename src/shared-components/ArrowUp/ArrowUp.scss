@@ -1,4 +1,4 @@
-@use '../../../../style/variables.scss' as *;
+@use '../../style/variables.scss' as *;
 .arrow-up {
     position: fixed;
     display: flex;
@@ -17,19 +17,15 @@
     transition: 0.1s ease-out opacity, 0.1s ease-out visibility;
     cursor: pointer;
     z-index: 999;
-    &:after {
-        content: '';
-        display: block;
-        width: 10px;
-        height: 21px;
-        background: url('../../../../assets/icons/arrow-up/arrow-up.svg') center center/cover no-repeat;
-        transition: 0.2s ease-out background-image;
-    }
     &:hover {
         background-color: $grey;
-        &:after {
-            background: url('../../../../assets/icons/arrow-up/arrow-up_hover.svg') center center/cover no-repeat;
+        .arrow-up__icon {
+            fill: $dark-white;
         }
+    }
+    &__icon {
+        fill: $grey;
+        transition: 0.2s ease-out fill;
     }
     &.active {
         opacity: 1;
