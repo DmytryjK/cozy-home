@@ -1,6 +1,7 @@
 @use '../../../../style/variables.scss' as *;
 .new-items {
-    margin-top: 130px;
+    // margin-top: 130px;
+    padding-top: 130px;
     &__top {
         display: flex;
         justify-content: space-between;
@@ -36,6 +37,24 @@
         .swiper-slide {
             height: auto;
         }
+    }
+
+    &__navigation{
+        display: flex;
+        gap: 10px;
+    }
+    &__prev-btn, &__next-btn {
+        background-color: transparent;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+    &__prev-icon, &__next-icon {
+        fill: $grey;
+    }
+
+    .swiper-button-disabled svg {
+        fill: $dark-white;
     }
 }
 

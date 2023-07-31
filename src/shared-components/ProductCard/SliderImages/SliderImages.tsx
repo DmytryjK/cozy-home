@@ -144,7 +144,6 @@ const SliderImages = (props: Props) => {
                 <Swiper
                     className="product-card__slider"
                     slidesPerView={1}
-                    navigation
                     allowTouchMove={false}
                     onSwiper={(swiper) => {
                         cardSliderRef.current = swiper as TSwiper;
