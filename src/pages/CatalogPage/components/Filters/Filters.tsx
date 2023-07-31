@@ -12,12 +12,10 @@ import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColectionFilter from './ColectionFilter/ColectionFilter';
 import ColorFilter from './ColorFilter/ColorFilter';
 import './Filters.scss';
-import HeightRegulationFilter from './HeightRegulationFilter/HeightRegulationFilter';
 import LoadWeightFilter from './LoadWeightFilter/LoadWeightFilter';
 import MaterialsFilter from './MaterialsFilter/MaterialsFilter';
 import RangeFilter from './RangeFilter/RangeFilter';
-import SaleFilter from './SaleFilter/SaleFilter';
-import TransformationFilter from './TransformationFilter/TransformationFilter';
+import BooleanFilter from './BooleanFilter/BooleanFilter';
 import TypeOfProductFilter from './TypeOfProductFilter/TypeOfProductFilter';
 
 const Filters = () => {
@@ -61,6 +59,9 @@ const Filters = () => {
                 </div>
                 <ColorFilter />
                 <MaterialsFilter title="Матеріали" />
+                <TypeOfProductFilter title="Вид" />
+                <LoadWeightFilter title="Навантаження (кг)" />
+                <ColectionFilter title="Колекція" />
                 <RangeFilter
                     minValue={20}
                     maxValue={60000}
@@ -68,7 +69,21 @@ const Filters = () => {
                     rangeMaxName="priceMax"
                     title="Ціна (грн)"
                 />
-                <TypeOfProductFilter title="Вид" />
+                <BooleanFilter
+                    title="Механізм трансформації"
+                    firstValue="Розкладний"
+                    secondValue="Не розкладний"
+                />
+                <BooleanFilter
+                    title="Регулювання за висотою"
+                    firstValue="Є регулювання"
+                    secondValue="Немає регулювання"
+                />
+                <BooleanFilter
+                    title="SALE"
+                    firstValue="Акції"
+                    secondValue="Усі товари"
+                />
                 {/* <RangeFilter minValue={36} maxValue={200} title="Ширина (см)" />
                 <RangeFilter
                     minValue={36}
@@ -95,11 +110,6 @@ const Filters = () => {
                     maxValue={10}
                     title="Кількість шухляд (шт)"
                 /> */}
-                <TransformationFilter title="Механізм трансформації" />
-                <HeightRegulationFilter title="Регулювання за висотою" />
-                <LoadWeightFilter title="Навантаження (кг)" />
-                <ColectionFilter title="Колекція" />
-                <SaleFilter title="SALE" />
             </div>
             <div className="buttons">
                 <button
