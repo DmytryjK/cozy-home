@@ -132,3 +132,28 @@
 		}
 	}
 }
+
+@media (max-width: 450px) {
+	.catalogue {
+		&__item {
+			height: 156px;
+		}
+		&__item:first-child, &__item:last-child{
+			height: 180px;
+		}
+		&__item_img {
+			object-fit: cover;
+		}
+	}
+}
+
+@media (max-width: 340px) {
+	.catalogue {
+		.item2, .item3 {
+			flex-basis: 47%;
+		}
+		.item4, .item5 {
+			flex-basis: 47%;
+		}
+	}
+}
