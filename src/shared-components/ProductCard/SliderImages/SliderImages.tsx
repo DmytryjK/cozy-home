@@ -199,6 +199,7 @@ const SliderImages = (props: Props) => {
                                         className={`product-card__color-checkbox ${name}`}
                                         type="radio"
                                         name={uniqIdForInputName}
+                                        aria-label={name}
                                         value={name}
                                         checked={
                                             currentColor === name ||
