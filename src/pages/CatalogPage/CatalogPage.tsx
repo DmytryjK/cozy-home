@@ -3,7 +3,7 @@ import Filters from './components/Filters/Filters';
 import SortProducts from './components/SortProducts/SortProducts';
 import SearchedQuantity from './components/SearchedQuantity/SearchedQuantity';
 import Pagination from './components/Pagination/Pagination';
-import ArrowUp from './components/ArrowUp/ArrowUp';
+import ArrowUp from '../../shared-components/ArrowUp';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductsList from './components/ProductsList/ProductsList';
 import OpenFiltersButton from './components/OpenFiltersButton/OpenFiltersButton';
