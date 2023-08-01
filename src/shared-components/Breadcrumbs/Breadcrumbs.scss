@@ -1,3 +1,4 @@
+@import '../../assets/fonts/fonts.scss';
 @import '../../style/variables.scss';
 
 .breadcrumbs {
@@ -11,8 +12,15 @@
 		&_item {
 			color: $light-grey;
 			position: relative;
+
+			&:last-child .active {
+				font-family: 'Montserrat';
+				color: $dark-color;
+				pointer-events: none;
+			}
 			
 			&_link {
+				font-family: 'Montserrat Alternates';
 				font-size: 14px;
 			}
 
