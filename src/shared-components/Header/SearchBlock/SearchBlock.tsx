@@ -33,6 +33,7 @@ const SearchBlock = (props: Props) => {
                     <button
                         type="button"
                         className="mobileSearch__block_closeIcon"
+                        aria-label="Close search"
                         onClick={() => setIsOpen(false)}
                     >
                         <svg width="12" height="12">

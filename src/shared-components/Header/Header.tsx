@@ -114,7 +114,7 @@ const Header = () => {
                         : '16px',
                 }}
             >
-                <a href="/" className="header__logo">
+                <a href="/" className="header__logo" aria-label="Home">
                     <svg className="header__logo_img">
                         <use href={`${headerSprite}#logo-icon`} />
                     </svg>
@@ -147,12 +147,12 @@ const Header = () => {
                     </label>
                 </div>
                 <div className="header__icons">
-                    <a href="/">
+                    <a href="/" aria-label="Open profile">
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#profile-icon`} />
                         </svg>
                     </a>
-                    <a href="/">
+                    <a href="/" aria-label="Open favorite">
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#favorite-icon`} />
                         </svg>
@@ -160,7 +160,7 @@ const Header = () => {
                             0
                         </span>
                     </a>
-                    <a href="/">
+                    <a href="/" aria-label="Open cart">
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#card-icon`} />
                         </svg>
@@ -171,6 +171,7 @@ const Header = () => {
                     <button
                         type="button"
                         className="header__mobile_icons_search_button"
+                        aria-label="Open search"
                         onClick={() => setIsSearchOpen(true)}
                     >
                         <svg
@@ -182,7 +183,7 @@ const Header = () => {
                         </svg>
                     </button>
                     <div>
-                        <a href="/">
+                        <a href="/" aria-label="Open cart">
                             <svg width="21" height="21">
                                 <use href={`${headerSprite}#card-icon`} />
                             </svg>
