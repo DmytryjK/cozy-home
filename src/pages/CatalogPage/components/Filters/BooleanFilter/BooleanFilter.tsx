@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import CustomFilter from '../CustomFilter/CustomFilter';
+import { useState } from 'react';
 import '../CheckboxStyles.scss';
 
 type TransformationFilterProps = {
