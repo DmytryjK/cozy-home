@@ -14,7 +14,7 @@
 	color: $grey;
 	opacity: 0;
 	visibility: hidden;
-	transition: opacity .2s ease-out, visibility .2s ease-out;
+	transition: opacity 0s ease-out, visibility 0s ease-out;
 
 	.container {
 		display: flex;
@@ -60,6 +60,7 @@
 .dropdown-menu-active {
 	opacity: 1;
 	visibility: visible;
+	transition: opacity .2s ease-out, visibility .2s ease-out;
 }
 
 .content-loader {
