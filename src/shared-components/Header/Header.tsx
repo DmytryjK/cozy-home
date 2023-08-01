@@ -114,7 +114,7 @@ const Header = () => {
                         : '16px',
                 }}
             >
-                <a href="/" className="header__logo" aria-label="Home">
+                <a href="/" className="header__logo" aria-label="CozyHome">
                     <svg className="header__logo_img">
                         <use href={`${headerSprite}#logo-icon`} />
                     </svg>

@@ -1,5 +1,4 @@
 import './Footer.scss';
-import footerLogo from '../../assets/icons/header/logo-icon.svg';
 import visaIcon from '../../assets/icons/footer/visa-icon.svg';
 import mastercardIcon from '../../assets/icons/footer/mastercard-icon.svg';
 import footerSprites from '../../assets/icons/footer/footer-sprite.svg';
@@ -9,11 +8,11 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer__wrapper">
                 <div className="container">
-                    <img
-                        className="footer__logo"
-                        src={footerLogo}
-                        alt="CozyHome"
-                    />
+                    <a href="/" aria-label="CozyHome">
+                        <svg className="footer__logo">
+                            <use href={`${footerSprites}#footer-logo`} />
+                        </svg>
+                    </a>
                     <div className="footer__nav_wrapper">
                         <div className="footer__list footer__list_order1">
                             <h2 className="footer__list_title">
