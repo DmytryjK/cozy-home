@@ -33,7 +33,9 @@
 		&_content {
 			position: absolute;
 			display: flex;
+			justify-content: flex-start;
 			align-items: center;
+			min-width: 160px;
 			background-color: $white;
 			bottom: 16px;
 			left: 0;
@@ -60,17 +62,6 @@
 		.container {
 			justify-content: center;
 			gap: 12px;
-		}
-	
-		&__item {
-
-			&_content {
-	
-				&_title {
-					font-size: 12px;
-					bottom: 22px;
-				}
-			}
 		}
 
 		.item1 {
@@ -105,6 +96,18 @@
 
 @media (max-width: 760px) {
 	.catalogue {
+	
+		&__item {
+
+			&_content {
+				min-width: 120px;
+	
+				&_title {
+					font-size: 12px;
+					bottom: 22px;
+				}
+			}
+		}
 
 		.item1 {
 			flex-basis: 100%;
