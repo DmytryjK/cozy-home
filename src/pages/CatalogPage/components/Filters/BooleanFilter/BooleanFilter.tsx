@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import CustomFilter from '../CustomFilter/CustomFilter';
+import { useState } from 'react';
 import '../CheckboxStyles.scss';
 
 type TransformationFilterProps = {
@@ -14,6 +13,8 @@ const TransformationFilter = ({
     secondValue,
 }: TransformationFilterProps) => {
     const [isActive, setIsActive] = useState<boolean>(true);
+    const [currentValue, setCurrentValue] = useState<string | null>(null);
+
     return (
         <div className={`filter ${isActive ? 'active' : ''}`}>
             <button
@@ -29,6 +30,14 @@ const TransformationFilter = ({
                         <input
                             className="filter__input"
                             type="radio"
+                            value={firstValue}
+                            checked={currentValue === firstValue}
+                            onChange={(e) => {}}
+                            onClick={() =>
+                                setCurrentValue((prev) =>
+                                    prev === firstValue ? null : firstValue
+                                )
+                            }
                             name={title}
                         />
                         <span className="filter__input_custom-input">
@@ -45,6 +54,14 @@ const TransformationFilter = ({
                         <input
                             className="filter__input"
                             type="radio"
+                            value={secondValue}
+                            checked={currentValue === secondValue}
+                            onChange={(e) => {}}
+                            onClick={() =>
+                                setCurrentValue((prev) =>
+                                    prev === secondValue ? null : secondValue
+                                )
+                            }
                             name={title}
                         />
                         <span className="filter__input_custom-input">
