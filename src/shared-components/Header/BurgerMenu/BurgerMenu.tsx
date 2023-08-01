@@ -29,6 +29,18 @@ const BurgerMenu = (props: Props) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 960) {
+                setIsOpen(false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
         document.body.style.paddingRight = isOpen
             ? `${userScrollWidth()}px`
             : '0';
@@ -43,15 +55,16 @@ const BurgerMenu = (props: Props) => {
                     key={nextId('burger-menu-category')}
                     className="burger-menu__list"
                 >
-                    <button
-                        type="button"
-                        onClick={() =>
-                            setSelectedCategory(
-                                id === selectedCategory ? null : id
-                            )
-                        }
-                    >
-                        <li className="burger-menu__list_item">
+                    <li>
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setSelectedCategory(
+                                    id === selectedCategory ? null : id
+                                )
+                            }
+                            className="burger-menu__list_item"
+                        >
                             <NavLink
                                 to={`/catalog/${name}`}
                                 className="burger-menu__list_item_title"
@@ -82,8 +95,8 @@ const BurgerMenu = (props: Props) => {
                                     href={`${headerSprite}#burger-menu-arrow`}
                                 />
                             </svg>
-                        </li>
-                    </button>
+                        </button>
+                    </li>
                     {selectedCategory && (
                         <ul
                             className={
@@ -133,6 +146,7 @@ const BurgerMenu = (props: Props) => {
         <>
             <button
                 type="button"
+                aria-label="Burger button"
                 onClick={() => (isOpen ? setIsOpen(false) : setIsOpen(true))}
                 className={`menu-btn ${isOpen ? 'menu-btn__active' : ''}`}
             >
