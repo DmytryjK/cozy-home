@@ -126,6 +126,7 @@ const Footer = () => {
                                 <li className="footer__icons_item">
                                     <a
                                         className="footer__icons_link"
+                                        aria-label="Visit Telegram"
                                         href="https://web.telegram.org/a/"
                                         target="_blank"
                                         rel="noreferrer"
@@ -144,6 +145,7 @@ const Footer = () => {
                                 <li className="footer__icons_item">
                                     <a
                                         className="footer__icons_link"
+                                        aria-label="Visit Instagram"
                                         href="https://www.instagram.com"
                                         target="_blank"
                                         rel="noreferrer"
@@ -162,6 +164,7 @@ const Footer = () => {
                                 <li className="footer__icons_item">
                                     <a
                                         className="footer__icons_link"
+                                        aria-label="Visit Facebook"
                                         href="https://www.facebook.com"
                                         target="_blank"
                                         rel="noreferrer"
