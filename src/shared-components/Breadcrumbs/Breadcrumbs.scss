@@ -14,13 +14,11 @@
 			position: relative;
 
 			&:last-child .active {
-				font-family: 'Montserrat';
 				color: $dark-color;
 				pointer-events: none;
 			}
 			
 			&_link {
-				font-family: 'Montserrat Alternates';
 				font-size: 14px;
 			}
 
