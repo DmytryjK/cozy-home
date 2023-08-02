@@ -13,26 +13,26 @@ type CategoryType = {
     id: string;
     name: string;
     categoryImagePath: string;
-    categoryNameDtos: { id: string; name: string }[];
+    categoryDtos: { id: string; name: string }[];
 };
 
 const Category = ({ category }: { category: CategoryType }) => {
     const [isSubCategoriesHide, setIsSubCategoriesHide] = useState<boolean>();
-    const { id, name, categoryImagePath, categoryNameDtos } = category;
+    const { id, name, categoryImagePath, categoryDtos } = category;
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (categoryNameDtos.length > 3) {
+        if (categoryDtos.length > 3) {
             setIsSubCategoriesHide(true);
         } else {
             setIsSubCategoriesHide(false);
         }
-    }, [categoryNameDtos]);
+    }, [categoryDtos]);
 
     const showHideBtn = () => {
         let button;
-        if (categoryNameDtos.length > 3) {
+        if (categoryDtos.length > 3) {
             button = (
                 <li className="category-card__subcategories-btn">
                     <button
@@ -92,7 +92,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                         isSubCategoriesHide ? 'hide' : ''
                     }`}
                 >
-                    {categoryNameDtos.map((subcategory) => {
+                    {categoryDtos.map((subcategory) => {
                         const subName = subcategory.name;
                         const subId = subcategory.id;
                         return (
