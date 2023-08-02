@@ -13,6 +13,7 @@ import { Loading } from '../../../../types/types';
 type CategoriesType = {
     name: string;
     id: string;
+    spriteIcon: string;
 };
 
 const CategoryList = () => {
@@ -24,41 +25,6 @@ const CategoryList = () => {
         data,
     }: { loading: Loading; error: null | unknown; data: CategoriesType[] } =
         useFetch('category');
-
-    const spriteIcons = [
-        {
-            name: 'Дивани',
-            spriteIcon: 'sofas',
-        },
-        {
-            name: 'Крісла',
-            spriteIcon: 'arm-chairs',
-        },
-        {
-            name: 'Комоди',
-            spriteIcon: 'dressers',
-        },
-        {
-            name: 'Декор',
-            spriteIcon: 'decor',
-        },
-        {
-            name: 'Шафи',
-            spriteIcon: 'cabinets',
-        },
-        {
-            name: 'Столи',
-            spriteIcon: 'tables',
-        },
-        {
-            name: 'Стільці',
-            spriteIcon: 'chairs',
-        },
-        {
-            name: 'Ліжка',
-            spriteIcon: 'bed',
-        },
-    ];
 
     useEffect(() => {
         if (data.length > 0 && !subCategoryName) {
@@ -78,10 +44,7 @@ const CategoryList = () => {
 
     const renderedItems = () => {
         return data.map((category) => {
-            const { name, id } = category;
-            const currentIcon = spriteIcons.filter(
-                (item) => item.name === name
-            );
+            const { name, id, spriteIcon } = category;
             return (
                 <li
                     className="category-list__item"
@@ -107,9 +70,7 @@ const CategoryList = () => {
                             width="44"
                             height="44"
                         >
-                            <use
-                                href={`${categoriesSprite}#${currentIcon[0].spriteIcon}`}
-                            />
+                            <use href={`${categoriesSprite}#${spriteIcon}`} />
                         </svg>
                         <span className="category-list__title">{name}</span>
                     </NavLink>

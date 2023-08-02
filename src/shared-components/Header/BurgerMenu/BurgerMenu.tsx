@@ -105,7 +105,7 @@ const BurgerMenu = (props: Props) => {
                                     : 'burger-menu__list_subItems'
                             }
                         >
-                            {category.categoryNameDtos.map(
+                            {category.categoryDtos.map(
                                 (subCategory: SubCategoryType) => {
                                     const subName = subCategory.name;
                                     const subId = subCategory.id;

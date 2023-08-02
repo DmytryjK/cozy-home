@@ -47,7 +47,7 @@ const DropdownMenu = (props: Props) => {
                         </NavLink>
                     </li>
                     <ul className="dropdown-menu__list_items">
-                        {category.categoryNameDtos.map(
+                        {category.categoryDtos.map(
                             (subCategory: SubCategoryType) => {
                                 const subId = subCategory.id;
                                 const subName = subCategory.name;
