@@ -35,3 +35,4 @@ export interface CatalogFilterParametersType {
 }
 
 export type Loading = 'idle' | 'pending' | 'succeeded' | 'failed';
+export type ErrorType = unknown | null;

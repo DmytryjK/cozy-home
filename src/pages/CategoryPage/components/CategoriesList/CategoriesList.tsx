@@ -1,11 +1,13 @@
 import nextId from 'react-id-generator';
 import Category from '../Category/Category';
 import renderServerData from '../../../../helpers/renderServerData';
-import useFetch from '../../../../hooks/useFetch';
+import { useAppSelector } from '../../../../hooks/hooks';
 import './CategoriesList.scss';
 
 const CategoriesList = () => {
-    const { loading, error, data } = useFetch('category/categories');
+    const { loading, error, data } = useAppSelector(
+        (store) => store.categories
+    );
 
     const renderedCategories = () => {
         return data.map((category) => {
