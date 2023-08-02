@@ -3,9 +3,8 @@ import './DropdownMenu.scss';
 import '../Header.scss';
 import nextId from 'react-id-generator';
 import { NavLink } from 'react-router-dom';
-import useFetch from '../../../hooks/useFetch';
 import renderServerData from '../../../helpers/renderServerData';
-import { useAppDispatch } from '../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { updateGlobalFiltersQuery } from '../../../store/reducers/catalogFilterSlice';
 import {
     fetchCatalogProductsBySubCategories,
@@ -20,7 +19,9 @@ type Props = {
 
 const DropdownMenu = (props: Props) => {
     const { isOpen, handleMouseOut } = props;
-    const { loading, error, data } = useFetch('category/categories');
+    const { error, loading, data } = useAppSelector(
+        (state) => state.categories
+    );
     const dispatch = useAppDispatch();
 
     const renderedCategories = () => {

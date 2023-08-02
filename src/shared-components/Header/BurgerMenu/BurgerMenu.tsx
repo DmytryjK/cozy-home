@@ -5,8 +5,7 @@ import userScrollWidth from '../../../utils/userScrollWidth';
 import './BurgerMenu.scss';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 import renderServerData from '../../../helpers/renderServerData';
-import useFetch from '../../../hooks/useFetch';
-import { useAppDispatch } from '../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
 import { updateGlobalFiltersQuery } from '../../../store/reducers/catalogFilterSlice';
 import {
@@ -25,7 +24,9 @@ const BurgerMenu = (props: Props) => {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
-    const { loading, error, data } = useFetch('category/categories');
+    const { error, loading, data } = useAppSelector(
+        (state) => state.categories
+    );
     const dispatch = useAppDispatch();
 
     useEffect(() => {

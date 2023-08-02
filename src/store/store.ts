@@ -4,6 +4,7 @@ import productsSliderReducer from './reducers/productsSliderSlice';
 import catalogFiltersReducer from './reducers/catalogFilterSlice';
 import productCardReducer from './reducers/productCardSlice';
 import catalogProductsReducer from './reducers/catalogProductsSlice';
+import categoriesReducer from './reducers/categoriesSlice';
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         catalogFilters: catalogFiltersReducer,
         productCard: productCardReducer,
         catalogProducts: catalogProductsReducer,
+        categories: categoriesReducer,
     },
 });
 

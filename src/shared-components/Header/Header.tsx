@@ -1,5 +1,7 @@
 import { useState, MouseEvent, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
@@ -24,9 +26,9 @@ const Header = () => {
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
+    const dispatch = useAppDispatch();
 
     const navTabs: Tab[] = [
         { id: 1, title: 'Головна', style: 'header__nav_list_link', url: '/' },
@@ -57,6 +59,10 @@ const Header = () => {
             url: '/about',
         },
     ];
+
+    useEffect(() => {
+        dispatch(fetchCategoriesWithSubcategories());
+    }, []);
 
     useEffect(() => {
         if (isSearchOpen) setIsBurgerOpen(false);
