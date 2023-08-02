@@ -140,7 +140,7 @@ const SliderImages = (props: Props) => {
 
     return (
         <>
-            <a className="product-card__slider-link" href="/">
+            <a className="product-card__slider-link" href={`/${name}`}>
                 <Swiper
                     className="product-card__slider"
                     slidesPerView={1}

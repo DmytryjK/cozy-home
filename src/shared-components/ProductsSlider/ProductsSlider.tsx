@@ -1,28 +1,26 @@
-import { useEffect, FC, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Navigation } from 'swiper';
 import nextId from 'react-id-generator';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { fetchNewItemsAllProducts } from '../../../../store/reducers/newItemsSlice';
-import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
-import renderServerData from '../../../../helpers/renderServerData';
+import ProductCard from '../ProductCard/ProductCard';
+import renderServerData from '../../helpers/renderServerData';
+import { Loading, ProductCardType } from '../../types/types';
 import 'swiper/css/navigation';
-import './NewItems.scss';
+import './ProductsSlider.scss';
 
-const NewItems: FC = () => {
-    const { products, loading, error } = useAppSelector(
-        (state) => state.newItems
-    );
-    const dispatch = useAppDispatch();
+type Props = {
+    title: string;
+    products: ProductCardType[];
+    loading: Loading;
+    error: null | unknown;
+};
 
+const ProductsSlider = (props: Props) => {
+    const { products, loading, error, title } = props;
     const [isSliderRendered, setisSliderRendered] = useState<boolean>(false);
     const swiper = useSwiper();
     const prevRef = useRef(null);
     const nextRef = useRef(null);
-
-    useEffect(() => {
-        dispatch(fetchNewItemsAllProducts());
-    }, [dispatch]);
 
     const items = () => {
         return products.map((product) => {
@@ -40,7 +38,7 @@ const NewItems: FC = () => {
         <section className="new-items">
             <div className="container">
                 <div className="new-items__top">
-                    <h2 className="new-items__title">Новинки</h2>
+                    <h2 className="new-items__title">{title}</h2>
                     <div className="new-items__navigation">
                         <button
                             className="new-items__prev-btn"
@@ -153,4 +151,4 @@ const NewItems: FC = () => {
     );
 };
 
-export default NewItems;
+export default ProductsSlider;
