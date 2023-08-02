@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import popularItemsReducer from './reducers/popularItemsSlice';
-import newItemsReducer from './reducers/newItemsSlice';
+import productsSliderReducer from './reducers/productsSliderSlice';
 import catalogFiltersReducer from './reducers/catalogFilterSlice';
 import productCardReducer from './reducers/productCardSlice';
 import catalogProductsReducer from './reducers/catalogProductsSlice';
@@ -8,7 +8,7 @@ import catalogProductsReducer from './reducers/catalogProductsSlice';
 export const store = configureStore({
     reducer: {
         popularItems: popularItemsReducer,
-        newItems: newItemsReducer,
+        productsSlider: productsSliderReducer,
         catalogFilters: catalogFiltersReducer,
         productCard: productCardReducer,
         catalogProducts: catalogProductsReducer,
