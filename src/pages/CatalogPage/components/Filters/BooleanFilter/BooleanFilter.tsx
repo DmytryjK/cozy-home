@@ -2,13 +2,13 @@ import { useState } from 'react';
 import '../CheckboxStyles.scss';
 
 type TransformationFilterProps = {
-    title: string;
+    filterTitle: string;
     firstValue: string;
     secondValue: string;
 };
 
 const TransformationFilter = ({
-    title,
+    filterTitle,
     firstValue,
     secondValue,
 }: TransformationFilterProps) => {
@@ -22,7 +22,7 @@ const TransformationFilter = ({
                 type="button"
                 onClick={() => setIsActive(!isActive)}
             >
-                {title}
+                {filterTitle}
             </button>
             <ul className="filter__list">
                 <li className="filter__item">
@@ -38,7 +38,7 @@ const TransformationFilter = ({
                                     prev === firstValue ? null : firstValue
                                 )
                             }
-                            name={title}
+                            name={filterTitle}
                         />
                         <span className="filter__input_custom-input">
                             <span className="filter__input_custom-input_default" />
@@ -62,7 +62,7 @@ const TransformationFilter = ({
                                     prev === secondValue ? null : secondValue
                                 )
                             }
-                            name={title}
+                            name={filterTitle}
                         />
                         <span className="filter__input_custom-input">
                             <span className="filter__input_custom-input_default" />

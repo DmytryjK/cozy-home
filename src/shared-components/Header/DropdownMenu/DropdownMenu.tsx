@@ -38,7 +38,7 @@ const DropdownMenu = (props: Props) => {
                             onClick={() => {
                                 dispatch(
                                     updateGlobalFiltersQuery({
-                                        id,
+                                        parentCategoryId: id,
                                     })
                                 );
                                 dispatch(fetchCatalogProductsByCategories(id));
@@ -62,7 +62,7 @@ const DropdownMenu = (props: Props) => {
                                             onClick={() => {
                                                 dispatch(
                                                     updateGlobalFiltersQuery({
-                                                        id: subId,
+                                                        subCategories: [subId],
                                                     })
                                                 );
                                                 dispatch(

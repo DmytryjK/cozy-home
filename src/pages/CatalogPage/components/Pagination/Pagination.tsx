@@ -11,20 +11,20 @@ const Pagination = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const dispatch = useAppDispatch();
-    const { id } = useAppSelector(
-        (state) => state.catalogFilters.globalFiltersQuery
+    const id = useAppSelector(
+        (state) => state.catalogFilters.globalFiltersQuery.parentCategoryId
     );
 
     useEffect(() => {
         if (currentPage !== 1) {
             setCurrentPage(1);
-            dispatch(updateGlobalFiltersQuery({ page: '0' }));
+            // dispatch(updateGlobalFiltersQuery());
         }
     }, [id]);
 
     useEffect(() => {
         const updatedPage = (currentPage - 1).toString();
-        dispatch(updateGlobalFiltersQuery({ page: updatedPage }));
+        // dispatch(updateGlobalFiltersQuery());
     }, [currentPage]);
 
     const getDots = () => {

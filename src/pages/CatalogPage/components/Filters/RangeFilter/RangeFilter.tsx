@@ -8,14 +8,16 @@ import './RangeFilter.scss';
 type Props = {
     minValue: number;
     maxValue: number;
-    title: string;
+    filterTitle: string;
     rangeMinName: string;
     rangeMaxName: string;
 };
 
 const RangeFilter = (props: Props) => {
-    const { minValue, maxValue, title, rangeMinName, rangeMaxName } = props;
-    const [isActive, setIsActive] = useState<boolean>(true);
+    const { minValue, maxValue, filterTitle, rangeMinName, rangeMaxName } =
+        props;
+    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isActive, setIsActive] = useState<boolean>(false);
     const [firstInputValue, setFirstInputValue] = useState<number | ''>(
         minValue
     );
@@ -26,17 +28,18 @@ const RangeFilter = (props: Props) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (firstInputValue && secondInputValue) {
+        if (isActive && firstInputValue && secondInputValue) {
             dispatch(
                 updateGlobalFiltersQuery({
-                    [rangeMinName]: firstInputValue.toString(),
-                    [rangeMaxName]: secondInputValue.toString(),
+                    [rangeMinName]: firstInputValue,
+                    [rangeMaxName]: secondInputValue,
                 })
             );
         }
-    }, [values]);
+    }, [values, isActive]);
 
     const handleMinInputCheck = () => {
+        setIsActive(true);
         if (firstInputValue === '') {
             setValues([values[0], values[1]]);
             setFirstInputValue(values[0]);
@@ -53,6 +56,7 @@ const RangeFilter = (props: Props) => {
     };
 
     const handleMaxInputCheck = () => {
+        setIsActive(true);
         if (secondInputValue === '') {
             setValues([values[0], values[1]]);
             setSecondInputValue(values[1]);
@@ -69,6 +73,7 @@ const RangeFilter = (props: Props) => {
     };
 
     const handlerChangeRange = (e: number | number[]) => {
+        setIsActive(true);
         if (Array.isArray(e)) {
             setFirstInputValue(e[0]);
             setSecondInputValue(e[1]);
@@ -77,13 +82,13 @@ const RangeFilter = (props: Props) => {
     };
 
     return (
-        <div className={`filter ${isActive ? 'active' : ''}`}>
+        <div className={`filter ${isOpen ? 'active' : ''}`}>
             <button
                 className="filter__button"
                 type="button"
-                onClick={() => setIsActive(!isActive)}
+                onClick={() => setIsOpen(!isOpen)}
             >
-                {title}
+                {filterTitle}
             </button>
             <div className="filter__list filter__list_range">
                 <fieldset className="filter__range-inputs">
