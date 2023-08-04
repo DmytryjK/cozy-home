@@ -85,18 +85,26 @@ const SliderImages = (props: Props) => {
             cardSliderRef.current.slideTo(index);
         }
 
-        const queryParams = new URLSearchParams({
-            productSkuCode: skuCode,
-            colorId: id,
-            preview: 'true',
-        });
         async function fetchData() {
             try {
                 setImageSrc('');
                 setLoading('idle');
+
                 const response = await fetch(
-                    `${API_BASE()}image/product_color?${queryParams}`
+                    `${API_BASE()}image/product_color`,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            productSkuCode: skuCode,
+                            hex: id,
+                            preview: true,
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+                    }
                 );
+
                 setLoading('pending');
                 const result: ImageSrc = await response.json();
 
@@ -195,11 +203,11 @@ const SliderImages = (props: Props) => {
                                     key={nextId('color-radio')}
                                 >
                                     <input
-                                        className={`product-card__color-checkbox ${name}`}
+                                        className="product-card__color-checkbox"
                                         type="radio"
                                         name={uniqIdForInputName}
                                         aria-label={name}
-                                        value={name}
+                                        value={id}
                                         checked={
                                             currentColor === name ||
                                             (!isColorChosen && index === 0)
@@ -209,7 +217,8 @@ const SliderImages = (props: Props) => {
                                         }
                                     />
                                     <span
-                                        className={`product-card__checked-checkbox ${name}`}
+                                        className="product-card__checked-checkbox"
+                                        style={{ backgroundColor: `${id}` }}
                                     />
                                 </label>
                             );
