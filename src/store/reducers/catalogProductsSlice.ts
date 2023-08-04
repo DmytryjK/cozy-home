@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
 import { GlobalFiltersQuery } from '../../types/catalogFiltersTypes';
+import { RootState } from '../store';
 import API_BASE from '../../utils/API_BASE';
 
 interface CatalogProductsState {
@@ -17,39 +18,37 @@ const initialState: CatalogProductsState = {
 
 export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByFilters',
-    async function (
-        globalFiltersQuery: GlobalFiltersQuery,
-        { rejectWithValue }
-    ) {
+    async function (_, { rejectWithValue, getState }) {
         try {
-            const cloneGlobalQuery = { ...globalFiltersQuery };
-            const queryParams = Object.entries(cloneGlobalQuery)
-                .filter((param) => {
+            const state = getState() as RootState;
+            const filtersQuery = state.catalogFilters.globalFiltersQuery;
+            const temporaryParams = Object.entries(filtersQuery).filter(
+                (param) => {
                     if (Array.isArray(param[1]) && param[1].length <= 0) {
                         return false;
                     }
                     if (typeof param[1] === 'string' && param[1].trim() === '')
                         return false;
                     return true;
-                })
-                .map(
-                    ([key, value]: [key: string, value: string | string[]]) => {
-                        let result;
-                        if (Array.isArray(value)) {
-                            result = `${encodeURIComponent(key)}=${value
-                                .map((item) => `${encodeURIComponent(item)}`)
-                                .join(',')}`;
-                        } else {
-                            result = `${encodeURIComponent(
-                                key
-                            )}=${encodeURIComponent(value)}`;
-                        }
-                        return result;
-                    }
-                )
-                .join('&');
+                }
+            );
+
+            const filtersQueryFiltered: GlobalFiltersQuery = {};
+            temporaryParams.forEach((item) => {
+                const key = item[0];
+                const value = item[1];
+                filtersQueryFiltered[key] = value;
+            });
+
             const response = await fetch(
-                `${API_BASE()}product/filter?${queryParams}`
+                `${API_BASE()}product/filter?page=0&size=12`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ ...filtersQueryFiltered }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
             );
             const result = await response.json();
 
@@ -67,7 +66,7 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/catalog/category?id=${id}`
+                `${API_BASE()}product/catalog/category?parentId=${id}`
             );
 
             const result = await response.json();
@@ -86,7 +85,7 @@ export const fetchCatalogProductsBySubCategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/catalog/category/category?id=${id}`
+                `${API_BASE()}product/catalog/category?subCategoryId=${id}`
             );
 
             const result = await response.json();

@@ -4,7 +4,10 @@ import nextId from 'react-id-generator';
 import renderServerData from '../../../../helpers/renderServerData';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
+import {
+    updateGlobalFiltersQuery,
+    fetchFiltersOptionsByCategory,
+} from '../../../../store/reducers/catalogFilterSlice';
 import { fetchCatalogProductsByCategories } from '../../../../store/reducers/catalogProductsSlice';
 import useFetch from '../../../../hooks/useFetch';
 import './CategoryList.scss';
@@ -33,10 +36,16 @@ const CategoryList = () => {
                     const { id } = category;
                     dispatch(
                         updateGlobalFiltersQuery({
-                            id,
+                            parentCategoryId: id,
                         })
                     );
                     dispatch(fetchCatalogProductsByCategories(id));
+                    dispatch(
+                        fetchFiltersOptionsByCategory({
+                            parentCategoryId: id,
+                            size: 12,
+                        })
+                    );
                 }
             });
         }
@@ -54,7 +63,7 @@ const CategoryList = () => {
                         onClick={() =>
                             dispatch(
                                 updateGlobalFiltersQuery({
-                                    id,
+                                    parentCategoryId: id,
                                 })
                             )
                         }

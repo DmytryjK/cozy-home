@@ -58,7 +58,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                 onClick={() => {
                     dispatch(
                         updateGlobalFiltersQuery({
-                            id,
+                            parentCategoryId: id,
                         })
                     );
                     dispatch(fetchCatalogProductsByCategories(id));
@@ -79,7 +79,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                     onClick={() => {
                         dispatch(
                             updateGlobalFiltersQuery({
-                                id,
+                                parentCategoryId: id,
                             })
                         );
                         dispatch(fetchCatalogProductsByCategories(id));
@@ -106,7 +106,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                                     onClick={() => {
                                         dispatch(
                                             updateGlobalFiltersQuery({
-                                                id: subId,
+                                                subCategories: [subId],
                                             })
                                         );
                                         dispatch(

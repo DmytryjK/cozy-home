@@ -1,30 +1,52 @@
 import { useEffect } from 'react';
+import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     resetFilters,
     showHideFilters,
+    fetchFiltersOptionsByCategory,
+    fetchFiltersOptionsForFilteredProducts,
 } from '../../../../store/reducers/catalogFilterSlice';
 import {
     fetchCatalogProductsByCategories,
     fetchCatalogProductsByFilters,
 } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
-import ColectionFilter from './ColectionFilter/ColectionFilter';
 import ColorFilter from './ColorFilter/ColorFilter';
 import './Filters.scss';
-import LoadWeightFilter from './LoadWeightFilter/LoadWeightFilter';
-import MaterialsFilter from './MaterialsFilter/MaterialsFilter';
 import RangeFilter from './RangeFilter/RangeFilter';
 import BooleanFilter from './BooleanFilter/BooleanFilter';
-import TypeOfProductFilter from './TypeOfProductFilter/TypeOfProductFilter';
+import CheckboxesFilter from './CheckboxesFilter/CheckboxesFilter';
+import filtersData from './FiltersData';
+import renderServerData from '../../../../helpers/renderServerData';
 
 const Filters = () => {
     const dispatch = useAppDispatch();
-    const { isFiltersShowed } = useAppSelector((state) => state.catalogFilters);
-    const { globalFiltersQuery, isFiltersActive } = useAppSelector(
-        (state) => state.catalogFilters
+    const isFiltersShowed = useAppSelector(
+        (state) => state.catalogFilters.isFiltersShowed
     );
-    const { id } = globalFiltersQuery;
+    const filterOptions = useAppSelector(
+        (state) => state.catalogFilters.filterOptions
+    );
+    const loading = useAppSelector((state) => state.catalogFilters.loading);
+    const error = useAppSelector((state) => state.catalogFilters.error);
+    const id = useAppSelector(
+        (state) => state.catalogFilters.globalFiltersQuery.parentCategoryId
+    );
+
+    const filterLocalMap = filtersData();
+
+    useEffect(() => {
+        if (id) {
+            dispatch(
+                fetchFiltersOptionsByCategory({
+                    parentCategoryId: id,
+                    size: 12,
+                })
+            );
+        }
+    }, [dispatch]);
+
     useEffect(() => {
         const header = document.querySelector('.header') as HTMLElement;
         const headerCart = document.querySelector(
@@ -43,6 +65,78 @@ const Filters = () => {
         document.body.style.overflow = isFiltersShowed ? 'hidden' : 'visible';
     }, [isFiltersShowed]);
 
+    const renderedFilters = (): JSX.Element | JSX.Element[] | any => {
+        if (!filterOptions) return null;
+        const render = Object.keys(filterOptions)
+            .map((key: string) => {
+                let result;
+                if (!filterLocalMap[key]) return result;
+                const { type, title } = filterLocalMap[key];
+                if (type === 'colors') {
+                    result = (
+                        <ColorFilter
+                            key={nextId('color-filter')}
+                            filterTitle={title}
+                            colors={filterOptions[key]}
+                        />
+                    );
+                }
+                if (type === 'range') {
+                    const valueName = key.replace('Max', '');
+                    const minValueName = `${valueName}Min`;
+                    const maxValueName = `${valueName}Max`;
+                    const minValue = filterOptions[minValueName];
+                    const maxValue = filterOptions[maxValueName];
+
+                    if (maxValue && minValue && +maxValue > 0) {
+                        result = (
+                            <RangeFilter
+                                key={nextId('range-filter')}
+                                filterTitle={title}
+                                minValue={+minValue}
+                                maxValue={+maxValue}
+                                rangeMinName={minValueName}
+                                rangeMaxName={maxValueName}
+                            />
+                        );
+                    }
+                }
+                if (type === 'boolean' && filterOptions[key]) {
+                    const { option1, option2 } = filterLocalMap[key];
+                    result = (
+                        <BooleanFilter
+                            key={nextId('range-filter')}
+                            filterTitle={title}
+                            firstValue={option1 || ''}
+                            secondValue={option2 || ''}
+                        />
+                    );
+                }
+                if (type === 'checkboxes' && filterOptions[key]) {
+                    const checkboxesFilters = filterOptions[key] as Array<{
+                        id: string;
+                        name: string;
+                        countOfProducts: number;
+                    }>;
+                    const filteredCheckboxes = checkboxesFilters.filter(
+                        (filter) => filter.countOfProducts !== 0
+                    );
+                    if (filteredCheckboxes.length > 0) {
+                        result = (
+                            <CheckboxesFilter
+                                key={nextId('range-filter')}
+                                filterTitle={title}
+                                options={filteredCheckboxes}
+                            />
+                        );
+                    }
+                }
+                return result;
+            })
+            .filter((item) => item !== undefined);
+        return render || null;
+    };
+
     return (
         <div className={`filters-wrapper ${isFiltersShowed ? 'active' : ''}`}>
             <div className="filters">
@@ -57,59 +151,11 @@ const Filters = () => {
                         }
                     />
                 </div>
-                <ColorFilter />
-                <MaterialsFilter title="Матеріали" />
-                <TypeOfProductFilter title="Вид" />
-                <LoadWeightFilter title="Навантаження (кг)" />
-                <ColectionFilter title="Колекція" />
-                <RangeFilter
-                    minValue={20}
-                    maxValue={60000}
-                    rangeMinName="priceMin"
-                    rangeMaxName="priceMax"
-                    title="Ціна (грн)"
-                />
-                <BooleanFilter
-                    title="Механізм трансформації"
-                    firstValue="Розкладний"
-                    secondValue="Не розкладний"
-                />
-                <BooleanFilter
-                    title="Регулювання за висотою"
-                    firstValue="Є регулювання"
-                    secondValue="Немає регулювання"
-                />
-                <BooleanFilter
-                    title="SALE"
-                    firstValue="Акції"
-                    secondValue="Усі товари"
-                />
-                {/* <RangeFilter minValue={36} maxValue={200} title="Ширина (см)" />
-                <RangeFilter
-                    minValue={36}
-                    maxValue={200}
-                    title="Довжина (см)"
-                />
-                <RangeFilter
-                    minValue={1}
-                    maxValue={10}
-                    title="Кількість дверей (шт)"
-                />
-                <RangeFilter
-                    minValue={36}
-                    maxValue={200}
-                    title="Довжина спального місця (см)"
-                />
-                <RangeFilter
-                    minValue={36}
-                    maxValue={200}
-                    title="Ширина спального місця (см)"
-                />
-                <RangeFilter
-                    minValue={1}
-                    maxValue={10}
-                    title="Кількість шухляд (шт)"
-                /> */}
+                {renderServerData({
+                    error,
+                    loading,
+                    content: renderedFilters,
+                })}
             </div>
             <div className="buttons">
                 <button
@@ -127,13 +173,8 @@ const Filters = () => {
                     className="buttons__submit"
                     onClick={() => {
                         dispatch(resetFilters(true));
-                        dispatch(
-                            fetchCatalogProductsByFilters({
-                                ...globalFiltersQuery,
-                                id: '',
-                                parentCategoryId: id,
-                            })
-                        );
+                        dispatch(fetchCatalogProductsByFilters());
+                        dispatch(fetchFiltersOptionsForFilteredProducts());
                     }}
                 >
                     застосувати
