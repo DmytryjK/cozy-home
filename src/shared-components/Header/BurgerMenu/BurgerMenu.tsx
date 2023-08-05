@@ -120,7 +120,7 @@ const BurgerMenu = (props: Props) => {
                                             onClick={() => {
                                                 dispatch(
                                                     updateGlobalFiltersQuery({
-                                                        subCategories: [subId],
+                                                        subCategoryId: subId,
                                                     })
                                                 );
                                                 dispatch(

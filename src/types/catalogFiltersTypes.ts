@@ -5,17 +5,19 @@ export type GlobalFiltersQuery = {
         | number
         | boolean
         | { id: string; name: string; countOfProducts: number }[]
+        | null
         | undefined;
     countOfProducts?: number;
     countOfPages?: number;
     parentCategoryId?: string;
+    subCategoryId?: string;
     subCategories?: string[];
     colors?: string[];
     materials?: string[];
     collections?: string[];
-    sale?: boolean;
-    transformation?: boolean;
-    heightAdjustment?: boolean;
+    sale?: boolean | null;
+    transformation?: boolean | null;
+    heightAdjustment?: boolean | null;
     priceMin?: string;
     priceMax?: string;
     weightMin?: number;

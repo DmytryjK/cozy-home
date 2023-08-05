@@ -1,26 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { updateGlobalFiltersQuery } from '../../../../../store/reducers/catalogFilterSlice';
+import { useAppDispatch } from '../../../../../hooks/hooks';
 import '../CheckboxStyles.scss';
 
 type TransformationFilterProps = {
+    firstOption: { optionTitle: string; boolean: boolean };
+    secondOption: { optionTitle: string; boolean: boolean };
     filterTitle: string;
-    firstValue: string;
-    secondValue: string;
+    valueName: string;
 };
 
 const TransformationFilter = ({
     filterTitle,
-    firstValue,
-    secondValue,
+    firstOption,
+    secondOption,
+    valueName,
 }: TransformationFilterProps) => {
-    const [isActive, setIsActive] = useState<boolean>(true);
+    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isActive, setIsActive] = useState<boolean>(false);
     const [currentValue, setCurrentValue] = useState<string | null>(null);
+    const [buleanValue, setBuleanValue] = useState<boolean | null>(null);
+    const firstOptionTitle = firstOption.optionTitle;
+    const secondOptionTitle = secondOption.optionTitle;
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (currentValue === null) {
+            setBuleanValue(null);
+        } else if (currentValue === firstOptionTitle) {
+            setBuleanValue(firstOption.boolean);
+        } else {
+            setBuleanValue(secondOption.boolean);
+        }
+    }, [currentValue, isActive]);
+
+    useEffect(() => {
+        if (!isActive) return;
+        dispatch(
+            updateGlobalFiltersQuery({
+                [valueName]: buleanValue,
+            })
+        );
+    }, [buleanValue]);
 
     return (
-        <div className={`filter ${isActive ? 'active' : ''}`}>
+        <div className={`filter ${isOpen ? 'active' : ''}`}>
             <button
                 className="filter__button"
                 type="button"
-                onClick={() => setIsActive(!isActive)}
+                onClick={() => setIsOpen(!isOpen)}
             >
                 {filterTitle}
             </button>
@@ -30,14 +58,17 @@ const TransformationFilter = ({
                         <input
                             className="filter__input"
                             type="radio"
-                            value={firstValue}
-                            checked={currentValue === firstValue}
+                            value={firstOptionTitle}
+                            checked={currentValue === firstOptionTitle}
                             onChange={(e) => {}}
-                            onClick={() =>
+                            onClick={() => {
+                                setIsActive(true);
                                 setCurrentValue((prev) =>
-                                    prev === firstValue ? null : firstValue
-                                )
-                            }
+                                    prev === firstOptionTitle
+                                        ? null
+                                        : firstOptionTitle
+                                );
+                            }}
                             name={filterTitle}
                         />
                         <span className="filter__input_custom-input">
@@ -45,7 +76,7 @@ const TransformationFilter = ({
                             <span className="filter__input_custom-input_checked" />
                         </span>
                         <span className="filter__label-title">
-                            {firstValue}
+                            {firstOptionTitle}
                         </span>
                     </label>
                 </li>
@@ -54,14 +85,17 @@ const TransformationFilter = ({
                         <input
                             className="filter__input"
                             type="radio"
-                            value={secondValue}
-                            checked={currentValue === secondValue}
+                            value={secondOptionTitle}
+                            checked={currentValue === secondOptionTitle}
                             onChange={(e) => {}}
-                            onClick={() =>
+                            onClick={() => {
+                                setIsActive(true);
                                 setCurrentValue((prev) =>
-                                    prev === secondValue ? null : secondValue
-                                )
-                            }
+                                    prev === secondOptionTitle
+                                        ? null
+                                        : secondOptionTitle
+                                );
+                            }}
                             name={filterTitle}
                         />
                         <span className="filter__input_custom-input">
@@ -69,7 +103,7 @@ const TransformationFilter = ({
                             <span className="filter__input_custom-input_checked" />
                         </span>
                         <span className="filter__label-title">
-                            {secondValue}
+                            {secondOptionTitle}
                         </span>
                     </label>
                 </li>

@@ -27,20 +27,49 @@ const initialState: CatalogFilterState = {
 
 export const fetchFiltersOptionsByCategory = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsByCategory',
-    async function (
-        {
-            parentCategoryId,
-            size = 12,
-        }: { parentCategoryId: string; size: number },
-        { rejectWithValue }
-    ) {
+    async function (parentCategoryId: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=${size}&page=0`,
+                `${API_BASE()}product/filter/parameters?size=12&page=0`,
                 {
                     method: 'POST',
                     body: JSON.stringify({
                         parentCategoryId,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) throw new Error('something went wrong');
+
+            return result;
+        } catch (error: unknown) {
+            return rejectWithValue(error);
+        }
+    }
+);
+
+export const fetchFiltersOptionsBySubCategory = createAsyncThunk(
+    'catalogFilter/fetchFiltersOptionsBySubCategory',
+    async function (
+        {
+            parentCategoryId,
+            subCategoryId,
+        }: { parentCategoryId: string; subCategoryId: string },
+        { rejectWithValue }
+    ) {
+        try {
+            const response = await fetch(
+                `${API_BASE()}product/filter/parameters?size=12&page=0`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        parentCategoryId,
+                        subCategories: [subCategoryId],
                     }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
@@ -118,6 +147,12 @@ export const catalogFilterSlice = createSlice({
                 ...action.payload,
             };
         },
+        resetGlobalFiltersQueryByCategory(
+            state,
+            action: PayloadAction<string>
+        ) {
+            state.globalFiltersQuery.parentCategoryId = action.payload;
+        },
         resetFilters(state, action: PayloadAction<boolean>) {
             state.isFiltersActive = action.payload;
         },
@@ -165,9 +200,31 @@ export const catalogFilterSlice = createSlice({
                 state.error = action.payload;
             }
         );
+        builder.addCase(fetchFiltersOptionsBySubCategory.pending, (state) => {
+            state.loading = 'pending';
+            state.error = null;
+        });
+        builder.addCase(
+            fetchFiltersOptionsBySubCategory.fulfilled,
+            (state, action: PayloadAction<FilterOptions>) => {
+                state.loading = 'succeeded';
+                state.filterOptions = action.payload;
+            }
+        );
+        builder.addCase(
+            fetchFiltersOptionsBySubCategory.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loading = 'failed';
+                state.error = action.payload;
+            }
+        );
     },
 });
 
-export const { updateGlobalFiltersQuery, resetFilters, showHideFilters } =
-    catalogFilterSlice.actions;
+export const {
+    updateGlobalFiltersQuery,
+    resetGlobalFiltersQueryByCategory,
+    resetFilters,
+    showHideFilters,
+} = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;

@@ -4,8 +4,8 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     resetFilters,
     showHideFilters,
-    fetchFiltersOptionsByCategory,
     fetchFiltersOptionsForFilteredProducts,
+    fetchFiltersOptionsByCategory,
 } from '../../../../store/reducers/catalogFilterSlice';
 import {
     fetchCatalogProductsByCategories,
@@ -37,17 +37,6 @@ const Filters = () => {
     const filterLocalMap = filtersData();
 
     useEffect(() => {
-        if (id) {
-            dispatch(
-                fetchFiltersOptionsByCategory({
-                    parentCategoryId: id,
-                    size: 12,
-                })
-            );
-        }
-    }, [dispatch]);
-
-    useEffect(() => {
         const header = document.querySelector('.header') as HTMLElement;
         const headerCart = document.querySelector(
             '.header__mobile_icons_cart-counter'
@@ -72,6 +61,7 @@ const Filters = () => {
                 let result;
                 if (!filterLocalMap[key]) return result;
                 const { type, title } = filterLocalMap[key];
+
                 if (type === 'colors') {
                     result = (
                         <ColorFilter
@@ -103,12 +93,15 @@ const Filters = () => {
                 }
                 if (type === 'boolean' && filterOptions[key]) {
                     const { option1, option2 } = filterLocalMap[key];
+                    if (option1 === undefined || option2 === undefined)
+                        return result;
                     result = (
                         <BooleanFilter
-                            key={nextId('range-filter')}
+                            key={nextId('boolean-filter')}
                             filterTitle={title}
-                            firstValue={option1 || ''}
-                            secondValue={option2 || ''}
+                            firstOption={option1}
+                            secondOption={option2}
+                            valueName={key}
                         />
                     );
                 }
@@ -118,22 +111,28 @@ const Filters = () => {
                         name: string;
                         countOfProducts: number;
                     }>;
-                    const filteredCheckboxes = checkboxesFilters.filter(
-                        (filter) => filter.countOfProducts !== 0
-                    );
-                    if (filteredCheckboxes.length > 0) {
+                    if (checkboxesFilters.length > 0) {
                         result = (
                             <CheckboxesFilter
-                                key={nextId('range-filter')}
+                                key={nextId('checkboxes-filter')}
                                 filterTitle={title}
-                                options={filteredCheckboxes}
+                                options={checkboxesFilters}
+                                valueName={key}
                             />
                         );
                     }
                 }
                 return result;
             })
-            .filter((item) => item !== undefined);
+            .filter((item) => item !== undefined)
+            .sort((a, b) => {
+                if (a?.props.filterTitle === filterLocalMap.colors.title)
+                    return -1;
+                if (b?.props.filterTitle === filterLocalMap.colors.title)
+                    return 1;
+                return 0;
+            });
+
         return render || null;
     };
 
@@ -151,11 +150,12 @@ const Filters = () => {
                         }
                     />
                 </div>
-                {renderServerData({
+                {/* {renderServerData({
                     error,
                     loading,
                     content: renderedFilters,
-                })}
+                })} */}
+                {renderedFilters()}
             </div>
             <div className="buttons">
                 <button
@@ -164,6 +164,7 @@ const Filters = () => {
                     onClick={() => {
                         dispatch(resetFilters(false));
                         dispatch(fetchCatalogProductsByCategories(id || ''));
+                        dispatch(fetchFiltersOptionsByCategory(id || ''));
                     }}
                 >
                     <span className="buttons__reject_text">скасувати</span>

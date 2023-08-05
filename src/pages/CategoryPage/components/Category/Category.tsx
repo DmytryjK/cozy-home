@@ -1,7 +1,10 @@
 import nextId from 'react-id-generator';
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
+import {
+    updateGlobalFiltersQuery,
+    fetchFiltersOptionsBySubCategory,
+} from '../../../../store/reducers/catalogFilterSlice';
 import {
     fetchCatalogProductsBySubCategories,
     fetchCatalogProductsByCategories,
@@ -19,7 +22,6 @@ type CategoryType = {
 const Category = ({ category }: { category: CategoryType }) => {
     const [isSubCategoriesHide, setIsSubCategoriesHide] = useState<boolean>();
     const { id, name, categoryImagePath, categoryDtos } = category;
-
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -106,6 +108,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                                     onClick={() => {
                                         dispatch(
                                             updateGlobalFiltersQuery({
+                                                subCategoryId: subId,
                                                 subCategories: [subId],
                                             })
                                         );
@@ -113,6 +116,12 @@ const Category = ({ category }: { category: CategoryType }) => {
                                             fetchCatalogProductsBySubCategories(
                                                 subId
                                             )
+                                        );
+                                        dispatch(
+                                            fetchFiltersOptionsBySubCategory({
+                                                parentCategoryId: id,
+                                                subCategoryId: subId,
+                                            })
                                         );
                                     }}
                                 >
