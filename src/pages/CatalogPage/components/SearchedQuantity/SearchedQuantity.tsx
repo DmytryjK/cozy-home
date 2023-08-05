@@ -11,8 +11,7 @@ const SearchedQuantity = () => {
         let result = `${number}`;
         if (number % 10 === 1 && number % 100 !== 11) {
             result += ` ${wordForms[0]}`;
-        }
-        if (
+        } else if (
             [2, 3, 4].includes(number % 10) &&
             ![12, 13, 14].includes(number % 100)
         ) {
@@ -20,6 +19,7 @@ const SearchedQuantity = () => {
         } else {
             result += ` ${wordForms[2]}`;
         }
+
         return result;
     };
 
