@@ -4,12 +4,7 @@ import '../Header.scss';
 import nextId from 'react-id-generator';
 import { NavLink } from 'react-router-dom';
 import renderServerData from '../../../helpers/renderServerData';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { updateGlobalFiltersQuery } from '../../../store/reducers/catalogFilterSlice';
-import {
-    fetchCatalogProductsBySubCategories,
-    fetchCatalogProductsByCategories,
-} from '../../../store/reducers/catalogProductsSlice';
+import { useAppSelector } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
 
 type Props = {
@@ -22,7 +17,6 @@ const DropdownMenu = (props: Props) => {
     const { error, loading, data } = useAppSelector(
         (state) => state.categories
     );
-    const dispatch = useAppDispatch();
 
     const renderedCategories = () => {
         return data.map((category) => {
@@ -33,19 +27,7 @@ const DropdownMenu = (props: Props) => {
                     className="dropdown-menu__list"
                 >
                     <li className="dropdown-menu__list_title">
-                        <NavLink
-                            to={`/catalog/${name}`}
-                            onClick={() => {
-                                dispatch(
-                                    updateGlobalFiltersQuery({
-                                        parentCategoryId: id,
-                                    })
-                                );
-                                dispatch(fetchCatalogProductsByCategories(id));
-                            }}
-                        >
-                            {name}
-                        </NavLink>
+                        <NavLink to={`/catalog/${name}`}>{name}</NavLink>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         {category.categoryDtos.map(
@@ -59,18 +41,6 @@ const DropdownMenu = (props: Props) => {
                                     >
                                         <NavLink
                                             to={`/catalog/${name}/${subName}`}
-                                            onClick={() => {
-                                                dispatch(
-                                                    updateGlobalFiltersQuery({
-                                                        subCategoryId: subId,
-                                                    })
-                                                );
-                                                dispatch(
-                                                    fetchCatalogProductsBySubCategories(
-                                                        subId
-                                                    )
-                                                );
-                                            }}
                                         >
                                             {subName}
                                         </NavLink>

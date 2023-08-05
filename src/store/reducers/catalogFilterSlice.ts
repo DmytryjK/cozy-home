@@ -1,15 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-    GlobalFiltersQuery,
-    FilterOptions,
-} from '../../types/catalogFiltersTypes';
+import { FiltersBody, FilterOptions } from '../../types/catalogFiltersTypes';
 import API_BASE from '../../utils/API_BASE';
 import { ErrorType, Loading } from '../../types/types';
 import { RootState } from '../store';
 
 interface CatalogFilterState {
     filterOptions: FilterOptions | null;
-    globalFiltersQuery: GlobalFiltersQuery;
+    filtersBody: FiltersBody;
     isFiltersActive: boolean;
     isFiltersShowed: boolean;
     loading: Loading;
@@ -18,7 +15,7 @@ interface CatalogFilterState {
 
 const initialState: CatalogFilterState = {
     filterOptions: null,
-    globalFiltersQuery: {},
+    filtersBody: {},
     isFiltersActive: false,
     isFiltersShowed: false,
     loading: 'idle',
@@ -93,8 +90,8 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
     async function (_, { rejectWithValue, getState }) {
         try {
             const state = getState() as RootState;
-            const filtersQuery = state.catalogFilters.globalFiltersQuery;
-            const temporaryParams = Object.entries(filtersQuery).filter(
+            const { filtersBody } = state.catalogFilters;
+            const temporaryBody = Object.entries(filtersBody).filter(
                 (param) => {
                     if (Array.isArray(param[1]) && param[1].length <= 0) {
                         return false;
@@ -105,18 +102,18 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
                 }
             );
 
-            const filtersQueryFiltered: GlobalFiltersQuery = {};
-            temporaryParams.forEach((item) => {
+            const filtersBodyFiltered: FiltersBody = {};
+            temporaryBody.forEach((item) => {
                 const key = item[0];
                 const value = item[1];
-                filtersQueryFiltered[key] = value;
+                filtersBodyFiltered[key] = value;
             });
 
             const response = await fetch(
                 `${API_BASE()}product/filter/parameters?size=12&page=0`,
                 {
                     method: 'POST',
-                    body: JSON.stringify({ ...filtersQueryFiltered }),
+                    body: JSON.stringify({ ...filtersBodyFiltered }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
                     },
@@ -138,12 +135,9 @@ export const catalogFilterSlice = createSlice({
     name: 'catalogFilter',
     initialState,
     reducers: {
-        updateGlobalFiltersQuery(
-            state,
-            action: PayloadAction<GlobalFiltersQuery>
-        ) {
-            state.globalFiltersQuery = {
-                ...state.globalFiltersQuery,
+        updateGlobalFiltersQuery(state, action: PayloadAction<FiltersBody>) {
+            state.filtersBody = {
+                ...state.filtersBody,
                 ...action.payload,
             };
         },
@@ -151,7 +145,7 @@ export const catalogFilterSlice = createSlice({
             state,
             action: PayloadAction<string>
         ) {
-            state.globalFiltersQuery.parentCategoryId = action.payload;
+            state.filtersBody.parentCategoryId = action.payload;
         },
         resetFilters(state, action: PayloadAction<boolean>) {
             state.isFiltersActive = action.payload;

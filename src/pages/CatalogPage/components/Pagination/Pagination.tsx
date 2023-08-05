@@ -15,7 +15,7 @@ const Pagination = () => {
     );
     const dispatch = useAppDispatch();
     const id = useAppSelector(
-        (state) => state.catalogFilters.globalFiltersQuery.parentCategoryId
+        (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
 
     useEffect(() => {

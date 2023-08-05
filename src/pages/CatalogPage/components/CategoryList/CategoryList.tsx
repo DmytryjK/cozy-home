@@ -5,7 +5,6 @@ import renderServerData from '../../../../helpers/renderServerData';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
-    resetGlobalFiltersQueryByCategory,
     fetchFiltersOptionsByCategory,
     fetchFiltersOptionsBySubCategory,
     updateGlobalFiltersQuery,
@@ -24,13 +23,14 @@ type CategoriesType = {
     spriteIcon: string;
 };
 
+type SubCategoryType = {
+    id: string;
+    name: string;
+};
+
 const CategoryList = () => {
     const { categoryName, subCategoryName } = useParams();
     const { pathname } = useLocation();
-    const [currentCategory, setCurrentCategory] = useState<{
-        id: string;
-        name: string;
-    }>();
     const dispatch = useAppDispatch();
     const {
         loading,
@@ -38,14 +38,17 @@ const CategoryList = () => {
         data,
     }: { loading: Loading; error: null | unknown; data: CategoriesType[] } =
         useFetch('category');
+    const categories = useAppSelector((state) => state.categories.data);
 
     useEffect(() => {
         if (data.length === 0 || loading !== 'succeeded') return;
+
+        const loadedCategory = data.find(
+            (category) => category.name === categoryName
+        );
+        const { id } = loadedCategory as CategoriesType;
+
         if (!subCategoryName) {
-            const loadedCategory = data.find(
-                (category) => category.name === categoryName
-            );
-            const { id } = loadedCategory as CategoriesType;
             dispatch(
                 updateGlobalFiltersQuery({
                     parentCategoryId: id,
@@ -53,16 +56,33 @@ const CategoryList = () => {
             );
             dispatch(fetchFiltersOptionsByCategory(id));
             dispatch(fetchCatalogProductsByCategories(id));
-        }
-    }, [loading, data, pathname]);
+        } else if (categories.length > 0 && subCategoryName) {
+            const loadedSubCategory = categories
+                .map((category) => {
+                    return category.categoryDtos.find((subCategory) => {
+                        return subCategory.name === subCategoryName;
+                    });
+                })
+                .filter((subcategory) => subcategory !== undefined);
 
-    useEffect(() => {
-        if (!currentCategory) return;
-        const { id } = currentCategory;
-        dispatch(resetGlobalFiltersQueryByCategory(id));
-        dispatch(fetchCatalogProductsByCategories(id));
-        dispatch(fetchFiltersOptionsByCategory(id));
-    }, [currentCategory]);
+            const subCategory = loadedSubCategory[0] as SubCategoryType;
+            const subId = subCategory.id;
+
+            dispatch(
+                updateGlobalFiltersQuery({
+                    parentCategoryId: id,
+                    subCategories: [subId],
+                })
+            );
+            dispatch(fetchCatalogProductsBySubCategories(subId));
+            dispatch(
+                fetchFiltersOptionsBySubCategory({
+                    parentCategoryId: id,
+                    subCategoryId: subId,
+                })
+            );
+        }
+    }, [loading, data, pathname, categories]);
 
     const renderedItems = () => {
         return data.map((category) => {
@@ -73,12 +93,6 @@ const CategoryList = () => {
                     key={nextId('catalog-category')}
                 >
                     <NavLink
-                        onClick={() =>
-                            setCurrentCategory({
-                                id,
-                                name,
-                            })
-                        }
                         to={`/catalog/${name}`}
                         className={({ isActive }) => {
                             return isActive
