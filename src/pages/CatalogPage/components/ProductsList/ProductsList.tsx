@@ -11,7 +11,7 @@ const ProductsList = () => {
         (state) => state.catalogProducts
     );
 
-    const items = () => {
+    const renderItems = () => {
         return catalogProducts.map((catalogProduct) => {
             return (
                 <li
@@ -29,11 +29,12 @@ const ProductsList = () => {
     return (
         <section className="catalog-products">
             <ul className="catalog-products__list">
-                {renderServerData({
+                {/* {renderServerData({
                     error,
                     loading,
-                    content: items,
-                })}
+                    content: renderItems,
+                })} */}
+                {renderItems()}
             </ul>
         </section>
     );

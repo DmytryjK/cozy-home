@@ -2,8 +2,8 @@ export interface CombinedFilters {
     [key: string]: {
         title: string;
         type: string;
-        option1?: string;
-        option2?: string;
+        option1?: { optionTitle: string; boolean: boolean };
+        option2?: { optionTitle: string; boolean: boolean };
         'до 100 кг'?: {
             value: string;
         };
@@ -82,20 +82,20 @@ const filtersData = () => {
         sale: {
             title: 'SALE',
             type: 'boolean',
-            option1: 'Акції',
-            option2: 'Усі товари',
+            option1: { optionTitle: 'Акції', boolean: true },
+            option2: { optionTitle: 'Усі товари', boolean: false },
         },
         transformation: {
             title: 'Механізм трансформації',
             type: 'boolean',
-            option1: 'Розкладний',
-            option2: 'Не розкладний',
+            option1: { optionTitle: 'Розкладний', boolean: true },
+            option2: { optionTitle: 'Не розкладний', boolean: false },
         },
         heightAdjustment: {
             title: 'Регулювання за висотою',
             type: 'boolean',
-            option1: 'Є регулювання',
-            option2: 'Немає регулювання',
+            option1: { optionTitle: 'Є регулювання', boolean: true },
+            option2: { optionTitle: 'Немає регулювання', boolean: false },
         },
     };
     return { ...filterData };

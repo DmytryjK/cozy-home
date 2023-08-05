@@ -10,6 +10,9 @@ import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilt
 const Pagination = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const countOfPages = useAppSelector(
+        (state) => state.catalogFilters.filterOptions?.countOfPages
+    );
     const dispatch = useAppDispatch();
     const id = useAppSelector(
         (state) => state.catalogFilters.globalFiltersQuery.parentCategoryId
@@ -21,6 +24,11 @@ const Pagination = () => {
             // dispatch(updateGlobalFiltersQuery());
         }
     }, [id]);
+
+    useEffect(() => {
+        if (!countOfPages) return;
+        console.log(countOfPages);
+    }, [countOfPages]);
 
     useEffect(() => {
         const updatedPage = (currentPage - 1).toString();

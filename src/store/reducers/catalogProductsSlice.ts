@@ -39,7 +39,7 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
                 const value = item[1];
                 filtersQueryFiltered[key] = value;
             });
-
+            console.log(filtersQueryFiltered);
             const response = await fetch(
                 `${API_BASE()}product/filter?page=0&size=12`,
                 {
