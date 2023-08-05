@@ -5,13 +5,8 @@ import userScrollWidth from '../../../utils/userScrollWidth';
 import './BurgerMenu.scss';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 import renderServerData from '../../../helpers/renderServerData';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { useAppSelector } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
-import { updateGlobalFiltersQuery } from '../../../store/reducers/catalogFilterSlice';
-import {
-    fetchCatalogProductsByCategories,
-    fetchCatalogProductsBySubCategories,
-} from '../../../store/reducers/catalogProductsSlice';
 
 type Props = {
     isScrolled: boolean;
@@ -27,7 +22,6 @@ const BurgerMenu = (props: Props) => {
     const { error, loading, data } = useAppSelector(
         (state) => state.categories
     );
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const handleResize = () => {
@@ -69,17 +63,7 @@ const BurgerMenu = (props: Props) => {
                             <NavLink
                                 to={`/catalog/${name}`}
                                 className="burger-menu__list_item_title"
-                                onClick={() => {
-                                    dispatch(
-                                        updateGlobalFiltersQuery({
-                                            parentCategoryId: id,
-                                        })
-                                    );
-                                    dispatch(
-                                        fetchCatalogProductsByCategories(id)
-                                    );
-                                    setIsOpen(false);
-                                }}
+                                onClick={() => setIsOpen(false)}
                             >
                                 {name}
                             </NavLink>
@@ -117,19 +101,7 @@ const BurgerMenu = (props: Props) => {
                                                 'burger-menu-subCategory'
                                             )}
                                             className="burger-menu__list_subItems_subItem"
-                                            onClick={() => {
-                                                dispatch(
-                                                    updateGlobalFiltersQuery({
-                                                        subCategoryId: subId,
-                                                    })
-                                                );
-                                                dispatch(
-                                                    fetchCatalogProductsBySubCategories(
-                                                        subId
-                                                    )
-                                                );
-                                                setIsOpen(false);
-                                            }}
+                                            onClick={() => setIsOpen(false)}
                                         >
                                             {subName}
                                         </NavLink>

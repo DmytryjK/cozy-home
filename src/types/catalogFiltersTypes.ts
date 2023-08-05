@@ -1,4 +1,4 @@
-export type GlobalFiltersQuery = {
+export type FiltersBody = {
     [key: string]:
         | string
         | string[]
@@ -46,6 +46,7 @@ export interface FilterOptions {
         | boolean
         | { id: string; name: string; countOfProducts: number }[];
     countOfPages: number;
+    countOfProducts: number;
     parentCategoryId: string;
     subCategories: { id: string; name: string; countOfProducts: number }[];
     colors: { id: string; name: string; countOfProducts: number }[];

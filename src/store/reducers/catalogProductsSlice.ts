@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
-import { GlobalFiltersQuery } from '../../types/catalogFiltersTypes';
+import { FiltersBody } from '../../types/catalogFiltersTypes';
 import { RootState } from '../store';
 import API_BASE from '../../utils/API_BASE';
 
@@ -21,8 +21,8 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
     async function (_, { rejectWithValue, getState }) {
         try {
             const state = getState() as RootState;
-            const filtersQuery = state.catalogFilters.globalFiltersQuery;
-            const temporaryParams = Object.entries(filtersQuery).filter(
+            const { filtersBody } = state.catalogFilters;
+            const temporaryBody = Object.entries(filtersBody).filter(
                 (param) => {
                     if (Array.isArray(param[1]) && param[1].length <= 0) {
                         return false;
@@ -33,18 +33,18 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
                 }
             );
 
-            const filtersQueryFiltered: GlobalFiltersQuery = {};
-            temporaryParams.forEach((item) => {
+            const filtersBodyFiltered: FiltersBody = {};
+            temporaryBody.forEach((item) => {
                 const key = item[0];
                 const value = item[1];
-                filtersQueryFiltered[key] = value;
+                filtersBodyFiltered[key] = value;
             });
-            console.log(filtersQueryFiltered);
+
             const response = await fetch(
                 `${API_BASE()}product/filter?page=0&size=12`,
                 {
                     method: 'POST',
-                    body: JSON.stringify({ ...filtersQueryFiltered }),
+                    body: JSON.stringify({ ...filtersBodyFiltered }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
                     },

@@ -1,4 +1,6 @@
 import { useState, useEffect, FormEvent } from 'react';
+import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import './SortProducts.scss';
 
 const SortProducts = () => {

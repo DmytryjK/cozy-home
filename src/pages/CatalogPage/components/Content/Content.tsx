@@ -33,7 +33,7 @@ const Content = () => {
                 <Filters />
                 <div className="catalog__main-content main-content">
                     <div className="main-content__top">
-                        <SearchedQuantity quantityResults={1005} />
+                        <SearchedQuantity />
                         <OpenFiltersButton />
                         <SortProducts />
                     </div>

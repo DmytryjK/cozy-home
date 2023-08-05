@@ -31,7 +31,7 @@ const Filters = () => {
     const loading = useAppSelector((state) => state.catalogFilters.loading);
     const error = useAppSelector((state) => state.catalogFilters.error);
     const id = useAppSelector(
-        (state) => state.catalogFilters.globalFiltersQuery.parentCategoryId
+        (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
 
     const filterLocalMap = filtersData();
