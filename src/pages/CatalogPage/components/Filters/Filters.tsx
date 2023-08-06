@@ -149,30 +149,36 @@ const Filters = () => {
                 </div>
                 {renderedFilters()}
             </div>
-            <div className="buttons">
-                <button
-                    type="button"
-                    className="buttons__reject"
-                    onClick={() => {
-                        dispatch(resetFilters(false));
-                        dispatch(fetchCatalogProductsByCategories(id || ''));
-                        dispatch(fetchFiltersOptionsByCategory(id || ''));
-                    }}
-                >
-                    <span className="buttons__reject_text">скасувати</span>
-                </button>
-                <button
-                    type="button"
-                    className="buttons__submit"
-                    onClick={() => {
-                        dispatch(resetFilters(true));
-                        dispatch(fetchCatalogProductsByFilters({}));
-                        dispatch(fetchFiltersOptionsForFilteredProducts());
-                    }}
-                >
-                    застосувати
-                </button>
-            </div>
+            {filterOptions ? (
+                <div className="buttons">
+                    <button
+                        type="button"
+                        className="buttons__reject"
+                        onClick={() => {
+                            dispatch(resetFilters(false));
+                            dispatch(
+                                fetchCatalogProductsByCategories(id || '')
+                            );
+                            dispatch(fetchFiltersOptionsByCategory(id || ''));
+                        }}
+                    >
+                        <span className="buttons__reject_text">скасувати</span>
+                    </button>
+                    <button
+                        type="button"
+                        className="buttons__submit"
+                        onClick={() => {
+                            dispatch(resetFilters(true));
+                            dispatch(fetchCatalogProductsByFilters({}));
+                            dispatch(fetchFiltersOptionsForFilteredProducts());
+                        }}
+                    >
+                        застосувати
+                    </button>
+                </div>
+            ) : (
+                ''
+            )}
         </div>
     );
 };

@@ -3,13 +3,14 @@
 import { useState, useEffect } from 'react';
 import nextId from 'react-id-generator';
 import paginationSprite from '../../../../assets/icons/pagination/pagination-sprites.svg';
+import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import './Pagination.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { updateGlobalFiltersQuery } from '../../../../store/reducers/catalogFilterSlice';
 
 const Pagination = () => {
+    const [isInitialRendered, setIsInitialRendered] = useState<boolean>(true);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const [pages, setPages] = useState<number[]>([]);
     const countOfPages = useAppSelector(
         (state) => state.catalogFilters.filterOptions?.countOfPages
     );
@@ -19,21 +20,23 @@ const Pagination = () => {
     );
 
     useEffect(() => {
-        if (currentPage !== 1) {
-            setCurrentPage(1);
-            // dispatch(updateGlobalFiltersQuery());
+        if (!countOfPages) return;
+        const temporaryPages = [];
+        for (let i = 1; i <= countOfPages; i += 1) {
+            temporaryPages.push(i);
         }
-    }, [id]);
-
-    useEffect(() => {
-        // if (!countOfPages) return;
-        // console.log(countOfPages);
+        setPages([...temporaryPages]);
     }, [countOfPages]);
 
     useEffect(() => {
+        if (pages.length === 0) return;
+        if (isInitialRendered) {
+            setIsInitialRendered(false);
+            return;
+        }
         const updatedPage = (currentPage - 1).toString();
-        // dispatch(updateGlobalFiltersQuery());
-    }, [currentPage]);
+        dispatch(fetchCatalogProductsByFilters({ page: updatedPage }));
+    }, [currentPage, isInitialRendered]);
 
     const getDots = () => {
         return (
@@ -112,7 +115,7 @@ const Pagination = () => {
             <button
                 className="pagination__next-btn"
                 type="button"
-                onClick={() => setCurrentPage(currentPage + 1)}
+                onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage >= pages.length}
             >
                 <svg width={24} height={24} className="next-btn__icon">
