@@ -27,7 +27,9 @@ const DropdownMenu = (props: Props) => {
                     className="dropdown-menu__list"
                 >
                     <li className="dropdown-menu__list_title">
-                        <NavLink to={`/catalog/${name}`}>{name}</NavLink>
+                        <NavLink to={`/catalog/${name}`} reloadDocument>
+                            {name}
+                        </NavLink>
                     </li>
                     <ul className="dropdown-menu__list_items">
                         {category.categoryDtos.map(
@@ -41,6 +43,7 @@ const DropdownMenu = (props: Props) => {
                                     >
                                         <NavLink
                                             to={`/catalog/${name}/${subName}`}
+                                            reloadDocument
                                         >
                                             {subName}
                                         </NavLink>

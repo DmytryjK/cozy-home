@@ -64,6 +64,7 @@ const BurgerMenu = (props: Props) => {
                                 to={`/catalog/${name}`}
                                 className="burger-menu__list_item_title"
                                 onClick={() => setIsOpen(false)}
+                                reloadDocument
                             >
                                 {name}
                             </NavLink>
@@ -102,6 +103,7 @@ const BurgerMenu = (props: Props) => {
                                             )}
                                             className="burger-menu__list_subItems_subItem"
                                             onClick={() => setIsOpen(false)}
+                                            reloadDocument
                                         >
                                             {subName}
                                         </NavLink>
