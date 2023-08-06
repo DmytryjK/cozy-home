@@ -17,6 +17,9 @@
         color: $grey;
         user-select: none;
         cursor: pointer;
+        &::first-letter {
+            text-transform: uppercase;
+        }
     }
     &__input {
         appearance: none;
