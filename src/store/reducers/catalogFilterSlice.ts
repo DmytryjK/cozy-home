@@ -4,9 +4,14 @@ import API_BASE from '../../utils/API_BASE';
 import { ErrorType, Loading } from '../../types/types';
 import { RootState } from '../store';
 
+type FilterSort = {
+    fieldName: string;
+    direction: string;
+};
 interface CatalogFilterState {
     filterOptions: FilterOptions | null;
     filtersBody: FiltersBody;
+    filtersSort: FilterSort | null;
     isFiltersActive: boolean;
     isFiltersShowed: boolean;
     loading: Loading;
@@ -16,6 +21,7 @@ interface CatalogFilterState {
 const initialState: CatalogFilterState = {
     filterOptions: null,
     filtersBody: {},
+    filtersSort: null,
     isFiltersActive: false,
     isFiltersShowed: false,
     loading: 'idle',
@@ -150,6 +156,9 @@ export const catalogFilterSlice = createSlice({
         resetFilters(state, action: PayloadAction<boolean>) {
             state.isFiltersActive = action.payload;
         },
+        updateFilterSortParam(state, action: PayloadAction<FilterSort | null>) {
+            state.filtersSort = action.payload;
+        },
         showHideFilters(state, action: PayloadAction<boolean>) {
             state.isFiltersShowed = action.payload;
         },
@@ -220,5 +229,6 @@ export const {
     resetGlobalFiltersQueryByCategory,
     resetFilters,
     showHideFilters,
+    updateFilterSortParam,
 } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;

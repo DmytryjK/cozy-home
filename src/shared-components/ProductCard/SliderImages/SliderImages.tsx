@@ -127,7 +127,7 @@ const SliderImages = (props: Props) => {
     };
 
     const renderedImage = (name: string, index: number) => {
-        let result: JSX.Element = <Loader minHeight="100%" />;
+        let result: JSX.Element = <Loader />;
         if (error) {
             result = <ErrorMessage />;
         } else if (loading === 'succeeded') {

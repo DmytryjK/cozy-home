@@ -18,10 +18,17 @@ const initialState: CatalogProductsState = {
 
 export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByFilters',
-    async function (_, { rejectWithValue, getState }) {
+    async function (
+        {
+            page = '0',
+        }: {
+            page?: string;
+        },
+        { rejectWithValue, getState }
+    ) {
         try {
             const state = getState() as RootState;
-            const { filtersBody } = state.catalogFilters;
+            const { filtersBody, filtersSort } = state.catalogFilters;
             const temporaryBody = Object.entries(filtersBody).filter(
                 (param) => {
                     if (Array.isArray(param[1]) && param[1].length <= 0) {
@@ -39,9 +46,12 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
                 const value = item[1];
                 filtersBodyFiltered[key] = value;
             });
+            const activeSortParams = filtersSort
+                ? `&fieldName=${filtersSort.fieldName}&direction=${filtersSort.direction}`
+                : '';
 
             const response = await fetch(
-                `${API_BASE()}product/filter?page=0&size=12`,
+                `${API_BASE()}product/filter?page=${page}&size=12${activeSortParams}`,
                 {
                     method: 'POST',
                     body: JSON.stringify({ ...filtersBodyFiltered }),

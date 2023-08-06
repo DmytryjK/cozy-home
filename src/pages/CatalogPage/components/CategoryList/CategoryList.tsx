@@ -8,6 +8,7 @@ import {
     fetchFiltersOptionsByCategory,
     fetchFiltersOptionsBySubCategory,
     updateGlobalFiltersQuery,
+    updateFilterSortParam,
 } from '../../../../store/reducers/catalogFilterSlice';
 import {
     fetchCatalogProductsByCategories,
@@ -57,6 +58,7 @@ const CategoryList = () => {
             );
             dispatch(fetchFiltersOptionsByCategory(id));
             dispatch(fetchCatalogProductsByCategories(id));
+            dispatch(updateFilterSortParam(null));
         } else if (subCategoryName) {
             const loadedSubCategory = categories
                 .map((category) => {
