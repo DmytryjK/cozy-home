@@ -42,6 +42,7 @@ const CategoryList = () => {
 
     useEffect(() => {
         if (data.length === 0 || loading !== 'succeeded') return;
+        if (categories.length === 0) return;
 
         const loadedCategory = data.find(
             (category) => category.name === categoryName
@@ -56,7 +57,7 @@ const CategoryList = () => {
             );
             dispatch(fetchFiltersOptionsByCategory(id));
             dispatch(fetchCatalogProductsByCategories(id));
-        } else if (categories.length > 0 && subCategoryName) {
+        } else if (subCategoryName) {
             const loadedSubCategory = categories
                 .map((category) => {
                     return category.categoryDtos.find((subCategory) => {

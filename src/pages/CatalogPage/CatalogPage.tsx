@@ -10,9 +10,7 @@ const CatalogPage = () => {
             <Breadcrumbs />
             <CategoryList />
             <div className="catalog-content">
-                <div className="container container_content-wrapper ">
-                    <Content />
-                </div>
+                <Content />
             </div>
             <ArrowUp />
         </section>

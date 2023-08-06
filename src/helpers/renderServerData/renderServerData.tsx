@@ -9,7 +9,7 @@ type Props = {
 
 const renderServerData = (props: Props) => {
     const { error, loading, content } = props;
-    let render: JSX.Element | JSX.Element[] = <Loader />;
+    let render: JSX.Element | JSX.Element[] = <Loader minHeight="100%" />;
 
     if (error) {
         render = <ErrorMessage />;

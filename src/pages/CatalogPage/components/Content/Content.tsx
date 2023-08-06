@@ -21,6 +21,7 @@ const Content = () => {
     const filterLoading = useAppSelector(
         (state) => state.catalogFilters.loading
     );
+
     const renderContent = () => {
         if (productsError || filterLoadError) {
             return <ErrorMessage />;
@@ -45,9 +46,13 @@ const Content = () => {
                 </>
             );
         }
-        return <Loader />;
+        return <Loader minHeight="60dvh" />;
     };
-    return <>{renderContent()}</>;
+    return (
+        <div className="container container_content-wrapper ">
+            {renderContent()}
+        </div>
+    );
 };
 
 export default Content;
