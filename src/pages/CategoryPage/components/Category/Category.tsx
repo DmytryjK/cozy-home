@@ -47,6 +47,7 @@ const Category = ({ category }: { category: CategoryType }) => {
             <NavLink
                 className="category-card__img-link"
                 to={`/catalog/${name}`}
+                reloadDocument
             >
                 <img
                     className="category-card__img"
@@ -60,6 +61,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                 <NavLink
                     className="category-card__main-link"
                     to={`/catalog/${name}`}
+                    reloadDocument
                 >
                     {name}
                 </NavLink>
@@ -79,6 +81,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                                 <NavLink
                                     className="category-card__subcategories-link"
                                     to={`/catalog/${name}/${subName}`}
+                                    reloadDocument
                                 >
                                     {subcategory.name}
                                 </NavLink>

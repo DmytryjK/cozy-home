@@ -26,8 +26,8 @@ const Pagination = () => {
     }, [id]);
 
     useEffect(() => {
-        if (!countOfPages) return;
-        console.log(countOfPages);
+        // if (!countOfPages) return;
+        // console.log(countOfPages);
     }, [countOfPages]);
 
     useEffect(() => {

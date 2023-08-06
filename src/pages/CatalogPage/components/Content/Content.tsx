@@ -25,27 +25,27 @@ const Content = () => {
         if (productsError || filterLoadError) {
             return <ErrorMessage />;
         }
-        if (productsLoading && filterLoading !== 'succeeded') {
-            return <Loader />;
+        if (productsLoading === 'succeeded' && filterLoading === 'succeeded') {
+            return (
+                <>
+                    <Filters />
+                    <div className="catalog__main-content main-content">
+                        <div className="main-content__top">
+                            <SearchedQuantity />
+                            <OpenFiltersButton />
+                            <SortProducts />
+                        </div>
+                        <div className="main-content__products">
+                            <ProductsList />
+                        </div>
+                        <div className="main-content__bottom">
+                            <Pagination />
+                        </div>
+                    </div>
+                </>
+            );
         }
-        return (
-            <>
-                <Filters />
-                <div className="catalog__main-content main-content">
-                    <div className="main-content__top">
-                        <SearchedQuantity />
-                        <OpenFiltersButton />
-                        <SortProducts />
-                    </div>
-                    <div className="main-content__products">
-                        <ProductsList />
-                    </div>
-                    <div className="main-content__bottom">
-                        <Pagination />
-                    </div>
-                </div>
-            </>
-        );
+        return <Loader />;
     };
     return <>{renderContent()}</>;
 };
