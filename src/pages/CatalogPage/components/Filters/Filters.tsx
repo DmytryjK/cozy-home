@@ -147,11 +147,6 @@ const Filters = () => {
                         }
                     />
                 </div>
-                {/* {renderServerData({
-                    error,
-                    loading,
-                    content: renderedFilters,
-                })} */}
                 {renderedFilters()}
             </div>
             <div className="buttons">
@@ -171,7 +166,7 @@ const Filters = () => {
                     className="buttons__submit"
                     onClick={() => {
                         dispatch(resetFilters(true));
-                        dispatch(fetchCatalogProductsByFilters());
+                        dispatch(fetchCatalogProductsByFilters({}));
                         dispatch(fetchFiltersOptionsForFilteredProducts());
                     }}
                 >

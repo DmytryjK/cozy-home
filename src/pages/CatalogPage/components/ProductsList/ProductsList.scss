@@ -1,5 +1,6 @@
 .catalog-products {
-
+	position: relative;
+	min-height: calc(100vh - 450px);
 	&__list {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -7,11 +8,20 @@
 		align-self: center;
 		justify-content: center;
 		gap: 50px 32px;
+	}
 
-		.content-loader {
-			grid-column: 1 / 4;
-		}
-}
+	&__loading-wrapper {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(248, 248, 248, 0.3);
+		backdrop-filter: blur(1px);
+		z-index: 2;
+		user-select: none;
+	}
 
 	&__card {
 		display: flex;

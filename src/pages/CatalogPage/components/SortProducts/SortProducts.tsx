@@ -1,12 +1,17 @@
 import { useState, useEffect, FormEvent } from 'react';
+import nextId from 'react-id-generator';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
+import { updateFilterSortParam } from '../../../../store/reducers/catalogFilterSlice';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import './SortProducts.scss';
 
 const SortProducts = () => {
-    const [isActive, setIsActive] = useState<boolean>(false);
     const [currentSortOption, setCurrentSortOption] = useState<string>('');
-
+    const [isActive, setIsActive] = useState<boolean>(false);
+    const filtersSortParam = useAppSelector(
+        (state) => state.catalogFilters.filtersSort
+    );
+    const dispatch = useAppDispatch();
     const closeSelect = (e: any) => {
         if (
             !e.target.closest('.sort__custom-fields') &&
@@ -24,9 +29,64 @@ const SortProducts = () => {
         return () => document.removeEventListener('click', closeSelect);
     }, [isActive]);
 
-    const handleChangeInputs = (event: FormEvent<HTMLFieldSetElement>) => {
-        const target = event.target as HTMLInputElement;
+    useEffect(() => {
+        if (!isActive) return;
+        dispatch(fetchCatalogProductsByFilters({}));
+    }, [filtersSortParam]);
+
+    const handleSortItems = (
+        fieldName: string,
+        direction: string,
+        e: FormEvent<HTMLInputElement>
+    ) => {
+        const target = e.target as HTMLInputElement;
         setCurrentSortOption(target.value);
+        dispatch(updateFilterSortParam({ fieldName, direction }));
+    };
+
+    const sortFields = [
+        {
+            title: 'від дешевих до дорогих',
+            fieldName: 'price',
+            direction: 'asc',
+        },
+        {
+            title: 'від дорогих до дешевих',
+            fieldName: 'price',
+            direction: 'desc',
+        },
+        {
+            title: 'за рейтингом',
+            fieldName: 'averageRating',
+            direction: 'desc',
+        },
+    ];
+
+    const renderSortFields = () => {
+        return sortFields.map((sortFiled, index) => {
+            const { title, fieldName, direction } = sortFiled;
+            return (
+                <div className="sort__field" key={nextId('sort-field')}>
+                    <input
+                        className="sort__input"
+                        id={`input-${fieldName}${index}`}
+                        type="radio"
+                        name="sort"
+                        checked={fieldName === filtersSortParam?.fieldName}
+                        value={title}
+                        onChange={(e) =>
+                            handleSortItems(fieldName, direction, e)
+                        }
+                    />
+                    <label
+                        className="sort__label"
+                        htmlFor={`input-${fieldName}${index}`}
+                    >
+                        {title}
+                    </label>
+                </div>
+            );
+        });
     };
 
     return (
@@ -39,67 +99,13 @@ const SortProducts = () => {
                 >
                     <span className="btn__text">Сортувати</span>{' '}
                     <span className="btn__current-option">
-                        {currentSortOption || 'за популярністю'}
+                        {filtersSortParam
+                            ? currentSortOption
+                            : 'за популярністю'}
                     </span>
                 </button>
-                <fieldset
-                    className="sort__custom-fields"
-                    onChange={handleChangeInputs}
-                >
-                    <div className="sort__field">
-                        <input
-                            className="sort__input"
-                            id="input-ascending"
-                            type="radio"
-                            name="sort"
-                            value="від дешевих до дорогих"
-                        />
-                        <label
-                            className="sort__label"
-                            htmlFor="input-ascending"
-                        >
-                            від дешевих до дорогих
-                        </label>
-                    </div>
-                    <div className="sort__field">
-                        <input
-                            className="sort__input"
-                            id="input-descending"
-                            type="radio"
-                            name="sort"
-                            value="від дорогих до дешевих"
-                        />
-                        <label
-                            className="sort__label"
-                            htmlFor="input-descending"
-                        >
-                            від дорогих до дешевих
-                        </label>
-                    </div>
-                    <div className="sort__field">
-                        <input
-                            className="sort__input"
-                            id="input-popular"
-                            type="radio"
-                            name="sort"
-                            value="за популярністю"
-                        />
-                        <label className="sort__label" htmlFor="input-popular">
-                            за популярністю
-                        </label>
-                    </div>
-                    <div className="sort__field">
-                        <input
-                            className="sort__input"
-                            id="input-rating"
-                            type="radio"
-                            name="sort"
-                            value="за рейтингом"
-                        />
-                        <label className="sort__label" htmlFor="input-rating">
-                            за рейтингом
-                        </label>
-                    </div>
+                <fieldset className="sort__custom-fields">
+                    {renderSortFields()}
                 </fieldset>
             </div>
         </div>
