@@ -5,6 +5,7 @@ import { ErrorType, Loading } from '../../types/types';
 import { RootState } from '../store';
 
 type FilterSort = {
+    title: string;
     fieldName: string;
     direction: string;
 };

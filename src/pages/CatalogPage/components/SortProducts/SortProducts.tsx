@@ -37,11 +37,12 @@ const SortProducts = () => {
     const handleSortItems = (
         fieldName: string,
         direction: string,
+        title: string,
         e: FormEvent<HTMLInputElement>
     ) => {
         const target = e.target as HTMLInputElement;
         setCurrentSortOption(target.value);
-        dispatch(updateFilterSortParam({ fieldName, direction }));
+        dispatch(updateFilterSortParam({ fieldName, direction, title }));
     };
 
     const sortFields = [
@@ -72,10 +73,10 @@ const SortProducts = () => {
                         id={`input-${fieldName}${index}`}
                         type="radio"
                         name="sort"
-                        checked={fieldName === filtersSortParam?.fieldName}
+                        checked={title === filtersSortParam?.title}
                         value={title}
                         onChange={(e) =>
-                            handleSortItems(fieldName, direction, e)
+                            handleSortItems(fieldName, direction, title, e)
                         }
                     />
                     <label
