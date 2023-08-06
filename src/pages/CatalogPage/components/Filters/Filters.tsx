@@ -18,7 +18,6 @@ import RangeFilter from './RangeFilter/RangeFilter';
 import BooleanFilter from './BooleanFilter/BooleanFilter';
 import CheckboxesFilter from './CheckboxesFilter/CheckboxesFilter';
 import filtersData from './FiltersData';
-import renderServerData from '../../../../helpers/renderServerData';
 
 const Filters = () => {
     const dispatch = useAppDispatch();
@@ -28,8 +27,6 @@ const Filters = () => {
     const filterOptions = useAppSelector(
         (state) => state.catalogFilters.filterOptions
     );
-    const loading = useAppSelector((state) => state.catalogFilters.loading);
-    const error = useAppSelector((state) => state.catalogFilters.error);
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
@@ -62,7 +59,7 @@ const Filters = () => {
                 if (!filterLocalMap[key]) return result;
                 const { type, title } = filterLocalMap[key];
 
-                if (type === 'colors') {
+                if (type === 'colors' && filterOptions.colors.length > 0) {
                     result = (
                         <ColorFilter
                             key={nextId('color-filter')}

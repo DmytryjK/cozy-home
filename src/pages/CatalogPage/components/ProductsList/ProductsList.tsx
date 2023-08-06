@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import nextId from 'react-id-generator';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { useAppSelector } from '../../../../hooks/hooks';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
-import renderServerData from '../../../../helpers/renderServerData';
 import './ProductsList.scss';
 
 const ProductsList = () => {
-    const dispatch = useAppDispatch();
-    const { catalogProducts, error, loading } = useAppSelector(
-        (state) => state.catalogProducts
+    const catalogProducts = useAppSelector(
+        (state) => state.catalogProducts.catalogProducts
     );
 
     const renderItems = () => {
@@ -24,18 +22,9 @@ const ProductsList = () => {
         });
     };
 
-    // catalog-products__list
-
     return (
         <section className="catalog-products">
-            <ul className="catalog-products__list">
-                {/* {renderServerData({
-                    error,
-                    loading,
-                    content: renderItems,
-                })} */}
-                {renderItems()}
-            </ul>
+            <ul className="catalog-products__list">{renderItems()}</ul>
         </section>
     );
 };
