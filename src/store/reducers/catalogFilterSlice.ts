@@ -13,6 +13,7 @@ interface CatalogFilterState {
     filterOptions: FilterOptions | null;
     filtersBody: FiltersBody;
     filtersSort: FilterSort | null;
+    currentPage: number;
     isFiltersActive: boolean;
     isFiltersShowed: boolean;
     loading: Loading;
@@ -23,6 +24,7 @@ const initialState: CatalogFilterState = {
     filterOptions: null,
     filtersBody: {},
     filtersSort: null,
+    currentPage: 0,
     isFiltersActive: false,
     isFiltersShowed: false,
     loading: 'idle',
@@ -31,14 +33,14 @@ const initialState: CatalogFilterState = {
 
 export const fetchFiltersOptionsByCategory = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsByCategory',
-    async function (parentCategoryId: string, { rejectWithValue }) {
+    async function (categoryId: string, { rejectWithValue }) {
         try {
             const response = await fetch(
                 `${API_BASE()}product/filter/parameters?size=12&page=0`,
                 {
                     method: 'POST',
                     body: JSON.stringify({
-                        parentCategoryId,
+                        parentCategoryId: categoryId,
                     }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
@@ -59,21 +61,15 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
 
 export const fetchFiltersOptionsBySubCategory = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsBySubCategory',
-    async function (
-        {
-            parentCategoryId,
-            subCategoryId,
-        }: { parentCategoryId: string; subCategoryId: string },
-        { rejectWithValue }
-    ) {
+    async function (categoryId: string, { rejectWithValue }) {
         try {
             const response = await fetch(
                 `${API_BASE()}product/filter/parameters?size=12&page=0`,
                 {
                     method: 'POST',
                     body: JSON.stringify({
-                        parentCategoryId,
-                        subCategories: [subCategoryId],
+                        parentCategoryId: categoryId,
+                        subCategories: [categoryId],
                     }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
@@ -97,7 +93,7 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
     async function (_, { rejectWithValue, getState }) {
         try {
             const state = getState() as RootState;
-            const { filtersBody } = state.catalogFilters;
+            const { filtersBody, currentPage } = state.catalogFilters;
             const temporaryBody = Object.entries(filtersBody).filter(
                 (param) => {
                     if (Array.isArray(param[1]) && param[1].length <= 0) {
@@ -117,7 +113,7 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
             });
 
             const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=12&page=0`,
+                `${API_BASE()}product/filter/parameters?size=12&page=${currentPage}`,
                 {
                     method: 'POST',
                     body: JSON.stringify({ ...filtersBodyFiltered }),
@@ -148,20 +144,17 @@ export const catalogFilterSlice = createSlice({
                 ...action.payload,
             };
         },
-        resetGlobalFiltersQueryByCategory(
-            state,
-            action: PayloadAction<string>
-        ) {
-            state.filtersBody.parentCategoryId = action.payload;
-        },
-        resetFilters(state, action: PayloadAction<boolean>) {
-            state.isFiltersActive = action.payload;
+        resetFilters(state, action: PayloadAction<string>) {
+            state.filtersBody = { parentCategoryId: action.payload };
         },
         updateFilterSortParam(state, action: PayloadAction<FilterSort | null>) {
             state.filtersSort = action.payload;
         },
         showHideFilters(state, action: PayloadAction<boolean>) {
             state.isFiltersShowed = action.payload;
+        },
+        updateCurrentPage(state, action: PayloadAction<number>) {
+            state.currentPage = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -227,9 +220,9 @@ export const catalogFilterSlice = createSlice({
 
 export const {
     updateGlobalFiltersQuery,
-    resetGlobalFiltersQueryByCategory,
     resetFilters,
     showHideFilters,
     updateFilterSortParam,
+    updateCurrentPage,
 } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;
