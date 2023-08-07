@@ -6,18 +6,32 @@ import paginationSprite from '../../../../assets/icons/pagination/pagination-spr
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import './Pagination.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
 
 const Pagination = () => {
-    const [isInitialRendered, setIsInitialRendered] = useState<boolean>(true);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [clickedPage, setClickedPage] = useState<number>(0);
+    const [isPaginationInit, setIsPaginationInit] = useState<boolean>(true);
     const [pages, setPages] = useState<number[]>([]);
+    const currentPage = useAppSelector(
+        (state) => state.catalogFilters.currentPage
+    );
     const countOfPages = useAppSelector(
         (state) => state.catalogFilters.filterOptions?.countOfPages
     );
-    const dispatch = useAppDispatch();
-    const id = useAppSelector(
+    const parentCategoryId = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
+    const subCategoryId = useAppSelector(
+        (state) => state.catalogFilters.filtersBody.subCategoryId
+    );
+    const loadingProducts = useAppSelector(
+        (state) => state.catalogProducts.loading
+    );
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(updateCurrentPage(0));
+    }, [parentCategoryId, subCategoryId]);
 
     useEffect(() => {
         if (!countOfPages) return;
@@ -29,14 +43,26 @@ const Pagination = () => {
     }, [countOfPages]);
 
     useEffect(() => {
+        if (pages.length - 1 < currentPage) {
+            dispatch(updateCurrentPage(pages.length - 1));
+        }
+    }, [pages, currentPage]);
+
+    useEffect(() => {
         if (pages.length === 0) return;
-        if (isInitialRendered) {
-            setIsInitialRendered(false);
+        if (clickedPage === null) return;
+        setIsPaginationInit(false);
+        dispatch(updateCurrentPage(clickedPage));
+    }, [clickedPage]);
+
+    useEffect(() => {
+        if (currentPage !== clickedPage) {
+            setClickedPage(currentPage);
             return;
         }
-        const updatedPage = (currentPage - 1).toString();
-        dispatch(fetchCatalogProductsByFilters({ page: updatedPage }));
-    }, [currentPage, isInitialRendered]);
+        if (isPaginationInit) return;
+        dispatch(fetchCatalogProductsByFilters({ page: clickedPage }));
+    }, [currentPage, isPaginationInit]);
 
     const getDots = () => {
         return (
@@ -51,11 +77,13 @@ const Pagination = () => {
             <li className="pagination__item" key={nextId('page-')}>
                 <button
                     className={`pagination__page-btn ${
-                        currentPage === page ? 'active' : ''
+                        clickedPage === page - 1 ? 'active' : ''
                     }`}
                     type="button"
                     data-value={page}
-                    onClick={() => setCurrentPage(page)}
+                    onClick={() => {
+                        setClickedPage(page - 1);
+                    }}
                 >
                     {page}
                 </button>
@@ -63,9 +91,24 @@ const Pagination = () => {
         );
     };
 
+    const inlineStyle = () => {
+        const styles: { [key: string]: string } = {};
+        if (loadingProducts !== 'succeeded') {
+            styles.pointerEvents = 'none';
+        } else {
+            styles.pointerEvents = 'auto';
+        }
+        if (pages.length === 0) {
+            styles.display = 'none';
+        } else {
+            styles.display = 'inline-block';
+        }
+        return styles;
+    };
+
     const renderPagination = () => {
         return pages.map((page, index) => {
-            if (currentPage < 4) {
+            if (clickedPage < 4) {
                 if (index === 4 && pages.length > 5) {
                     return getDots();
                 }
@@ -73,21 +116,21 @@ const Pagination = () => {
                     return '';
                 }
             }
-            if (currentPage >= 4 && currentPage < pages.length - 2) {
+            if (clickedPage >= 4 && clickedPage < pages.length - 2) {
                 if (
-                    index === currentPage - 3 ||
-                    (index === currentPage + 1 && index !== pages.length - 1)
+                    index === clickedPage - 3 ||
+                    (index === clickedPage + 1 && index !== pages.length - 1)
                 ) {
                     return getDots();
                 }
                 if (
-                    (index > 0 && index < currentPage - 3) ||
-                    (index > currentPage + 1 && index < pages.length - 1)
+                    (index > 0 && index < clickedPage - 3) ||
+                    (index > clickedPage + 1 && index < pages.length - 1)
                 ) {
                     return '';
                 }
             }
-            if (currentPage >= pages.length - 2 && pages.length > 5) {
+            if (clickedPage >= pages.length - 2 && pages.length > 5) {
                 if (index === 1) {
                     return getDots();
                 }
@@ -98,15 +141,19 @@ const Pagination = () => {
             return getPages(page);
         });
     };
-
     return (
-        <div className="main-content__pagination pagination">
+        <div
+            className="main-content__pagination pagination"
+            style={{ ...inlineStyle() }}
+        >
             <ul className=" pagination__list">{renderPagination()}</ul>
             <button
                 className="pagination__prev-btn"
                 type="button"
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage <= 1}
+                onClick={() => {
+                    setClickedPage(clickedPage - 1);
+                }}
+                disabled={clickedPage <= 0}
             >
                 <svg width={24} height={24} className="prev-btn__icon">
                     <use href={`${paginationSprite}#prev`} />
@@ -115,8 +162,10 @@ const Pagination = () => {
             <button
                 className="pagination__next-btn"
                 type="button"
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage >= pages.length}
+                onClick={() => {
+                    setClickedPage(clickedPage + 1);
+                }}
+                disabled={clickedPage >= pages.length - 1}
             >
                 <svg width={24} height={24} className="next-btn__icon">
                     <use href={`${paginationSprite}#next`} />

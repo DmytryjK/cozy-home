@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     fetchFiltersOptionsByCategory,
     fetchFiltersOptionsBySubCategory,
-    updateGlobalFiltersQuery,
+    resetFilters,
     updateFilterSortParam,
+    updateGlobalFiltersQuery,
 } from '../../../../store/reducers/catalogFilterSlice';
 import {
     fetchCatalogProductsByCategories,
@@ -51,11 +52,7 @@ const CategoryList = () => {
         const { id } = loadedCategory as CategoriesType;
 
         if (!subCategoryName) {
-            dispatch(
-                updateGlobalFiltersQuery({
-                    parentCategoryId: id,
-                })
-            );
+            dispatch(resetFilters(id));
             dispatch(fetchFiltersOptionsByCategory(id));
             dispatch(fetchCatalogProductsByCategories(id));
             dispatch(updateFilterSortParam(null));
@@ -70,20 +67,15 @@ const CategoryList = () => {
 
             const subCategory = loadedSubCategory[0] as SubCategoryType;
             const subId = subCategory.id;
-
+            dispatch(resetFilters(id));
             dispatch(
                 updateGlobalFiltersQuery({
-                    parentCategoryId: id,
+                    categoryId: id,
                     subCategories: [subId],
                 })
             );
             dispatch(fetchCatalogProductsBySubCategories(subId));
-            dispatch(
-                fetchFiltersOptionsBySubCategory({
-                    parentCategoryId: id,
-                    subCategoryId: subId,
-                })
-            );
+            dispatch(fetchFiltersOptionsBySubCategory(subId));
         }
     }, [loading, data, pathname, categories]);
 

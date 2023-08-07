@@ -19,16 +19,13 @@ const initialState: CatalogProductsState = {
 export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByFilters',
     async function (
-        {
-            page = '0',
-        }: {
-            page?: string;
-        },
+        { page = null }: { page?: number | null },
         { rejectWithValue, getState }
     ) {
         try {
             const state = getState() as RootState;
-            const { filtersBody, filtersSort } = state.catalogFilters;
+            const { filtersBody, filtersSort, currentPage } =
+                state.catalogFilters;
             const temporaryBody = Object.entries(filtersBody).filter(
                 (param) => {
                     if (Array.isArray(param[1]) && param[1].length <= 0) {
@@ -51,7 +48,9 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
                 : '';
 
             const response = await fetch(
-                `${API_BASE()}product/filter?page=${page}&size=12${activeSortParams}`,
+                `${API_BASE()}product/filter?page=${
+                    page !== null ? page : currentPage
+                }&size=12${activeSortParams}`,
                 {
                     method: 'POST',
                     body: JSON.stringify({ ...filtersBodyFiltered }),
@@ -76,7 +75,7 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/catalog/category?parentId=${id}`
+                `${API_BASE()}product/catalog/category?categoryId=${id}`
             );
 
             const result = await response.json();
@@ -95,7 +94,7 @@ export const fetchCatalogProductsBySubCategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/catalog/category?subCategoryId=${id}`
+                `${API_BASE()}product/catalog/category?categoryId=${id}`
             );
 
             const result = await response.json();

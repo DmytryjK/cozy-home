@@ -1,7 +1,10 @@
 import { useState, useEffect, FormEvent } from 'react';
 import nextId from 'react-id-generator';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
-import { updateFilterSortParam } from '../../../../store/reducers/catalogFilterSlice';
+import {
+    updateCurrentPage,
+    updateFilterSortParam,
+} from '../../../../store/reducers/catalogFilterSlice';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import './SortProducts.scss';
 
@@ -31,7 +34,8 @@ const SortProducts = () => {
 
     useEffect(() => {
         if (!isActive) return;
-        dispatch(fetchCatalogProductsByFilters({}));
+        dispatch(fetchCatalogProductsByFilters({ page: 0 }));
+        dispatch(updateCurrentPage(0));
     }, [filtersSortParam]);
 
     const handleSortItems = (

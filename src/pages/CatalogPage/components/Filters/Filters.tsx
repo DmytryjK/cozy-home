@@ -6,6 +6,7 @@ import {
     showHideFilters,
     fetchFiltersOptionsForFilteredProducts,
     fetchFiltersOptionsByCategory,
+    updateCurrentPage,
 } from '../../../../store/reducers/catalogFilterSlice';
 import {
     fetchCatalogProductsByCategories,
@@ -29,6 +30,9 @@ const Filters = () => {
     );
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
+    );
+    const currentPage = useAppSelector(
+        (state) => state.catalogFilters.currentPage
     );
 
     const filterLocalMap = filtersData();
@@ -155,11 +159,10 @@ const Filters = () => {
                         type="button"
                         className="buttons__reject"
                         onClick={() => {
-                            dispatch(resetFilters(false));
-                            dispatch(
-                                fetchCatalogProductsByCategories(id || '')
-                            );
-                            dispatch(fetchFiltersOptionsByCategory(id || ''));
+                            if (!id) return;
+                            dispatch(resetFilters(id));
+                            dispatch(fetchCatalogProductsByCategories(id));
+                            dispatch(fetchFiltersOptionsByCategory(id));
                         }}
                     >
                         <span className="buttons__reject_text">скасувати</span>
@@ -168,8 +171,9 @@ const Filters = () => {
                         type="button"
                         className="buttons__submit"
                         onClick={() => {
-                            dispatch(resetFilters(true));
-                            dispatch(fetchCatalogProductsByFilters({}));
+                            dispatch(
+                                fetchCatalogProductsByFilters({ page: 0 })
+                            );
                             dispatch(fetchFiltersOptionsForFilteredProducts());
                         }}
                     >
