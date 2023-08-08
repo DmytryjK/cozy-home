@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { fetchCatalogProductsByFilters } from '../../../../../store/reducers/catalogProductsSlice';
 import {
     fetchFiltersOptionsForFilteredProducts,
     resetFilters,
+    updateCurrentPage,
 } from '../../../../../store/reducers/catalogFilterSlice';
 import ErrorMessage from '../../../../../shared-components/ErrorMessage';
 import Loader from '../../../../../shared-components/Loader';
@@ -12,6 +13,7 @@ import './ProductLoader.scss';
 
 const ProductLoader = () => {
     const { categoryName, subCategoryName } = useParams();
+    const [clearedFilters, setClearedFilters] = useState<boolean>(false);
     const { loading, error, catalogProducts } = useAppSelector(
         (state) => state.catalogProducts
     );
@@ -26,18 +28,9 @@ const ProductLoader = () => {
 
     useEffect(() => {
         if (!isFiltersCleared) return;
-        dispatch(
-            fetchCatalogProductsByFilters({
-                page: 0,
-                isFiltersActive: false,
-            })
-        );
-        dispatch(
-            fetchFiltersOptionsForFilteredProducts({
-                isFiltersActive: true,
-            })
-        );
-    }, [isFiltersCleared]);
+        if (!clearedFilters) return;
+        dispatch(updateCurrentPage(0));
+    }, [isFiltersCleared, clearedFilters]);
 
     const renderItems = () => {
         if (error) {
@@ -64,6 +57,7 @@ const ProductLoader = () => {
                                 return;
                             }
                             dispatch(resetFilters(id));
+                            setClearedFilters(true);
                         }}
                     >
                         <div className="nothing-to-search__clear-filters_text">
