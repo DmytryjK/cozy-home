@@ -1,13 +1,14 @@
 @use '../../../../../style/variables.scss' as *;
 .nothing-to-search {
-	padding: 24px 24px;
+    text-align: center;
+	padding: 50px 24px;
 	width: auto;
-	height: 80px;
 	border-top: 1px solid $dark-white;
     bottom: 0;
     font-size: 20px;
     &__clear-filters {
         display: inline-block;
+        margin: 0 auto;
         margin-top: 20px;
         background: none;
 		font-size: 12px;
