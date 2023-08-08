@@ -195,6 +195,7 @@ const Filters = () => {
                                 return;
                             }
                             dispatch(resetFilters(id));
+                            dispatch(showHideFilters(false));
                         }}
                     >
                         <span className="buttons__reject_text">скасувати</span>
@@ -215,6 +216,7 @@ const Filters = () => {
                                 })
                             );
                             dispatch(updateFiltersBodyWithLocalFiltersState());
+                            dispatch(showHideFilters(false));
                         }}
                     >
                         застосувати
