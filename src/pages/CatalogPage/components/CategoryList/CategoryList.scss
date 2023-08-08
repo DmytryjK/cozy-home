@@ -26,7 +26,11 @@
             background-color: transparent;
             cursor: pointer;
             &:hover {
-                color: $accent-color;
+                color: $grey;
+                .category-list__icon {
+                    stroke: $grey;
+                    fill: $grey;
+                }
             }
             &.active {
                 color: $accent-color;
@@ -40,7 +44,7 @@
             max-width: 100%;
             fill: $light-grey;
             stroke: $light-grey;
-            transition: 0.2s ease-out stroke;
+            transition: 0.2s ease-out stroke, 0.2s ease-out fill;
         }
         &__title {
             font-family: Montserrat Alternates;
