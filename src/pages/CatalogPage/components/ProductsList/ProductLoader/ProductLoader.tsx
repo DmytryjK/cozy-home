@@ -38,8 +38,9 @@ const ProductLoader = () => {
         }
         if (loading !== 'succeeded') {
             return (
-                <div className="catalog-products__loading-wrapper">
-                    <Loader maxHeight="80dvh" />
+                <div className="content-loading">
+                    <div className="content-loading__wrapper" />
+                    <Loader />
                 </div>
             );
         }

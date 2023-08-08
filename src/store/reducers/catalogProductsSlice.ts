@@ -4,7 +4,7 @@ import { RootState } from '../store';
 import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import API_BASE from '../../utils/API_BASE';
 
-const PRODUCTS_SIZE = 3;
+const PRODUCTS_SIZE = 9;
 interface CatalogProductsState {
     catalogProducts: ProductCardType[];
     loading: Loading;

@@ -1,4 +1,31 @@
 @use '../../../../../style/variables.scss' as *;
+.content-loading{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    &__wrapper {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(1px);
+        z-index: 3;
+        user-select: none;
+	}
+    .content-loader {
+        position: sticky;
+        top: calc(100vh - 400px);
+        margin-bottom: 490px;
+        z-index: 4;
+    }
+}
 .nothing-to-search {
     text-align: center;
 	padding: 50px 24px;
