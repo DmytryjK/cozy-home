@@ -130,6 +130,7 @@
         border-bottom: 1px solid $grey;
         text-align: left;
         cursor: pointer;
+        user-select: none;
         &:after, &:before {
             content: '';
             display: block;
@@ -167,6 +168,16 @@
         margin-top: 0px;
         height: 0;
         overflow: hidden;
+    }
+    &__item {
+        .filter__label:hover {
+            .filter__input_custom-input {
+                border-color: $dark-color;
+            }
+        }
+    }
+    &__label {
+        cursor: pointer;
     }
 }
 

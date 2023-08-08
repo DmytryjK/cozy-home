@@ -34,10 +34,6 @@ const Pagination = () => {
     }, [parentCategoryId, subCategoryId]);
 
     useEffect(() => {
-        console.log(currentPage, clickedPage, 'clicked');
-    }, [currentPage, clickedPage]);
-
-    useEffect(() => {
         if (!countOfPages) {
             setPages([]);
             return;
