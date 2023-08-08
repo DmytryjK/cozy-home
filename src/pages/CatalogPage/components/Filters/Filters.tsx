@@ -1,29 +1,31 @@
 import { useEffect } from 'react';
 import nextId from 'react-id-generator';
+import { useParams, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     resetFilters,
     showHideFilters,
     fetchFiltersOptionsForFilteredProducts,
-    fetchFiltersOptionsByCategory,
-    updateCurrentPage,
+    updateFiltersBodyWithLocalFiltersState,
 } from '../../../../store/reducers/catalogFilterSlice';
-import {
-    fetchCatalogProductsByCategories,
-    fetchCatalogProductsByFilters,
-} from '../../../../store/reducers/catalogProductsSlice';
+import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
 import ColorFilter from './ColorFilter/ColorFilter';
-import './Filters.scss';
 import RangeFilter from './RangeFilter/RangeFilter';
 import BooleanFilter from './BooleanFilter/BooleanFilter';
 import CheckboxesFilter from './CheckboxesFilter/CheckboxesFilter';
 import filtersData from './FiltersData';
+import './Filters.scss';
 
 const Filters = () => {
+    const { categoryName, subCategoryName } = useParams();
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const isFiltersShowed = useAppSelector(
         (state) => state.catalogFilters.isFiltersShowed
+    );
+    const isFiltersCleared = useAppSelector(
+        (state) => state.catalogFilters.isFiltersCleared
     );
     const filterOptions = useAppSelector(
         (state) => state.catalogFilters.filterOptions
@@ -31,8 +33,8 @@ const Filters = () => {
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
-    const currentPage = useAppSelector(
-        (state) => state.catalogFilters.currentPage
+    const catalogProducts = useAppSelector(
+        (state) => state.catalogProducts.catalogProducts
     );
 
     const filterLocalMap = filtersData();
@@ -54,6 +56,21 @@ const Filters = () => {
         }
         document.body.style.overflow = isFiltersShowed ? 'hidden' : 'visible';
     }, [isFiltersShowed]);
+
+    useEffect(() => {
+        if (!isFiltersCleared) return;
+        dispatch(
+            fetchCatalogProductsByFilters({
+                page: 0,
+                isFiltersActive: false,
+            })
+        );
+        dispatch(
+            fetchFiltersOptionsForFilteredProducts({
+                isFiltersActive: true,
+            })
+        );
+    }, [isFiltersCleared]);
 
     const renderedFilters = (): JSX.Element | JSX.Element[] | any => {
         if (!filterOptions) return null;
@@ -113,14 +130,27 @@ const Filters = () => {
                         countOfProducts: number;
                     }>;
                     if (checkboxesFilters.length > 0) {
-                        result = (
-                            <CheckboxesFilter
-                                key={nextId('checkboxes-filter')}
-                                filterTitle={title}
-                                options={checkboxesFilters}
-                                valueName={key}
-                            />
-                        );
+                        if (key !== 'maxLoad') {
+                            result = (
+                                <CheckboxesFilter
+                                    key={nextId('checkboxes-filter')}
+                                    filterTitle={title}
+                                    options={checkboxesFilters}
+                                    valueName={key}
+                                />
+                            );
+                        } else {
+                            result = (
+                                <CheckboxesFilter
+                                    key={nextId('checkboxes-filter')}
+                                    filterTitle={title}
+                                    maxLoadOptions={
+                                        filterOptions[key] as Array<string>
+                                    }
+                                    valueName={key}
+                                />
+                            );
+                        }
                     }
                 }
                 return result;
@@ -153,16 +183,18 @@ const Filters = () => {
                 </div>
                 {renderedFilters()}
             </div>
-            {filterOptions ? (
+            {filterOptions && catalogProducts.length > 0 ? (
                 <div className="buttons">
                     <button
                         type="button"
                         className="buttons__reject"
                         onClick={() => {
                             if (!id) return;
+                            if (subCategoryName) {
+                                navigate(`/catalog/${categoryName}`);
+                                return;
+                            }
                             dispatch(resetFilters(id));
-                            dispatch(fetchCatalogProductsByCategories(id));
-                            dispatch(fetchFiltersOptionsByCategory(id));
                         }}
                     >
                         <span className="buttons__reject_text">скасувати</span>
@@ -172,9 +204,17 @@ const Filters = () => {
                         className="buttons__submit"
                         onClick={() => {
                             dispatch(
-                                fetchCatalogProductsByFilters({ page: 0 })
+                                fetchCatalogProductsByFilters({
+                                    page: 0,
+                                    isFiltersActive: true,
+                                })
                             );
-                            dispatch(fetchFiltersOptionsForFilteredProducts());
+                            dispatch(
+                                fetchFiltersOptionsForFilteredProducts({
+                                    isFiltersActive: true,
+                                })
+                            );
+                            dispatch(updateFiltersBodyWithLocalFiltersState());
                         }}
                     >
                         застосувати

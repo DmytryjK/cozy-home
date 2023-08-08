@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import nextId from 'react-id-generator';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
-import { updateGlobalFiltersQuery } from '../../../../../store/reducers/catalogFilterSlice';
+import { updateLocalFiltersState } from '../../../../../store/reducers/catalogFilterSlice';
 import './ColorFilter.scss';
 
 type Colors = {
@@ -20,16 +20,25 @@ const ColorFilter = (props: Props) => {
     const [isActive, setIsActive] = useState<boolean>(false);
     const [colorsId, setColorsId] = useState<string[]>([]);
     const { filterTitle, colors } = props;
+    const currentValueFromStore = useAppSelector(
+        (state) => state.catalogFilters.filtersBody.colors
+    );
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (!isActive) return;
         dispatch(
-            updateGlobalFiltersQuery({
+            updateLocalFiltersState({
                 colors: colorsId,
             })
         );
     }, [isActive, colorsId]);
+
+    useEffect(() => {
+        if (!currentValueFromStore) return;
+        setIsActive(false);
+        setColorsId(currentValueFromStore);
+    }, [currentValueFromStore]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setIsActive(true);

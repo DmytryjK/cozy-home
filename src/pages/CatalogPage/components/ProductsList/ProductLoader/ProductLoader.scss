@@ -1,0 +1,47 @@
+@use '../../../../../style/variables.scss' as *;
+.nothing-to-search {
+	padding: 24px 24px;
+	width: auto;
+	height: 80px;
+	border-top: 1px solid $dark-white;
+    bottom: 0;
+    font-size: 20px;
+    &__clear-filters {
+        display: inline-block;
+        margin-top: 20px;
+        background: none;
+		font-size: 12px;
+		font-weight: 500;
+		display: flex;
+		align-items: center;
+		border: 2px solid $dark-color;
+        color: $dark-color;
+		border-radius: 2px;
+		padding: 8px 28px 8px 10px;
+		cursor: pointer;
+        transition: 0.2s ease-in-out color, 0.2s ease-in-out background-color;
+        &_text {
+            position: relative;
+            text-transform: uppercase;
+            color: inherit;
+            &::after {
+                content: '';
+                position: absolute;
+                background: url('../../../../../assets/icons/filters/reject-icon.svg') center center/cover no-repeat;
+                width: 12px;
+                height: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                right: -20px;
+                transition: 0.2s ease-out background-image;
+            }
+        }
+        &:hover {
+            background-color: $dark-color;
+            color: $light-color;
+            .nothing-to-search__clear-filters_text::after {
+                background: url('../../../../../assets/icons/filters/reject-icon_active.svg') center center/cover no-repeat;
+            }
+        }
+    }
+};

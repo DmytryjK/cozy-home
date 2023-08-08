@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, NavLink, useLocation } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import renderServerData from '../../../../helpers/renderServerData';
@@ -6,15 +6,11 @@ import categoriesSprite from '../../../../assets/icons/categories/categories-spr
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     fetchFiltersOptionsByCategory,
-    fetchFiltersOptionsBySubCategory,
-    resetFilters,
     updateFilterSortParam,
     updateGlobalFiltersQuery,
+    updateCurrentCategory,
 } from '../../../../store/reducers/catalogFilterSlice';
-import {
-    fetchCatalogProductsByCategories,
-    fetchCatalogProductsBySubCategories,
-} from '../../../../store/reducers/catalogProductsSlice';
+import { fetchCatalogProductsByCategories } from '../../../../store/reducers/catalogProductsSlice';
 import useFetch from '../../../../hooks/useFetch';
 import './CategoryList.scss';
 import { Loading } from '../../../../types/types';
@@ -50,10 +46,9 @@ const CategoryList = () => {
             (category) => category.name === categoryName
         );
         const { id } = loadedCategory as CategoriesType;
-
+        dispatch(updateCurrentCategory(id));
         if (!subCategoryName) {
-            dispatch(resetFilters(id));
-            dispatch(fetchFiltersOptionsByCategory(id));
+            dispatch(fetchFiltersOptionsByCategory({ categoryId: id }));
             dispatch(fetchCatalogProductsByCategories(id));
             dispatch(updateFilterSortParam(null));
         } else if (subCategoryName) {
@@ -67,15 +62,18 @@ const CategoryList = () => {
 
             const subCategory = loadedSubCategory[0] as SubCategoryType;
             const subId = subCategory.id;
-            dispatch(resetFilters(id));
             dispatch(
                 updateGlobalFiltersQuery({
-                    categoryId: id,
                     subCategories: [subId],
                 })
             );
-            dispatch(fetchCatalogProductsBySubCategories(subId));
-            dispatch(fetchFiltersOptionsBySubCategory(subId));
+            dispatch(fetchCatalogProductsByCategories(subId));
+            dispatch(
+                fetchFiltersOptionsByCategory({
+                    categoryId: id,
+                    subcategoryId: subId,
+                })
+            );
         }
     }, [loading, data, pathname, categories]);
 

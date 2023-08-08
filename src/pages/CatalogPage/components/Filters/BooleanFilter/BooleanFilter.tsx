@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { updateGlobalFiltersQuery } from '../../../../../store/reducers/catalogFilterSlice';
-import { useAppDispatch } from '../../../../../hooks/hooks';
+import { updateLocalFiltersState } from '../../../../../store/reducers/catalogFilterSlice';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
 import '../CheckboxStyles.scss';
 
 type TransformationFilterProps = {
@@ -22,7 +22,24 @@ const TransformationFilter = ({
     const [buleanValue, setBuleanValue] = useState<boolean | null>(null);
     const firstOptionTitle = firstOption.optionTitle;
     const secondOptionTitle = secondOption.optionTitle;
+    const currentValueFromStore = useAppSelector(
+        (state) => state.catalogFilters.filtersBody[valueName]
+    );
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (
+            currentValueFromStore === null ||
+            currentValueFromStore === undefined
+        )
+            return;
+        setIsActive(false);
+        if (currentValueFromStore) {
+            setCurrentValue(firstOptionTitle);
+        } else {
+            setCurrentValue(secondOptionTitle);
+        }
+    }, [currentValueFromStore]);
 
     useEffect(() => {
         if (currentValue === null) {
@@ -37,7 +54,7 @@ const TransformationFilter = ({
     useEffect(() => {
         if (!isActive) return;
         dispatch(
-            updateGlobalFiltersQuery({
+            updateLocalFiltersState({
                 [valueName]: buleanValue,
             })
         );

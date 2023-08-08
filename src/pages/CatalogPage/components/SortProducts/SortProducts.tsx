@@ -61,6 +61,11 @@ const SortProducts = () => {
             direction: 'desc',
         },
         {
+            title: 'за популярністю',
+            fieldName: 'popularRating',
+            direction: 'asc',
+        },
+        {
             title: 'за рейтингом',
             fieldName: 'averageRating',
             direction: 'desc',

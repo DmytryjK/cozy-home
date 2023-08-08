@@ -34,7 +34,10 @@ const Pagination = () => {
     }, [parentCategoryId, subCategoryId]);
 
     useEffect(() => {
-        if (!countOfPages) return;
+        if (!countOfPages) {
+            setPages([]);
+            return;
+        }
         const temporaryPages = [];
         for (let i = 1; i <= countOfPages; i += 1) {
             temporaryPages.push(i);
