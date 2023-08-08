@@ -34,6 +34,10 @@ const Pagination = () => {
     }, [parentCategoryId, subCategoryId]);
 
     useEffect(() => {
+        console.log(currentPage, clickedPage, 'clicked');
+    }, [currentPage, clickedPage]);
+
+    useEffect(() => {
         if (!countOfPages) {
             setPages([]);
             return;
@@ -46,7 +50,11 @@ const Pagination = () => {
     }, [countOfPages]);
 
     useEffect(() => {
-        if (pages.length - 1 < currentPage) {
+        if (pages.length === 0) {
+            dispatch(updateCurrentPage(0));
+            return;
+        }
+        if (pages.length - 1 < currentPage && currentPage !== 0) {
             dispatch(updateCurrentPage(pages.length - 1));
         }
     }, [pages, currentPage]);
