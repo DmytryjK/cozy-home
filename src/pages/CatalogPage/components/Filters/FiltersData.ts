@@ -49,15 +49,6 @@ const filtersData = () => {
         maxLoad: {
             title: 'Навантаження (кг)',
             type: 'checkboxes',
-            'до 100 кг': {
-                value: '99',
-            },
-            '100-200 кг': {
-                value: '100-200',
-            },
-            'от 200 кг': {
-                value: '201',
-            },
         },
         priceMax: {
             title: 'Ціна (грн)',

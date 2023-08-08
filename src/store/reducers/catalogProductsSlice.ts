@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
-import { FiltersBody } from '../../types/catalogFiltersTypes';
 import { RootState } from '../store';
+import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import API_BASE from '../../utils/API_BASE';
 
+const PRODUCTS_SIZE = 3;
 interface CatalogProductsState {
     catalogProducts: ProductCardType[];
     loading: Loading;
@@ -19,30 +20,16 @@ const initialState: CatalogProductsState = {
 export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByFilters',
     async function (
-        { page = null }: { page?: number | null },
+        {
+            page = null,
+            isFiltersActive = false,
+        }: { page?: number | null; isFiltersActive?: boolean },
         { rejectWithValue, getState }
     ) {
         try {
             const state = getState() as RootState;
-            const { filtersBody, filtersSort, currentPage } =
+            const { filtersBody, filtersSort, currentPage, localFiltersState } =
                 state.catalogFilters;
-            const temporaryBody = Object.entries(filtersBody).filter(
-                (param) => {
-                    if (Array.isArray(param[1]) && param[1].length <= 0) {
-                        return false;
-                    }
-                    if (typeof param[1] === 'string' && param[1].trim() === '')
-                        return false;
-                    return true;
-                }
-            );
-
-            const filtersBodyFiltered: FiltersBody = {};
-            temporaryBody.forEach((item) => {
-                const key = item[0];
-                const value = item[1];
-                filtersBodyFiltered[key] = value;
-            });
             const activeSortParams = filtersSort
                 ? `&fieldName=${filtersSort.fieldName}&direction=${filtersSort.direction}`
                 : '';
@@ -50,10 +37,14 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
             const response = await fetch(
                 `${API_BASE()}product/filter?page=${
                     page !== null ? page : currentPage
-                }&size=12${activeSortParams}`,
+                }&size=${PRODUCTS_SIZE}${activeSortParams}`,
                 {
                     method: 'POST',
-                    body: JSON.stringify({ ...filtersBodyFiltered }),
+                    body: JSON.stringify({
+                        ...filterInvalidBodyParams(
+                            isFiltersActive ? localFiltersState : filtersBody
+                        ),
+                    }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
                     },
@@ -75,26 +66,7 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
     async function (id: string, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/catalog/category?categoryId=${id}`
-            );
-
-            const result = await response.json();
-
-            if (!response.ok) throw new Error('something went wrong');
-
-            return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
-        }
-    }
-);
-
-export const fetchCatalogProductsBySubCategories = createAsyncThunk(
-    'catalogProducts/fetchCatalogProductsBySubCategories',
-    async function (id: string, { rejectWithValue }) {
-        try {
-            const response = await fetch(
-                `${API_BASE()}product/catalog/category?categoryId=${id}`
+                `${API_BASE()}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}`
             );
 
             const result = await response.json();
@@ -144,27 +116,6 @@ export const catalogProductsSlice = createSlice({
         );
         builder.addCase(
             fetchCatalogProductsByCategories.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
-                state.error = action.payload;
-            }
-        );
-        builder.addCase(
-            fetchCatalogProductsBySubCategories.pending,
-            (state) => {
-                state.loading = 'pending';
-                state.error = null;
-            }
-        );
-        builder.addCase(
-            fetchCatalogProductsBySubCategories.fulfilled,
-            (state, action: PayloadAction<ProductCardType[]>) => {
-                state.loading = 'succeeded';
-                state.catalogProducts = action.payload;
-            }
-        );
-        builder.addCase(
-            fetchCatalogProductsBySubCategories.rejected,
             (state, action: PayloadAction<unknown>) => {
                 state.loading = 'failed';
                 state.error = action.payload;

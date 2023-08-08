@@ -42,6 +42,7 @@ export type FiltersBody = {
 export interface FilterOptions {
     [key: string]:
         | string
+        | string[]
         | number
         | boolean
         | { id: string; name: string; countOfProducts: number }[];
@@ -73,5 +74,5 @@ export interface FilterOptions {
     bedLengthMax: number;
     bedWidthMin: number;
     bedWidthMax: number;
-    maxLoad: string;
+    maxLoad: string[];
 }

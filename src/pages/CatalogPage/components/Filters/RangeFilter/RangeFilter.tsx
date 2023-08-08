@@ -1,7 +1,7 @@
-import { useState, useEffect, MouseEvent } from 'react';
+import { useState, useEffect } from 'react';
 import Slider from 'rc-slider';
-import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
-import { updateGlobalFiltersQuery } from '../../../../../store/reducers/catalogFilterSlice';
+import { useAppDispatch } from '../../../../../hooks/hooks';
+import { updateLocalFiltersState } from '../../../../../store/reducers/catalogFilterSlice';
 import 'rc-slider/assets/index.css';
 import './RangeFilter.scss';
 
@@ -30,7 +30,7 @@ const RangeFilter = (props: Props) => {
     useEffect(() => {
         if (isActive && firstInputValue && secondInputValue) {
             dispatch(
-                updateGlobalFiltersQuery({
+                updateLocalFiltersState({
                     [rangeMinName]: firstInputValue,
                     [rangeMaxName]: secondInputValue,
                 })

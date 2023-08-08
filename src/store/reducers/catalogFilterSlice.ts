@@ -2,7 +2,10 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { FiltersBody, FilterOptions } from '../../types/catalogFiltersTypes';
 import API_BASE from '../../utils/API_BASE';
 import { ErrorType, Loading } from '../../types/types';
+import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import { RootState } from '../store';
+
+const PRODUCTS_SIZE = 3;
 
 type FilterSort = {
     title: string;
@@ -13,18 +16,22 @@ interface CatalogFilterState {
     filterOptions: FilterOptions | null;
     filtersBody: FiltersBody;
     filtersSort: FilterSort | null;
+    localFiltersState: FiltersBody;
     currentPage: number;
-    isFiltersActive: boolean;
-    isFiltersShowed: boolean;
     loading: Loading;
     error: ErrorType;
+    isFiltersCleared: boolean;
+    isFiltersActive: boolean;
+    isFiltersShowed: boolean;
 }
 
 const initialState: CatalogFilterState = {
     filterOptions: null,
     filtersBody: {},
     filtersSort: null,
+    localFiltersState: {},
     currentPage: 0,
+    isFiltersCleared: false,
     isFiltersActive: false,
     isFiltersShowed: false,
     loading: 'idle',
@@ -33,43 +40,23 @@ const initialState: CatalogFilterState = {
 
 export const fetchFiltersOptionsByCategory = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsByCategory',
-    async function (categoryId: string, { rejectWithValue }) {
+    async function (
+        {
+            categoryId,
+            subcategoryId = null,
+        }: { categoryId: string; subcategoryId?: string | null },
+        { rejectWithValue }
+    ) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=12&page=0`,
+                `${API_BASE()}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
                 {
                     method: 'POST',
                     body: JSON.stringify({
                         parentCategoryId: categoryId,
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            );
-
-            const result = await response.json();
-
-            if (!response.ok) throw new Error('something went wrong');
-
-            return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
-        }
-    }
-);
-
-export const fetchFiltersOptionsBySubCategory = createAsyncThunk(
-    'catalogFilter/fetchFiltersOptionsBySubCategory',
-    async function (categoryId: string, { rejectWithValue }) {
-        try {
-            const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=12&page=0`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        parentCategoryId: categoryId,
-                        subCategories: [categoryId],
+                        ...(subcategoryId
+                            ? { subCategories: [subcategoryId] }
+                            : {}),
                     }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
@@ -90,33 +77,24 @@ export const fetchFiltersOptionsBySubCategory = createAsyncThunk(
 
 export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsForFilteredProducts',
-    async function (_, { rejectWithValue, getState }) {
+    async function (
+        { isFiltersActive = false }: { isFiltersActive?: boolean },
+        { rejectWithValue, getState }
+    ) {
         try {
             const state = getState() as RootState;
-            const { filtersBody, currentPage } = state.catalogFilters;
-            const temporaryBody = Object.entries(filtersBody).filter(
-                (param) => {
-                    if (Array.isArray(param[1]) && param[1].length <= 0) {
-                        return false;
-                    }
-                    if (typeof param[1] === 'string' && param[1].trim() === '')
-                        return false;
-                    return true;
-                }
-            );
-
-            const filtersBodyFiltered: FiltersBody = {};
-            temporaryBody.forEach((item) => {
-                const key = item[0];
-                const value = item[1];
-                filtersBodyFiltered[key] = value;
-            });
+            const { filtersBody, currentPage, localFiltersState } =
+                state.catalogFilters;
 
             const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=12&page=${currentPage}`,
+                `${API_BASE()}product/filter/parameters?size=${PRODUCTS_SIZE}&page=${currentPage}`,
                 {
                     method: 'POST',
-                    body: JSON.stringify({ ...filtersBodyFiltered }),
+                    body: JSON.stringify({
+                        ...filterInvalidBodyParams(
+                            isFiltersActive ? localFiltersState : filtersBody
+                        ),
+                    }),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
                     },
@@ -143,18 +121,44 @@ export const catalogFilterSlice = createSlice({
                 ...state.filtersBody,
                 ...action.payload,
             };
+            const { parentCategoryId, subCategories } = action.payload;
+            if (parentCategoryId) {
+                state.localFiltersState.parentCategoryId = parentCategoryId;
+            }
+            if (subCategories) {
+                state.localFiltersState.subCategories = [...subCategories];
+            }
         },
-        resetFilters(state, action: PayloadAction<string>) {
-            state.filtersBody = { parentCategoryId: action.payload };
+        updateLocalFiltersState(state, action: PayloadAction<FiltersBody>) {
+            state.localFiltersState = {
+                ...state.localFiltersState,
+                ...action.payload,
+            };
+            state.isFiltersCleared = false;
+        },
+        updateFiltersBodyWithLocalFiltersState(state) {
+            state.filtersBody = {
+                ...state.filtersBody,
+                ...state.localFiltersState,
+            };
         },
         updateFilterSortParam(state, action: PayloadAction<FilterSort | null>) {
             state.filtersSort = action.payload;
+        },
+        resetFilters(state, action: PayloadAction<string>) {
+            state.filtersBody = { parentCategoryId: action.payload };
+            state.localFiltersState = { parentCategoryId: action.payload };
+            state.isFiltersCleared = true;
         },
         showHideFilters(state, action: PayloadAction<boolean>) {
             state.isFiltersShowed = action.payload;
         },
         updateCurrentPage(state, action: PayloadAction<number>) {
             state.currentPage = action.payload;
+        },
+        updateCurrentCategory(state, action: PayloadAction<string>) {
+            state.filtersBody = { parentCategoryId: action.payload };
+            state.localFiltersState = { parentCategoryId: action.payload };
         },
     },
     extraReducers: (builder) => {
@@ -197,24 +201,6 @@ export const catalogFilterSlice = createSlice({
                 state.error = action.payload;
             }
         );
-        builder.addCase(fetchFiltersOptionsBySubCategory.pending, (state) => {
-            state.loading = 'pending';
-            state.error = null;
-        });
-        builder.addCase(
-            fetchFiltersOptionsBySubCategory.fulfilled,
-            (state, action: PayloadAction<FilterOptions>) => {
-                state.loading = 'succeeded';
-                state.filterOptions = action.payload;
-            }
-        );
-        builder.addCase(
-            fetchFiltersOptionsBySubCategory.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
-                state.error = action.payload;
-            }
-        );
     },
 });
 
@@ -224,5 +210,8 @@ export const {
     showHideFilters,
     updateFilterSortParam,
     updateCurrentPage,
+    updateLocalFiltersState,
+    updateFiltersBodyWithLocalFiltersState,
+    updateCurrentCategory,
 } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;
