@@ -5,6 +5,7 @@ import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
 import ColorSelection from './components/ColorSelection/ColorSelection';
 import ProductPrice from './components/ProductPrice/ProductPrice';
+import AddToCartBtn from './components/AddToCartBtn/AddToCartBtn';
 import ProductsSlider from '../../shared-components/ProductsSlider/ProductsSlider';
 import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
@@ -37,6 +38,9 @@ const ProductPage = () => {
                 </div>
                 <ColorSelection />
                 <ProductPrice />
+                <div className="product-page__add-product">
+                    <AddToCartBtn />
+                </div>
             </div>
 
             <ProductsSlider
