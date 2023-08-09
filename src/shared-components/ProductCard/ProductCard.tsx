@@ -4,6 +4,7 @@ import SliderImages, {
     ImageType,
     ImagesData,
 } from './SliderImages/SliderImages';
+import AddToFavoriteBtn from '../AddToFavoriteBtn/AddToFavoriteBtn';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -38,19 +39,9 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
 
     return (
         <div className="product-card">
-            <button
-                className="product-card__favorite-btn"
-                type="button"
-                aria-label="додати в обране"
-            >
-                <svg
-                    className="product-card__favorite-icon"
-                    width="21"
-                    height="18"
-                >
-                    <use href={`${headerSprites}#favorite-icon`} />
-                </svg>
-            </button>
+            <div className="product-card__favorite">
+                <AddToFavoriteBtn />
+            </div>
             {discount ? (
                 <div className="product-card__sales-text">{discount}%</div>
             ) : null}
