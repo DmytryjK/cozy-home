@@ -4,6 +4,7 @@ import { fetchMightBeInterestProducts } from '../../store/reducers/productsSlide
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
 import ColorSelection from './components/ColorSelection/ColorSelection';
+import ProductPrice from './components/ProductPrice/ProductPrice';
 import ProductsSlider from '../../shared-components/ProductsSlider/ProductsSlider';
 import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
@@ -35,6 +36,7 @@ const ProductPage = () => {
                     </a>
                 </div>
                 <ColorSelection />
+                <ProductPrice />
             </div>
 
             <ProductsSlider
