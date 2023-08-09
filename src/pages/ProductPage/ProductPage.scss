@@ -1,0 +1,38 @@
+@use '../../style/variables.scss' as *;
+.product-page {
+    &__title {
+        color: $dark-color;
+        font-family: Montserrat Alternates;
+        margin-left: -3px;
+        font-size: 40px;
+        font-weight: 600;
+    }
+    &__extra-info { 
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    &__sku {
+        color: $light-grey;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    &__rating {
+        margin-left: 2px;
+    }
+    &__feedbacks-link {
+        color: $dark-color;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: underline;
+        text-decoration-skip-ink: none;
+        text-underline-offset: 2px;
+        text-decoration-color: transparent;
+        text-decoration-thickness: 0.5px;
+        transition: 0.1s ease-out text-decoration-color;
+        &:hover {
+            text-decoration-color: $dark-color;;
+        }
+    }
+}
