@@ -5,7 +5,7 @@ import { ErrorType, Loading } from '../../types/types';
 import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import { RootState } from '../store';
 
-const PRODUCTS_SIZE = 3;
+const PRODUCTS_SIZE = 6;
 
 type FilterSort = {
     title: string;

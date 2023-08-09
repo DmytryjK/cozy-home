@@ -4,6 +4,7 @@ import { fetchMightBeInterestProducts } from '../../store/reducers/productsSlide
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
 import ProductsSlider from '../../shared-components/ProductsSlider/ProductsSlider';
+import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
 
 const ProductPage = () => {
@@ -11,6 +12,7 @@ const ProductPage = () => {
     const { products, loading, error } = useAppSelector(
         (state) => state.productsSlider
     );
+    const countOfReviews = 12;
     useEffect(() => {
         dispatch(fetchMightBeInterestProducts());
     }, [dispatch]);
@@ -24,7 +26,11 @@ const ProductPage = () => {
                     <p className="product-page__sku">240003</p>
                     <ProductRating />
                     <a className="product-page__feedbacks-link" href="/">
-                        2 відгука
+                        {pluralizeUkrainian(countOfReviews, [
+                            'відгуг',
+                            'відгука',
+                            'відгуків',
+                        ])}
                     </a>
                 </div>
             </div>
