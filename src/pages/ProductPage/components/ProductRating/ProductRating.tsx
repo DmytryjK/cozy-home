@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import nextId from 'react-id-generator';
 import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
 import './ProductRating.scss';
@@ -80,7 +79,10 @@ const ProductRating = () => {
     };
     return (
         <div className="product-page__rating rating">
-            <ul className="rating__stars-list stars-list">
+            <ul
+                className="rating__stars-list stars-list"
+                title={`рейтинг: ${currentRating}`}
+            >
                 {rating()}
                 <li className="stars-list__bg" />
             </ul>
