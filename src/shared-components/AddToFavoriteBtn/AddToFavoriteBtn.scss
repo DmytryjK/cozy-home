@@ -1,0 +1,31 @@
+@use '../../style/variables.scss' as *;
+.favorite-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: $light-color;
+    cursor: pointer;
+    &:hover {
+        .favorite-btn__icon {
+            transition: 0.2s ease-out fill;
+            fill: $accent-color;
+        }
+    }
+    &__icon {
+        transition: 0.2s ease-out fill;
+    }
+}
+
+@media (max-width: 991px) {
+    .favorite-btn {
+        &:hover {
+            .favorite-btn__icon {
+                transition: 0.2s ease-out fill;
+                fill: $dark-color;
+            }
+        }
+    }
+}

@@ -38,5 +38,8 @@
 
     &__add-product {
         margin-top: 30px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 }
