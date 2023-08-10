@@ -7,6 +7,7 @@ import ColorSelection from './components/ColorSelection/ColorSelection';
 import ProductPrice from './components/ProductPrice/ProductPrice';
 import AddToCartBtn from './components/AddToCartBtn/AddToCartBtn';
 import AddToFavoriteBtn from '../../shared-components/AddToFavoriteBtn/AddToFavoriteBtn';
+import Accorderon from './components/Accorderon/Accorderon';
 import ProductsSlider from '../../shared-components/ProductsSlider/ProductsSlider';
 import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
@@ -43,6 +44,7 @@ const ProductPage = () => {
                     <AddToCartBtn />
                     <AddToFavoriteBtn />
                 </div>
+                <Accorderon />
             </div>
 
             <ProductsSlider
