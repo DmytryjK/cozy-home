@@ -11,11 +11,17 @@
     &:hover {
         .favorite-btn__icon {
             transition: 0.2s ease-out fill;
-            fill: $accent-color;
+            fill: $dark-color;
         }
     }
     &__icon {
         transition: 0.2s ease-out fill;
+        fill: transparent;
+    }
+    &.active {
+        .favorite-btn__icon {
+            fill: $dark-color; 
+        }
     }
 }
 
@@ -23,8 +29,8 @@
     .favorite-btn {
         &:hover {
             .favorite-btn__icon {
+                fill: transparent;
                 transition: 0.2s ease-out fill;
-                fill: $dark-color;
             }
         }
     }
