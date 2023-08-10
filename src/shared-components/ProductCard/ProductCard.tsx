@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { ProductCardType } from '../../types/types';
-import SliderImages, {
-    ImageType,
-    ImagesData,
-} from './SliderImages/SliderImages';
+
 import AddToFavoriteBtn from '../AddToFavoriteBtn/AddToFavoriteBtn';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ProductCard.scss';
+import SliderImages, { ImagesData } from './SliderImages/SliderImages';
 
 const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [priceSpaced, setPriceSpaced] = useState<string>('');
