@@ -148,7 +148,10 @@ const SliderImages = (props: Props) => {
 
     return (
         <>
-            <a className="product-card__slider-link" href={`/${name}`}>
+            <a
+                className="product-card__slider-link"
+                href={`/product/${skuCode}`}
+            >
                 <Swiper
                     className="product-card__slider"
                     slidesPerView={1}
@@ -190,7 +193,10 @@ const SliderImages = (props: Props) => {
             <div className="product-card__content swiper-no-swiping">
                 <div className="product-card__content-top">
                     <h2 className="product-card__title">
-                        <a className="product-card__title-link" href="/">
+                        <a
+                            className="product-card__title-link"
+                            href={`/product/${skuCode}`}
+                        >
                             {name}
                         </a>
                     </h2>
