@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import './Accorderon.scss';
+import './Accordeon.scss';
 
-const Accorderon = () => {
+const Accordeon = () => {
     const [activeTab, setActiveTab] = useState<string | null>(null);
     const accordeonItemsText = document.querySelectorAll(
         '.accordeon__item-text'
@@ -157,4 +157,4 @@ const Accorderon = () => {
     );
 };
 
-export default Accorderon;
+export default Accordeon;
