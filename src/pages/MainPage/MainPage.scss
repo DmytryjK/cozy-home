@@ -1,0 +1,13 @@
+.main-page{
+    &__new-items {
+        margin-top: 130px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .main-page {
+        &__new-items {
+            margin-top: 64px;
+        }
+    }
+}

@@ -42,4 +42,16 @@
         align-items: center;
         gap: 12px;
     }
+
+    &__interested {
+        margin-top: 135px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .product-page{
+        &__interested{
+            margin-top: 64px;
+        }
+    }
 }
