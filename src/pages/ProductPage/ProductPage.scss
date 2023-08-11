@@ -1,5 +1,16 @@
 @use '../../style/variables.scss' as *;
 .product-page {
+
+	.container {
+		display: flex;
+		justify-content: space-between;
+		gap: 34px;
+	}
+
+	.product-page-right-content-wrapper {
+		width: 43%;
+	}
+
     &__title {
         color: $dark-color;
         font-family: Montserrat Alternates;

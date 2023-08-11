@@ -11,6 +11,7 @@ import Accordeon from './components/Accordeon/Accordeon';
 import ProductsSlider from '../../shared-components/ProductsSlider/ProductsSlider';
 import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
+import ProductImagesSlider from './components/ProductImagesSlider/ProductImagesSlider';
 
 const ProductPage = () => {
     const dispatch = useAppDispatch();
@@ -26,25 +27,28 @@ const ProductPage = () => {
         <div className="product-page">
             <Breadcrumbs />
             <div className="container">
-                <h1 className="product-page__title">Крісло COMFORT</h1>
-                <div className="product-page__extra-info">
-                    <p className="product-page__sku">240003</p>
-                    <ProductRating />
-                    <a className="product-page__feedbacks-link" href="/">
-                        {pluralizeUkrainian(countOfReviews, [
-                            'відгуг',
-                            'відгука',
-                            'відгуків',
-                        ])}
-                    </a>
+                <ProductImagesSlider />
+                <div className="product-page-right-content-wrapper">
+                    <h1 className="product-page__title">Крісло COMFORT</h1>
+                    <div className="product-page__extra-info">
+                        <p className="product-page__sku">240003</p>
+                        <ProductRating />
+                        <a className="product-page__feedbacks-link" href="/">
+                            {pluralizeUkrainian(countOfReviews, [
+                                'відгуг',
+                                'відгука',
+                                'відгуків',
+                            ])}
+                        </a>
+                    </div>
+                    <ColorSelection />
+                    <ProductPrice />
+                    <div className="product-page__add-product">
+                        <AddToCartBtn />
+                        <AddToFavoriteBtn />
+                    </div>
+                    <Accordeon />
                 </div>
-                <ColorSelection />
-                <ProductPrice />
-                <div className="product-page__add-product">
-                    <AddToCartBtn />
-                    <AddToFavoriteBtn />
-                </div>
-                <Accordeon />
             </div>
             <section className="product-page__interested">
                 <ProductsSlider
