@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import homepageCategoriesReducer from './reducers/homepageCategoriesSlice';
 import popularItemsReducer from './reducers/popularItemsSlice';
 import productsSliderReducer from './reducers/productsSliderSlice';
 import catalogFiltersReducer from './reducers/catalogFilterSlice';
@@ -8,6 +9,7 @@ import categoriesReducer from './reducers/categoriesSlice';
 
 export const store = configureStore({
     reducer: {
+        homepageCategories: homepageCategoriesReducer,
         popularItems: popularItemsReducer,
         productsSlider: productsSliderReducer,
         catalogFilters: catalogFiltersReducer,

@@ -1,64 +1,83 @@
-import './CatalogueBlock.scss';
-import Sofas from '../../../../assets/images/catalogue/image_1.png';
-import Chairs from '../../../../assets/images/catalogue/image_2.png';
-import Tables from '../../../../assets/images/catalogue/image_3.png';
-import Dressers from '../../../../assets/images/catalogue/image_4.png';
-import Сhairs_v2 from '../../../../assets/images/catalogue/image_5.png';
-import Beds from '../../../../assets/images/catalogue/image_6.png';
-import SofasWebp from '../../../../assets/images/catalogue/image_1.webp';
-import ChairsWebp from '../../../../assets/images/catalogue/image_2.webp';
-import TablesWebp from '../../../../assets/images/catalogue/image_3.webp';
-import DressersWebp from '../../../../assets/images/catalogue/image_4.webp';
-import Сhairs_v2Webp from '../../../../assets/images/catalogue/image_5.webp';
-import BedsWebp from '../../../../assets/images/catalogue/image_6.webp';
+import { useEffect } from 'react';
+import nextId from 'react-id-generator';
 import CatalogueItem from './CatalogueItem/CatalogueItem';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { fetchSixCategoriesWithPhoto } from '../../../../store/reducers/homepageCategoriesSlice';
+import renderServerData from '../../../../helpers/renderServerData';
+import './CatalogueBlock.scss';
+
+// import SofasWebp from '../../../../assets/images/catalogue/image_1.webp';
+// import ChairsWebp from '../../../../assets/images/catalogue/image_2.webp';
+// import TablesWebp from '../../../../assets/images/catalogue/image_3.webp';
+// import DressersWebp from '../../../../assets/images/catalogue/image_4.webp';
+// import Сhairs_v2Webp from '../../../../assets/images/catalogue/image_5.webp';
+// import BedsWebp from '../../../../assets/images/catalogue/image_6.webp';
+
+type CategoryType = {
+    categoryId: string;
+    categoryName: string;
+    imagePath: string;
+    imageSize: string;
+};
 
 const CatalogueBlock = () => {
+    const dispatch = useAppDispatch();
+    const { data, loading, error } = useAppSelector(
+        (state) => state.homepageCategories
+    );
+
+    useEffect(() => {
+        dispatch(fetchSixCategoriesWithPhoto());
+    }, [dispatch]);
+
+    const renderCategories = () => {
+        const sortedData = [...data];
+        sortedData.sort((first, second) => {
+            const firstItemImgWidth = first.imageSize.replace(/x\d+/g, '');
+            const secondItemImgWidth = second.imageSize.replace(/x\d+/g, '');
+            if (+firstItemImgWidth > +secondItemImgWidth) {
+                return -1;
+            }
+            return 1;
+        });
+        const render = sortedData
+            .map((category: CategoryType, index) => {
+                const { categoryName, imagePath } = category;
+                if (index === 1) return null;
+                return (
+                    <CatalogueItem
+                        className="catalogue__item item1"
+                        key={nextId('category-home-page')}
+                        href={`/catalog/${categoryName}`}
+                        title={categoryName}
+                        alt={categoryName}
+                        srcImg={imagePath}
+                        srcWebp={imagePath}
+                    />
+                );
+            })
+            .filter((category) => category !== null);
+        render.push(
+            <CatalogueItem
+                className="catalogue__item item1"
+                key={nextId('category-home-page')}
+                href={`/catalog/${sortedData[1].categoryName}`}
+                title={sortedData[1].categoryName}
+                alt={sortedData[1].categoryName}
+                srcImg={sortedData[1].imagePath}
+                srcWebp={sortedData[1].imagePath}
+            />
+        );
+        return render as JSX.Element[];
+    };
     return (
         <section className="catalogue">
             <div className="container">
-                <CatalogueItem
-                    title="Дивани"
-                    alt="Дивани"
-                    srcImg={Sofas}
-                    srcWebp={SofasWebp}
-                    className="catalogue__item item1"
-                />
-                <CatalogueItem
-                    title="Крісла"
-                    alt="Крісла"
-                    srcImg={Chairs}
-                    srcWebp={ChairsWebp}
-                    className="catalogue__item item2"
-                />
-                <CatalogueItem
-                    title="Столи"
-                    alt="Столи"
-                    srcImg={Tables}
-                    srcWebp={TablesWebp}
-                    className="catalogue__item item3"
-                />
-                <CatalogueItem
-                    title="Комоди"
-                    alt="Комоди"
-                    srcImg={Dressers}
-                    srcWebp={DressersWebp}
-                    className="catalogue__item item4"
-                />
-                <CatalogueItem
-                    title="Стільці"
-                    alt="Стільці"
-                    srcImg={Сhairs_v2}
-                    srcWebp={Сhairs_v2Webp}
-                    className="catalogue__item item5"
-                />
-                <CatalogueItem
-                    title="Ліжка"
-                    alt="Ліжка"
-                    srcImg={Beds}
-                    srcWebp={BedsWebp}
-                    className="catalogue__item item6"
-                />
+                {renderServerData({
+                    error,
+                    loading,
+                    content: renderCategories,
+                })}
             </div>
         </section>
     );

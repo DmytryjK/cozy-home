@@ -23,7 +23,7 @@ const ProductPage = () => {
     }, [dispatch]);
 
     return (
-        <section className="product-page">
+        <div className="product-page">
             <Breadcrumbs />
             <div className="container">
                 <h1 className="product-page__title">Крісло COMFORT</h1>
@@ -46,14 +46,15 @@ const ProductPage = () => {
                 </div>
                 <Accordeon />
             </div>
-
-            <ProductsSlider
-                title="Також може зацікавити"
-                products={products}
-                loading={loading}
-                error={error}
-            />
-        </section>
+            <section className="product-page__interested">
+                <ProductsSlider
+                    title="Також може зацікавити"
+                    products={products}
+                    loading={loading}
+                    error={error}
+                />
+            </section>
+        </div>
     );
 };
 

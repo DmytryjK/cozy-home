@@ -26,7 +26,7 @@ const ProductsSlider = (props: Props) => {
         return products.map((product) => {
             return (
                 <SwiperSlide key={nextId('card-of-newItems')}>
-                    <div className="new-items__card">
+                    <div className="products-slider__card">
                         <ProductCard product={product} />
                     </div>
                 </SwiperSlide>
@@ -35,19 +35,19 @@ const ProductsSlider = (props: Props) => {
     };
 
     return (
-        <section className="new-items">
+        <div className="products-slider">
             <div className="container">
-                <div className="new-items__top">
-                    <h2 className="new-items__title">{title}</h2>
-                    <div className="new-items__navigation">
+                <div className="products-slider__top">
+                    <h2 className="products-slider__title">{title}</h2>
+                    <div className="products-slider__navigation">
                         <button
-                            className="new-items__prev-btn"
+                            className="products-slider__prev-btn"
                             type="button"
                             aria-label="попередній слайд"
                             ref={prevRef}
                         >
                             <svg
-                                className="new-items__prev-icon"
+                                className="products-slider__prev-icon"
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
@@ -64,13 +64,13 @@ const ProductsSlider = (props: Props) => {
                             </svg>
                         </button>
                         <button
-                            className="new-items__next-btn"
+                            className="products-slider__next-btn"
                             type="button"
                             aria-label="наступний слайд"
                             ref={nextRef}
                         >
                             <svg
-                                className="new-items__next-icon"
+                                className="products-slider__next-icon"
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
@@ -90,9 +90,9 @@ const ProductsSlider = (props: Props) => {
                 </div>
             </div>
             <div className="container container_pd-right-off">
-                <div className="new-items__cards">
+                <div className="products-slider__cards">
                     <Swiper
-                        className="new-items__slider"
+                        className="products-slider__slider"
                         modules={[Navigation]}
                         spaceBetween={32}
                         slidesPerView={4}
@@ -147,7 +147,7 @@ const ProductsSlider = (props: Props) => {
                     </Swiper>
                 </div>
             </div>
-        </section>
+        </div>
     );
 };
 

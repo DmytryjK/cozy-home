@@ -24,12 +24,14 @@ const MainPage = () => {
         <>
             <MainBanner />
             <CatalogueBlock />
-            <ProductsSlider
-                title="Новинки"
-                products={products}
-                loading={loading}
-                error={error}
-            />
+            <section className="main-page__new-items">
+                <ProductsSlider
+                    title="Новинки"
+                    products={products}
+                    loading={loading}
+                    error={error}
+                />
+            </section>
             <InformationBlock />
             <PopularItems />
             <Promo />

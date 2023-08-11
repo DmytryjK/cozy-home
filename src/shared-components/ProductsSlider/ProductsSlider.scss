@@ -1,7 +1,5 @@
 @use '../../style/variables.scss' as *;
-.new-items {
-    // margin-top: 130px;
-    padding-top: 130px;
+.products-slider {
     &__top {
         display: flex;
         justify-content: space-between;
@@ -60,8 +58,7 @@
 }
 
 @media screen and (max-width: 450px) {
-    .new-items {
-        margin-top: 64px;
+    .products-slider {
         &__cards {
             margin-top: 24px;
         }
