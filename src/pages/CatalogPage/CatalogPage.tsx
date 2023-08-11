@@ -14,8 +14,8 @@ const CatalogPage = () => {
         <section className="catalog">
             <Breadcrumbs />
             <CategoryList />
-            <div className="catalog-content">
-                <div className="container container_content-wrapper ">
+            <div className="catalog-content" id="catalog-content">
+                <div className="container container_content-wrapper">
                     <Filters />
                     <div className="catalog__main-content main-content">
                         <div className="main-content__top">

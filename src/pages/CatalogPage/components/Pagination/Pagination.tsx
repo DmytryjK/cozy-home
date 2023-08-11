@@ -71,6 +71,17 @@ const Pagination = () => {
         dispatch(fetchCatalogProductsByFilters({ page: clickedPage }));
     }, [currentPage, isPaginationInit]);
 
+    const moveUserToPageUp = () => {
+        const catalogProductsHtml = document.getElementById('catalog-content');
+        if (!catalogProductsHtml) return;
+        const yOffset = -70;
+        const y =
+            catalogProductsHtml.getBoundingClientRect().top +
+            window.pageYOffset +
+            yOffset;
+        window.scrollTo({ top: y, behavior: 'auto' });
+    };
+
     const getDots = () => {
         return (
             <li className="pagination__item" key={nextId('page-dots')}>
@@ -90,6 +101,7 @@ const Pagination = () => {
                     data-value={page}
                     onClick={() => {
                         setClickedPage(page - 1);
+                        moveUserToPageUp();
                     }}
                 >
                     {page}
