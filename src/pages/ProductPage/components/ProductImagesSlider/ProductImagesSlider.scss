@@ -1,0 +1,96 @@
+@use '../../../../style/variables.scss' as *;
+
+.product-images {
+	width: 57%;
+
+	&__main-image {
+		width: 100%;
+		max-height: 630px;
+	}
+
+	.product-images__slider {
+		.swiper-slide {
+			min-height: 630px;
+			padding-top: 70%;
+			overflow: hidden;
+			position: relative;
+
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				padding-bottom: 10px;
+				user-select: none;
+			}
+		}
+
+		.swiper-button-prev {
+			left: 28px;
+			color: $white;
+
+			&::after {
+				font-size: 20px;
+			}
+		}
+		.swiper-button-next {
+			right: 28px;
+			color: $white;
+
+			&::after {
+				font-size: 20px;
+			}
+		}
+
+		.swiper-slide-active {
+			min-width: 100%;
+			height: 100%;
+		}
+	}
+
+	// -------------------------- SLIDER THUMBS --------------------------
+
+	.product-images__slider-thumbs {
+		.swiper-slide {
+			cursor: pointer;
+			opacity: 0.7;
+			img {
+				max-height: 120px;
+				width: 100%;
+				user-select: none;
+			}
+
+			&-thumb-active {
+				opacity: 1;
+			}
+		}
+		&-wrapper {
+			width: 100%;
+			padding-top: 68%;
+			overflow: hidden;
+			position: relative;
+	
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+			}
+		}
+
+		.swiper-wrapper {
+			display: flex;
+			justify-content: center;
+		}
+
+		.swiper-slide:last-child {
+  margin-right: 0 !important;
+}
+	}
+
+	.active {
+		opacity: 1;
+	}
+}
