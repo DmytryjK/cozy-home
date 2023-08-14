@@ -9,7 +9,13 @@ import nextId from 'react-id-generator';
 import { useState } from 'react';
 import productImages from '../../../../assets/images/product-page';
 
-const ProductImagesSlider = () => {
+type Props = {
+    setlargePhotoActive: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ProductImagesSlider = (props: Props) => {
+    const { setlargePhotoActive } = props;
+
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
     const [activeIndex, setActiveIndex] = useState<number>(0);
 
@@ -25,7 +31,10 @@ const ProductImagesSlider = () => {
                     className="product-images__slider"
                 >
                     {productImages.map((image) => (
-                        <SwiperSlide key={nextId('swiper-image')}>
+                        <SwiperSlide
+                            key={nextId('swiper-image')}
+                            onClick={() => setlargePhotoActive(true)}
+                        >
                             <img src={image} alt="Slider images" />
                         </SwiperSlide>
                     ))}

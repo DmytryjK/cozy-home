@@ -1,4 +1,9 @@
 @use '../../style/variables.scss' as *;
+
+body {
+	position: relative;
+}
+
 .product-page {
 	&__wrapper {
 		display: flex;
@@ -54,7 +59,7 @@
     }
 
     &__interested {
-        margin-top: 135px;
+        margin-top: 130px;
     }
 }
 
