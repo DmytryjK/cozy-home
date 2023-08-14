@@ -26,7 +26,7 @@ const ProductPage = () => {
     return (
         <div className="product-page">
             <Breadcrumbs />
-            <div className="container">
+            <div className="product-page__wrapper container">
                 <ProductImagesSlider />
                 <div className="product-page-right-content-wrapper">
                     <h1 className="product-page__title">Крісло COMFORT</h1>
