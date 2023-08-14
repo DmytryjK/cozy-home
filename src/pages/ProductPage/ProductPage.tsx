@@ -43,36 +43,41 @@ const ProductPage = () => {
                 <ProductImagesSlider
                     setlargePhotoActive={setlargePhotoActive}
                 />
-                <div className="product-page-right-content-wrapper">
-                    <h1 className="product-page__title">Крісло COMFORT</h1>
-                    <div className="product-page__extra-info">
-                        <p className="product-page__sku">240003</p>
-                        <ProductRating />
-                        <a className="product-page__feedbacks-link" href="/">
-                            {pluralizeUkrainian(countOfReviews, [
-                                'відгуг',
-                                'відгука',
-                                'відгуків',
-                            ])}
-                        </a>
+                <div className="product-page__wrapper container">
+                    <div className="product-page-right-content-wrapper">
+                        <h1 className="product-page__title">Крісло COMFORT</h1>
+                        <div className="product-page__extra-info">
+                            <p className="product-page__sku">240003</p>
+                            <ProductRating />
+                            <a
+                                className="product-page__feedbacks-link"
+                                href="/"
+                            >
+                                {pluralizeUkrainian(countOfReviews, [
+                                    'відгуг',
+                                    'відгука',
+                                    'відгуків',
+                                ])}
+                            </a>
+                        </div>
+                        <ColorSelection />
+                        <ProductPrice />
+                        <div className="product-page__add-product">
+                            <AddToCartBtn />
+                            <AddToFavoriteBtn />
+                        </div>
+                        <Accordeon />
                     </div>
-                    <ColorSelection />
-                    <ProductPrice />
-                    <div className="product-page__add-product">
-                        <AddToCartBtn />
-                        <AddToFavoriteBtn />
-                    </div>
-                    <Accordeon />
                 </div>
+                <section className="product-page__interested">
+                    <ProductsSlider
+                        title="Також може зацікавити"
+                        products={products}
+                        loading={loading}
+                        error={error}
+                    />
+                </section>
             </div>
-            <section className="product-page__interested">
-                <ProductsSlider
-                    title="Також може зацікавити"
-                    products={products}
-                    loading={loading}
-                    error={error}
-                />
-            </section>
         </div>
     );
 };

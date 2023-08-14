@@ -65,11 +65,28 @@ const Pagination = () => {
     useEffect(() => {
         if (currentPage !== clickedPage) {
             setClickedPage(currentPage);
-            return;
+            return undefined;
         }
-        if (isPaginationInit) return;
-        dispatch(fetchCatalogProductsByFilters({ page: clickedPage }));
+        if (isPaginationInit) return undefined;
+        const promise: any = dispatch(
+            fetchCatalogProductsByFilters({ page: clickedPage })
+        );
+
+        return () => {
+            promise.abort();
+        };
     }, [currentPage, isPaginationInit]);
+
+    const moveUserToPageUp = () => {
+        const catalogProductsHtml = document.getElementById('catalog-content');
+        if (!catalogProductsHtml) return;
+        const yOffset = -70;
+        const y =
+            catalogProductsHtml.getBoundingClientRect().top +
+            window.pageYOffset +
+            yOffset;
+        window.scrollTo({ top: y, behavior: 'auto' });
+    };
 
     const getDots = () => {
         return (
@@ -90,6 +107,7 @@ const Pagination = () => {
                     data-value={page}
                     onClick={() => {
                         setClickedPage(page - 1);
+                        moveUserToPageUp();
                     }}
                 >
                     {page}
@@ -100,11 +118,11 @@ const Pagination = () => {
 
     const inlineStyle = () => {
         const styles: { [key: string]: string } = {};
-        if (loadingProducts !== 'succeeded') {
-            styles.pointerEvents = 'none';
-        } else {
-            styles.pointerEvents = 'auto';
-        }
+        // if (loadingProducts !== 'succeeded') {
+        //     styles.pointerEvents = 'none';
+        // } else {
+        //     styles.pointerEvents = 'auto';
+        // }
         if (pages.length === 0) {
             styles.display = 'none';
         } else {
