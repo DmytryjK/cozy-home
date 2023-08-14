@@ -40,10 +40,10 @@ const ProductPage = () => {
             )}
             <Breadcrumbs />
             <div className="container">
-                <ProductImagesSlider
-                    setlargePhotoActive={setlargePhotoActive}
-                />
                 <div className="product-page__wrapper container">
+                    <ProductImagesSlider
+                        setlargePhotoActive={setlargePhotoActive}
+                    />
                     <div className="product-page-right-content-wrapper">
                         <h1 className="product-page__title">Крісло COMFORT</h1>
                         <div className="product-page__extra-info">
