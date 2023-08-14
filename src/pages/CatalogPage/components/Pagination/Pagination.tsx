@@ -65,10 +65,16 @@ const Pagination = () => {
     useEffect(() => {
         if (currentPage !== clickedPage) {
             setClickedPage(currentPage);
-            return;
+            return undefined;
         }
-        if (isPaginationInit) return;
-        dispatch(fetchCatalogProductsByFilters({ page: clickedPage }));
+        if (isPaginationInit) return undefined;
+        const promise: any = dispatch(
+            fetchCatalogProductsByFilters({ page: clickedPage })
+        );
+
+        return () => {
+            promise.abort();
+        };
     }, [currentPage, isPaginationInit]);
 
     const moveUserToPageUp = () => {
@@ -112,11 +118,11 @@ const Pagination = () => {
 
     const inlineStyle = () => {
         const styles: { [key: string]: string } = {};
-        if (loadingProducts !== 'succeeded') {
-            styles.pointerEvents = 'none';
-        } else {
-            styles.pointerEvents = 'auto';
-        }
+        // if (loadingProducts !== 'succeeded') {
+        //     styles.pointerEvents = 'none';
+        // } else {
+        //     styles.pointerEvents = 'auto';
+        // }
         if (pages.length === 0) {
             styles.display = 'none';
         } else {

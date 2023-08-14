@@ -59,17 +59,13 @@ const Filters = () => {
 
     useEffect(() => {
         if (!isFiltersCleared) return;
-        dispatch(
-            fetchCatalogProductsByFilters({
-                page: 0,
-                isFiltersActive: false,
-            })
-        );
-        dispatch(
-            fetchFiltersOptionsForFilteredProducts({
-                isFiltersActive: true,
-            })
-        );
+        fetchCatalogProductsByFilters({
+            page: 0,
+            isFiltersActive: false,
+        });
+        fetchFiltersOptionsForFilteredProducts({
+            isFiltersActive: true,
+        });
     }, [isFiltersCleared]);
 
     const renderedFilters = (): JSX.Element | JSX.Element[] | any => {

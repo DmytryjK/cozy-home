@@ -15,8 +15,16 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import { ProductCategory } from './types';
 
+type ActiveCategory = {
+    name: string;
+    id: string;
+};
+
 const PopularItems: FC = () => {
-    const [activeCategory, setActiveCategory] = useState<string>('Всі товари');
+    const [activeCategory, setActiveCategory] = useState<ActiveCategory>({
+        name: 'Всі товари',
+        id: '',
+    });
     const dispatch = useAppDispatch();
     const { products, categories, loading, error } = useAppSelector(
         (state) => state.popularItems
@@ -29,28 +37,35 @@ const PopularItems: FC = () => {
         dispatch(fetchPopularItemsAllСategories());
     }, [dispatch]);
 
-    const handleGetItemsByCategoryId = (categoryId: string) => {
-        if (categoryId) {
-            dispatch(
+    useEffect(() => {
+        let promise: any;
+        if (activeCategory.id === '') {
+            promise = dispatch(fetchPopularItemsAllProducts());
+        } else {
+            promise = dispatch(
                 fetchPopularItemsProductsByСategories({
                     status,
-                    categoryId,
+                    categoryId: activeCategory.id,
                     countOfProducts,
                 })
             );
-        } else {
-            dispatch(fetchPopularItemsAllProducts());
         }
-    };
+
+        return () => {
+            promise.abort();
+        };
+    }, [activeCategory]);
 
     const handleChangeTab = (
         e: React.MouseEvent<HTMLButtonElement>,
         id: string
     ) => {
         const currentCategory = e.currentTarget.getAttribute('data-value');
-        if (currentCategory) setActiveCategory(currentCategory);
-
-        handleGetItemsByCategoryId(id);
+        if (!currentCategory) return;
+        setActiveCategory({
+            name: currentCategory,
+            id,
+        });
     };
 
     const renderedCategories = () => {
@@ -92,7 +107,7 @@ const PopularItems: FC = () => {
                                 >
                                     <button
                                         className={
-                                            activeCategory === name
+                                            activeCategory.name === name
                                                 ? 'popular-items__nav-btn active'
                                                 : 'popular-items__nav-btn'
                                         }
