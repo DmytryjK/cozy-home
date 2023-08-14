@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchMightBeInterestProducts } from '../../store/reducers/productsSliderSlice';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
 import ColorSelection from './components/ColorSelection/ColorSelection';
@@ -8,7 +6,7 @@ import ProductPrice from './components/ProductPrice/ProductPrice';
 import AddToCartBtn from './components/AddToCartBtn/AddToCartBtn';
 import AddToFavoriteBtn from '../../shared-components/AddToFavoriteBtn/AddToFavoriteBtn';
 import Accordeon from './components/Accordeon/Accordeon';
-import ProductsSlider from '../../shared-components/ProductsSlider/ProductsSlider';
+import InterestedSlider from './components/InterestedSlider/InterestedSlider';
 import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
 import ProductImagesSlider from './components/ProductImagesSlider/ProductImagesSlider';
@@ -16,16 +14,7 @@ import EnlargedPhoto from './components/ProductImagesSlider/EnlargedPhoto/Enlarg
 
 const ProductPage = () => {
     const [largePhotoActive, setlargePhotoActive] = useState<boolean>(false);
-
-    const dispatch = useAppDispatch();
-    const { products, loading, error } = useAppSelector(
-        (state) => state.productsSlider
-    );
     const countOfReviews = 12;
-    useEffect(() => {
-        dispatch(fetchMightBeInterestProducts());
-    }, [dispatch]);
-
     useEffect(() => {
         document.body.style.overflow = largePhotoActive ? 'hidden' : 'visible';
         document.body.style.paddingTop = largePhotoActive ? '0' : '70px';
@@ -69,14 +58,7 @@ const ProductPage = () => {
                         <Accordeon />
                     </div>
                 </div>
-                <section className="product-page__interested">
-                    <ProductsSlider
-                        title="Також може зацікавити"
-                        products={products}
-                        loading={loading}
-                        error={error}
-                    />
-                </section>
+                <InterestedSlider />
             </div>
         </div>
     );
