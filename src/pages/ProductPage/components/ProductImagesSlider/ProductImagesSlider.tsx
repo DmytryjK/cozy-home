@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs } from 'swiper';
 
 import nextId from 'react-id-generator';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import productImages from '../../../../assets/images/product-page';
 
 type Props = {
@@ -50,11 +50,11 @@ const ProductImagesSlider = (props: Props) => {
                     {productImages.map((image, index) => (
                         <SwiperSlide
                             key={nextId('swiper-image')}
-                            className={`${
-                                activeIndex === index
-                                    ? 'swiper-slide-thumb-active'
-                                    : ''
-                            }`}
+                            // className={`${
+                            //     activeIndex === index
+                            //         ? 'swiper-slide-thumb-active'
+                            //         : ''
+                            // }`}
                         >
                             <div className="product-images__slider-thumbs-wrapper">
                                 <img src={image} alt="Slider images" />
