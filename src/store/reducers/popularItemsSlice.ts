@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
 import API_BASE from '../../utils/API_BASE';
 import { ProductCategory } from '../../pages/MainPage/components/PopularItems/types';
+import { RootState } from '../store';
 
 interface PopularItemsInitialState {
     products: ProductCardType[];
