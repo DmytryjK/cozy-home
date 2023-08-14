@@ -1,6 +1,10 @@
 @use '../../style/variables.scss' as *;
-.product-page {
 
+body {
+	position: relative;
+}
+
+.product-page {
 	.container {
 		display: flex;
 		justify-content: space-between;
