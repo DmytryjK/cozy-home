@@ -1,7 +1,6 @@
 @use '../../style/variables.scss' as *;
 .product-page {
-
-	.container {
+	&__wrapper {
 		display: flex;
 		justify-content: space-between;
 		gap: 34px;
@@ -56,6 +55,20 @@
 
     &__interested {
         margin-top: 135px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .product-page {
+        &__wrapper {
+            flex-wrap: wrap;
+        }
+        .product-page-right-content-wrapper {
+            width: 100%;
+        }
+        .product-images {
+            width: 100%;
+        }
     }
 }
 
