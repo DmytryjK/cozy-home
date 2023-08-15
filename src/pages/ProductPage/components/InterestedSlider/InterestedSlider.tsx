@@ -4,9 +4,8 @@ import { fetchMightBeInterestProducts } from '../../../../store/reducers/product
 import ProductsSlider from '../../../../shared-components/ProductsSlider/ProductsSlider';
 
 const InterestedSlider = () => {
-    const { products, loading, error } = useAppSelector(
-        (state) => state.productsSlider
-    );
+    const { interestedProducts, loadingInterested, errorInterested } =
+        useAppSelector((state) => state.productsSlider);
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(fetchMightBeInterestProducts());
@@ -15,9 +14,9 @@ const InterestedSlider = () => {
         <section className="product-page__interested">
             <ProductsSlider
                 title="Також може зацікавити"
-                products={products}
-                loading={loading}
-                error={error}
+                products={interestedProducts}
+                loading={loadingInterested}
+                error={errorInterested}
             />
         </section>
     );

@@ -33,7 +33,6 @@ const PopularItems: FC = () => {
     const status = '1'; // popular
 
     useEffect(() => {
-        dispatch(fetchPopularItemsAllProducts());
         dispatch(fetchPopularItemsAllСategories());
     }, [dispatch]);
 

@@ -12,7 +12,7 @@ import ArrowUp from '../../shared-components/ArrowUp';
 
 const MainPage = () => {
     const dispatch = useAppDispatch();
-    const { products, loading, error } = useAppSelector(
+    const { newProducts, loadingNew, errorNew } = useAppSelector(
         (state) => state.productsSlider
     );
 
@@ -27,9 +27,9 @@ const MainPage = () => {
             <section className="main-page__new-items">
                 <ProductsSlider
                     title="Новинки"
-                    products={products}
-                    loading={loading}
-                    error={error}
+                    products={newProducts}
+                    loading={loadingNew}
+                    error={errorNew}
                 />
             </section>
             <InformationBlock />

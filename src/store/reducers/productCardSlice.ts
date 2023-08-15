@@ -5,7 +5,7 @@ import API_BASE from '../../utils/API_BASE';
 type ProductParams = {
     productSkuCode: string;
     colorId: string;
-    preview: 'true' | 'false';
+    main: 'true' | 'false';
 };
 
 type ImageSrc = {

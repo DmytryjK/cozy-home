@@ -1,7 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
+import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import type swiper from 'swiper';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import {
+    fetchProductInfoByScuWithColor,
+    updateCurrentProductColor,
+} from '../../../store/reducers/productInformationSlice';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Loader from '../../Loader';
@@ -40,7 +46,10 @@ const SliderImages = (props: Props) => {
     const { skuCode, name, shortDescription, colorDtoList, imageDtoList } =
         productData;
 
-    const [currentColor, setCurrentColor] = useState<string>('');
+    const [currentColor, setCurrentColor] = useState<{
+        name: string;
+        hex: string;
+    }>({ name: '', hex: '' });
     const [currentIndexColor, setCurrentIndexColor] = useState<number>(0);
     const [isColorChosen, setIsColorChosen] = useState(false);
     const uniqIdForInputName = nextId('color-');
@@ -49,9 +58,12 @@ const SliderImages = (props: Props) => {
     const [loading, setLoading] = useState<Loading>('succeeded');
     const [error, setError] = useState<unknown | null>(null);
 
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
         if (!isColorChosen && imageDtoList.length > 0) {
-            setCurrentColor(colorDtoList[0].name);
+            const { name, id } = colorDtoList[0];
+            setCurrentColor({ name, hex: id });
         }
     }, [isColorChosen, imageDtoList]);
 
@@ -77,7 +89,7 @@ const SliderImages = (props: Props) => {
     }, [imageSrc, imageDtoList]);
 
     const handleSlideChange = (color: string, index: number, id: string) => {
-        setCurrentColor(color);
+        setCurrentColor({ name: color, hex: id });
         setIsColorChosen(true);
         setCurrentIndexColor(index);
 
@@ -97,7 +109,7 @@ const SliderImages = (props: Props) => {
                         body: JSON.stringify({
                             productSkuCode: skuCode,
                             hex: id,
-                            preview: true,
+                            main: true,
                         }),
                         headers: {
                             'Content-type': 'application/json; charset=UTF-8',
@@ -148,9 +160,14 @@ const SliderImages = (props: Props) => {
 
     return (
         <>
-            <a
+            <NavLink
                 className="product-card__slider-link"
-                href={`/product/${skuCode}`}
+                to={`/product/${skuCode}`}
+                onClick={() => {
+                    localStorage.setItem('hex', currentColor.hex);
+                    localStorage.setItem('productSkuCode', skuCode);
+                    localStorage.setItem('colorName', currentColor.name);
+                }}
             >
                 <Swiper
                     className="product-card__slider"
@@ -162,7 +179,8 @@ const SliderImages = (props: Props) => {
                     onSlideChange={(swiper) => {
                         colorDtoList.forEach((item, index) => {
                             if (swiper.activeIndex === index) {
-                                setCurrentColor(item.name);
+                                const { name, id } = item;
+                                setCurrentColor({ name, hex: id });
                             }
                         });
                         setIsColorChosen(true);
@@ -189,16 +207,24 @@ const SliderImages = (props: Props) => {
                         );
                     })}
                 </Swiper>
-            </a>
+            </NavLink>
             <div className="product-card__content swiper-no-swiping">
                 <div className="product-card__content-top">
                     <h2 className="product-card__title">
-                        <a
+                        <NavLink
                             className="product-card__title-link"
-                            href={`/product/${skuCode}`}
+                            to={`/product/${skuCode}`}
+                            onClick={() => {
+                                localStorage.setItem('hex', currentColor.hex);
+                                localStorage.setItem('productSkuCode', skuCode);
+                                localStorage.setItem(
+                                    'colorName',
+                                    currentColor.name
+                                );
+                            }}
                         >
                             {name}
-                        </a>
+                        </NavLink>
                     </h2>
                     <fieldset className="product-card__color-checkboxes">
                         {colorDtoList.map((color, index) => {
@@ -215,7 +241,7 @@ const SliderImages = (props: Props) => {
                                         aria-label={name}
                                         value={id}
                                         checked={
-                                            currentColor === name ||
+                                            currentColor.name === name ||
                                             (!isColorChosen && index === 0)
                                         }
                                         onChange={() =>

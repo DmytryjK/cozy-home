@@ -3,15 +3,21 @@ import { ProductCardType, Loading } from '../../types/types';
 import API_BASE from '../../utils/API_BASE';
 
 export interface NewItemsInitialState {
-    products: ProductCardType[];
-    loading: Loading;
-    error: null | unknown;
+    newProducts: ProductCardType[];
+    interestedProducts: ProductCardType[];
+    loadingNew: Loading;
+    loadingInterested: Loading;
+    errorNew: null | unknown;
+    errorInterested: null | unknown;
 }
 
 const initialState: NewItemsInitialState = {
-    products: [],
-    loading: 'idle',
-    error: null,
+    newProducts: [],
+    loadingNew: 'idle',
+    errorNew: null,
+    interestedProducts: [],
+    loadingInterested: 'idle',
+    errorInterested: null,
 };
 
 export const fetchNewItemsAllProducts = createAsyncThunk(
@@ -56,39 +62,39 @@ export const productsSliderSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchNewItemsAllProducts.pending, (state) => {
-            state.loading = 'pending';
-            state.error = null;
+            state.loadingNew = 'pending';
+            state.errorNew = null;
         });
         builder.addCase(
             fetchNewItemsAllProducts.fulfilled,
             (state, action: PayloadAction<ProductCardType[]>) => {
-                state.loading = 'succeeded';
-                state.products = action.payload;
+                state.loadingNew = 'succeeded';
+                state.newProducts = action.payload;
             }
         );
         builder.addCase(
             fetchNewItemsAllProducts.rejected,
             (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
-                state.error = action.payload;
+                state.loadingNew = 'failed';
+                state.errorNew = action.payload;
             }
         );
         builder.addCase(fetchMightBeInterestProducts.pending, (state) => {
-            state.loading = 'pending';
-            state.error = null;
+            state.loadingInterested = 'pending';
+            state.errorInterested = null;
         });
         builder.addCase(
             fetchMightBeInterestProducts.fulfilled,
             (state, action: PayloadAction<ProductCardType[]>) => {
-                state.loading = 'succeeded';
-                state.products = action.payload;
+                state.loadingInterested = 'succeeded';
+                state.interestedProducts = action.payload;
             }
         );
         builder.addCase(
             fetchMightBeInterestProducts.rejected,
             (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
-                state.error = action.payload;
+                state.loadingInterested = 'failed';
+                state.errorInterested = action.payload;
             }
         );
     },

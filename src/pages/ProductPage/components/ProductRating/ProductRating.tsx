@@ -1,9 +1,13 @@
 import nextId from 'react-id-generator';
+import { useAppSelector } from '../../../../hooks/hooks';
 import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
 import './ProductRating.scss';
 
 const ProductRating = () => {
-    const currentRating = 3.7;
+    const currentRating = useAppSelector(
+        (state) => state.productInformation.productInfo.averageRating
+    );
+
     const reminderOfDividing = currentRating % Math.floor(currentRating);
     const rating = () => {
         const result: JSX.Element[] = [];

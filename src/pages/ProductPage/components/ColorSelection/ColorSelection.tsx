@@ -1,24 +1,23 @@
-import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import nextId from 'react-id-generator';
+import { updateCurrentProductColor } from '../../../../store/reducers/productInformationSlice';
+import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import './ColorSelection.scss';
 
 const ColorSelection = () => {
-    const colorDtoList = [
-        { id: '#262626', name: 'Чорний' },
-        { id: '#545454', name: 'Сірий' },
-        { id: '#C57100', name: 'Коричневий' },
-    ];
-    const [currentColor, setCurrentColor] = useState<{
-        id: string;
-        name: string;
-    }>({ id: '#262626', name: 'Чорний' });
+    const colorDtoList = useAppSelector(
+        (state) => state.productInformation.productInfo.colors
+    );
+    const currentColor = useAppSelector(
+        (state) => state.productInformation.currentColor
+    );
+    const dispatch = useAppDispatch();
     const currentPath = useLocation().pathname;
 
     return (
         <div className="color-selection">
             <span className="color-selection__color-descr">
-                Колір: <span>{currentColor.name}</span>
+                Колір: <span>{currentColor?.name}</span>
             </span>
             <ul className="color-selection__list">
                 {colorDtoList.map((color) => {
@@ -30,18 +29,20 @@ const ColorSelection = () => {
                         >
                             <NavLink
                                 className={`color-selection__link ${
-                                    currentColor.id === id ? 'active-link' : ''
+                                    currentColor?.id === id ? 'active-link' : ''
                                 }`}
                                 to={`${currentPath}${id}`}
                                 style={{ backgroundColor: `${id}` }}
-                                onClick={() =>
-                                    setCurrentColor((prev) => {
-                                        if (prev.id !== id) {
-                                            return { id, name };
-                                        }
-                                        return prev;
-                                    })
-                                }
+                                onClick={() => {
+                                    dispatch(
+                                        updateCurrentProductColor({
+                                            name,
+                                            id,
+                                        })
+                                    );
+                                    localStorage.setItem('hex', id);
+                                    localStorage.setItem('colorName', name);
+                                }}
                             />
                         </li>
                     );

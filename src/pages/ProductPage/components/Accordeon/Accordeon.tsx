@@ -1,5 +1,20 @@
 import { useState, useEffect } from 'react';
+import parse from 'html-react-parser';
+import nextId from 'react-id-generator';
+import { useAppSelector } from '../../../../hooks/hooks';
 import './Accordeon.scss';
+
+type CharactersDataType = {
+    title: string;
+    value:
+        | string
+        | string[]
+        | number
+        | boolean
+        | { id: string; name: string }
+        | Record<string, never>;
+    unit?: string;
+};
 
 const Accordeon = () => {
     const [activeTab, setActiveTab] = useState<string | null>(null);
@@ -7,6 +22,102 @@ const Accordeon = () => {
         '.accordeon__item-text'
     );
     const accordeonItems = document.querySelectorAll('.accordeon__item');
+    const productInfo = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
+
+    const {
+        description,
+        categoryName,
+        materials,
+        collection,
+        transformation,
+        heightAdjustment,
+        weight,
+        height,
+        width,
+        depth,
+        numberOfDoors,
+        numberOfDrawers,
+        bedLength,
+        bedWidth,
+        maxLoad,
+    } = productInfo;
+
+    const charactersData: CharactersDataType[] = [
+        {
+            title: 'Категорія',
+            value: categoryName,
+        },
+        {
+            title: 'Матеріали',
+            value: materials,
+        },
+        {
+            title: 'Колекції',
+            value: collection.name,
+        },
+        {
+            title: 'Механізм трансформації',
+            value: transformation ? 'так' : false,
+        },
+        {
+            title: 'Регулювання за висотою',
+            value: heightAdjustment ? 'так' : false,
+        },
+        {
+            title: 'Вага',
+            value: weight,
+            unit: 'кг',
+        },
+        {
+            title: 'Висота',
+            value: height,
+            unit: 'см',
+        },
+        {
+            title: 'Ширина',
+            value: width,
+            unit: 'см',
+        },
+        {
+            title: 'Глибина',
+            value: depth,
+            unit: 'см',
+        },
+        {
+            title: 'Кількість дверей',
+            value: numberOfDoors,
+            unit: 'шт',
+        },
+        {
+            title: 'Кількість шухляд',
+            value: numberOfDrawers,
+            unit: 'шт',
+        },
+        {
+            title: 'Довжина спального місця',
+            value: bedLength,
+            unit: 'см',
+        },
+        {
+            title: 'Ширина спального місця',
+            value: bedWidth,
+            unit: 'см',
+        },
+        {
+            title: 'Навантаження',
+            value: maxLoad,
+            unit: 'кг',
+        },
+    ];
+
+    const charactersCurtrentInfo = charactersData.filter((character) => {
+        if (character.value) {
+            return -1;
+        }
+        return 0;
+    });
 
     function autoCalculateHeightOfItem() {
         accordeonItems.forEach((item, index) => {
@@ -19,8 +130,8 @@ const Accordeon = () => {
     useEffect(() => {
         window.addEventListener('resize', autoCalculateHeightOfItem);
 
-        return () =>
-            window.removeEventListener('resize', autoCalculateHeightOfItem);
+        // return () =>
+        //     window.removeEventListener('resize', autoCalculateHeightOfItem);
     }, []);
 
     autoCalculateHeightOfItem();
@@ -45,22 +156,7 @@ const Accordeon = () => {
                 </button>
                 <div className="accordeon__item-inner">
                     <p className="accordeon__item-text item-descr__text">
-                        <b>Крісло м'яке велюр Comfort</b> - це поєднання
-                        затишку, комфорту і елегантного дизайну. Це крісло
-                        створене, щоб забезпечити вам неперевершений рівень
-                        зручності та розкішного вигляду в вашому інтер'єрі.
-                        <br />
-                        <br />
-                        Конструкція <b>крісла Comfort</b> також заслуговує
-                        уваги. Вона виготовлена з міцного дерев'яного каркасу,
-                        що забезпечує стабільність і довговічність крісла. Пухка
-                        подушка на сидінні та спинці забезпечує додатковий
-                        комфорт і підтримку вашої спини, дозволяючи вам
-                        розслабитися і відпочити. Його щедрі розміри і широке
-                        сидіння надають достатньо місця для комфортного
-                        розташування. Будь-який приміщення, будь то вітальня,
-                        спальня або кабінет, стане більш затишним і стильним
-                        завдяки присутності цього чудового крісла.
+                        {parse(description)}
                     </p>
                 </div>
             </li>
@@ -86,34 +182,48 @@ const Accordeon = () => {
                 <div className="accordeon__item-inner">
                     <table className="accordeon__item-text item-characters__table">
                         <tbody>
-                            <tr>
-                                <th className="table-title">Матеріал:</th>
-                                <td className="table-text">Текстиль</td>
-                            </tr>
-                            <tr>
-                                <th className="table-title">Категорія:</th>
-                                <td className="table-text">Крісла</td>
-                            </tr>
-                            <tr>
-                                <th className="table-title">Колекція:</th>
-                                <td className="table-text">Tenderness</td>
-                            </tr>
-                            <tr>
-                                <th className="table-title">Вага:</th>
-                                <td className="table-text">3200 грам</td>
-                            </tr>
-                            <tr>
-                                <th className="table-title">Висота:</th>
-                                <td className="table-text">1100 мм</td>
-                            </tr>
-                            <tr>
-                                <th className="table-title">Ширина:</th>
-                                <td className="table-text">520 мм</td>
-                            </tr>
-                            <tr>
-                                <th className="table-title">Глибина:</th>
-                                <td className="table-text">520 мм</td>
-                            </tr>
+                            {charactersCurtrentInfo.map((character) => {
+                                const { title, value, unit } = character;
+                                if (
+                                    typeof value === 'string' ||
+                                    typeof value === 'number'
+                                )
+                                    return (
+                                        <tr key={nextId('character-type')}>
+                                            <th className="table-title">
+                                                {title}:
+                                            </th>
+                                            <td className="table-text">
+                                                {value} {unit || ''}
+                                            </td>
+                                        </tr>
+                                    );
+                                if (Array.isArray(value)) {
+                                    return (
+                                        <tr key={nextId('character-type')}>
+                                            <th className="table-title">
+                                                {title}:
+                                            </th>
+                                            {value.map((item, index) => {
+                                                return (
+                                                    <td
+                                                        key={nextId(
+                                                            'character-values'
+                                                        )}
+                                                        className="table-text"
+                                                    >
+                                                        {index <
+                                                        value.length - 1
+                                                            ? `${item},`
+                                                            : item}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    );
+                                }
+                                return null;
+                            })}
                         </tbody>
                     </table>
                 </div>
