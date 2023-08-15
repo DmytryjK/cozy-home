@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import {
+    fetchProductInfoByScuWithColor,
+    updateCurrentProductColor,
+} from '../../store/reducers/productInformationSlice';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
 import ColorSelection from './components/ColorSelection/ColorSelection';
@@ -14,7 +19,32 @@ import EnlargedPhoto from './components/ProductImagesSlider/EnlargedPhoto/Enlarg
 
 const ProductPage = () => {
     const [largePhotoActive, setlargePhotoActive] = useState<boolean>(false);
-    const countOfReviews = 12;
+    const productInfo = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
+    const dispatch = useAppDispatch();
+
+    const { skuCode, name, countOfReviews } = productInfo;
+    const hex = localStorage.getItem('hex');
+    const productSkuCode = localStorage.getItem('productSkuCode');
+    const colorName = localStorage.getItem('colorName');
+
+    useEffect(() => {
+        if (!hex || !productSkuCode || !colorName) return;
+        dispatch(
+            updateCurrentProductColor({
+                name: colorName,
+                id: hex,
+            })
+        );
+        dispatch(
+            fetchProductInfoByScuWithColor({
+                productSkuCode,
+                colorHex: hex,
+            })
+        );
+    }, [dispatch]);
+
     useEffect(() => {
         document.body.style.overflow = largePhotoActive ? 'hidden' : 'visible';
         document.body.style.paddingTop = largePhotoActive ? '0' : '70px';
@@ -28,38 +58,33 @@ const ProductPage = () => {
                 ''
             )}
             <Breadcrumbs />
-            <div className="container">
-                <div className="product-page__wrapper container">
-                    <ProductImagesSlider
-                        setlargePhotoActive={setlargePhotoActive}
-                    />
-                    <div className="product-page-right-content-wrapper">
-                        <h1 className="product-page__title">Крісло COMFORT</h1>
-                        <div className="product-page__extra-info">
-                            <p className="product-page__sku">240003</p>
-                            <ProductRating />
-                            <a
-                                className="product-page__feedbacks-link"
-                                href="/"
-                            >
-                                {pluralizeUkrainian(countOfReviews, [
-                                    'відгуг',
-                                    'відгука',
-                                    'відгуків',
-                                ])}
-                            </a>
-                        </div>
-                        <ColorSelection />
-                        <ProductPrice />
-                        <div className="product-page__add-product">
-                            <AddToCartBtn />
-                            <AddToFavoriteBtn />
-                        </div>
-                        <Accordeon />
+            <div className="product-page__wrapper container">
+                <ProductImagesSlider
+                    setlargePhotoActive={setlargePhotoActive}
+                />
+                <div className="product-page-right-content-wrapper">
+                    <h1 className="product-page__title">{name}</h1>
+                    <div className="product-page__extra-info">
+                        <p className="product-page__sku">{skuCode}</p>
+                        <ProductRating />
+                        <a className="product-page__feedbacks-link" href="/">
+                            {pluralizeUkrainian(countOfReviews, [
+                                'відгуг',
+                                'відгука',
+                                'відгуків',
+                            ])}
+                        </a>
                     </div>
+                    <ColorSelection />
+                    <ProductPrice />
+                    <div className="product-page__add-product">
+                        <AddToCartBtn />
+                        <AddToFavoriteBtn />
+                    </div>
+                    <Accordeon />
                 </div>
-                <InterestedSlider />
             </div>
+            <InterestedSlider />
         </div>
     );
 };

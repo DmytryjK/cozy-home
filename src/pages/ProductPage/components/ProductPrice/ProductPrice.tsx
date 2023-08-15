@@ -1,27 +1,21 @@
+import { useAppSelector } from '../../../../hooks/hooks';
 import './ProductPrice.scss';
 
-type ProductPriceType = {
-    price: number;
-    priceWithDiscount: number | null;
-    isLowQuantity: boolean;
-};
-
 const ProductPrice = () => {
-    const priceData = {
-        price: 15000,
-        priceWithDiscount: 12000,
-        isLowQuantity: true,
-    };
     const addSpaceToPrice = (price: number) => {
-        let result = '';
+        let result = price.toString();
         if (price >= 1000) {
             const temporary = +price;
             result = temporary.toLocaleString().replace(',', ' ');
         }
         return result;
     };
+    const productInfo = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
+
+    const { price, discount, priceWithDiscount, quantityStatus } = productInfo;
     const renderPrice = () => {
-        const { price, priceWithDiscount, isLowQuantity } = priceData;
         return (
             <>
                 <div className="product-price__wrapper">
@@ -41,7 +35,7 @@ const ProductPrice = () => {
                     )}
                 </div>
                 <span className="product-price__stock-status">
-                    {isLowQuantity ? 'Закінчується' : 'В наявності'}
+                    {quantityStatus}
                 </span>
             </>
         );
