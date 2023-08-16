@@ -109,8 +109,7 @@ const SliderImages = (props: Props) => {
                         method: 'POST',
                         body: JSON.stringify({
                             productSkuCode: skuCode,
-                            hex: id,
-                            main: true,
+                            colorHex: id,
                         }),
                         headers: {
                             'Content-type': 'application/json; charset=UTF-8',
@@ -164,6 +163,7 @@ const SliderImages = (props: Props) => {
             <NavLink
                 className="product-card__slider-link"
                 to={`/product/${skuCode}`}
+                reloadDocument
                 onClick={() => {
                     localStorage.setItem('hex', currentColor.hex);
                     localStorage.setItem('productSkuCode', skuCode);
@@ -222,6 +222,7 @@ const SliderImages = (props: Props) => {
                         <NavLink
                             className="product-card__title-link"
                             to={`/product/${skuCode}`}
+                            reloadDocument
                             onClick={() => {
                                 localStorage.setItem('hex', currentColor.hex);
                                 localStorage.setItem('productSkuCode', skuCode);
