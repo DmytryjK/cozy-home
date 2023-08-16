@@ -17,6 +17,7 @@ import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
 import ProductImagesSlider from './components/ProductImagesSlider/ProductImagesSlider';
 import EnlargedPhoto from './components/ProductImagesSlider/EnlargedPhoto/EnlargedPhoto';
+import Test from './components/test component/test';
 
 const ProductPage = () => {
     const [largePhotoActive, setlargePhotoActive] = useState<boolean>(false);
@@ -86,6 +87,7 @@ const ProductPage = () => {
                         <AddToFavoriteBtn />
                     </div>
                     <Accordeon />
+                    Test
                 </div>
             </div>
             <InterestedSlider />

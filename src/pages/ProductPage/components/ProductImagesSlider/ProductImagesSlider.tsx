@@ -3,11 +3,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Thumbs } from 'swiper';
+import { Navigation, Thumbs, FreeMode } from 'swiper';
 
 import nextId from 'react-id-generator';
-import { useState, useEffect } from 'react';
-import productImages from '../../../../assets/images/product-page';
+import { useState } from 'react';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 type Props = {
     setlargePhotoActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,56 +15,64 @@ type Props = {
 
 const ProductImagesSlider = (props: Props) => {
     const { setlargePhotoActive } = props;
+    const { images } = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
 
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-    const [activeIndex, setActiveIndex] = useState<number>(0);
 
-    return (
-        <div className="product-images">
-            <div className="product-images__main-image">
-                <Swiper
-                    thumbs={{ swiper: thumbsSwiper }}
-                    loop
-                    navigation
-                    modules={[Navigation, Thumbs]}
-                    grabCursor
-                    className="product-images__slider"
-                >
-                    {productImages.map((image) => (
-                        <SwiperSlide
-                            key={nextId('swiper-image')}
-                            onClick={() => setlargePhotoActive(true)}
-                        >
-                            <img src={image} alt="Slider images" />
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-                <Swiper
-                    onSwiper={setThumbsSwiper}
-                    loop
-                    spaceBetween={10}
-                    slidesPerView={4}
-                    modules={[Navigation, Thumbs]}
-                    className="product-images__slider-thumbs"
-                >
-                    {productImages.map((image, index) => (
-                        <SwiperSlide
-                            key={nextId('swiper-image')}
-                            // className={`${
-                            //     activeIndex === index
-                            //         ? 'swiper-slide-thumb-active'
-                            //         : ''
-                            // }`}
-                        >
-                            <div className="product-images__slider-thumbs-wrapper">
-                                <img src={image} alt="Slider images" />
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+    const renderSlider = () => {
+        if (images.length === 0) return null;
+        return (
+            <div className="product-images">
+                <div className="product-images__main-image">
+                    <Swiper
+                        loop
+                        spaceBetween={10}
+                        navigation
+                        thumbs={{ swiper: thumbsSwiper }}
+                        modules={[FreeMode, Navigation, Thumbs]}
+                        className="product-images__slider"
+                    >
+                        {images.map((image) => (
+                            <SwiperSlide
+                                key={nextId('swiper-image')}
+                                onClick={() => setlargePhotoActive(true)}
+                            >
+                                <img
+                                    src={image.sliderImagePath}
+                                    alt="Slider images"
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                    <Swiper
+                        onSwiper={setThumbsSwiper}
+                        loop
+                        spaceBetween={10}
+                        slidesPerView={4}
+                        freeMode
+                        watchSlidesProgress
+                        modules={[FreeMode, Navigation, Thumbs]}
+                        className="product-images__slider-thumbs"
+                    >
+                        {images.map((image) => (
+                            <SwiperSlide key={nextId('swiper-image')}>
+                                <div className="product-images__slider-thumbs-wrapper">
+                                    <img
+                                        src={image.sliderImagePath}
+                                        alt="Slider images"
+                                    />
+                                </div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
+
+    return <>{renderSlider()}</>;
 };
 
 export default ProductImagesSlider;
