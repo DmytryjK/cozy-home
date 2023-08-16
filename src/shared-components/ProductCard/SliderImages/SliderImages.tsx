@@ -6,7 +6,8 @@ import type swiper from 'swiper';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
     fetchProductInfoByScuWithColor,
-    updateCurrentProductColor,
+    updateProductColor,
+    updateProductSku,
 } from '../../../store/reducers/productInformationSlice';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -167,6 +168,13 @@ const SliderImages = (props: Props) => {
                     localStorage.setItem('hex', currentColor.hex);
                     localStorage.setItem('productSkuCode', skuCode);
                     localStorage.setItem('colorName', currentColor.name);
+                    dispatch(
+                        updateProductColor({
+                            name: currentColor.name,
+                            id: currentColor.hex,
+                        })
+                    );
+                    dispatch(updateProductSku(skuCode));
                 }}
             >
                 <Swiper
@@ -221,6 +229,13 @@ const SliderImages = (props: Props) => {
                                     'colorName',
                                     currentColor.name
                                 );
+                                dispatch(
+                                    updateProductColor({
+                                        name: currentColor.name,
+                                        id: currentColor.hex,
+                                    })
+                                );
+                                dispatch(updateProductSku(skuCode));
                             }}
                         >
                             {name}

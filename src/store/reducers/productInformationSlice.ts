@@ -11,6 +11,7 @@ interface ProductInformationState {
     productInfo: ProductInformationType;
     loading: Loading;
     error: null | unknown;
+    currentSku: string | null;
     currentColor: { id: string; name: string } | null;
 }
 
@@ -46,6 +47,7 @@ const initialState: ProductInformationState = {
     },
     loading: 'idle',
     error: null,
+    currentSku: null,
     currentColor: null,
 };
 
@@ -78,11 +80,14 @@ export const productInformationSlice = createSlice({
     name: 'productInformation',
     initialState,
     reducers: {
-        updateCurrentProductColor: (
+        updateProductColor: (
             state,
             action: PayloadAction<{ id: string; name: string }>
         ) => {
             state.currentColor = action.payload;
+        },
+        updateProductSku: (state, action: PayloadAction<string>) => {
+            state.currentSku = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -106,5 +111,6 @@ export const productInformationSlice = createSlice({
         );
     },
 });
-export const { updateCurrentProductColor } = productInformationSlice.actions;
+export const { updateProductColor, updateProductSku } =
+    productInformationSlice.actions;
 export default productInformationSlice.reducer;

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import {
     fetchProductInfoByScuWithColor,
-    updateCurrentProductColor,
+    updateProductColor,
+    updateProductSku,
 } from '../../store/reducers/productInformationSlice';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
@@ -22,6 +23,9 @@ const ProductPage = () => {
     const productInfo = useAppSelector(
         (state) => state.productInformation.productInfo
     );
+    const currentSkuCode = useAppSelector(
+        (state) => state.productInformation.currentSku
+    );
     const dispatch = useAppDispatch();
 
     const { skuCode, name, countOfReviews } = productInfo;
@@ -32,7 +36,7 @@ const ProductPage = () => {
     useEffect(() => {
         if (!hex || !productSkuCode || !colorName) return;
         dispatch(
-            updateCurrentProductColor({
+            updateProductColor({
                 name: colorName,
                 id: hex,
             })
@@ -43,7 +47,7 @@ const ProductPage = () => {
                 colorHex: hex,
             })
         );
-    }, [dispatch]);
+    }, [dispatch, currentSkuCode]);
 
     useEffect(() => {
         document.body.style.overflow = largePhotoActive ? 'hidden' : 'visible';
