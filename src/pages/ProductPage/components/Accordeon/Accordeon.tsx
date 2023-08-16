@@ -204,21 +204,14 @@ const Accordeon = () => {
                                             <th className="table-title">
                                                 {title}:
                                             </th>
-                                            {value.map((item, index) => {
-                                                return (
-                                                    <td
-                                                        key={nextId(
-                                                            'character-values'
-                                                        )}
-                                                        className="table-text"
-                                                    >
-                                                        {index <
+                                            <td className="table-text">
+                                                {value.map((item, index) => {
+                                                    return index <
                                                         value.length - 1
-                                                            ? `${item},`
-                                                            : item}
-                                                    </td>
-                                                );
-                                            })}
+                                                        ? `${item}, `
+                                                        : item;
+                                                })}
+                                            </td>
                                         </tr>
                                     );
                                 }

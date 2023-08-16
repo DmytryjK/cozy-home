@@ -98,9 +98,14 @@
         }
     }
     .item-characters {
-        tbody tr:not(:last-child) {
-            .table-title, .table-text {
-                padding-bottom: 12px;
+        tbody tr{
+            &:not(:last-child) {
+                .table-title, .table-text {
+                    padding-bottom: 12px;
+                }
+            }
+            .table-title {
+                padding-right: 30px;
             }
         }
         .table-title {
@@ -111,7 +116,7 @@
         }
         .table-text {
             font-weight: 500;
-            padding-left: 8px;
+            padding-left: 4px;
         }
     }
     .item-delivery {
