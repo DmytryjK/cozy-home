@@ -81,6 +81,7 @@ const CategoryList = () => {
         }
 
         return () => {
+            if (!promise1 || !promise2) return;
             promise1.abort();
             promise2.abort();
         };
