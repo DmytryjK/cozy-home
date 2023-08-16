@@ -6,10 +6,21 @@ import ProductsSlider from '../../../../shared-components/ProductsSlider/Product
 const InterestedSlider = () => {
     const { interestedProducts, loadingInterested, errorInterested } =
         useAppSelector((state) => state.productsSlider);
+    const productInfo = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
+    const storageCurrentSku = localStorage.getItem('productSkuCode');
     const dispatch = useAppDispatch();
+    const { collection, skuCode } = productInfo;
     useEffect(() => {
-        dispatch(fetchMightBeInterestProducts());
-    }, [dispatch]);
+        if (!collection.id || skuCode !== storageCurrentSku) return;
+        dispatch(
+            fetchMightBeInterestProducts({
+                collectionId: collection.id,
+                productSkuCode: skuCode,
+            })
+        );
+    }, [productInfo]);
     return (
         <section className="product-page__interested">
             <ProductsSlider

@@ -40,10 +40,20 @@ export const fetchNewItemsAllProducts = createAsyncThunk(
 
 export const fetchMightBeInterestProducts = createAsyncThunk(
     'productsSlider/fetchMightBeInterestProducts',
-    async function (_, { rejectWithValue }) {
+    async function (
+        {
+            collectionId,
+            productSkuCode,
+        }: { collectionId: string; productSkuCode: string },
+        { rejectWithValue }
+    ) {
         try {
+            const queryParams = new URLSearchParams({
+                collectionId,
+                productSkuCode,
+            });
             const response = await fetch(
-                `${API_BASE()}product/homepage/status?status=0&countOfProducts=20`
+                `${API_BASE()}product/collection?${queryParams}`
             );
             const result = await response.json();
 
