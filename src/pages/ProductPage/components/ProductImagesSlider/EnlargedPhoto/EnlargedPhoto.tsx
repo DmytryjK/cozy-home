@@ -7,7 +7,7 @@ import { Navigation, Thumbs } from 'swiper';
 import nextId from 'react-id-generator';
 import { useEffect } from 'react';
 import productPageSprite from '../../../../../assets/icons/product-page/product-pageSprite.svg';
-import productImages from '../../../../../assets/images/product-page';
+import { useAppSelector } from '../../../../../hooks/hooks';
 
 type Props = {
     setlargePhotoActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +15,9 @@ type Props = {
 
 const EnlargedPhoto = (props: Props) => {
     const { setlargePhotoActive } = props;
+    const { images } = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
 
     const handleKeyPress = (e: any) => {
         if (e.key === 'Escape' || e.keyCode === 27) {
@@ -30,13 +33,38 @@ const EnlargedPhoto = (props: Props) => {
         };
     }, []);
 
+    const renderSlider = () => {
+        if (images.length === 0) return null;
+        return (
+            <Swiper
+                loop
+                navigation
+                modules={[Navigation, Thumbs]}
+                grabCursor
+                className="product-images__enlarged_slider"
+            >
+                {images.map((image) => (
+                    <SwiperSlide
+                        key={nextId('swiper-enlarged-image')}
+                        onClick={() => setlargePhotoActive(true)}
+                    >
+                        <img
+                            src={image.sliderImagePath}
+                            alt="Enlarged slider images"
+                        />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        );
+    };
+
     return (
         <div className="block-wrapper">
             <div className="enlarged-block">
                 <div className="enlarged-block__content">
                     <div className="enlarged-block__content_header">
                         <div className="enlarged-block__content_header_sliderCounter">
-                            <p>1/{productImages.length}</p>
+                            <p>1/{images.length}</p>
                         </div>
                         <button
                             type="button"
@@ -48,22 +76,7 @@ const EnlargedPhoto = (props: Props) => {
                             </svg>
                         </button>
                     </div>
-                    <Swiper
-                        loop
-                        navigation
-                        modules={[Navigation, Thumbs]}
-                        grabCursor
-                        className="product-images__enlarged_slider"
-                    >
-                        {productImages.map((image) => (
-                            <SwiperSlide
-                                key={nextId('swiper-enlarged-image')}
-                                onClick={() => setlargePhotoActive(true)}
-                            >
-                                <img src={image} alt="Enlarged slider images" />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                    {renderSlider()}
                 </div>
             </div>
         </div>

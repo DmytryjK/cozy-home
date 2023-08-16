@@ -2,6 +2,7 @@
 
 .product-images {
 	width: 57%;
+	margin-bottom: 135px;
 
 	&__main-image {
 		width: 100%;
@@ -53,45 +54,24 @@
 	// -------------------------- SLIDER THUMBS --------------------------
 
 	.product-images__slider-thumbs {
-		padding-bottom: 130px;
-		.swiper-slide {
-			cursor: pointer;
-			opacity: 0.7;
-			img {
-				max-height: 120px;
-				width: 100%;
-				user-select: none;
-			}
-
-			&-thumb-active {
-				opacity: 1;
-			}
-		}
-		&-wrapper {
-			width: 100%;
-			padding-top: 68%;
-			overflow: hidden;
-			position: relative;
-	
-			img {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-			}
-		}
 
 		.swiper-wrapper {
-			display: flex;
-			justify-content: center;
+		.swiper-slide {
+			cursor: pointer;
+			width: 25%;
+			
+			img {
+				max-height: 120px;
+				user-select: none;
+				display: block;
+				width: 100%;
+				object-fit: cover;
+			}
 		}
 
 		.swiper-slide:last-child {
-  margin-right: 0 !important;
+  		margin-right: 0 !important;
+		}
+	}
 }
-	}
-
-	.active {
-		opacity: 1;
-	}
 }
