@@ -1,9 +1,13 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import nextId from 'react-id-generator';
-import { updateCurrentProductColor } from '../../../../store/reducers/productInformationSlice';
+import { updateProductColor } from '../../../../store/reducers/productInformationSlice';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import './ColorSelection.scss';
 
+type ProductFetchInfoType = {
+    currentColor: { id: string; name: string } | null;
+    currentSku: string | null;
+};
 const ColorSelection = () => {
     const colorDtoList = useAppSelector(
         (state) => state.productInformation.productInfo.colors
@@ -35,7 +39,7 @@ const ColorSelection = () => {
                                 style={{ backgroundColor: `${id}` }}
                                 onClick={() => {
                                     dispatch(
-                                        updateCurrentProductColor({
+                                        updateProductColor({
                                             name,
                                             id,
                                         })
