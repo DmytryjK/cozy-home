@@ -1,0 +1,61 @@
+@import '../../../../assets/fonts/fonts.scss';
+@import '../../../../style/variables.scss';
+
+.customers-review {
+	margin-top: 130px;
+
+	&__slider-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&__title {
+			font-family: 'Montserrat Alternates';
+			font-weight: 600;
+			font-size: 28px;
+			font-weight: 600;
+		}
+	}
+
+	.swiper {
+		margin-top: 30px;
+
+		.swiper-slide{
+			margin-right: 32px !important; 
+			max-width: 304px;
+		}
+	}
+
+	&__navigation{
+		margin-right: -10px;
+		display: flex;
+		gap: 10px;
+}
+&__prev-btn, &__next-btn {
+		background-color: transparent;
+		padding: 10px;
+		border: none;
+		cursor: pointer;
+}
+&__prev-icon, &__next-icon {
+		fill: $grey;
+}
+
+.swiper-button-disabled svg {
+		fill: $dark-white;
+}
+
+	&__button {
+		color: $white;
+		font-size: 16px;
+		font-weight: 500;
+		margin-top: 30px;
+		display: flex;
+		width: 192px;
+		padding: 12px 10px;
+		justify-content: center;
+		align-items: center;
+		border-radius: 2px;
+		background: $dark-color;
+	}
+}

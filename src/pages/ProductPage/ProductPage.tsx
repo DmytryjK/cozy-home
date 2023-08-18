@@ -18,6 +18,7 @@ import './ProductPage.scss';
 import ProductImagesSlider from './components/ProductImagesSlider/ProductImagesSlider';
 import EnlargedPhoto from './components/ProductImagesSlider/EnlargedPhoto/EnlargedPhoto';
 import Test from './components/test component/test';
+import CustomersReviewSlider from './components/CustomersReviewSlider/CustomersReviewSlider';
 
 const ProductPage = () => {
     const [largePhotoActive, setlargePhotoActive] = useState<boolean>(false);
@@ -87,9 +88,9 @@ const ProductPage = () => {
                         <AddToFavoriteBtn />
                     </div>
                     <Accordeon />
-                    Test
                 </div>
             </div>
+            <CustomersReviewSlider />
             <InterestedSlider />
         </div>
     );
