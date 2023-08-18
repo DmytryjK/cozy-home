@@ -68,7 +68,6 @@ const CustomersReviewSlider = () => {
                 <Swiper
                     slidesPerView={4}
                     spaceBetween={10}
-                    grabCursor
                     modules={[Navigation]}
                     navigation={{
                         prevEl: prevRef.current,
