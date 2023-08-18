@@ -40,7 +40,7 @@ const ProductImagesSlider = (props: Props) => {
                                 onClick={() => setlargePhotoActive(true)}
                             >
                                 <img
-                                    src={image.sliderImagePath}
+                                    src={image.desktopImagePath}
                                     alt="Slider images"
                                 />
                             </SwiperSlide>
