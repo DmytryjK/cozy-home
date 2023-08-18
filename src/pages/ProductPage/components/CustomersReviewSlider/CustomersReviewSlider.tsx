@@ -13,7 +13,7 @@ const CustomersReviewSlider = () => {
         <div className="container">
             <div className="customers-review">
                 <div className="customers-review__slider-top">
-                    <h1 className="customers-review__title">
+                    <h1 className="customers-review__slider-top_title">
                         Відгуки покупців
                     </h1>
                     <div className="customers-review__navigation">
