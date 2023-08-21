@@ -6,6 +6,7 @@ import paginationSprite from '../../../../assets/icons/pagination/pagination-spr
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import './Pagination.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import moveUserToPageUp from '../../../../utils/moveUserToPageUp';
 import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
 
 const Pagination = () => {
@@ -77,17 +78,6 @@ const Pagination = () => {
         };
     }, [currentPage, isPaginationInit]);
 
-    const moveUserToPageUp = () => {
-        const catalogProductsHtml = document.getElementById('catalog-content');
-        if (!catalogProductsHtml) return;
-        const yOffset = -70;
-        const y =
-            catalogProductsHtml.getBoundingClientRect().top +
-            window.pageYOffset +
-            yOffset;
-        window.scrollTo({ top: y, behavior: 'auto' });
-    };
-
     const getDots = () => {
         return (
             <li className="pagination__item" key={nextId('page-dots')}>
@@ -118,11 +108,6 @@ const Pagination = () => {
 
     const inlineStyle = () => {
         const styles: { [key: string]: string } = {};
-        // if (loadingProducts !== 'succeeded') {
-        //     styles.pointerEvents = 'none';
-        // } else {
-        //     styles.pointerEvents = 'auto';
-        // }
         if (pages.length === 0) {
             styles.display = 'none';
         } else {
