@@ -7,6 +7,7 @@ import {
     showHideFilters,
     fetchFiltersOptionsForFilteredProducts,
     updateFiltersBodyWithLocalFiltersState,
+    updateCurrentPage,
 } from '../../../../store/reducers/catalogFilterSlice';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
@@ -15,6 +16,7 @@ import RangeFilter from './RangeFilter/RangeFilter';
 import BooleanFilter from './BooleanFilter/BooleanFilter';
 import CheckboxesFilter from './CheckboxesFilter/CheckboxesFilter';
 import filtersData from './FiltersData';
+import moveUserToPageUp from '../../../../utils/moveUserToPageUp';
 import './Filters.scss';
 
 const Filters = () => {
@@ -212,7 +214,9 @@ const Filters = () => {
                                 })
                             );
                             dispatch(updateFiltersBodyWithLocalFiltersState());
+                            dispatch(updateCurrentPage(0));
                             dispatch(showHideFilters(false));
+                            moveUserToPageUp();
                         }}
                     >
                         застосувати

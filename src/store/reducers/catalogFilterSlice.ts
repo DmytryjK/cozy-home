@@ -83,11 +83,10 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
     ) {
         try {
             const state = getState() as RootState;
-            const { filtersBody, currentPage, localFiltersState } =
-                state.catalogFilters;
+            const { filtersBody, localFiltersState } = state.catalogFilters;
 
             const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=${PRODUCTS_SIZE}&page=${currentPage}`,
+                `${API_BASE()}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
                 {
                     method: 'POST',
                     body: JSON.stringify({
