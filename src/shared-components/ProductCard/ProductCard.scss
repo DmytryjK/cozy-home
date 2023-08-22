@@ -19,6 +19,35 @@
             color: $accent-color;
         }
     }
+    &.out-of-stock{
+        .product-card {
+            &__sales-text, &__favorite, &__slider-link, &__content {
+                opacity: 40%;
+            }
+            &__favorite {
+                pointer-events: none;
+            }
+        }
+        .purchase-block{
+            &__out-status {
+                font-size: 14px;
+                font-weight: 500;
+                opacity: 40%;
+            }
+            &__cart-btn:hover {
+                background-color: $dark-color;;
+                .purchase-block__bell-icon{
+                    stroke: $light-color;
+                }
+            }
+            &__bell-icon{
+                fill: transparent;
+                stroke: $dark-color;
+                transition: 0.2s ease-out stroke;
+            }
+        }
+    }
+
     &__sales-text {
         position: absolute;
         display: flex;
