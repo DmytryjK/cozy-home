@@ -15,27 +15,30 @@ const ProductPrice = () => {
     );
 
     const { price, discount, priceWithDiscount, quantityStatus } = productInfo;
+    const isOutOfStock = true;
     const renderPrice = () => {
         return (
             <>
-                <div className="product-price__wrapper">
-                    {priceWithDiscount ? (
-                        <>
-                            <span className="product-price__discount product-price_bold-text">
-                                {addSpaceToPrice(priceWithDiscount)} UAH
-                            </span>
-                            <span className="product-price__default product-price_strikethrough-text">
+                {isOutOfStock ? null : (
+                    <div className="product-price__wrapper">
+                        {priceWithDiscount ? (
+                            <>
+                                <span className="product-price__discount product-price_bold-text">
+                                    {addSpaceToPrice(priceWithDiscount)} UAH
+                                </span>
+                                <span className="product-price__default product-price_strikethrough-text">
+                                    {addSpaceToPrice(price)} UAH
+                                </span>
+                            </>
+                        ) : (
+                            <span className="product-price__default product-price_bold-text">
                                 {addSpaceToPrice(price)} UAH
                             </span>
-                        </>
-                    ) : (
-                        <span className="product-price__default product-price_bold-text">
-                            {addSpaceToPrice(price)} UAH
-                        </span>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
                 <span className="product-price__stock-status">
-                    {quantityStatus}
+                    {isOutOfStock ? 'Немає на складі' : quantityStatus}
                 </span>
             </>
         );

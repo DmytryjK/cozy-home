@@ -34,6 +34,8 @@ const ProductPage = () => {
     const productSkuCode = localStorage.getItem('productSkuCode');
     const colorName = localStorage.getItem('colorName');
 
+    const isOutOfStock = true;
+
     useEffect(() => {
         if (!hex || !productSkuCode || !colorName) return;
         dispatch(
@@ -84,7 +86,7 @@ const ProductPage = () => {
                     <ProductPrice />
                     <div className="product-page__add-product">
                         <AddToCartBtn />
-                        <AddToFavoriteBtn />
+                        {isOutOfStock ? null : <AddToFavoriteBtn />}
                     </div>
                     <Accordeon />
                 </div>

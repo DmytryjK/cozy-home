@@ -24,3 +24,38 @@
         fill: $white;
     }
 }
+
+.notification-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    max-width: 310px;
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    background-color: $accent-color;
+    cursor: pointer;
+    transition: 0.2s ease-out background-color;
+    &:hover {
+        background-color: $accent-color-hover;
+    }
+    &__text {
+        color: $white;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    &__icon {
+        fill: transparent;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .notification-btn:hover {
+        background-color: $accent-color;
+    } 
+    .cart-btn:hover {
+        background-color: $dark-color;
+    }
+}
