@@ -9,9 +9,40 @@
 	align-items: center;
 	justify-content: center;
 	opacity: 0;
+	visibility: hidden;
 	z-index: 9999;
+	padding: 40px;
+	transition: 0.2s ease-out opacity, 0.2s ease-out visibility;
+
+	&__content {
+		position: relative;
+		padding: 32px;
+		border-radius: 12px;
+		background-color: white;
+		width: 100%;
+		min-height: 400px;
+		transform: scale(0.8);
+		transition: 0.2s ease-out transform;
+
+		&_close-btn {
+			position: absolute;
+			display: block;
+			right: 20px;
+			top: 14px;
+			width: 40px;
+			height: 40px;
+			border: none;
+			background-color: transparent;
+			cursor: pointer;
+		}
+	}
 }
 
 .active {
 	opacity: 1;
+	visibility: visible;
+	.modal__content{
+		transform: scale(1);
+		transition: 0.2s ease-out transform;
+	}
 }

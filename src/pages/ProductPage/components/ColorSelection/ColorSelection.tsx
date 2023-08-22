@@ -15,6 +15,10 @@ const ColorSelection = () => {
     const currentColor = useAppSelector(
         (state) => state.productInformation.currentColor
     );
+    const mockedData = colorDtoList.map((color) => {
+        return { ...color, isOutOfStock: true };
+    });
+
     const dispatch = useAppDispatch();
     const currentPath = useLocation().pathname;
 
@@ -23,12 +27,43 @@ const ColorSelection = () => {
             <span className="color-selection__color-descr">
                 Колір: <span>{currentColor?.name}</span>
             </span>
-            <ul className="color-selection__list">
+            {/* <ul className="color-selection__list">
                 {colorDtoList.map((color) => {
                     const { id, name } = color;
                     return (
                         <li
                             className="color-selection__item"
+                            key={nextId('product-color')}
+                        >
+                            <NavLink
+                                className={`color-selection__link ${
+                                    currentColor?.id === id ? 'active-link' : ''
+                                }`}
+                                to={`${currentPath}${id}`}
+                                style={{ backgroundColor: `${id}` }}
+                                onClick={() => {
+                                    dispatch(
+                                        updateProductColor({
+                                            name,
+                                            id,
+                                        })
+                                    );
+                                    localStorage.setItem('hex', id);
+                                    localStorage.setItem('colorName', name);
+                                }}
+                            />
+                        </li>
+                    );
+                })}
+            </ul> */}
+            <ul className="color-selection__list">
+                {mockedData.map((color) => {
+                    const { id, name, isOutOfStock } = color;
+                    return (
+                        <li
+                            className={`color-selection__item ${
+                                isOutOfStock ? 'out-of-stock' : ''
+                            }`}
                             key={nextId('product-color')}
                         >
                             <NavLink
