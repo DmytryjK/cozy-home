@@ -10,14 +10,6 @@
 	justify-content: center;
 	opacity: 0;
 	z-index: 9999;
-
-	&__content {
-		padding: 20px;
-		border-radius: 12px;
-		background-color: white;
-		width: 400px;
-		height: 400px;
-	}
 }
 
 .active {

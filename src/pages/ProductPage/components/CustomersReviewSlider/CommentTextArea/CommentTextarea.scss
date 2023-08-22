@@ -1,0 +1,39 @@
+@import '../../../../../style/variables.scss';
+
+.comment-textarea {
+  position: relative;
+	width: 100%;
+
+  .customers-review__modal_inputs_input_comment {
+    	width: 100%;
+			max-height: 150px;
+			border: none;
+			border-radius: 3px;
+			outline: none;
+			resize: none;
+			padding: 12px 20px;
+			background: $filter-background;
+			color: $dark-color;
+			font-size: 14px;
+			font-weight: 500;
+			cursor: default;
+			
+			&::placeholder {
+				color: $light-grey;
+			}
+		}
+  
+
+  .character-count {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    color: $light-grey;
+		font-size: 14px;
+		font-weight: 500;
+  }
+
+	.exceeded {
+		color: red;
+	}
+}

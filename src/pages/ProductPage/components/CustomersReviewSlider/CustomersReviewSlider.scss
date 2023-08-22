@@ -60,3 +60,82 @@
 		cursor: pointer;
 	}
 }
+
+.customers-review__modal {
+	width:  60%;
+	padding: 32px;
+	background-color: $white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&_title {
+		font-family: 'Montserrat Alternates';
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+
+	&_rating {
+		margin-top: 30px;
+		color: $dark-color;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		&_title {
+			color: $dark-color;
+			font-size: 20px;
+			font-weight: 500;
+			margin-bottom: 8px;
+		}
+
+		&_stars {
+			display: flex;
+			gap: 8px;
+		}
+	}
+
+	&_inputs {
+		margin-top: 30px;
+		width: 100%;
+
+		form {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			gap: 20px;
+			margin-bottom: 40px;
+		}
+
+		&_input {
+			display: flex;
+			padding: 12px 20px;
+			align-items: center;
+			flex-basis: 48%;
+			border: none;
+			border-radius: 3px;
+			background: $filter-background;
+			outline: none;
+			font-size: 14px;
+			font-weight: 500;
+			color: $dark-color;
+
+			&::placeholder {
+				color: $light-grey;
+			}
+		}
+	}
+
+	&_button {
+		padding: 16px 10px;
+		border: none;
+		border-radius: 2px;
+		background: $dark-color;
+		color: $white;
+		font-weight: 500;
+		width: 50%;
+		cursor: pointer;
+	}
+}
