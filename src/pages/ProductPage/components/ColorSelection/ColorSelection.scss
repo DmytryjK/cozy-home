@@ -46,4 +46,33 @@
             scale: 1.25;
         }
     }
+    &__item {
+        &.out-of-stock {
+            .color-selection__link {
+                overflow: hidden;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    border-radius: 50%;
+                    top: -8px;
+                    right: -8px;
+                    left: -8px;
+                    bottom: -8px;
+                    background: url('../../../../assets/icons/colors/color_out-stock.svg') center center/cover no-repeat;
+                }
+                &.active-link:before {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    border-radius: 50%;
+                    top: 0px;
+                    right: 0px;
+                    left: 0px;
+                    bottom: 0px;
+                    background: url('../../../../assets/icons/colors/color_out-stock.svg') center center/cover no-repeat;
+                }
+            }
+        }
+    }
 }
