@@ -16,7 +16,7 @@ const CommentTextarea: React.FC = () => {
     };
 
     useEffect(() => {
-        setIsMaxCharactersExceeded(comment.length >= 490);
+        setIsMaxCharactersExceeded(comment.length >= maxLength);
     }, [comment]);
 
     return (

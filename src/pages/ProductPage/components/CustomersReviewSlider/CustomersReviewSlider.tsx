@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import CustomerReview from './CustomerReview/CustomerReview';
@@ -13,10 +13,6 @@ const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
-
-    useEffect(() => {
-        document.body.style.overflow = modalActive ? 'hidden' : 'visible';
-    }, [modalActive]);
 
     const reviews = [
         {
@@ -86,6 +82,7 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
             </div>
         );
     };
+
     return (
         <>
             <div className="container">
@@ -172,46 +169,47 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                     </button>
                 </div>
             </div>
-            {modalActive && (
-                <Modal
-                    active={modalActive}
-                    setActive={setModalActive}
-                    contentClass="customers-review__modal"
+            <Modal
+                active={modalActive}
+                setActive={setModalActive}
+                maxwidth="50%"
+            >
+                <h1 className="customers-review__modal_title">
+                    Написати відгук
+                </h1>
+                <div className="customers-review__modal_rating">
+                    <h2 className="customers-review__modal_rating_title">
+                        Ваша оцінка
+                    </h2>
+                    {renderStarsRating()}
+                </div>
+                <form
+                    className="customers-review__modal_form modal-form"
+                    onSubmit={(e) => e.preventDefault()}
                 >
-                    <h1 className="customers-review__modal_title">
-                        Написати відгук
-                    </h1>
-                    <div className="customers-review__modal_rating">
-                        <h2 className="customers-review__modal_rating_title">
-                            Ваша оцінка
-                        </h2>
-                        {renderStarsRating()}
-                    </div>
                     <div className="customers-review__modal_inputs">
-                        <form action="">
-                            <input
-                                type="text"
-                                className="customers-review__modal_inputs_input customers-review__modal_inputs_input_name"
-                                placeholder="Ваше ім’я*"
-                                required
-                            />
-                            <input
-                                type="text"
-                                className="customers-review__modal_inputs_input customers-review__modal_inputs_input_email"
-                                placeholder="Ел. пошта*"
-                                required
-                            />
-                            <CommentTextarea />
-                        </form>
+                        <input
+                            type="text"
+                            className="customers-review__modal_inputs_input customers-review__modal_inputs_input_name"
+                            placeholder="Ваше ім’я*"
+                            required
+                        />
+                        <input
+                            type="text"
+                            className="customers-review__modal_inputs_input customers-review__modal_inputs_input_email"
+                            placeholder="Ел. пошта*"
+                            required
+                        />
                     </div>
+                    <CommentTextarea />
                     <button
                         className="customers-review__modal_button"
-                        type="button"
+                        type="submit"
                     >
                         Додати відгук
                     </button>
-                </Modal>
-            )}
+                </form>
+            </Modal>
         </>
     );
 };
