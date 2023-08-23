@@ -29,12 +29,10 @@ const ProductPage = () => {
     );
     const dispatch = useAppDispatch();
 
-    const { skuCode, name, countOfReviews } = productInfo;
+    const { skuCode, name, countOfReviews, quantityStatus } = productInfo;
     const hex = localStorage.getItem('hex');
     const productSkuCode = localStorage.getItem('productSkuCode');
     const colorName = localStorage.getItem('colorName');
-
-    const isOutOfStock = true;
 
     useEffect(() => {
         if (!hex || !productSkuCode || !colorName) return;
@@ -86,7 +84,10 @@ const ProductPage = () => {
                     <ProductPrice />
                     <div className="product-page__add-product">
                         <AddToCartBtn />
-                        {isOutOfStock ? null : <AddToFavoriteBtn />}
+                        {quantityStatus === 'Немає на складі' ||
+                        quantityStatus === 'Немає в наявності' ? null : (
+                            <AddToFavoriteBtn />
+                        )}
                     </div>
                     <Accordeon />
                 </div>
