@@ -21,10 +21,11 @@
     }
     &.out-of-stock{
         .product-card {
-            &__sales-text, &__favorite, &__slider-link, &__content {
+            &__sales-text, &__slider-link, &__content {
                 opacity: 40%;
             }
             &__favorite {
+                display: none;
                 pointer-events: none;
             }
         }

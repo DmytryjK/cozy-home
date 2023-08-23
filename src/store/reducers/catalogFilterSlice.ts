@@ -14,6 +14,7 @@ type FilterSort = {
 };
 interface CatalogFilterState {
     filterOptions: FilterOptions | null;
+    filterOptionsDuplicate: FilterOptions | null;
     filtersBody: FiltersBody;
     filtersSort: FilterSort | null;
     localFiltersState: FiltersBody;
@@ -27,6 +28,7 @@ interface CatalogFilterState {
 
 const initialState: CatalogFilterState = {
     filterOptions: null,
+    filterOptionsDuplicate: null,
     filtersBody: {},
     filtersSort: null,
     localFiltersState: {},
@@ -144,6 +146,9 @@ export const catalogFilterSlice = createSlice({
         updateFilterSortParam(state, action: PayloadAction<FilterSort | null>) {
             state.filtersSort = action.payload;
         },
+        duplicateFilterOptions(state, action: PayloadAction<FilterOptions>) {
+            state.filterOptionsDuplicate = action.payload;
+        },
         resetFilters(state, action: PayloadAction<string>) {
             state.filtersBody = { parentCategoryId: action.payload };
             state.localFiltersState = { parentCategoryId: action.payload };
@@ -212,5 +217,6 @@ export const {
     updateLocalFiltersState,
     updateFiltersBodyWithLocalFiltersState,
     updateCurrentCategory,
+    duplicateFilterOptions,
 } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;

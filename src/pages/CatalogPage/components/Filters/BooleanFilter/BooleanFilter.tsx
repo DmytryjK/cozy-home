@@ -52,7 +52,6 @@ const TransformationFilter = ({
     }, [currentValue, isActive]);
 
     useEffect(() => {
-        if (!isActive) return;
         dispatch(
             updateLocalFiltersState({
                 [valueName]: buleanValue,

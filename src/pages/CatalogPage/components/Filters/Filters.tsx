@@ -8,6 +8,7 @@ import {
     fetchFiltersOptionsForFilteredProducts,
     updateFiltersBodyWithLocalFiltersState,
     updateCurrentPage,
+    duplicateFilterOptions,
 } from '../../../../store/reducers/catalogFilterSlice';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
@@ -18,6 +19,7 @@ import CheckboxesFilter from './CheckboxesFilter/CheckboxesFilter';
 import filtersData from './FiltersData';
 import moveUserToPageUp from '../../../../utils/moveUserToPageUp';
 import './Filters.scss';
+import { FilterOptions } from '../../../../types/catalogFiltersTypes';
 
 const Filters = () => {
     const { categoryName, subCategoryName } = useParams();
@@ -29,14 +31,14 @@ const Filters = () => {
     const isFiltersCleared = useAppSelector(
         (state) => state.catalogFilters.isFiltersCleared
     );
-    const filterOptions = useAppSelector(
+    let filterOptions = useAppSelector(
         (state) => state.catalogFilters.filterOptions
+    );
+    const filterOptionsDuplicate = useAppSelector(
+        (state) => state.catalogFilters.filterOptionsDuplicate
     );
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
-    );
-    const catalogProducts = useAppSelector(
-        (state) => state.catalogProducts.catalogProducts
     );
 
     const filterLocalMap = filtersData();
@@ -61,29 +63,45 @@ const Filters = () => {
 
     useEffect(() => {
         if (!isFiltersCleared) return;
-        fetchCatalogProductsByFilters({
-            page: 0,
-            isFiltersActive: false,
-        });
-        fetchFiltersOptionsForFilteredProducts({
-            isFiltersActive: true,
-        });
+        dispatch(
+            fetchCatalogProductsByFilters({
+                page: 0,
+                isFiltersActive: false,
+            })
+        );
+        dispatch(
+            fetchFiltersOptionsForFilteredProducts({
+                isFiltersActive: false,
+            })
+        );
     }, [isFiltersCleared]);
 
+    useEffect(() => {
+        if (!filterOptions) return;
+        if (filterOptions.countOfProducts === 0) return;
+        dispatch(duplicateFilterOptions(filterOptions));
+    }, [filterOptions]);
+
     const renderedFilters = (): JSX.Element | JSX.Element[] | any => {
-        if (!filterOptions) return null;
+        if (!filterOptions || !filterOptionsDuplicate) return null;
+        if (filterOptions.countOfProducts === 0) {
+            filterOptions = { ...filterOptionsDuplicate } as FilterOptions;
+        }
         const render = Object.keys(filterOptions)
             .map((key: string) => {
                 let result;
                 if (!filterLocalMap[key]) return result;
                 const { type, title } = filterLocalMap[key];
 
-                if (type === 'colors' && filterOptions.colors.length > 0) {
+                if (
+                    type === 'colors' &&
+                    (filterOptions as FilterOptions).colors.length > 0
+                ) {
                     result = (
                         <ColorFilter
                             key={nextId('color-filter')}
                             filterTitle={title}
-                            colors={filterOptions[key]}
+                            colors={(filterOptions as FilterOptions)[key]}
                         />
                     );
                 }
@@ -91,8 +109,12 @@ const Filters = () => {
                     const valueName = key.replace('Max', '');
                     const minValueName = `${valueName}Min`;
                     const maxValueName = `${valueName}Max`;
-                    const minValue = filterOptions[minValueName];
-                    const maxValue = filterOptions[maxValueName];
+                    const minValue = (filterOptions as FilterOptions)[
+                        minValueName
+                    ];
+                    const maxValue = (filterOptions as FilterOptions)[
+                        maxValueName
+                    ];
 
                     if (maxValue && minValue && +maxValue > 0) {
                         result = (
@@ -107,7 +129,10 @@ const Filters = () => {
                         );
                     }
                 }
-                if (type === 'boolean' && filterOptions[key]) {
+                if (
+                    type === 'boolean' &&
+                    (filterOptions as FilterOptions)[key]
+                ) {
                     const { option1, option2 } = filterLocalMap[key];
                     if (option1 === undefined || option2 === undefined)
                         return result;
@@ -121,8 +146,13 @@ const Filters = () => {
                         />
                     );
                 }
-                if (type === 'checkboxes' && filterOptions[key]) {
-                    const checkboxesFilters = filterOptions[key] as Array<{
+                if (
+                    type === 'checkboxes' &&
+                    (filterOptions as FilterOptions)[key]
+                ) {
+                    const checkboxesFilters = (filterOptions as FilterOptions)[
+                        key
+                    ] as Array<{
                         id: string;
                         name: string;
                         countOfProducts: number;
@@ -143,7 +173,9 @@ const Filters = () => {
                                     key={nextId('checkboxes-filter')}
                                     filterTitle={title}
                                     maxLoadOptions={
-                                        filterOptions[key] as Array<string>
+                                        (filterOptions as FilterOptions)[
+                                            key
+                                        ] as Array<string>
                                     }
                                     valueName={key}
                                 />
@@ -181,7 +213,7 @@ const Filters = () => {
                 </div>
                 {renderedFilters()}
             </div>
-            {filterOptions && catalogProducts.length > 0 ? (
+            {filterOptions ? (
                 <div className="buttons">
                     <button
                         type="button"
@@ -193,7 +225,8 @@ const Filters = () => {
                                 return;
                             }
                             dispatch(resetFilters(id));
-                            dispatch(showHideFilters(false));
+                            dispatch(showHideFilters(false)); // close window on mobile
+                            moveUserToPageUp();
                         }}
                     >
                         <span className="buttons__reject_text">скасувати</span>
@@ -215,8 +248,8 @@ const Filters = () => {
                             );
                             dispatch(updateFiltersBodyWithLocalFiltersState());
                             dispatch(updateCurrentPage(0));
-                            dispatch(showHideFilters(false));
                             moveUserToPageUp();
+                            dispatch(showHideFilters(false)); // close window on mobile
                         }}
                     >
                         застосувати

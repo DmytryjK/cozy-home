@@ -1,15 +1,22 @@
 @use '../../../../../style/variables.scss' as *;
 .nothing-to-search {
-    text-align: center;
 	padding: 50px 24px;
 	width: auto;
 	border-top: 1px solid $dark-white;
     bottom: 0;
     font-size: 20px;
+    &__text {
+        margin: 0 auto;
+        text-align: center;
+        color: $dark-color;
+        font-size: 16px;
+        max-width: 414px;
+        font-weight: 500;
+    }
     &__clear-filters {
         display: inline-block;
         margin: 0 auto;
-        margin-top: 20px;
+        margin-top: 30px;
         background: none;
 		font-size: 12px;
 		font-weight: 500;

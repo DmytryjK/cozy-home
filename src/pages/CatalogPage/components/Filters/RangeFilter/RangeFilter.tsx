@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Slider from 'rc-slider';
-import { useAppDispatch } from '../../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
 import { updateLocalFiltersState } from '../../../../../store/reducers/catalogFilterSlice';
 import 'rc-slider/assets/index.css';
 import './RangeFilter.scss';
@@ -25,6 +25,9 @@ const RangeFilter = (props: Props) => {
         maxValue
     );
     const [values, setValues] = useState<number[]>([minValue, maxValue]);
+    const filtersBody = useAppSelector(
+        (state) => state.catalogFilters.filtersBody
+    );
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -37,6 +40,17 @@ const RangeFilter = (props: Props) => {
             );
         }
     }, [values, isActive]);
+
+    useEffect(() => {
+        if (!filtersBody[rangeMinName] || !filtersBody[rangeMaxName]) return;
+        setFirstInputValue(filtersBody[rangeMinName] as number);
+        setSecondInputValue(filtersBody[rangeMaxName] as number);
+    }, [filtersBody]);
+
+    useEffect(() => {
+        if (!firstInputValue || !secondInputValue) return;
+        setValues([firstInputValue, secondInputValue]);
+    }, [firstInputValue, secondInputValue]);
 
     const handleMinInputCheck = () => {
         setIsActive(true);

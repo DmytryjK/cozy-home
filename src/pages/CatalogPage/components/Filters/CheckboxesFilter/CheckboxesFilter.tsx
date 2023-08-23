@@ -39,7 +39,6 @@ const CheckboxesFilter = (props: FilterProps) => {
     }, [currentValueFromStore]);
 
     useEffect(() => {
-        if (!isActive) return;
         dispatch(
             updateLocalFiltersState({
                 [valueName]: [...checkboxesIds],
