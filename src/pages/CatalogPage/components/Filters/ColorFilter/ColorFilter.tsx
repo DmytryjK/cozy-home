@@ -26,7 +26,6 @@ const ColorFilter = (props: Props) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (!isActive) return;
         dispatch(
             updateLocalFiltersState({
                 colors: colorsId,

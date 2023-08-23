@@ -46,7 +46,10 @@ const ProductLoader = () => {
         if (catalogProducts.length === 0 && loading === 'succeeded') {
             return (
                 <div className="nothing-to-search">
-                    <div>Нажаль ми нічого не змогли знайти :(</div>
+                    <p className="nothing-to-search__text">
+                        Вашому вибору відповідає 0 товарів. Будь ласка,
+                        спробуйте прибрати один або кілька фільтрів.
+                    </p>
                     <button
                         className="nothing-to-search__clear-filters"
                         type="button"
@@ -61,7 +64,7 @@ const ProductLoader = () => {
                         }}
                     >
                         <div className="nothing-to-search__clear-filters_text">
-                            Скасувати фільтри{' '}
+                            Скасувати всі фільтри{' '}
                         </div>
                     </button>
                 </div>
