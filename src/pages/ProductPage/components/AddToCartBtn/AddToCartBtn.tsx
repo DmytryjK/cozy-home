@@ -5,15 +5,15 @@ import PopUpInStockNotification from '../../../../shared-components/PopUpInStock
 import './AddToCartBtn.scss';
 
 const AddToCartBtn = () => {
-    // const productInfo = useAppSelector(
-    //     (state) => state.productInformation.productInfo
-    // );
+    const quantityStatus = useAppSelector(
+        (state) => state.productInformation.productInfo.quantityStatus
+    );
     const [isWindowInStockReminderOpen, setIsWindowInStockReminderOpen] =
         useState<boolean>(false);
-    const isOutOfStock = true;
     return (
         <>
-            {isOutOfStock ? (
+            {quantityStatus === 'Немає на складі' ||
+            quantityStatus === 'Немає в наявності' ? (
                 <button
                     className="notification-btn"
                     type="button"

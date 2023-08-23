@@ -17,6 +17,7 @@ export interface ProductCardType {
     discount: number | null;
     imageDtoList: ImageDtoList[];
     colorDtoList: ColorDtoList[];
+    productQuantityStatus: string;
 }
 
 export interface ProductInformationType {
@@ -33,6 +34,7 @@ export interface ProductInformationType {
               {
                   id: string;
                   name: string;
+                  quantityStatus: string;
               }
           ]
         | [];

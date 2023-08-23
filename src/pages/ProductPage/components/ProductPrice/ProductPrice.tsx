@@ -14,12 +14,13 @@ const ProductPrice = () => {
         (state) => state.productInformation.productInfo
     );
 
-    const { price, discount, priceWithDiscount, quantityStatus } = productInfo;
-    const isOutOfStock = true;
+    const { price, priceWithDiscount, quantityStatus } = productInfo;
+
     const renderPrice = () => {
         return (
             <>
-                {isOutOfStock ? null : (
+                {quantityStatus === 'Немає на складі' ||
+                quantityStatus === 'Немає в наявності' ? null : (
                     <div className="product-price__wrapper">
                         {priceWithDiscount ? (
                             <>
@@ -38,7 +39,7 @@ const ProductPrice = () => {
                     </div>
                 )}
                 <span className="product-price__stock-status">
-                    {isOutOfStock ? 'Немає на складі' : quantityStatus}
+                    {quantityStatus}
                 </span>
             </>
         );
