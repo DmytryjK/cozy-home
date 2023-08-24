@@ -6,6 +6,7 @@ import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';
+import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
 import './Header.scss';
 
@@ -26,6 +27,8 @@ const Header = () => {
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    const [isPreviewCartActive, setIsPreviewCartActive] =
+        useState<boolean>(false);
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
     const dispatch = useAppDispatch();
@@ -105,21 +108,34 @@ const Header = () => {
         }
     };
 
+    const handleCloseCartPreview = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (
+            !target.matches('.header') &&
+            !target.matches('.header__icons') &&
+            !target.closest('.header-icons__cart') &&
+            !target.closest('.cart-dropdown')
+        ) {
+            setIsPreviewCartActive(false);
+        }
+    };
+
     return (
         <div
             className="wrapper"
+            style={{
+                right:
+                    isPreviewCartActive || isBurgerOpen
+                        ? `${userScrollWidth()}px`
+                        : '0',
+            }}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
+            onMouseMove={handleCloseCartPreview}
+            onMouseLeave={() => setIsPreviewCartActive(false)}
         >
             <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
-            <header
-                className={isScrolled ? 'header header-active' : 'header'}
-                style={{
-                    paddingRight: isBurgerOpen
-                        ? `${16 + userScrollWidth()}px`
-                        : '16px',
-                }}
-            >
+            <header className={isScrolled ? 'header header-active' : 'header'}>
                 <a href="/" className="header__logo" aria-label="CozyHome">
                     <svg className="header__logo_img">
                         <use href={`${headerSprite}#logo-icon`} />
@@ -166,7 +182,12 @@ const Header = () => {
                             0
                         </span>
                     </a>
-                    <a href="/" aria-label="Open cart">
+                    <a
+                        className="header-icons__cart"
+                        href="/"
+                        aria-label="Open cart"
+                        onMouseEnter={() => setIsPreviewCartActive(true)}
+                    >
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#card-icon`} />
                         </svg>
@@ -198,11 +219,6 @@ const Header = () => {
                             className={`header__mobile_icons_cart-counter ${
                                 isSearchOpen ? 'display-none' : ''
                             }`}
-                            style={{
-                                right: isBurgerOpen
-                                    ? `${52 + userScrollWidth()}px`
-                                    : '52px',
-                            }}
                         >
                             0
                         </span>
@@ -213,6 +229,7 @@ const Header = () => {
                         isScrolled={isScrolled}
                     />
                 </div>
+                <DropdownShoppingCart isActive={isPreviewCartActive} />
             </header>
             <div>
                 <DropdownMenu
