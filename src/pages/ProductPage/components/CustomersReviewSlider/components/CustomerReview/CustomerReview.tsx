@@ -1,5 +1,5 @@
 import './CustomerReview.scss';
-import ratingSprite from '../../../../../assets/icons/rating/sprite-rating.svg';
+import ratingSprite from '../../../../../../assets/icons/rating/sprite-rating.svg';
 
 type Props = {
     content: string;
