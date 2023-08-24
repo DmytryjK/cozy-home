@@ -1,16 +1,18 @@
 import { useRef, useState } from 'react';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import CustomerReview from './CustomerReview/CustomerReview';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './CustomersReviewSlider.scss';
 import Modal from '../../../../shared-components/Modal/Modal';
 import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
-import CommentTextarea from './CommentTextArea/CommentTextarea';
+import priductPageSprite from '../../../../assets/icons/product-page/product-pageSprite.svg';
+import CustomerReview from './components/CustomerReview/CustomerReview';
+import CommentTextarea from './components/CommentTextArea/CommentTextarea';
 
 const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
+    const [reviewSubmit, setReviewSubmit] = useState<boolean>(false);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
 
@@ -174,41 +176,59 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                 setActive={setModalActive}
                 maxwidth="50%"
             >
-                <h1 className="customers-review__modal_title">
-                    Написати відгук
-                </h1>
-                <div className="customers-review__modal_rating">
-                    <h2 className="customers-review__modal_rating_title">
-                        Ваша оцінка
-                    </h2>
-                    {renderStarsRating()}
-                </div>
-                <form
-                    className="customers-review__modal_form modal-form"
-                    onSubmit={(e) => e.preventDefault()}
-                >
-                    <div className="customers-review__modal_inputs">
-                        <input
-                            type="text"
-                            className="customers-review__modal_inputs_input customers-review__modal_inputs_input_name"
-                            placeholder="Ваше ім’я*"
-                            required
-                        />
-                        <input
-                            type="text"
-                            className="customers-review__modal_inputs_input customers-review__modal_inputs_input_email"
-                            placeholder="Ел. пошта*"
-                            required
-                        />
+                {reviewSubmit ? (
+                    <div className="reveiew-added-wrapper">
+                        <div className="review-added">
+                            <svg width="20" height="20">
+                                <use
+                                    href={`${priductPageSprite}#review-added-icon`}
+                                />
+                            </svg>
+                            <h2 className="review-added__title">
+                                Ваш відгук успішно додано!
+                            </h2>
+                        </div>
                     </div>
-                    <CommentTextarea />
-                    <button
-                        className="customers-review__modal_button"
-                        type="submit"
-                    >
-                        Додати відгук
-                    </button>
-                </form>
+                ) : (
+                    <div>
+                        <h1 className="customers-review__modal_title">
+                            Написати відгук
+                        </h1>
+                        <div className="customers-review__modal_rating">
+                            <h2 className="customers-review__modal_rating_title">
+                                Ваша оцінка
+                            </h2>
+                            {renderStarsRating()}
+                        </div>
+                        <form
+                            className="customers-review__modal_form modal-form"
+                            onSubmit={(e) => e.preventDefault()}
+                        >
+                            <div className="customers-review__modal_inputs">
+                                <input
+                                    type="text"
+                                    className="customers-review__modal_inputs_input customers-review__modal_inputs_input_name"
+                                    placeholder="Ваше ім’я*"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    className="customers-review__modal_inputs_input customers-review__modal_inputs_input_email"
+                                    placeholder="Ел. пошта*"
+                                    required
+                                />
+                            </div>
+                            <CommentTextarea />
+                            <button
+                                onClick={() => setReviewSubmit(true)}
+                                className="customers-review__modal_button"
+                                type="submit"
+                            >
+                                Додати відгук
+                            </button>
+                        </form>
+                    </div>
+                )}
             </Modal>
         </>
     );
