@@ -57,6 +57,7 @@
 
 		.swiper-wrapper {
 		.swiper-slide {
+			opacity: 0.7;
 			cursor: pointer;
 			width: 25%;
 			
@@ -74,4 +75,8 @@
 		}
 	}
 }
+}
+
+.swiper-slide-thumb-active {
+	opacity: 1 !important;
 }
