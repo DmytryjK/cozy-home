@@ -158,24 +158,33 @@ const SliderImages = (props: Props) => {
         return result;
     };
 
+    const handleLinkClick = () => {
+        localStorage.setItem('productSkuCode', skuCode);
+        localStorage.setItem(
+            'currentColor',
+            JSON.stringify({
+                hex: currentColor.hex,
+                colorName: currentColor.name,
+                colorStatus: '',
+            })
+        );
+        dispatch(updateProductSku(skuCode));
+        dispatch(
+            updateProductColor({
+                name: currentColor.name,
+                id: currentColor.hex,
+                quantityStatus: '',
+            })
+        );
+    };
+
     return (
         <>
             <NavLink
                 className="product-card__slider-link"
-                to={`/product/${skuCode}`}
+                to={`/product/${skuCode}${currentColor.hex}`}
                 reloadDocument
-                onClick={() => {
-                    localStorage.setItem('hex', currentColor.hex);
-                    localStorage.setItem('productSkuCode', skuCode);
-                    localStorage.setItem('colorName', currentColor.name);
-                    dispatch(
-                        updateProductColor({
-                            name: currentColor.name,
-                            id: currentColor.hex,
-                        })
-                    );
-                    dispatch(updateProductSku(skuCode));
-                }}
+                onClick={handleLinkClick}
             >
                 <Swiper
                     className="product-card__slider"
@@ -188,7 +197,10 @@ const SliderImages = (props: Props) => {
                         colorDtoList.forEach((item, index) => {
                             if (swiper.activeIndex === index) {
                                 const { name, id } = item;
-                                setCurrentColor({ name, hex: id });
+                                setCurrentColor({
+                                    name,
+                                    hex: id,
+                                });
                             }
                         });
                         setIsColorChosen(true);
@@ -221,23 +233,9 @@ const SliderImages = (props: Props) => {
                     <h2 className="product-card__title">
                         <NavLink
                             className="product-card__title-link"
-                            to={`/product/${skuCode}`}
+                            to={`/product/${skuCode}${currentColor.hex}`}
                             reloadDocument
-                            onClick={() => {
-                                localStorage.setItem('hex', currentColor.hex);
-                                localStorage.setItem('productSkuCode', skuCode);
-                                localStorage.setItem(
-                                    'colorName',
-                                    currentColor.name
-                                );
-                                dispatch(
-                                    updateProductColor({
-                                        name: currentColor.name,
-                                        id: currentColor.hex,
-                                    })
-                                );
-                                dispatch(updateProductSku(skuCode));
-                            }}
+                            onClick={handleLinkClick}
                         >
                             {name}
                         </NavLink>

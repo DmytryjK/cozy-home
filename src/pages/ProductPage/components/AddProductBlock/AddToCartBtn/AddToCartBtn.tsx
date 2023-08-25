@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useAppSelector } from '../../../../hooks/hooks';
-import Modal from '../../../../shared-components/Modal/Modal';
-import PopUpInStockNotification from '../../../../shared-components/PopUpInStockNotification/PopUpInStockNotification';
+import { useAppSelector } from '../../../../../hooks/hooks';
+import Modal from '../../../../../shared-components/Modal/Modal';
+import PopUpInStockNotification from '../../../../../shared-components/PopUpInStockNotification/PopUpInStockNotification';
 import './AddToCartBtn.scss';
 
 const AddToCartBtn = () => {
-    const quantityStatus = useAppSelector(
-        (state) => state.productInformation.productInfo.quantityStatus
+    const currentColor = useAppSelector(
+        (state) => state.productInformation.currentColor
     );
     const [isWindowInStockReminderOpen, setIsWindowInStockReminderOpen] =
         useState<boolean>(false);
@@ -14,8 +14,8 @@ const AddToCartBtn = () => {
         useState<boolean>(false);
     return (
         <>
-            {quantityStatus === 'Немає на складі' ||
-            quantityStatus === 'Немає в наявності' ? (
+            {currentColor?.quantityStatus === 'Немає на складі' ||
+            currentColor?.quantityStatus === 'Немає в наявності' ? (
                 <button
                     className="notification-btn"
                     type="button"

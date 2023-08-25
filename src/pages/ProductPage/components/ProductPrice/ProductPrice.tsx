@@ -13,14 +13,17 @@ const ProductPrice = () => {
     const productInfo = useAppSelector(
         (state) => state.productInformation.productInfo
     );
+    const currentColor = useAppSelector(
+        (state) => state.productInformation.currentColor
+    );
 
-    const { price, priceWithDiscount, quantityStatus } = productInfo;
+    const { price, priceWithDiscount } = productInfo;
 
     const renderPrice = () => {
         return (
             <>
-                {quantityStatus === 'Немає на складі' ||
-                quantityStatus === 'Немає в наявності' ? null : (
+                {currentColor?.quantityStatus === 'Немає на складі' ||
+                currentColor?.quantityStatus === 'Немає в наявності' ? null : (
                     <div className="product-price__wrapper">
                         {priceWithDiscount ? (
                             <>
@@ -39,7 +42,7 @@ const ProductPrice = () => {
                     </div>
                 )}
                 <span className="product-price__stock-status">
-                    {quantityStatus}
+                    {currentColor?.quantityStatus}
                 </span>
             </>
         );
