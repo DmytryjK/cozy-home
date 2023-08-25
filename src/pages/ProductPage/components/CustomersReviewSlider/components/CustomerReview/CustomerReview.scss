@@ -1,3 +1,5 @@
+@import '../../../../../../style/variables.scss';
+
 .customers-review {
 
 	&__slider_cards {
@@ -13,12 +15,13 @@
 				flex-wrap: wrap;
 
 				&_title {
-					font-size: 18px;
+					color: $dark-color;
+					font-size: 16px;
 					font-weight: 500;
 				}
 				&_date {
 					font-size: 12px;
-					font-weight: 400;
+					color: $grey;
 				}
 				&_rating {
 					font-size: 14px;
@@ -26,11 +29,17 @@
 					margin-top: 6px;
 				}
 			}
-
 			&_review {
+				color: $grey;
 				margin-top: 24px;
+				font-size: 14px;
 			}
 		}
+	}
+
+	.review-stars-list {
+		display: flex;
+		gap: 3px;
 	}
 
 }

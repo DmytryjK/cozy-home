@@ -11,9 +11,36 @@ import CommentTextarea from './components/CommentTextArea/CommentTextarea';
 
 const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [reviewSubmit, setReviewSubmit] = useState<boolean>(false);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
+
+    const updateSubmitButtonStatus = (newName: string, newEmail: string) => {
+        if (newName.trim() !== '' && newEmail.trim() !== '') {
+            setIsSubmitDisabled(false);
+        } else {
+            setIsSubmitDisabled(true);
+        }
+    };
+
+    const handleNameChange = (event: any) => {
+        const newName = event.target.value;
+        setName(newName);
+        updateSubmitButtonStatus(newName, email);
+    };
+
+    const handleEmailChange = (event: any) => {
+        const newEmail = event.target.value;
+        setEmail(newEmail);
+        updateSubmitButtonStatus(name, newEmail);
+    };
+
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
+    };
 
     const reviews = [
         {
@@ -198,19 +225,28 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                                 className="customers-review__modal_inputs_input customers-review__modal_inputs_input_name"
                                 placeholder="Ваше ім’я*"
                                 required
+                                value={name}
+                                onChange={handleNameChange}
                             />
                             <input
                                 type="text"
                                 className="customers-review__modal_inputs_input customers-review__modal_inputs_input_email"
                                 placeholder="Ел. пошта*"
                                 required
+                                value={email}
+                                onChange={handleEmailChange}
                             />
                         </div>
                         <CommentTextarea />
                         <button
-                            onClick={() => setReviewSubmit(true)}
+                            onClick={() => {
+                                if (!isSubmitDisabled) {
+                                    setReviewSubmit(true);
+                                }
+                            }}
                             className="customers-review__modal_button"
                             type="submit"
+                            disabled={isSubmitDisabled}
                         >
                             Додати відгук
                         </button>
