@@ -1,13 +1,13 @@
+import { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import nextId from 'react-id-generator';
-import { updateProductColor } from '../../../../store/reducers/productInformationSlice';
+import {
+    updateProductColor,
+    fetchProductInfoByScuWithColor,
+} from '../../../../store/reducers/productInformationSlice';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import './ColorSelection.scss';
 
-type ProductFetchInfoType = {
-    currentColor: { id: string; name: string } | null;
-    currentSku: string | null;
-};
 const ColorSelection = () => {
     const colorDtoList = useAppSelector(
         (state) => state.productInformation.productInfo.colors
@@ -15,9 +15,96 @@ const ColorSelection = () => {
     const currentColor = useAppSelector(
         (state) => state.productInformation.currentColor
     );
+    const currentSkuCode = useAppSelector(
+        (state) => state.productInformation.currentSku
+    );
+
+    const localColorCurrent = JSON.parse(
+        localStorage.getItem('currentColor') ||
+            JSON.stringify({
+                hex: '',
+                colorName: '',
+                quantityStatus: '',
+            })
+    );
+    const { hex, colorName } = localColorCurrent;
+    const localProductSku = localStorage.getItem('productSkuCode');
+    const { pathname, hash } = useLocation();
 
     const dispatch = useAppDispatch();
     const currentPath = useLocation().pathname;
+
+    useEffect(() => {
+        const { hex } = localColorCurrent;
+        if (localProductSku && hex) {
+            dispatch(
+                fetchProductInfoByScuWithColor({
+                    productSkuCode: localProductSku,
+                    colorHex: hex,
+                })
+            );
+        } else {
+            const regex = /\D/g;
+            const skuFromLink = pathname.replace(regex, ''); // Удаляем все, кроме цифр
+            dispatch(
+                fetchProductInfoByScuWithColor({
+                    productSkuCode: skuFromLink,
+                    colorHex: hash,
+                })
+            );
+            localStorage.setItem('productSkuCode', skuFromLink);
+            localStorage.setItem(
+                'currentColor',
+                JSON.stringify({
+                    hex: hash,
+                })
+            );
+        }
+        if (!currentSkuCode || !currentColor) return;
+        dispatch(
+            fetchProductInfoByScuWithColor({
+                productSkuCode: currentSkuCode,
+                colorHex: currentColor.id,
+            })
+        );
+    }, [dispatch, currentSkuCode]);
+
+    useEffect(() => {
+        if (!hex || colorDtoList.length === 0) return;
+        const colorName = colorDtoList.filter((color) => color.id === hex)[0]
+            .name;
+        const colorStatus = colorDtoList.filter((color) => color.id === hex)[0]
+            .quantityStatus;
+
+        localStorage.setItem(
+            'currentColor',
+            JSON.stringify({
+                hex,
+                colorName,
+                colorStatus,
+            })
+        );
+        dispatch(
+            updateProductColor({
+                id: hex,
+                name: colorName,
+                quantityStatus: colorStatus,
+            })
+        );
+    }, [colorDtoList]);
+
+    useEffect(() => {
+        if (!currentColor) return;
+        const { id, name, quantityStatus } = currentColor;
+        localStorage.setItem(
+            'currentColor',
+            JSON.stringify({
+                hex: id,
+                colorName: name,
+                colorStatus: quantityStatus,
+            })
+        );
+    }, [currentColor]);
 
     return (
         <div className="color-selection">
@@ -48,10 +135,9 @@ const ColorSelection = () => {
                                         updateProductColor({
                                             name,
                                             id,
+                                            quantityStatus,
                                         })
                                     );
-                                    localStorage.setItem('hex', id);
-                                    localStorage.setItem('colorName', name);
                                 }}
                             />
                         </li>

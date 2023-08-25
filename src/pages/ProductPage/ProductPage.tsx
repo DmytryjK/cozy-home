@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import {
-    fetchProductInfoByScuWithColor,
-    updateProductColor,
-    updateProductSku,
-} from '../../store/reducers/productInformationSlice';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
 import ColorSelection from './components/ColorSelection/ColorSelection';
 import ProductPrice from './components/ProductPrice/ProductPrice';
-import AddToCartBtn from './components/AddToCartBtn/AddToCartBtn';
-import AddToFavoriteBtn from '../../shared-components/AddToFavoriteBtn/AddToFavoriteBtn';
+// import AddToCartBtn from './components/AddProductBlock/AddToCartBtn/AddToCartBtn';
+// import AddToFavoriteBtn from '../../shared-components/AddToFavoriteBtn/AddToFavoriteBtn';
+import AddProductBlock from './components/AddProductBlock/AddProductBlock';
 import Accordeon from './components/Accordeon/Accordeon';
 import InterestedSlider from './components/InterestedSlider/InterestedSlider';
 import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
@@ -24,31 +20,7 @@ const ProductPage = () => {
     const productInfo = useAppSelector(
         (state) => state.productInformation.productInfo
     );
-    const currentSkuCode = useAppSelector(
-        (state) => state.productInformation.currentSku
-    );
-    const dispatch = useAppDispatch();
-
-    const { skuCode, name, countOfReviews, quantityStatus } = productInfo;
-    const hex = localStorage.getItem('hex');
-    const productSkuCode = localStorage.getItem('productSkuCode');
-    const colorName = localStorage.getItem('colorName');
-
-    useEffect(() => {
-        if (!hex || !productSkuCode || !colorName) return;
-        dispatch(
-            updateProductColor({
-                name: colorName,
-                id: hex,
-            })
-        );
-        dispatch(
-            fetchProductInfoByScuWithColor({
-                productSkuCode,
-                colorHex: hex,
-            })
-        );
-    }, [dispatch, currentSkuCode]);
+    const { skuCode, name, countOfReviews, colors } = productInfo;
 
     useEffect(() => {
         document.body.style.overflow = largePhotoActive ? 'hidden' : 'visible';
@@ -82,13 +54,7 @@ const ProductPage = () => {
                     </div>
                     <ColorSelection />
                     <ProductPrice />
-                    <div className="product-page__add-product">
-                        <AddToCartBtn />
-                        {quantityStatus === 'Немає на складі' ||
-                        quantityStatus === 'Немає в наявності' ? null : (
-                            <AddToFavoriteBtn />
-                        )}
-                    </div>
+                    <AddProductBlock />
                     <Accordeon />
                 </div>
             </div>
