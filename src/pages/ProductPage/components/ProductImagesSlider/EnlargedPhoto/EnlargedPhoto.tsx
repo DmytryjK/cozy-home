@@ -3,51 +3,60 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Thumbs } from 'swiper';
+import { Controller, Navigation } from 'swiper';
 import nextId from 'react-id-generator';
 import { useEffect } from 'react';
 import productPageSprite from '../../../../../assets/icons/product-page/product-pageSprite.svg';
 import { useAppSelector } from '../../../../../hooks/hooks';
 
 type Props = {
-    setlargePhotoActive: React.Dispatch<React.SetStateAction<boolean>>;
+    setLargePhotoActive: React.Dispatch<React.SetStateAction<boolean>>;
+    largePhotoActive: boolean;
+    handleSecondSwiper: (swiper: any) => void;
+    firstSwiper: null;
+    handleSlideChange: (swiper: any) => void;
+    activeIndex: number;
 };
 
 const EnlargedPhoto = (props: Props) => {
-    const { setlargePhotoActive } = props;
+    const {
+        setLargePhotoActive,
+        largePhotoActive,
+        handleSecondSwiper,
+        firstSwiper,
+        activeIndex,
+        handleSlideChange,
+    } = props;
     const { images } = useAppSelector(
         (state) => state.productInformation.productInfo
     );
 
-    const handleKeyPress = (e: any) => {
-        if (e.key === 'Escape' || e.keyCode === 27) {
-            setlargePhotoActive(false);
-        }
-    };
-
     useEffect(() => {
-        document.addEventListener('keydown', handleKeyPress);
+        if (largePhotoActive) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'visible';
+        }
 
         return () => {
-            document.removeEventListener('keydown', handleKeyPress);
+            document.body.style.overflow = 'visible';
         };
-    }, []);
+    }, [largePhotoActive]);
 
     const renderSlider = () => {
         if (images.length === 0) return null;
         return (
             <Swiper
-                loop
                 navigation
-                modules={[Navigation, Thumbs]}
+                modules={[Navigation, Controller]}
+                onSwiper={handleSecondSwiper}
+                onSlideChange={handleSlideChange}
+                controller={{ control: firstSwiper }}
                 grabCursor
                 className="product-images__enlarged_slider"
             >
                 {images.map((image) => (
-                    <SwiperSlide
-                        key={nextId('swiper-enlarged-image')}
-                        onClick={() => setlargePhotoActive(true)}
-                    >
+                    <SwiperSlide key={nextId('swiper-enlarged-image')}>
                         <img
                             src={image.desktopImagePath}
                             alt="Enlarged slider images"
@@ -64,12 +73,12 @@ const EnlargedPhoto = (props: Props) => {
                 <div className="enlarged-block__content">
                     <div className="enlarged-block__content_header">
                         <div className="enlarged-block__content_header_sliderCounter">
-                            <p>1/{images.length}</p>
+                            <p>{`${activeIndex + 1}/${images.length}`}</p>
                         </div>
                         <button
                             type="button"
                             className="enlarged-block__content_header_close"
-                            onClick={() => setlargePhotoActive(false)}
+                            onClick={() => setLargePhotoActive(false)}
                         >
                             <svg width="40" height="40">
                                 <use href={`${productPageSprite}#close-icon`} />

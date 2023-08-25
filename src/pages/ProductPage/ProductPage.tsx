@@ -16,11 +16,9 @@ import InterestedSlider from './components/InterestedSlider/InterestedSlider';
 import pluralizeUkrainian from '../../helpers/pluralizeUkrainian';
 import './ProductPage.scss';
 import ProductImagesSlider from './components/ProductImagesSlider/ProductImagesSlider';
-import EnlargedPhoto from './components/ProductImagesSlider/EnlargedPhoto/EnlargedPhoto';
 import CustomersReviewSlider from './components/CustomersReviewSlider/CustomersReviewSlider';
 
 const ProductPage = () => {
-    const [largePhotoActive, setlargePhotoActive] = useState<boolean>(false);
     const productInfo = useAppSelector(
         (state) => state.productInformation.productInfo
     );
@@ -50,23 +48,11 @@ const ProductPage = () => {
         );
     }, [dispatch, currentSkuCode]);
 
-    useEffect(() => {
-        document.body.style.overflow = largePhotoActive ? 'hidden' : 'visible';
-        document.body.style.paddingTop = largePhotoActive ? '0' : '70px';
-    }, [largePhotoActive]);
-
     return (
         <div className="product-page">
-            {largePhotoActive ? (
-                <EnlargedPhoto setlargePhotoActive={setlargePhotoActive} />
-            ) : (
-                ''
-            )}
             <Breadcrumbs />
             <div className="product-page__wrapper container">
-                <ProductImagesSlider
-                    setlargePhotoActive={setlargePhotoActive}
-                />
+                <ProductImagesSlider />
                 <div className="product-page-right-content-wrapper">
                     <h1 className="product-page__title">{name}</h1>
                     <div className="product-page__extra-info">
