@@ -11,20 +11,20 @@ const CustomerReview = (props: Props) => {
     const { content, dateAdded, name } = props;
     const renderStarsRating = () => {
         return (
-            <div>
-                <svg className="stars-list__icon" width="14" height="14">
+            <div className="review-stars-list">
+                <svg className="review-stars-list__icon" width="14" height="14">
                     <use href={`${ratingSprite}#active`} />
                 </svg>
-                <svg className="stars-list__icon" width="14" height="14">
+                <svg className="review-stars-list__icon" width="14" height="14">
                     <use href={`${ratingSprite}#active`} />
                 </svg>
-                <svg className="stars-list__icon" width="14" height="14">
+                <svg className="review-stars-list__icon" width="14" height="14">
                     <use href={`${ratingSprite}#active`} />
                 </svg>
-                <svg className="stars-list__icon" width="14" height="14">
+                <svg className="review-stars-list__icon" width="14" height="14">
                     <use href={`${ratingSprite}#active`} />
                 </svg>
-                <svg className="stars-list__icon" width="14" height="14">
+                <svg className="review-stars-list__icon" width="14" height="14">
                     <use href={`${ratingSprite}#active`} />
                 </svg>
             </div>
