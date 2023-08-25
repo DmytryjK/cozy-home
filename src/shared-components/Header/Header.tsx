@@ -188,7 +188,7 @@ const Header = () => {
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#card-icon`} />
                         </svg>
-                        <span className="header__icons_cart-counter">0</span>
+                        <span className="header__icons_cart-counter">9</span>
                     </a>
                 </div>
                 <div className="header__mobile_icons">
