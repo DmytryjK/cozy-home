@@ -124,10 +124,7 @@ const Header = () => {
         <div
             className="wrapper"
             style={{
-                right:
-                    isPreviewCartActive || isBurgerOpen
-                        ? `${userScrollWidth()}px`
-                        : '0',
+                right: isBurgerOpen ? `${userScrollWidth()}px` : '0',
             }}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
