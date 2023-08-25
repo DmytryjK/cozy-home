@@ -170,7 +170,6 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                     </div>
                     <Swiper
                         slidesPerView={4}
-                        spaceBetween={10}
                         modules={[Navigation]}
                         navigation={{
                             prevEl: prevRef.current,
@@ -203,7 +202,7 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                 isDataLoadedToServer={reviewSubmit}
                 setisDataLoadedToServer={setReviewSubmit}
                 isSubmitedText="Ваш відгук успішно додано!"
-                maxwidth="50%"
+                maxwidth="916px"
             >
                 <div>
                     <h1 className="customers-review__modal_title">
