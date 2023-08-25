@@ -15,10 +15,11 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [imagesData, setImagesData] = useState<ImagesData>({});
     const [isWindowInStockReminderOpen, setIsWindowInStockReminderOpen] =
         useState<boolean>(false);
+    const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
+        useState<boolean>(false);
 
     const { price, priceWithDiscount, discount, productQuantityStatus } =
         product;
-    // const isInStock = false;
 
     const addSpaceToPrice = (
         currentPrice: number,
@@ -137,9 +138,14 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
             <Modal
                 active={isWindowInStockReminderOpen}
                 setActive={setIsWindowInStockReminderOpen}
+                isDataLoadedToServer={isSubmitedFormNotification}
+                setisDataLoadedToServer={setIsSubmitedFormNotification}
+                isSubmitedText="Ваш запит прийнято!"
                 maxwidth="884px"
             >
-                <PopUpInStockNotification />
+                <PopUpInStockNotification
+                    setIsSubmit={setIsSubmitedFormNotification}
+                />
             </Modal>
         </div>
     );

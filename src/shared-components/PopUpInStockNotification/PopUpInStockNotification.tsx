@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import './PopUpInStockNotification.scss';
 
-const PopUpInStockNotification = () => {
+const PopUpInStockNotification = ({
+    setIsSubmit,
+}: {
+    setIsSubmit: (isSubmit: boolean) => void;
+}) => {
     const MAX_QUANTITY_OF_CHARS = 300;
     const [currentTextAtCommentField, setCurrentTextAtCommentField] =
         useState<string>('');
@@ -23,7 +27,10 @@ const PopUpInStockNotification = () => {
             </h2>
             <form
                 className="inStock-window__form inStock-form"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    setIsSubmit(true);
+                }}
             >
                 <div className="inStock-form__inputs-wrapper">
                     <input

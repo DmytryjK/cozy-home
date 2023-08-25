@@ -10,6 +10,8 @@ const AddToCartBtn = () => {
     );
     const [isWindowInStockReminderOpen, setIsWindowInStockReminderOpen] =
         useState<boolean>(false);
+    const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
+        useState<boolean>(false);
     return (
         <>
             {quantityStatus === 'Немає на складі' ||
@@ -59,8 +61,13 @@ const AddToCartBtn = () => {
                 active={isWindowInStockReminderOpen}
                 setActive={setIsWindowInStockReminderOpen}
                 maxwidth="884px"
+                isDataLoadedToServer={isSubmitedFormNotification}
+                setisDataLoadedToServer={setIsSubmitedFormNotification}
+                isSubmitedText="Ваш запит прийнято!"
             >
-                <PopUpInStockNotification />
+                <PopUpInStockNotification
+                    setIsSubmit={setIsSubmitedFormNotification}
+                />
             </Modal>
         </>
     );
