@@ -1,13 +1,49 @@
+import { useEffect } from 'react';
+import productPageSprite from '../../assets/icons/product-page/product-pageSprite.svg';
 import './Modal.scss';
 
 type Props = {
     active: boolean;
     setActive: React.Dispatch<React.SetStateAction<boolean>>;
     children: any;
+    isDataLoadedToServer: boolean;
+    setisDataLoadedToServer: (isSubmitLoadedToServer: boolean) => void;
+    isSubmitedText: string;
     maxwidth?: string;
 };
 
-const Modal = ({ active, setActive, children, maxwidth }: Props) => {
+const Modal = ({
+    active,
+    setActive,
+    children,
+    maxwidth,
+    isDataLoadedToServer,
+    setisDataLoadedToServer,
+    isSubmitedText,
+}: Props) => {
+    useEffect(() => {
+        if (active) return undefined;
+
+        const resetForm = () => {
+            setisDataLoadedToServer(false);
+        };
+        const resetFormTimeout = setTimeout(resetForm, 200);
+
+        return () => clearTimeout(resetFormTimeout);
+    }, [active]);
+
+    useEffect(() => {
+        if (!isDataLoadedToServer) return undefined;
+
+        const closeWindow = () => {
+            if (active) {
+                setActive(false);
+            }
+        };
+        const closeWindowTimeout = setTimeout(closeWindow, 2000);
+
+        return () => clearTimeout(closeWindowTimeout);
+    }, [isDataLoadedToServer, active]);
     return (
         <div
             className={active ? 'modal active' : 'modal'}
@@ -22,12 +58,29 @@ const Modal = ({ active, setActive, children, maxwidth }: Props) => {
                     e.stopPropagation();
                 }}
             >
-                {children}
+                {isDataLoadedToServer ? (
+                    <div className="reveiew-added-wrapper">
+                        <div className="review-added">
+                            <svg width="20" height="20">
+                                <use
+                                    href={`${productPageSprite}#review-added-icon`}
+                                />
+                            </svg>
+                            <h2 className="review-added__title">
+                                {isSubmitedText}
+                            </h2>
+                        </div>
+                    </div>
+                ) : (
+                    children
+                )}
                 <button
                     className="modal__content_close-btn"
                     type="button"
                     aria-label="закрити вікно"
-                    onClick={() => setActive(false)}
+                    onClick={() => {
+                        setActive(false);
+                    }}
                 >
                     <svg
                         width="12"

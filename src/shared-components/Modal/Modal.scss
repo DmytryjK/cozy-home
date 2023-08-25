@@ -45,3 +45,29 @@
 		transition: 0.2s ease-out transform;
 	}
 }
+
+@media screen and (max-width: 650px) {
+    .modal {
+		padding: 40px;
+        &__content {
+			padding: 60px 16px 61px 16px;
+			&_close-btn {
+				right: 6px;
+			}
+		}
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .modal {
+		padding: 0;
+        &__content {
+			height: 100vh;
+			min-height: 100vh;
+			overflow: auto;
+			&_close-btn {
+				right: 6px;
+			}
+		}
+    }
+}
