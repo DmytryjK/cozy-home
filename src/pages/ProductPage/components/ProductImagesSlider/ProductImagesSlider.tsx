@@ -73,8 +73,15 @@ const ProductImagesSlider = () => {
                             modules={[Navigation, Thumbs]}
                             className="product-images__slider-thumbs"
                         >
-                            {images.map((image) => (
-                                <SwiperSlide key={nextId('swiper-image')}>
+                            {images.map((image, index) => (
+                                <SwiperSlide
+                                    key={nextId('swiper-image')}
+                                    className={
+                                        activeIndex === index
+                                            ? 'swiper-slide-thumb-active'
+                                            : ''
+                                    }
+                                >
                                     <div className="product-images__slider-thumbs-wrapper">
                                         <img
                                             src={image.sliderImagePath}
