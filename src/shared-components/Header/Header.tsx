@@ -179,9 +179,9 @@ const Header = () => {
                             0
                         </span>
                     </a>
-                    <a
+                    <NavLink
                         className="header-icons__cart"
-                        href="/"
+                        to="/cart"
                         aria-label="Open cart"
                         onMouseEnter={() => setIsPreviewCartActive(true)}
                     >
@@ -189,7 +189,7 @@ const Header = () => {
                             <use href={`${headerSprite}#card-icon`} />
                         </svg>
                         <span className="header__icons_cart-counter">9</span>
-                    </a>
+                    </NavLink>
                 </div>
                 <div className="header__mobile_icons">
                     <button
