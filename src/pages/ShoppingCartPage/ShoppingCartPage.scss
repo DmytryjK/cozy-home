@@ -1,0 +1,9 @@
+@use '../../style/variables.scss' as *;
+.cart {
+    &__title {
+        color: $dark-color;
+        font-family: Montserrat Alternates;
+        font-size: 32px;
+        font-weight: 600;
+    }
+}

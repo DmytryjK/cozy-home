@@ -1,6 +1,12 @@
 import React from 'react';
 import nextId from 'react-id-generator';
-import { MainPage, CatalogPage, CategoryPage, ProductPage } from './pages';
+import {
+    MainPage,
+    CatalogPage,
+    CategoryPage,
+    ProductPage,
+    ShoppingCartPage,
+} from './pages';
 import './App.scss';
 
 const routes = [
@@ -23,6 +29,10 @@ const routes = [
     {
         path: '/product/:productSku',
         element: <ProductPage />,
+    },
+    {
+        path: '/cart',
+        element: <ShoppingCartPage />,
     },
     // {
     //     path: '/',
