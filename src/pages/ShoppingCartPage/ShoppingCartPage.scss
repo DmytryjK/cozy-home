@@ -1,6 +1,8 @@
 @use '../../style/variables.scss' as *;
 .cart {
     &-content {
+        display: flex;
+        gap: 40px;
         margin-top: 30px;
     }
     &__title {
@@ -8,5 +10,26 @@
         font-family: Montserrat Alternates;
         font-size: 32px;
         font-weight: 600;
+    }
+
+    &__right-side {
+        max-width: 360px;
+    }
+    &__delivery-title {
+        color: $grey;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+    &__delivery_fz11 {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 991px) {
+    .cart {
+        &-content {
+            flex-wrap: wrap;
+        }
     }
 }
