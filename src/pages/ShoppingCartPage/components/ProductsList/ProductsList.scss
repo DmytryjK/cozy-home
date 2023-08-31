@@ -1,0 +1,18 @@
+@use '../../../../style/variables.scss' as *;
+.cart-table {
+    max-width: 912px;
+    &__clear-wrapper {
+        margin-top: 10px;
+        text-align: right;
+    }
+    &__clear-cart {
+        margin-left: auto;
+        color: $dark-color;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: transparent;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+}
