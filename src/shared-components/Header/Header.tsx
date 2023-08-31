@@ -207,11 +207,11 @@ const Header = () => {
                         </svg>
                     </button>
                     <div>
-                        <a href="/" aria-label="Open cart">
+                        <NavLink to="/cart" aria-label="Open cart">
                             <svg width="21" height="21">
                                 <use href={`${headerSprite}#card-icon`} />
                             </svg>
-                        </a>
+                        </NavLink>
                         <span
                             className={`header__mobile_icons_cart-counter ${
                                 isSearchOpen ? 'display-none' : ''

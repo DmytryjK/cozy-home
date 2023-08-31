@@ -3,31 +3,38 @@ import ProductItem from '../ProductItem/ProductItem';
 import './ProductsList.scss';
 
 const ProductsList = () => {
-    const quantityProducts: number[] = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+    const quantityProducts: number[] = [1, 5, 0, 50, 300, 10, 0, 9, 7];
     return (
         <div className="cart-table">
-            <table className="cart-products">
-                <thead className="cart-products__header">
-                    <tr>
-                        <th aria-label="Корзина" />
-                        <th>Товар</th>
-                        <th aria-label="Інформація про товар" />
-                        <th>Кількість</th>
-                        <th>Наявність</th>
-                        <th>Вартість</th>
-                    </tr>
-                </thead>
-                <tbody className="cart-products__items">
-                    {quantityProducts.map((item) => {
-                        return (
+            <ul className="cart-table__header">
+                <li
+                    className="cart-table__header-item"
+                    aria-label="видалити товар"
+                />
+                <li className="cart-table__header-item cart-table__header-item_pdl">
+                    Товар
+                </li>
+                <ul className="cart-table__header-right">
+                    <li className="cart-table__header-item">Кількість</li>
+                    <li className="cart-table__header-item">Наявність</li>
+                    <li className="cart-table__header-item">Вартість</li>
+                </ul>
+            </ul>
+            <ul className="cart-table__items">
+                {quantityProducts.map((quantity) => {
+                    return (
+                        <li
+                            className="cart-table__item"
+                            key={nextId('product_for-cart')}
+                        >
                             <ProductItem
                                 key={nextId('cart-product_on-page')}
-                                quantityProducts={quantityProducts.length}
+                                quantityProducts={quantity}
                             />
-                        );
-                    })}
-                </tbody>
-            </table>
+                        </li>
+                    );
+                })}
+            </ul>
             <div className="cart-table__clear-wrapper">
                 <button className="cart-table__clear-cart" type="button">
                     Очистити кошик
