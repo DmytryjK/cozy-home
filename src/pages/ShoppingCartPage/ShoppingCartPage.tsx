@@ -1,6 +1,7 @@
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductsList from './components/ProductsList/ProductsList';
 import DeliveryTerms from '../../shared-components/DeliveryTerms/DeliveryTerms';
+import SummaryCart from './components/SummaryCart/SummaryCart';
 import './ShoppingCartPage.scss';
 
 const ShoppingCartPage = () => {
@@ -12,8 +13,15 @@ const ShoppingCartPage = () => {
                 <div className="cart-content">
                     <ProductsList />
                     <div className="cart__right-side">
-                        <h3 className="cart__delivery-title">Умови доставки</h3>
-                        <DeliveryTerms extraClass="cart__delivery_fz11" />
+                        <div className="cart__right-sticky">
+                            <SummaryCart />
+                            <div className="cart__delivery-block">
+                                <h3 className="cart__delivery-title">
+                                    Умови доставки
+                                </h3>
+                                <DeliveryTerms extraClass="cart__delivery_fz11" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

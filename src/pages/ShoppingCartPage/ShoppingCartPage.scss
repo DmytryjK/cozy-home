@@ -13,7 +13,15 @@
     }
 
     &__right-side {
+        margin-left: auto;
         max-width: 360px;
+    }
+    &__right-sticky {
+        position: sticky;
+        top: 65px;
+    }
+    &__delivery-block {
+        margin-top: 30px;
     }
     &__delivery-title {
         color: $grey;

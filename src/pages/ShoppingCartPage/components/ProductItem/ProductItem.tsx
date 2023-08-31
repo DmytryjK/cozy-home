@@ -106,11 +106,7 @@ const ProductItem = ({ quantityProducts }: { quantityProducts: number }) => {
                     ) : null}
                     <span
                         className={`cart-products__price
-                                                ${
-                                                    discount
-                                                        ? 'discount-price'
-                                                        : ''
-                                                }`}
+                            ${discount ? 'discount-price' : ''}`}
                     >
                         {addSpaceToPrice(price)} UAH
                     </span>
