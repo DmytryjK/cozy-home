@@ -1,5 +1,8 @@
 @use '../../style/variables.scss' as *;
 .cart {
+    &-content {
+        margin-top: 30px;
+    }
     &__title {
         color: $dark-color;
         font-family: Montserrat Alternates;
