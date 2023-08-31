@@ -33,11 +33,3 @@
         font-size: 11px;
     }
 }
-
-@media (max-width: 991px) {
-    .cart {
-        &-content {
-            flex-wrap: wrap;
-        }
-    }
-}
