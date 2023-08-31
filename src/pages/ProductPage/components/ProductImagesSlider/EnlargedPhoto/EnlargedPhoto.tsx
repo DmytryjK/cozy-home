@@ -43,6 +43,12 @@ const EnlargedPhoto = (props: Props) => {
         };
     }, [largePhotoActive]);
 
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            setLargePhotoActive(false);
+        }
+    });
+
     const renderSlider = () => {
         if (images.length === 0) return null;
         return (
