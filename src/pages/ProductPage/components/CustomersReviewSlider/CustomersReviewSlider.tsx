@@ -5,9 +5,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import './CustomersReviewSlider.scss';
 import Modal from '../../../../shared-components/Modal/Modal';
-import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
+// import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
 import CustomerReview from './components/CustomerReview/CustomerReview';
 import CommentTextarea from './components/CommentTextArea/CommentTextarea';
+import StarsRating from './components/RatingStars/RatingStars';
 
 const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
@@ -89,27 +90,27 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
         },
     ];
 
-    const renderStarsRating = () => {
-        return (
-            <div className="customers-review__modal_rating_stars">
-                <svg className="stars-list__icon" width="20" height="20">
-                    <use href={`${ratingSprite}#inactive`} />
-                </svg>
-                <svg className="stars-list__icon" width="20" height="20">
-                    <use href={`${ratingSprite}#inactive`} />
-                </svg>
-                <svg className="stars-list__icon" width="20" height="20">
-                    <use href={`${ratingSprite}#inactive`} />
-                </svg>
-                <svg className="stars-list__icon" width="20" height="20">
-                    <use href={`${ratingSprite}#inactive`} />
-                </svg>
-                <svg className="stars-list__icon" width="20" height="20">
-                    <use href={`${ratingSprite}#inactive`} />
-                </svg>
-            </div>
-        );
-    };
+    // const renderStarsRating = () => {
+    //     return (
+    //         <div className="customers-review__modal_rating_stars">
+    //             <svg className="stars-list__icon" width="20" height="20">
+    //                 <use href={`${ratingSprite}#inactive`} />
+    //             </svg>
+    //             <svg className="stars-list__icon" width="20" height="20">
+    //                 <use href={`${ratingSprite}#inactive`} />
+    //             </svg>
+    //             <svg className="stars-list__icon" width="20" height="20">
+    //                 <use href={`${ratingSprite}#inactive`} />
+    //             </svg>
+    //             <svg className="stars-list__icon" width="20" height="20">
+    //                 <use href={`${ratingSprite}#inactive`} />
+    //             </svg>
+    //             <svg className="stars-list__icon" width="20" height="20">
+    //                 <use href={`${ratingSprite}#inactive`} />
+    //             </svg>
+    //         </div>
+    //     );
+    // };
 
     return (
         <>
@@ -212,7 +213,8 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                         <h2 className="customers-review__modal_rating_title">
                             Ваша оцінка
                         </h2>
-                        {renderStarsRating()}
+                        {/* {renderStarsRating()} */}
+                        <StarsRating />
                     </div>
                     <form
                         className="customers-review__modal_form modal-form"
