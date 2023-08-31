@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import parse from 'html-react-parser';
 import nextId from 'react-id-generator';
 import { useAppSelector } from '../../../../hooks/hooks';
+import DeliveryTerms from '../../../../shared-components/DeliveryTerms/DeliveryTerms';
 import './Accordeon.scss';
 
 type CharactersDataType = {
@@ -241,19 +242,7 @@ const Accordeon = () => {
                     </span>
                 </button>
                 <div className="accordeon__item-inner">
-                    <p className="accordeon__item-text item-delivery__text">
-                        <b className="item-delivery__main">Оплата:</b> <br />
-                        При отриманні накладеним платежем <b>(вся Україна)</b>
-                        або готівкою кур'єру <b>(Київ)</b>
-                        <br /> На банківську карту (передоплата)
-                        <br /> На розрахунковий рахунок (передоплата)
-                        <br />
-                        <br />
-                        <b className="item-delivery__main">Доставка:</b>
-                        <br />
-                        Безкоштовна доставка всіма поштовами службами:{' '}
-                        <b>Нова Пошта</b>, <b>Автолюкс</b>, <b>Делівері</b>
-                    </p>
+                    <DeliveryTerms extraClass="accordeon__item-text" />
                 </div>
             </li>
         </ul>

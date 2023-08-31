@@ -1,0 +1,13 @@
+@use '../../style/variables.scss' as *;
+.delivery-terms {
+    color: $grey;
+    font-weight: 400;
+    &__main {
+        color: $dark-color;
+        font-weight: 600;
+    }
+    b:not(.delivery-terms__main) {
+        color: $dark-color;
+        font-weight: 500;
+    }
+}
