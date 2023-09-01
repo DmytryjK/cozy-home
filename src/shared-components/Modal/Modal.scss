@@ -12,6 +12,7 @@
 	visibility: hidden;
 	z-index: 9999;
 	padding: 40px;
+	user-select: none;
 	transition: 0.2s ease-out opacity, 0.2s ease-out visibility;
 
 	&__content {
@@ -40,6 +41,7 @@
 .active {
 	opacity: 1;
 	visibility: visible;
+	user-select: auto;
 	.modal__content{
 		transform: scale(1);
 		transition: 0.2s ease-out transform;

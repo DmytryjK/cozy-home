@@ -1,19 +1,38 @@
 @use '../../../../style/variables.scss' as *;
 .cart-table {
     max-width: 912px;
-    &__clear-wrapper {
+    &__navigation-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        align-items: center;
         margin-top: 10px;
-        text-align: right;
     }
     &__clear-cart {
-        margin-left: auto;
+        display: block;
         color: $dark-color;
+        text-align: center;
         font-size: 14px;
         font-weight: 500;
         background-color: transparent;
         border: none;
-        padding: 10px;
+        padding: 11px 10px;
         cursor: pointer;
+    }
+    &__go-shopping {
+        display: none;
+        text-align: center;
+        background-color: $dark-color;
+        padding: 12px 10px;
+        width: 50%;
+        border-radius: 2px;
+        color: $white;
+        font-size: 14px;
+        font-weight: 500;
+        transition: 0.2s ease-out background-color;
+        &:hover {
+            background-color: $grey;
+        }
     }
 
     &__header {
@@ -60,27 +79,36 @@
         &-table__header, .cart-product   {
             grid-template-columns: 50px minmax(300px, 564px) minmax(345px, 438px);
         }
-        &-content {
-            flex-wrap: wrap;
-        }
     }
 }
 
 @media (max-width: 767px) {
     .cart {
-        &-content {
-            margin-top: 10px;
-        }
-        &-table__items {
-            margin-top: 0;
-        }
-
-        &-table__item:first-child {
-            padding-top: 16px;
-            border-top: 1px solid $dark-white;
-        }
-        &-table__header {
-            display: none;
+        &-table {
+            &__navigation-wrapper {
+                margin: 0;
+                padding: 20px 0;
+                justify-content: space-between;
+                border-bottom: 1px solid $dark-white;
+            }
+            &__go-shopping {
+                display: block;
+            }
+            &__clear-cart {
+                width: 50%;
+                border-radius: 2px;
+                border: 1px solid $dark-color;
+            }
+            &__items {
+                margin-top: 0;
+            }
+            &__item:first-child {
+                padding-top: 16px;
+                border-top: 1px solid $dark-white;
+            }
+            &__header {
+                display: none;
+            }
         }
     }
 }

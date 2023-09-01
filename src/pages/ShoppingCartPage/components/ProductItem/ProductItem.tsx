@@ -98,7 +98,7 @@ const ProductItem = ({ quantityProducts }: { quantityProducts: number }) => {
                         onClick={() => {
                             if (!quantity) return;
                             if (
-                                quantity === quantityProducts &&
+                                quantity === quantityProducts + 1 &&
                                 !isEnoughProductToBuy
                             ) {
                                 setIsEnoughProductToBuy(true);
@@ -107,7 +107,10 @@ const ProductItem = ({ quantityProducts }: { quantityProducts: number }) => {
                             } else if (quantity >= 2) {
                                 setIsEnoughProductToBuy(true);
                             }
-                            if (quantity < 2) return;
+                            if (quantity < 2) {
+                                setIsEnoughProductToBuy(true);
+                                return;
+                            }
                             setQuantity(quantity - 1);
                         }}
                     />
