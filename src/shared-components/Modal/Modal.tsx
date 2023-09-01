@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Dispatch } from 'redux';
 import productPageSprite from '../../assets/icons/product-page/product-pageSprite.svg';
 import './Modal.scss';
 
@@ -6,9 +7,9 @@ type Props = {
     active: boolean;
     setActive: React.Dispatch<React.SetStateAction<boolean>>;
     children: any;
-    isDataLoadedToServer: boolean;
-    setisDataLoadedToServer: (isSubmitLoadedToServer: boolean) => void;
-    isSubmitedText: string;
+    isDataLoadedToServer?: boolean;
+    setisDataLoadedToServer?: (isSubmitLoadedToServer: boolean) => void | null;
+    isSubmitedText?: string | null;
     maxwidth?: string;
 };
 
@@ -23,7 +24,7 @@ const Modal = ({
 }: Props) => {
     useEffect(() => {
         if (active) return undefined;
-
+        if (!setisDataLoadedToServer) return undefined;
         const resetForm = () => {
             setisDataLoadedToServer(false);
         };
@@ -58,7 +59,7 @@ const Modal = ({
                     e.stopPropagation();
                 }}
             >
-                {isDataLoadedToServer ? (
+                {isDataLoadedToServer && isSubmitedText ? (
                     <div className="reveiew-added-wrapper">
                         <div className="review-added">
                             <svg width="20" height="20">
@@ -106,6 +107,9 @@ const Modal = ({
 
 Modal.defaultProps = {
     maxwidth: '400px',
+    isDataLoadedToServer: false,
+    setisDataLoadedToServer: null,
+    isSubmitedText: null,
 };
 
 export default Modal;

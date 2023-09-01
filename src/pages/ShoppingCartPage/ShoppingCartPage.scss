@@ -33,3 +33,23 @@
         font-size: 11px;
     }
 }
+
+@media (max-width: 1100px) {
+    .cart {
+        &-content {
+            flex-wrap: wrap;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .cart {
+        &__right-side {
+            max-width: 100%;
+            width: 100%;
+        }
+        &-content {
+            margin-top: 10px;
+        }
+    }
+}

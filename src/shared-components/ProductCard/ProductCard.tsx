@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ProductCardType } from '../../types/types';
+import { useAppDispatch } from '../../hooks/hooks';
+import {
+    openPopUpCart,
+    openPopUpNotification,
+} from '../../store/reducers/modalsSlice';
 import AddToFavoriteBtn from '../AddToFavoriteBtn/AddToFavoriteBtn';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import SliderImages, { ImagesData } from './SliderImages/SliderImages';
-import Modal from '../Modal/Modal';
-import PopUpInStockNotification from '../PopUpInStockNotification/PopUpInStockNotification';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ProductCard.scss';
@@ -13,13 +16,15 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [priceSpaced, setPriceSpaced] = useState<string>('');
     const [discountPriceSpaced, setDiscountPriceSpaced] = useState<string>('');
     const [imagesData, setImagesData] = useState<ImagesData>({});
-    const [isWindowInStockReminderOpen, setIsWindowInStockReminderOpen] =
-        useState<boolean>(false);
-    const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
-        useState<boolean>(false);
+    // const [isWindowInStockReminderOpen, setIsWindowInStockReminderOpen] =
+    //     useState<boolean>(false);
+    // const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
+    //     useState<boolean>(false);
 
     const { price, priceWithDiscount, discount, productQuantityStatus } =
         product;
+
+    const dispatch = useAppDispatch();
 
     const addSpaceToPrice = (
         currentPrice: number,
@@ -57,7 +62,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                         className="purchase-block__cart-btn"
                         type="button"
                         aria-label="повідомити про наявність"
-                        onClick={() => setIsWindowInStockReminderOpen(true)}
+                        onClick={() => dispatch(openPopUpNotification(true))}
                     >
                         <svg
                             className="purchase-block__bell-icon"
@@ -99,6 +104,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     className="purchase-block__cart-btn"
                     type="button"
                     aria-label="додати в кошик"
+                    onClick={() => dispatch(openPopUpCart(true))}
                 >
                     <svg
                         className="purchase-block__cart-icon"
@@ -135,18 +141,6 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
             <div className="product-card__purchase-block purchase-block swiper-no-swiping">
                 {renderProductStatus()}
             </div>
-            <Modal
-                active={isWindowInStockReminderOpen}
-                setActive={setIsWindowInStockReminderOpen}
-                isDataLoadedToServer={isSubmitedFormNotification}
-                setisDataLoadedToServer={setIsSubmitedFormNotification}
-                isSubmitedText="Ваш запит прийнято!"
-                maxwidth="884px"
-            >
-                <PopUpInStockNotification
-                    setIsSubmit={setIsSubmitedFormNotification}
-                />
-            </Modal>
         </div>
     );
 };

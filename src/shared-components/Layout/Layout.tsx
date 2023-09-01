@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Header } from '../Header';
+import AllModals from '../AllModals/AllModals';
 import Footer from '../Footer/Footer';
 
 type LayoutProps = {
@@ -11,6 +12,7 @@ const Layout = ({ children }: LayoutProps) => {
         <div>
             <Header />
             {children}
+            <AllModals />
             <Footer />
         </div>
     );

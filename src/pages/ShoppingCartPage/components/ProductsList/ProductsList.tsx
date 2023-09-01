@@ -1,4 +1,5 @@
 import nextId from 'react-id-generator';
+import { NavLink } from 'react-router-dom';
 import ProductItem from '../ProductItem/ProductItem';
 import './ProductsList.scss';
 
@@ -35,10 +36,13 @@ const ProductsList = () => {
                     );
                 })}
             </ul>
-            <div className="cart-table__clear-wrapper">
+            <div className="cart-table__navigation-wrapper">
                 <button className="cart-table__clear-cart" type="button">
                     Очистити кошик
                 </button>
+                <NavLink className="cart-table__go-shopping" to="/catalog">
+                    До покупок
+                </NavLink>
             </div>
         </div>
     );

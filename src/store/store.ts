@@ -7,6 +7,7 @@ import productCardReducer from './reducers/productCardSlice';
 import catalogProductsReducer from './reducers/catalogProductsSlice';
 import categoriesReducer from './reducers/categoriesSlice';
 import productInformationReducer from './reducers/productInformationSlice';
+import modalsReducer from './reducers/modalsSlice';
 
 export const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
         catalogProducts: catalogProductsReducer,
         categories: categoriesReducer,
         productInformation: productInformationReducer,
+        modals: modalsReducer,
     },
 });
 

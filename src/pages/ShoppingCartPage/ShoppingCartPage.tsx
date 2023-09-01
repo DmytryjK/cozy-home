@@ -14,7 +14,10 @@ const ShoppingCartPage = () => {
                     <ProductsList />
                     <div className="cart__right-side">
                         <div className="cart__right-sticky">
-                            <SummaryCart />
+                            <SummaryCart
+                                title="Підсумки кошика"
+                                bgColor="#FAFAF9"
+                            />
                             <div className="cart__delivery-block">
                                 <h3 className="cart__delivery-title">
                                     Умови доставки
