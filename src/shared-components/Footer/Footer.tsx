@@ -59,7 +59,7 @@ const Footer = () => {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        м. Київ, вул. Лятошинського 4а
+                                        м.Київ, вул. Лятошинського 4а
                                     </a>
                                 </li>
                                 <li className="footer__list_item">

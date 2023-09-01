@@ -63,6 +63,17 @@ body {
     }
 }
 
+
+
+@media screen and (max-width: 960px) {
+	.product-page {
+		margin-top: 24px;
+	}
+    .breadcrumbs {
+			display: none;
+		}
+}
+
 @media screen and (max-width: 800px) {
     .product-page {
         &__wrapper {
