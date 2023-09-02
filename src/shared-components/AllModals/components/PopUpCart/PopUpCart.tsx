@@ -5,7 +5,6 @@ import Modal from '../../../Modal/Modal';
 import { openPopUpCart } from '../../../../store/reducers/modalsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import ProductItem from '../../../../pages/ShoppingCartPage/components/ProductItem/ProductItem';
-// import SummaryCart from '../../../../pages/ShoppingCartPage/components/SummaryCart/SummaryCart';
 import ProductsInfoCart from '../../../../pages/ShoppingCartPage/components/SummaryCart/ProductsInfoCart/ProductsInfoCart';
 import CheckoutBtn from '../../../../pages/ShoppingCartPage/components/SummaryCart/CheckoutBtn/CheckoutBtn';
 import './PopUpCart.scss';
@@ -50,6 +49,7 @@ const PopUpCart = () => {
                                         <ProductItem
                                             key={nextId('cart-product_on-page')}
                                             quantityProducts={quantity}
+                                            setAction={setIsCartPopUpShow}
                                         />
                                     </li>
                                 );

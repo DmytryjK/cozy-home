@@ -51,11 +51,6 @@ a {
   background-clip: padding-box;
 }
 
-.swiper, .swiper-wrapper, .swiper-slide {
-  position: static !important;
-  box-sizing: border-box !important;
-}
-
 @media screen and (max-width: 1130px) {
   body {
     padding-top: 60px;

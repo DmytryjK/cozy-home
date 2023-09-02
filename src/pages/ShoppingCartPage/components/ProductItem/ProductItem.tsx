@@ -1,10 +1,16 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { NavLink } from 'react-router-dom';
 import addSpaceToPrice from '../../../../utils/addSpaceToPrice';
 import item1 from '../../../../assets/images/cart/item1.png';
 import './ProductItem.scss';
 
-const ProductItem = ({ quantityProducts }: { quantityProducts: number }) => {
+const ProductItem = ({
+    quantityProducts,
+    setAction,
+}: {
+    quantityProducts: number;
+    setAction?: Dispatch<SetStateAction<any>> | null;
+}) => {
     const [quantity, setQuantity] = useState<number | ''>(
         Math.floor(Math.random() * (quantityProducts - 1 + 1) + 1)
     );
@@ -56,6 +62,8 @@ const ProductItem = ({ quantityProducts }: { quantityProducts: number }) => {
                         localStorage.setItem('productSkuCode', '240009');
                         localStorage.setItem('hex', '#C57100');
                         localStorage.setItem('colorName', 'Коричневий');
+                        if (!setAction) return;
+                        setAction(false);
                     }}
                 >
                     <img
@@ -72,6 +80,8 @@ const ProductItem = ({ quantityProducts }: { quantityProducts: number }) => {
                             localStorage.setItem('productSkuCode', '240009');
                             localStorage.setItem('hex', '#C57100');
                             localStorage.setItem('colorName', 'Коричневий');
+                            if (!setAction) return;
+                            setAction(false);
                         }}
                     >
                         Крісло Comfort
@@ -174,6 +184,10 @@ const ProductItem = ({ quantityProducts }: { quantityProducts: number }) => {
             </li>
         </ul>
     );
+};
+
+ProductItem.defaultProps = {
+    setAction: null,
 };
 
 export default ProductItem;
