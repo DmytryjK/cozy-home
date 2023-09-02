@@ -2,12 +2,13 @@ import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import item1 from '../../../assets/images/cart/item1.png';
 import './DropdownShoppingCart.scss';
+import SummaryCart from '../../../pages/ShoppingCartPage/components/SummaryCart/SummaryCart';
 
 const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
     const quantityProducts: number[] = [1, 1, 1, 1, 1, 1, 1, 1, 1];
     return (
         <div
-            className={`cart-dropdown ${isActive ? 'active' : ''}`}
+            className={`cart-dropdown ${isActive ? 'dropdown-active' : ''}`}
             style={{
                 maxWidth: quantityProducts.length === 0 ? '380px' : '590px',
             }}
@@ -112,22 +113,15 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                         })}
                     </ul>
                     <div className="cart-dropdown__summary summary-info">
-                        <div className="summary-info__total">
-                            <span className="summary-info__total-quantity">
-                                Разом (<span>9</span> товарів)
-                            </span>
-                            <span className="summary-info__total-cost">
-                                108 000 UAH
-                            </span>
-                        </div>
                         <div className="summary-info__links">
-                            <a className="summary-info__view-cart" href="/">
+                            <NavLink
+                                className="summary-info__view-cart"
+                                to="/cart"
+                            >
                                 Переглянути кошик
-                            </a>
-                            <a className="summary-info__checkout" href="/">
-                                Оформити замовлення
-                            </a>
+                            </NavLink>
                         </div>
+                        <SummaryCart />
                     </div>
                 </>
             ) : (

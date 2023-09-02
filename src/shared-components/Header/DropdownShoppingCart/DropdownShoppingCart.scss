@@ -1,11 +1,11 @@
 @use '../../../style/variables.scss' as *;
 .cart-dropdown {
     position: absolute;
-    padding: 20px 0;
+    padding-top: 20px;
     background-color: $filter-background;
     right: 0;
     top: 98%;
-    max-height: 325px;
+    max-height: 590px;
     min-height: 110px;
     max-width: 590px;
     width: 100%;
@@ -13,10 +13,11 @@
     opacity: 0;
     visibility: hidden;
     transition: 0.2s ease-in-out opacity, 0.2s ease-in-out visibility;
-    &.active {
+    &.dropdown-active {
         opacity: 1;
         visibility: visible; 
     }
+    
     &__decorative-icon {
         position: absolute;
         right: 14px;
@@ -29,7 +30,7 @@
         padding-left: 18px;
         margin-right: 18px;
         background-color: $filter-background;;
-        max-height: 190px;
+        max-height: 209px;
         overflow: auto;
         &::-webkit-scrollbar {
             width: 3px;
@@ -112,51 +113,43 @@
     }
     
     .summary-info {
+        display: flex;
+        align-items: flex-end;
+        gap: 5px;
+        justify-content: space-between;
         padding: 20px;
         border-top: 1px solid $dark-white;
-        &__total {
-            display: flex;
-            justify-content: flex-end;
-            gap: 18px;
-        }
-        &__total-quantity {
-            color: $dark-color;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        &__total-cost {
-            color: $dark-color;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        &__links {
-            margin-top: 18px;
-            display: flex;
-            justify-content: space-between;
-            gap: 30px;
-        }
-        &__view-cart, &__checkout {
+        .cart-summary{
             max-width: 240px;
             width: 100%;
-            padding: 10px;
+            &__checkout {
+                padding: 10px;
+                margin-top: 20px;
+            }
+            &__inner-content {
+                padding: 0;
+            }
+            &__products-info {
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+            &__quantity {
+                font-size: 14px;
+            }
+        }
+        &__view-cart {
+            display: block;
+            color: $dark-color;
             text-align: center;
             font-size: 14px;
             font-weight: 500;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        &__view-cart {
-            color: $dark-color;
             background-color: transparent;
+            border-radius: 2px;
+            border-radius: 2px;
             border: 1px solid $dark-color;
-        }
-        &__checkout {
-            color: $filter-background;
-            background-color: $dark-color;
-            transition: 0.2s ease-out background-color;
-            &:hover {
-                background-color: $grey;
-            }
+            min-width: 240px;
+            padding: 9px 10px;
+            cursor: pointer;
         }
     }
 

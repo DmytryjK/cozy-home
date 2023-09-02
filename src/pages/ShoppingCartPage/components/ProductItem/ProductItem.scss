@@ -141,6 +141,9 @@
         border-radius: 3px;
         grid-column: 1 / 4;
         grid-row: 2 / 2;
+        color: $dark-color;
+        font-size: 14px;
+        font-weight: 500;
         transition: 0.1s ease-out visibility, 0.1s ease-out opacity;
     }
     
