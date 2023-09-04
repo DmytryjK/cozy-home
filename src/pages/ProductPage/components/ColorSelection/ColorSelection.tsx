@@ -4,11 +4,16 @@ import nextId from 'react-id-generator';
 import {
     updateProductColor,
     fetchProductInfoByScuWithColor,
+    updateProductImages,
 } from '../../../../store/reducers/productInformationSlice';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import './ColorSelection.scss';
+import { ResponseData } from '../ProductImagesSlider/ProductImagesSlider';
 
 const ColorSelection = () => {
+    const { skuCode } = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
     const colorDtoList = useAppSelector(
         (state) => state.productInformation.productInfo.colors
     );
@@ -106,6 +111,36 @@ const ColorSelection = () => {
         );
     }, [currentColor]);
 
+    const handleColorChange = async (id: string) => {
+        try {
+            const requestBody = {
+                productSkuCode: skuCode,
+                colorHex: id,
+            };
+
+            const response = await fetch(
+                'https://cozy-home.onrender.com/api/v1/image/product_card_image',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Request failed');
+            }
+
+            const data: ResponseData[] = await response.json();
+
+            dispatch(updateProductImages(data));
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <div className="color-selection">
             <span className="color-selection__color-descr">
@@ -131,6 +166,7 @@ const ColorSelection = () => {
                                 to={`${currentPath}${id}`}
                                 style={{ backgroundColor: `${id}` }}
                                 onClick={() => {
+                                    handleColorChange(id);
                                     dispatch(
                                         updateProductColor({
                                             name,

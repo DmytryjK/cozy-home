@@ -6,6 +6,13 @@ type ProductParamsType = {
     productSkuCode: string;
     colorHex: string;
 };
+interface ProductImage {
+    id: string;
+    mainImage: boolean;
+    desktopImagePath: string;
+    sliderImagePath: string;
+    mobileImagePath: string;
+}
 
 interface ProductInformationState {
     productInfo: ProductInformationType;
@@ -93,6 +100,9 @@ export const productInformationSlice = createSlice({
         updateProductSku: (state, action: PayloadAction<string>) => {
             state.currentSku = action.payload;
         },
+        updateProductImages: (state, action) => {
+            state.productInfo.images = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchProductInfoByScuWithColor.pending, (state) => {
@@ -104,6 +114,7 @@ export const productInformationSlice = createSlice({
             (state, action: PayloadAction<ProductInformationType>) => {
                 state.loading = 'succeeded';
                 state.productInfo = action.payload;
+                state.productInfo.images = action.payload.images;
             }
         );
         builder.addCase(
@@ -115,6 +126,6 @@ export const productInformationSlice = createSlice({
         );
     },
 });
-export const { updateProductColor, updateProductSku } =
+export const { updateProductColor, updateProductSku, updateProductImages } =
     productInformationSlice.actions;
 export default productInformationSlice.reducer;
