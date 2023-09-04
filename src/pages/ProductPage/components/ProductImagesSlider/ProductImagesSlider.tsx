@@ -6,25 +6,78 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Controller } from 'swiper';
 
 import nextId from 'react-id-generator';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import EnlargedPhoto from './EnlargedPhoto/EnlargedPhoto';
+import FullScreenLoader from '../../../../shared-components/FullScreenLoader/FullScreenLoader';
+
+export interface ResponseData {
+    id: string;
+    imagePath: string;
+}
 
 const ProductImagesSlider = () => {
+    const { skuCode } = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
+
+    const currentColor = useAppSelector(
+        (state) => state.productInformation.currentColor
+    );
+
+    const imagesFromStore = useAppSelector(
+        (state) => state.productInformation.productInfo.images
+    );
+
+    const [popUpImages, setPopUpImages] = useState<ResponseData[] | null>([]);
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
     const [largePhotoActive, setLargePhotoActive] = useState<boolean>(false);
     const [firstSwiper, setFirstSwiper] = useState(null);
     const [secondSwiper, setSecondSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [isPopUpLoading, setIsPopUpLoading] = useState(false);
+    const [isImagesLoading, setIsImagesLoading] = useState(false);
 
-    const { images } = useAppSelector(
-        (state) => state.productInformation.productInfo
-    );
+    const handleSliderClick = async (index: number) => {
+        setIsPopUpLoading(true);
+        try {
+            const requestBody = {
+                productSkuCode: skuCode,
+                colorHex: currentColor?.id,
+            };
 
-    const handleSlideClick = (index: number) => {
-        setActiveIndex(index);
-        setLargePhotoActive(true);
+            const response = await fetch(
+                'https://cozy-home.onrender.com/api/v1/image/pop_up_image',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Request failed');
+            }
+
+            const data: ResponseData[] = await response.json();
+            setPopUpImages(data);
+
+            setActiveIndex(index);
+            setLargePhotoActive(true);
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setIsPopUpLoading(false);
+        }
     };
+
+    // TODO: loader while color changing
+
+    // TODO: reset active index while changing color
+
+    useEffect(() => {}, [imagesFromStore]);
 
     const handleFirstSwiper = (swiper: any) => {
         setFirstSwiper(swiper);
@@ -39,9 +92,10 @@ const ProductImagesSlider = () => {
     };
 
     const renderSlider = () => {
-        if (images.length === 0) return null;
+        if (imagesFromStore.length === 0) return null;
         return (
             <>
+                {isPopUpLoading && <FullScreenLoader />}
                 <div className="product-images">
                     <div className="product-images__main-image">
                         <Swiper
@@ -53,10 +107,10 @@ const ProductImagesSlider = () => {
                             controller={{ control: secondSwiper }}
                             className="product-images__slider"
                         >
-                            {images.map((image, index) => (
+                            {imagesFromStore.map((image, index) => (
                                 <SwiperSlide
                                     key={nextId('swiper-image')}
-                                    onClick={() => handleSlideClick(index)}
+                                    onClick={() => handleSliderClick(index)}
                                 >
                                     <img
                                         src={image.desktopImagePath}
@@ -73,7 +127,7 @@ const ProductImagesSlider = () => {
                             modules={[Navigation, Thumbs]}
                             className="product-images__slider-thumbs"
                         >
-                            {images.map((image, index) => (
+                            {imagesFromStore.map((image, index) => (
                                 <SwiperSlide
                                     key={nextId('swiper-image')}
                                     className={
@@ -101,6 +155,7 @@ const ProductImagesSlider = () => {
                         firstSwiper={firstSwiper}
                         activeIndex={activeIndex}
                         handleSlideChange={handleSlideChange}
+                        popUpImages={popUpImages}
                     />
                 )}
             </>

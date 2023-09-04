@@ -7,7 +7,7 @@ import { Controller, Navigation } from 'swiper';
 import nextId from 'react-id-generator';
 import { useEffect } from 'react';
 import productPageSprite from '../../../../../assets/icons/product-page/product-pageSprite.svg';
-import { useAppSelector } from '../../../../../hooks/hooks';
+import { ResponseData } from '../ProductImagesSlider';
 
 type Props = {
     setLargePhotoActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +16,7 @@ type Props = {
     firstSwiper: null;
     handleSlideChange: (swiper: any) => void;
     activeIndex: number;
+    popUpImages: ResponseData[] | null;
 };
 
 const EnlargedPhoto = (props: Props) => {
@@ -26,10 +27,8 @@ const EnlargedPhoto = (props: Props) => {
         firstSwiper,
         activeIndex,
         handleSlideChange,
+        popUpImages,
     } = props;
-    const { images } = useAppSelector(
-        (state) => state.productInformation.productInfo
-    );
 
     useEffect(() => {
         if (largePhotoActive) {
@@ -50,7 +49,7 @@ const EnlargedPhoto = (props: Props) => {
     });
 
     const renderSlider = () => {
-        if (images.length === 0) return null;
+        if (popUpImages?.length === 0) return null;
         return (
             <Swiper
                 navigation
@@ -61,10 +60,10 @@ const EnlargedPhoto = (props: Props) => {
                 grabCursor
                 className="product-images__enlarged_slider"
             >
-                {images.map((image) => (
+                {popUpImages?.map((popUpImage) => (
                     <SwiperSlide key={nextId('swiper-enlarged-image')}>
                         <img
-                            src={image.desktopImagePath}
+                            src={popUpImage.imagePath}
                             alt="Enlarged slider images"
                         />
                     </SwiperSlide>
@@ -79,7 +78,7 @@ const EnlargedPhoto = (props: Props) => {
                 <div className="enlarged-block__content">
                     <div className="enlarged-block__content_header">
                         <div className="enlarged-block__content_header_sliderCounter">
-                            <p>{`${activeIndex + 1}/${images.length}`}</p>
+                            <p>{`${activeIndex + 1}/${popUpImages?.length}`}</p>
                         </div>
                         <button
                             type="button"
