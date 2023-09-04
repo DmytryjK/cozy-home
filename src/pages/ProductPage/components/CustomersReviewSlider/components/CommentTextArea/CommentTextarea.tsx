@@ -24,6 +24,7 @@ const CommentTextarea: React.FC = () => {
             <textarea
                 cols={30}
                 rows={10}
+                maxLength={500}
                 className="customers-review__modal_inputs_input_comment"
                 placeholder="Ваш комментарий"
                 value={comment}

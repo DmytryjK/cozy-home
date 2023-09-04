@@ -1,23 +1,29 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './CustomersReviewSlider.scss';
 import Modal from '../../../../shared-components/Modal/Modal';
-// import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
+import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
 import CustomerReview from './components/CustomerReview/CustomerReview';
 import CommentTextarea from './components/CommentTextArea/CommentTextarea';
-import StarsRating from './components/RatingStars/RatingStars';
 
 const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [nameError, setNameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [ratingError, setRatingError] = useState(false);
+    const [rating, setRating] = useState(0);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [reviewSubmit, setReviewSubmit] = useState<boolean>(false);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
+    const handleStarClick = (selectedRating: number) => {
+        setRating(selectedRating);
+    };
 
     const updateSubmitButtonStatus = (newName: string, newEmail: string) => {
         if (newName.trim() !== '' && newEmail.trim() !== '') {
@@ -39,8 +45,60 @@ const CustomersReviewSlider = () => {
         updateSubmitButtonStatus(name, newEmail);
     };
 
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        if (name === '') {
+            setNameError(true);
+        } else {
+            setNameError(false);
+        }
+
+        if (email === '') {
+            setEmailError(true);
+        } else {
+            setEmailError(false);
+        }
+
+        if (rating > 1) {
+            setRatingError(false);
+        } else {
+            setRatingError(true);
+        }
+    };
+
+    useEffect(() => {
+        if (name !== '') {
+            setNameError(false);
+        }
+
+        if (email !== '') {
+            setEmailError(false);
+        }
+
+        if (rating > 1) {
+            setRatingError(false);
+        }
+    }, [name, email, rating]);
+
+    const stars = () => {
+        return (
+            <div className="stars-rating">
+                {[1, 2, 3, 4, 5].map((starIndex) => (
+                    <svg
+                        key={starIndex}
+                        width="20"
+                        height="20"
+                        onClick={() => handleStarClick(starIndex)}
+                    >
+                        <use
+                            href={`${ratingSprite}#${
+                                starIndex <= rating ? 'active' : 'inactive'
+                            }`}
+                        />
+                    </svg>
+                ))}
+            </div>
+        );
     };
 
     const reviews = [
@@ -89,28 +147,6 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
 ipsum smartboard supraktig. Disade hesk i degen.`,
         },
     ];
-
-    // const renderStarsRating = () => {
-    //     return (
-    //         <div className="customers-review__modal_rating_stars">
-    //             <svg className="stars-list__icon" width="20" height="20">
-    //                 <use href={`${ratingSprite}#inactive`} />
-    //             </svg>
-    //             <svg className="stars-list__icon" width="20" height="20">
-    //                 <use href={`${ratingSprite}#inactive`} />
-    //             </svg>
-    //             <svg className="stars-list__icon" width="20" height="20">
-    //                 <use href={`${ratingSprite}#inactive`} />
-    //             </svg>
-    //             <svg className="stars-list__icon" width="20" height="20">
-    //                 <use href={`${ratingSprite}#inactive`} />
-    //             </svg>
-    //             <svg className="stars-list__icon" width="20" height="20">
-    //                 <use href={`${ratingSprite}#inactive`} />
-    //             </svg>
-    //         </div>
-    //     );
-    // };
 
     return (
         <>
@@ -213,27 +249,33 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                         <h2 className="customers-review__modal_rating_title">
                             Ваша оцінка
                         </h2>
-                        {/* {renderStarsRating()} */}
-                        <StarsRating />
+                        {stars()}
+                        {ratingError && (
+                            <p className="rating-error">
+                                Необхідно поставити оцінку
+                            </p>
+                        )}
                     </div>
                     <form
                         className="customers-review__modal_form modal-form"
-                        onSubmit={(e) => e.preventDefault()}
+                        onSubmit={(e) => handleSubmit(e)}
                     >
                         <div className="customers-review__modal_inputs">
                             <input
                                 type="text"
-                                className="customers-review__modal_inputs_input customers-review__modal_inputs_input_name"
+                                className={`customers-review__modal_inputs_input ${
+                                    nameError ? 'error' : ''
+                                }`}
                                 placeholder="Ваше ім’я*"
-                                required
                                 value={name}
                                 onChange={handleNameChange}
                             />
                             <input
                                 type="text"
-                                className="customers-review__modal_inputs_input customers-review__modal_inputs_input_email"
+                                className={`customers-review__modal_inputs_input ${
+                                    emailError ? 'error' : ''
+                                }`}
                                 placeholder="Ел. пошта*"
-                                required
                                 value={email}
                                 onChange={handleEmailChange}
                             />
@@ -247,7 +289,6 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                             }}
                             className="customers-review__modal_button"
                             type="submit"
-                            disabled={isSubmitDisabled}
                         >
                             Додати відгук
                         </button>

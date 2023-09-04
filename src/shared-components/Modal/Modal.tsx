@@ -47,7 +47,7 @@ const Modal = ({
     }, [isDataLoadedToServer, active]);
     return (
         <div
-            className={active ? 'modal active' : 'modal'}
+            className={active ? 'modal modal_active' : 'modal'}
             onMouseDown={() => {
                 setActive(false);
             }}
