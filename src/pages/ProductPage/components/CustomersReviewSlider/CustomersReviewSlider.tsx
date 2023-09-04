@@ -212,6 +212,35 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                             prevEl: prevRef.current,
                             nextEl: nextRef.current,
                         }}
+                        breakpoints={{
+                            0: {
+                                slidesPerView: 'auto',
+                            },
+                            340: {
+                                slidesPerView: 2,
+                            },
+                            400: {
+                                slidesPerView: 2,
+                            },
+                            424: {
+                                slidesPerView: 2,
+                            },
+                            546: {
+                                slidesPerView: 2,
+                            },
+                            700: {
+                                slidesPerView: 3,
+                            },
+                            810: {
+                                slidesPerView: 3,
+                            },
+                            1100: {
+                                slidesPerView: 3,
+                            },
+                            1294: {
+                                slidesPerView: 4,
+                            },
+                        }}
                         className="mySwiper"
                     >
                         {reviews.map((review) => (
