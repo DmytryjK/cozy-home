@@ -43,3 +43,18 @@
 	}
 
 }
+
+@media (max-width: 700px) {
+	.customers-review {
+
+		&__slider_cards {
+	
+			&_card {
+	
+				&_header {
+					display: initial;
+				}
+			}
+		}
+	}
+}
