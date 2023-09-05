@@ -190,6 +190,11 @@
 		.customers-review {
 			margin-top: 64px;
 		}
+
+		.customers-review__modal_button {
+			min-width: 328px;
+			margin-bottom: 0;
+		}
 }
 
 	@media (max-width: 600px) {
