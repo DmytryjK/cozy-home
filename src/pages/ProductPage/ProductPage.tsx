@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAppSelector } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
@@ -12,6 +13,7 @@ import ProductImagesSlider from './components/ProductImagesSlider/ProductImagesS
 import CustomersReviewSlider from './components/CustomersReviewSlider/CustomersReviewSlider';
 
 const ProductPage = () => {
+    const [colorChange, setColorChange] = useState(false);
     const skuCode = useAppSelector(
         (state) => state.productInformation.productInfo.skuCode
     );
@@ -26,7 +28,7 @@ const ProductPage = () => {
         <div className="product-page">
             <Breadcrumbs />
             <div className="product-page__wrapper container">
-                <ProductImagesSlider />
+                <ProductImagesSlider colorChange={colorChange} />
                 <div className="product-page-right-content-wrapper">
                     <h1 className="product-page__title">{name}</h1>
                     <div className="product-page__extra-info">
@@ -40,7 +42,7 @@ const ProductPage = () => {
                             ])}
                         </a>
                     </div>
-                    <ColorSelection />
+                    <ColorSelection setColorChange={setColorChange} />
                     <ProductPrice />
                     <AddProductBlock />
                     <Accordeon />

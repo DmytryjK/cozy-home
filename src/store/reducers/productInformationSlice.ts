@@ -6,13 +6,6 @@ type ProductParamsType = {
     productSkuCode: string;
     colorHex: string;
 };
-interface ProductImage {
-    id: string;
-    mainImage: boolean;
-    desktopImagePath: string;
-    sliderImagePath: string;
-    mobileImagePath: string;
-}
 
 interface ProductInformationState {
     productInfo: ProductInformationType;

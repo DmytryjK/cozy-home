@@ -6,7 +6,12 @@
 
 	&__main-image {
 		width: 100%;
-		max-height: 630px;
+		position: relative;
+
+		.content-loader {
+			z-index: 10;
+			background: rgba(0,0,0, 0.3);
+		}
 	}
 
 	.product-images__slider {
@@ -84,10 +89,6 @@
 @media (max-width: 1150px) {
 	.product-images {
 		margin-bottom: 0;
-
-		&__main-image {
-			min-height: 620px;
-		}
 	}
 }
 

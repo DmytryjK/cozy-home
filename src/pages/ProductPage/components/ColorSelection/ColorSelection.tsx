@@ -10,7 +10,11 @@ import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import './ColorSelection.scss';
 import { ResponseData } from '../ProductImagesSlider/ProductImagesSlider';
 
-const ColorSelection = () => {
+type Props = {
+    setColorChange: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ColorSelection = ({ setColorChange }: Props) => {
     const skuCode = useAppSelector(
         (state) => state.productInformation.productInfo.skuCode
     );
@@ -112,6 +116,7 @@ const ColorSelection = () => {
     }, [currentColor]);
 
     const handleColorChange = async (id: string) => {
+        setColorChange(true);
         try {
             const requestBody = {
                 productSkuCode: skuCode,
@@ -138,6 +143,8 @@ const ColorSelection = () => {
             dispatch(updateProductImages(data));
         } catch (error) {
             console.error('Error:', error);
+        } finally {
+            setColorChange(false);
         }
     };
 

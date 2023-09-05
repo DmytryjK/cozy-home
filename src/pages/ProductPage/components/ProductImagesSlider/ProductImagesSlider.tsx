@@ -6,17 +6,22 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Controller } from 'swiper';
 
 import nextId from 'react-id-generator';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import EnlargedPhoto from './EnlargedPhoto/EnlargedPhoto';
 import FullScreenLoader from '../../../../shared-components/FullScreenLoader/FullScreenLoader';
+import Loader from '../../../../shared-components/Loader';
 
 export interface ResponseData {
     id: string;
     imagePath: string;
 }
 
-const ProductImagesSlider = () => {
+type Props = {
+    colorChange: boolean;
+};
+
+const ProductImagesSlider = ({ colorChange }: Props) => {
     const { skuCode } = useAppSelector(
         (state) => state.productInformation.productInfo
     );
@@ -36,7 +41,6 @@ const ProductImagesSlider = () => {
     const [secondSwiper, setSecondSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [isPopUpLoading, setIsPopUpLoading] = useState(false);
-    const [isImagesLoading, setIsImagesLoading] = useState(false);
 
     const handleSliderClick = async (index: number) => {
         setIsPopUpLoading(true);
@@ -73,11 +77,14 @@ const ProductImagesSlider = () => {
         }
     };
 
-    // TODO: loader while color changing
+    const swiperRef = useRef<any>(null);
 
-    // TODO: reset active index while changing color
-
-    useEffect(() => {}, [imagesFromStore]);
+    useEffect(() => {
+        if (swiperRef.current) {
+            const { swiper } = swiperRef.current;
+            swiper.slideTo(0);
+        }
+    }, [currentColor]);
 
     const handleFirstSwiper = (swiper: any) => {
         setFirstSwiper(swiper);
@@ -96,9 +103,12 @@ const ProductImagesSlider = () => {
         return (
             <>
                 {isPopUpLoading && <FullScreenLoader />}
+
                 <div className="product-images">
                     <div className="product-images__main-image">
+                        {colorChange && <Loader position="absolute" />}
                         <Swiper
+                            ref={swiperRef}
                             spaceBetween={10}
                             navigation
                             thumbs={{ swiper: thumbsSwiper }}
@@ -147,6 +157,7 @@ const ProductImagesSlider = () => {
                         </Swiper>
                     </div>
                 </div>
+
                 {largePhotoActive && (
                     <EnlargedPhoto
                         setLargePhotoActive={setLargePhotoActive}
