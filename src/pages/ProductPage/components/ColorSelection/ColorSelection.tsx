@@ -11,8 +11,8 @@ import './ColorSelection.scss';
 import { ResponseData } from '../ProductImagesSlider/ProductImagesSlider';
 
 const ColorSelection = () => {
-    const { skuCode } = useAppSelector(
-        (state) => state.productInformation.productInfo
+    const skuCode = useAppSelector(
+        (state) => state.productInformation.productInfo.skuCode
     );
     const colorDtoList = useAppSelector(
         (state) => state.productInformation.productInfo.colors
