@@ -208,9 +208,11 @@
 }
 
 	@media (max-width: 500px) {
-		.swiper {	
-			.swiper-slide{
-				max-width: 140px !important;
+		.customers-review {
+			.swiper {
+				.swiper-slide{
+					max-width: 140px !important;
+				}
 			}
 		}
 }

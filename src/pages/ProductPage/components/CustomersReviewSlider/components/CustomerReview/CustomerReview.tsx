@@ -44,7 +44,7 @@ const CustomerReview = (props: Props) => {
                         {renderStarsRating()}
                     </div>
                 </div>
-                <div className="customers-review__slider_cards_card_review swiper-no-swiping">
+                <div className="customers-review__slider_cards_card_review">
                     {content}
                 </div>
             </div>
