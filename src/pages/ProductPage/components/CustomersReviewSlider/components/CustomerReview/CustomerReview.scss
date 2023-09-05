@@ -3,6 +3,8 @@
 .customers-review {
 
 	&__slider_cards {
+		cursor: grab;
+		pointer-events: none;
 
 		&_card {
 			width: auto;
