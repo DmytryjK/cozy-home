@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { useAppSelector } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductRating from './components/ProductRating/ProductRating';
 import ColorSelection from './components/ColorSelection/ColorSelection';
 import ProductPrice from './components/ProductPrice/ProductPrice';
-// import AddToCartBtn from './components/AddProductBlock/AddToCartBtn/AddToCartBtn';
-// import AddToFavoriteBtn from '../../shared-components/AddToFavoriteBtn/AddToFavoriteBtn';
 import AddProductBlock from './components/AddProductBlock/AddProductBlock';
 import Accordeon from './components/Accordeon/Accordeon';
 import InterestedSlider from './components/InterestedSlider/InterestedSlider';
@@ -15,10 +12,15 @@ import ProductImagesSlider from './components/ProductImagesSlider/ProductImagesS
 import CustomersReviewSlider from './components/CustomersReviewSlider/CustomersReviewSlider';
 
 const ProductPage = () => {
-    const productInfo = useAppSelector(
-        (state) => state.productInformation.productInfo
+    const skuCode = useAppSelector(
+        (state) => state.productInformation.productInfo.skuCode
     );
-    const { skuCode, name, countOfReviews, colors } = productInfo;
+    const name = useAppSelector(
+        (state) => state.productInformation.productInfo.name
+    );
+    const countOfReviews = useAppSelector(
+        (state) => state.productInformation.productInfo.countOfReviews
+    );
 
     return (
         <div className="product-page">
