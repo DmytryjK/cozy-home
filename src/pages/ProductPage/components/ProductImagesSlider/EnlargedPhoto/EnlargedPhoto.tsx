@@ -74,27 +74,6 @@ const EnlargedPhoto = (props: Props) => {
     };
 
     return (
-        // <div className="block-wrapper">
-        //     <div className="enlarged-block">
-        //         <div className="enlarged-block__content">
-        //             <div className="enlarged-block__content_header">
-        //                 <div className="enlarged-block__content_header_sliderCounter">
-        //                     <p>{`${activeIndex + 1}/${popUpImages?.length}`}</p>
-        //                 </div>
-        //                 <button
-        //                     type="button"
-        //                     className="enlarged-block__content_header_close"
-        //                     onClick={() => setLargePhotoActive(false)}
-        //                 >
-        //                     <svg width="40" height="40">
-        //                         <use href={`${productPageSprite}#close-icon`} />
-        //                     </svg>
-        //                 </button>
-        //             </div>
-        //             {renderSlider()}
-        //         </div>
-        //     </div>
-        // </div>
         <div className="enlarged-block">
             <div className="enlarged-block__content">
                 <div className="enlarged-block__content_header">

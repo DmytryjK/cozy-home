@@ -35,9 +35,17 @@
 			border: none;
 			background-color: transparent;
 			cursor: pointer;
+
+			&:hover {
+				svg {
+					path {
+						fill: #262626;
+					}
+				}
+			}
+			}
 		}
 	}
-}
 
 .modal_active {
 	opacity: 1;
