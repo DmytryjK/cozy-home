@@ -83,6 +83,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
         if (swiperRef.current) {
             const { swiper } = swiperRef.current;
             swiper.slideTo(0);
+            setActiveIndex(0);
         }
     }, [currentColor]);
 
