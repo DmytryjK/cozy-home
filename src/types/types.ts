@@ -45,8 +45,8 @@ export interface ProductInformationType {
               {
                   userName: string;
                   review: string;
-                  rating: string;
-                  date: string;
+                  rating: number;
+                  data: string;
               }
           ]
         | null;
