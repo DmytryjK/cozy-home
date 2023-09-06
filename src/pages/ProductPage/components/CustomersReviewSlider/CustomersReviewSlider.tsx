@@ -4,10 +4,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './CustomersReviewSlider.scss';
+import nextId from 'react-id-generator';
 import Modal from '../../../../shared-components/Modal/Modal';
 import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
 import CustomerReview from './components/CustomerReview/CustomerReview';
 import CommentTextarea from './components/CommentTextArea/CommentTextarea';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
@@ -21,6 +23,11 @@ const CustomersReviewSlider = () => {
     const [reviewSubmit, setReviewSubmit] = useState<boolean>(false);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
+
+    const { reviews } = useAppSelector(
+        (state) => state.productInformation.productInfo
+    );
+
     const handleStarClick = (selectedRating: number) => {
         setRating(selectedRating);
     };
@@ -100,53 +107,6 @@ const CustomersReviewSlider = () => {
             </div>
         );
     };
-
-    const reviews = [
-        {
-            id: 1,
-            name: 'Ірина',
-            dateAdded: '18 Серпня 2023',
-            content: `Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.`,
-        },
-        {
-            id: 2,
-            name: 'Коля',
-            dateAdded: '18 Серпня 2023',
-            content: `Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.`,
-        },
-        {
-            id: 3,
-            name: 'Вася',
-            dateAdded: '18 Серпня 2023',
-            content: `Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.`,
-        },
-        {
-            id: 4,
-            name: 'Стас',
-            dateAdded: '18 Серпня 2023',
-            content: `Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.`,
-        },
-        {
-            id: 5,
-            name: 'Анна',
-            dateAdded: '18 Серпня 2023',
-            content: `Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.`,
-        },
-        {
-            id: 6,
-            name: 'София',
-            dateAdded: '18 Серпня 2023',
-            content: `Lörem ipsum smartboard supraktig. Disade hesk i degen. Lörem
-ipsum smartboard supraktig. Disade hesk i degen.`,
-        },
-    ];
 
     return (
         <>
@@ -243,12 +203,13 @@ ipsum smartboard supraktig. Disade hesk i degen.`,
                         }}
                         className="mySwiper"
                     >
-                        {reviews.map((review) => (
-                            <SwiperSlide key={review.id}>
+                        {reviews?.map((review) => (
+                            <SwiperSlide key={nextId('customer-review')}>
                                 <CustomerReview
-                                    name={review.name}
-                                    dateAdded={review.dateAdded}
-                                    content={review.content}
+                                    name={review.userName}
+                                    dateAdded={review.data}
+                                    content={review.review}
+                                    rating={review.rating}
                                 />
                             </SwiperSlide>
                         ))}
