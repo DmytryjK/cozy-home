@@ -166,6 +166,7 @@ const CustomersReviewSlider = () => {
                         </div>
                     </div>
                     <Swiper
+                        spaceBetween={32}
                         slidesPerView={4}
                         modules={[Navigation]}
                         navigation={{
@@ -174,7 +175,7 @@ const CustomersReviewSlider = () => {
                         }}
                         breakpoints={{
                             0: {
-                                slidesPerView: 'auto',
+                                slidesPerView: 1,
                             },
                             340: {
                                 slidesPerView: 2,
@@ -189,15 +190,12 @@ const CustomersReviewSlider = () => {
                                 slidesPerView: 2,
                             },
                             700: {
+                                slidesPerView: 2,
+                            },
+                            900: {
                                 slidesPerView: 3,
                             },
-                            810: {
-                                slidesPerView: 3,
-                            },
-                            1100: {
-                                slidesPerView: 3,
-                            },
-                            1294: {
+                            1440: {
                                 slidesPerView: 4,
                             },
                         }}
