@@ -20,14 +20,14 @@
 	.swiper {
 		margin-top: 30px;
 		
-		.swiper-wrapper {
-			gap: 32px;
-		}
+		// .swiper-wrapper {
+		// 	gap: 32px;
+		// }
 
-		.swiper-slide{
-			max-width: 300px;
-			margin-right: 0 !important; 
-		}
+		// .swiper-slide{
+		// 	max-width: 300px;
+		// 	margin-right: 0 !important; 
+		// }
 	}
 
 	&__navigation{
@@ -35,12 +35,14 @@
 		display: flex;
 		gap: 10px;
 }
+
 &__prev-btn, &__next-btn {
 		background-color: transparent;
 		padding: 10px;
 		border: none;
 		cursor: pointer;
 }
+
 &__prev-icon, &__next-icon {
 		fill: $grey;
 }
@@ -202,16 +204,6 @@
 
 			&_input {
 				max-width: initial;
-			}
-		}
-}
-
-	@media (max-width: 500px) {
-		.customers-review {
-			.swiper {
-				.swiper-slide{
-					max-width: 140px !important;
-				}
 			}
 		}
 }
