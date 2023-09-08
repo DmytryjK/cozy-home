@@ -5,7 +5,7 @@ import 'swiper/css/thumbs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Controller, Navigation } from 'swiper';
 import nextId from 'react-id-generator';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import productPageSprite from '../../../../../assets/icons/product-page/product-pageSprite.svg';
 import { ResponseData } from '../ProductImagesSlider';
 
@@ -29,6 +29,24 @@ const EnlargedPhoto = (props: Props) => {
         handleSlideChange,
         popUpImages,
     } = props;
+
+    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log(windowWidth);
+    }, []);
 
     useEffect(() => {
         if (largePhotoActive) {
@@ -64,7 +82,11 @@ const EnlargedPhoto = (props: Props) => {
                 {popUpImages?.map((popUpImage) => (
                     <SwiperSlide key={nextId('swiper-enlarged-image')}>
                         <img
-                            src={popUpImage.imagePath}
+                            src={
+                                windowWidth > 700
+                                    ? popUpImage.desktopPopUpImagePath
+                                    : popUpImage.mobilePopUpImagePath
+                            }
                             alt="Enlarged slider images"
                         />
                     </SwiperSlide>
