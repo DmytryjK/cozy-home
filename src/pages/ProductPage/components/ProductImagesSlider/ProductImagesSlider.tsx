@@ -14,7 +14,8 @@ import Loader from '../../../../shared-components/Loader';
 
 export interface ResponseData {
     id: string;
-    imagePath: string;
+    desktopPopUpImagePath: string;
+    mobilePopUpImagePath: string;
 }
 
 type Props = {
