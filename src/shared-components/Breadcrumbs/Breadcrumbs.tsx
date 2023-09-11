@@ -9,6 +9,7 @@ const Breadcrumbs = () => {
     const pathMapping: { [key: string]: string } = {
         catalog: 'Каталог',
         product: 'Товар',
+        cart: 'Кошик',
         checkout: 'Оформлення замовлення',
     };
 
