@@ -7,4 +7,93 @@
 		font-weight: 600;
 		color: $dark-color;
 	}
+
+	&__content {
+		display: flex;
+		gap: 104px;
+		justify-content: space-between;
+		margin-top: 30px;
+
+		.customer-block {
+			max-width: 792px;
+			position: relative;
+
+			.customer-handler {
+				&__list {
+					display: flex;
+					margin-bottom: 30px;
+	
+					&_item {
+						font-family: Montserrat;
+						font-size: 16px;
+						font-weight: 400;
+						color: $dark-color;
+						width: 175px;
+						cursor: pointer;
+					}
+					
+					.regular-cutomer {
+						text-align: right;
+					}
+	
+					 .active {
+						padding-bottom: 10px;
+						border-bottom: 2px solid $dark-color;
+					}
+				}
+			}
+
+			&__steps {
+				display: flex;
+				gap: 32px;
+				margin-bottom: 20px;
+
+				&_step {
+					font-family: Montserrat;
+					font-size: 16px;
+					font-weight: 500;
+					color: $light-grey;
+					display: flex;
+					gap: 10px;
+					// cursor: pointer;
+					
+					&_number {
+						font-family: Montserrat Alternates;
+						font-size: 14px;
+						font-weight: 500;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 18px;
+						height: 18px;
+						color: $white !important;
+						background-color: $light-grey;
+						padding: 10px;
+						border-radius: 100%;
+					}
+
+					.active {
+						background-color: $accent-color !important;
+					}
+				}
+
+				.active {
+					color: $accent-color;
+				}
+			}
+		}
+
+		.summary-block {
+			width: 100%;
+			max-width: 416px;
+			
+			.cart-summary__inner-content {
+				padding: 30px 30px 30px 30px;
+			}
+
+			.cart-summary__checkout {
+				display: none;
+			}
+		}
+	}
 }

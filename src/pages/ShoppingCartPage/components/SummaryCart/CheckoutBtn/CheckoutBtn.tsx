@@ -6,7 +6,7 @@ const CheckoutBtn = ({ setAction }: { setAction?: Dispatch<any> | null }) => {
         <NavLink
             className="cart-summary__checkout"
             type="button"
-            to="/cart"
+            to="/checkout"
             onClick={() => {
                 if (!setAction) return;
                 setAction(false);
