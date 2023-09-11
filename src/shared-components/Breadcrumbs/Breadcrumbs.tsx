@@ -8,6 +8,8 @@ const Breadcrumbs = () => {
 
     const pathMapping: { [key: string]: string } = {
         catalog: 'Каталог',
+        product: 'Товар',
+        checkout: 'Оформлення замовлення',
     };
 
     const pathSegments = location.pathname

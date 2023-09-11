@@ -6,6 +6,7 @@ import {
     CategoryPage,
     ProductPage,
     ShoppingCartPage,
+    CheckoutPage,
 } from './pages';
 import './App.scss';
 
@@ -33,6 +34,10 @@ const routes = [
     {
         path: '/cart',
         element: <ShoppingCartPage />,
+    },
+    {
+        path: '/checkout',
+        element: <CheckoutPage />,
     },
     // {
     //     path: '/',
