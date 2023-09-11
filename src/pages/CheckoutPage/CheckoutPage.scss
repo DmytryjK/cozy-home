@@ -1,0 +1,10 @@
+@import '../../style/variables.scss';
+
+.checkout {
+	&__title {
+		font-family: Montserrat Alternates;
+		font-size: 32px;
+		font-weight: 600;
+		color: $dark-color;
+	}
+}
