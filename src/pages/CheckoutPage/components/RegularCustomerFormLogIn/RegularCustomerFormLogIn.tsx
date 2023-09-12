@@ -1,7 +1,13 @@
 import SubmitButton from '../../shared-components/SubmitButton/SubmitButton';
 import './RegularCustomerFormLogIn.scss';
 
-const RegularCustomerFormLogIn = () => {
+type Props = {
+    setResetPasswordActive: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const RegularCustomerFormLogIn = (props: Props) => {
+    const { setResetPasswordActive } = props;
+
     return (
         <div className="regular-customer">
             <div className="regular-customer__form">
@@ -27,6 +33,7 @@ const RegularCustomerFormLogIn = () => {
                     <button
                         type="button"
                         className="regular-customer__form_footer_password-reset"
+                        onClick={() => setResetPasswordActive(true)}
                     >
                         Забули пароль?
                     </button>
