@@ -6,11 +6,13 @@ import NewCustomerForm from './components/NewCustomerForm/NewCustomerForm';
 import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart';
 import RegularCustomerFormLogIn from './components/RegularCustomerFormLogIn/RegularCustomerFormLogIn';
 import ResetPassword from './components/ResetPassword/ResetPassword';
+import RegularCustomerLoggedIn from './components/RegularCustomerLoggedIn/RegularCustomerLoggedIn';
 
 type ComponentsType = {
     ResetPassword: JSX.Element;
     NewCustomer: JSX.Element;
     RegularCustomer: JSX.Element;
+    RegularCustomerLoggedIn: JSX.Element;
 };
 
 const CheckoutPage = () => {
@@ -19,6 +21,7 @@ const CheckoutPage = () => {
     const [firstStepActive, setFirstStepActive] = useState(true);
     const [secondStepActive, setSecondStepActive] = useState(false);
     const [resetPasswordActive, setResetPasswordActive] = useState(false);
+    const [regularLoggedIn, setRegularLoggedIn] = useState(false);
 
     const handleCustomerClick = (isRegular: boolean) => {
         setFirstStepActive(true);
@@ -26,6 +29,7 @@ const CheckoutPage = () => {
         setNewCustomerActive(!isRegular);
         setRegularCustomerActive(isRegular);
         setResetPasswordActive(false);
+        setRegularLoggedIn(false);
     };
 
     const handleStepClick = (isRegular: boolean) => {
@@ -41,7 +45,11 @@ const CheckoutPage = () => {
         RegularCustomer: (
             <RegularCustomerFormLogIn
                 setResetPasswordActive={setResetPasswordActive}
+                setRegularLoggedIn={setRegularLoggedIn}
             />
+        ),
+        RegularCustomerLoggedIn: (
+            <RegularCustomerLoggedIn handleSubmit={handleStepClick} />
         ),
     };
 
@@ -49,6 +57,8 @@ const CheckoutPage = () => {
         ? 'ResetPassword'
         : newCustomerActive
         ? 'NewCustomer'
+        : regularLoggedIn
+        ? 'RegularCustomerLoggedIn'
         : 'RegularCustomer';
 
     return (
@@ -87,7 +97,7 @@ const CheckoutPage = () => {
                                     </li>
                                 </ul>
                             </div>
-                            {newCustomerActive && (
+                            {newCustomerActive || regularLoggedIn ? (
                                 <div className="customer-block__steps">
                                     <p
                                         className={
@@ -126,6 +136,8 @@ const CheckoutPage = () => {
                                         Інформація про доставку та оплату
                                     </p>
                                 </div>
+                            ) : (
+                                ''
                             )}
                             {components[activeComponent]}
                         </div>
