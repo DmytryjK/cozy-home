@@ -3,10 +3,11 @@ import './RegularCustomerFormLogIn.scss';
 
 type Props = {
     setResetPasswordActive: React.Dispatch<React.SetStateAction<boolean>>;
+    setRegularLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const RegularCustomerFormLogIn = (props: Props) => {
-    const { setResetPasswordActive } = props;
+    const { setResetPasswordActive, setRegularLoggedIn } = props;
 
     return (
         <div className="regular-customer">
@@ -37,7 +38,10 @@ const RegularCustomerFormLogIn = (props: Props) => {
                     >
                         Забули пароль?
                     </button>
-                    <SubmitButton title="Увійти" />
+                    <SubmitButton
+                        title="Увійти"
+                        onClick={() => setRegularLoggedIn(true)}
+                    />
                 </div>
             </div>
             <span className="custom-line" />
