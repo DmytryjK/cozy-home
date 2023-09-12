@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import './CheckoutPage.scss';
-import NewCustomerForm from './NewCustomerForm/NewCustomerForm';
+import NewCustomerForm from './components/NewCustomerForm/NewCustomerForm';
 import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart';
+import RegularCustomerFormLogIn from './components/RegularCustomerFormLogIn/RegularCustomerFormLogIn';
 
 const CheckoutPage = () => {
     const [newCustomerActive, setNewCustomerActive] = useState(true);
@@ -60,7 +61,6 @@ const CheckoutPage = () => {
                             </div>
                             <div className="customer-block__steps">
                                 <p
-                                    // onClick={() => handleStepClick(false)}
                                     className={
                                         firstStepActive
                                             ? 'customer-block__steps_step active'
@@ -79,7 +79,6 @@ const CheckoutPage = () => {
                                     Особисті дані
                                 </p>
                                 <p
-                                    // onClick={() => handleStepClick(true)}
                                     className={
                                         secondStepActive
                                             ? 'customer-block__steps_step active'
@@ -98,15 +97,13 @@ const CheckoutPage = () => {
                                     Інформація про доставку та оплату
                                 </p>
                             </div>
-                            <div className="customer-form">
-                                {newCustomerActive ? (
-                                    <NewCustomerForm
-                                        handleSubmit={handleStepClick}
-                                    />
-                                ) : (
-                                    '123'
-                                )}
-                            </div>
+                            {newCustomerActive ? (
+                                <NewCustomerForm
+                                    handleSubmit={handleStepClick}
+                                />
+                            ) : (
+                                <RegularCustomerFormLogIn />
+                            )}
                         </div>
                         <div className="summary-block">
                             <SummaryCart

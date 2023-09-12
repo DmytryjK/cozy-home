@@ -1,0 +1,68 @@
+@import '../../../../style/variables.scss';
+
+.regular-customer {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+
+	&__form {
+		width: 100%;
+		max-width: 380px;
+		position: relative;
+		
+		.customer-form {
+			width: 100%;
+			max-width: 380px;
+		}
+
+		&_footer {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 50px;
+
+			&_password-reset {
+				border: none;
+				background: none;
+				font-family: Montserrat;
+				font-size: 14px;
+				font-weight: 500;
+				color: $grey;
+				cursor: pointer;
+			}
+
+			.submit-button {
+				margin-top: 0;
+			}
+		}
+	}
+
+	.custom-line {
+		width: 1px;
+		height: 187px;
+		background: $dark-white;
+	}
+
+	&__login {
+		width: 100%;
+		max-width: 310px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		height: 187px;
+		
+		&_title {
+			font-family: Montserrat;
+			font-size: 14px;
+			font-weight: 500;
+			color: $dark-color;
+			margin-bottom: 14px;
+		}
+		
+		&_button {
+			width: 100%;
+			min-width: 310px;
+			padding: 12px 10px;
+		}
+	}
+}

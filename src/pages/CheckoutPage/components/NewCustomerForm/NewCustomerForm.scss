@@ -1,6 +1,6 @@
-@import '../../../style/variables.scss';
+@import '../../../../style/variables.scss';
 
-.new-customer-form {
+.customer-form {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 32px;
@@ -33,23 +33,9 @@
 	}
 }
 
-.submit-button {
-	position: absolute;
-	right: 0;
-	border: none;
-	border-radius: 2px;
-	background: $dark-color;
-	color: $white;
-	padding: 16px 10px;
-	font-family: Montserrat;
-	font-size: 14px;
-	font-weight: 500;
-	width: 200px;
-	margin-top: 30px;
-	cursor: pointer;
-	transition: background .2s ease-out;
-
-	&:hover {
-		background: $grey;
+.button-wrapper {
+	.submit-button {
+		position: absolute;
+		right: 0;
 	}
 }
