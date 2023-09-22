@@ -54,6 +54,10 @@
     .cart-table {
         &__container {
             position: relative;
+            &.loading {
+                pointer-events: none;
+                user-select: none;
+            }
         }
         &__items {
             margin-top: 24px;
@@ -71,6 +75,7 @@
             grid-row: 1/1;
         }
         &__info {
+            align-items: center;
             grid-column: 1 / 1;
             grid-row: 1/1;
         }

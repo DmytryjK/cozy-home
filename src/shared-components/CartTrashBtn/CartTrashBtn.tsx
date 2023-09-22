@@ -3,7 +3,7 @@ import {
     removeProductFromCartBody,
     removeProductFromCartData,
 } from '../../store/reducers/cartSlice';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 const CartTrashBtn = ({
     skuCode,
@@ -13,10 +13,12 @@ const CartTrashBtn = ({
     colorHex: string;
 }) => {
     const dispatch = useAppDispatch();
+    const { loading } = useAppSelector((state) => state.cart);
     return (
         <button
             className="cart-product__trash"
             type="button"
+            disabled={loading !== 'succeeded'}
             onClick={() => {
                 dispatch(setStatusRemoveCartItemBtn(true));
                 dispatch(

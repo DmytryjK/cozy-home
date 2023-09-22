@@ -101,6 +101,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
     };
 
     const renderSlider = () => {
+        if (!imagesFromStore) return null;
         if (imagesFromStore.length === 0) return null;
         return (
             <>

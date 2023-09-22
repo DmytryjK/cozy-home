@@ -19,9 +19,19 @@
         color: $white;
         font-size: 16px;
         font-weight: 600;
+        &_dark {
+            color: $dark-color;
+        }
     }
     &__icon {
         fill: $white;
+    }
+    &_added-item {
+        background-color: $dark-white;
+        cursor: auto;
+        &:hover {
+            background-color: $dark-white;
+        }
     }
 }
 
@@ -58,5 +68,8 @@
     } 
     .cart-btn:hover {
         background-color: $dark-color;
+    }
+    .cart-btn_added-item:hover {
+        background-color: $dark-white;
     }
 }

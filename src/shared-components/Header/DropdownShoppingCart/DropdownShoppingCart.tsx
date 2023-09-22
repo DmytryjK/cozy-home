@@ -10,7 +10,6 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
     const { cartData, loading, error, cartBody } = useAppSelector(
         (state) => state.cart
     );
-    const dispatch = useAppDispatch();
 
     const handleOpenProductPage = (
         skuCode: string,
@@ -48,7 +47,8 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                 <div className="product-item__info">
                                     <NavLink
                                         className="produt-item__link"
-                                        to={`/product/${skuCode}`}
+                                        to={`/product/${skuCode}${colorHex}`}
+                                        reloadDocument
                                         onClick={() => {
                                             handleOpenProductPage(
                                                 skuCode,
@@ -66,7 +66,8 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                     <div className="product-item__text">
                                         <NavLink
                                             className="product-item__title-link"
-                                            to={`/product/${skuCode}`}
+                                            to={`/product/${skuCode}${colorHex}`}
+                                            reloadDocument
                                             onClick={() => {
                                                 handleOpenProductPage(
                                                     skuCode,
@@ -113,7 +114,11 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
             }}
         >
             {cartBody.length > 0 ? (
-                <div className="cart-dropdown__list-container">
+                <div
+                    className={`cart-dropdown__list-container ${
+                        loading === 'succeeded' ? '' : 'loading'
+                    }`}
+                >
                     {renderServerData({
                         error,
                         loading,
