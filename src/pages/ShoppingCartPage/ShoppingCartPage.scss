@@ -1,5 +1,6 @@
 @use '../../style/variables.scss' as *;
 .cart {
+    min-height: calc(100vh - 530px);
     &-content {
         display: flex;
         gap: 40px;

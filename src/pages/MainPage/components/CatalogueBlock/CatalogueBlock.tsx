@@ -6,13 +6,6 @@ import { fetchSixCategoriesWithPhoto } from '../../../../store/reducers/homepage
 import renderServerData from '../../../../helpers/renderServerData';
 import './CatalogueBlock.scss';
 
-// import SofasWebp from '../../../../assets/images/catalogue/image_1.webp';
-// import ChairsWebp from '../../../../assets/images/catalogue/image_2.webp';
-// import TablesWebp from '../../../../assets/images/catalogue/image_3.webp';
-// import DressersWebp from '../../../../assets/images/catalogue/image_4.webp';
-// import Сhairs_v2Webp from '../../../../assets/images/catalogue/image_5.webp';
-// import BedsWebp from '../../../../assets/images/catalogue/image_6.webp';
-
 type CategoryType = {
     categoryId: string;
     categoryName: string;

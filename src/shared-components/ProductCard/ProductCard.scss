@@ -245,6 +245,9 @@
                     fill: $light-color;
                 }
             }
+            &.reset-border {
+                border-color: white;
+            }
         }
         &__cart-icon {
             fill: $dark-color;

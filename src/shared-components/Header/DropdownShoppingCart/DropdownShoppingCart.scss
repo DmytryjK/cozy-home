@@ -15,7 +15,23 @@
     transition: 0.2s ease-in-out opacity, 0.2s ease-in-out visibility;
     &.dropdown-active {
         opacity: 1;
-        visibility: visible; 
+        visibility: visible;
+    }
+
+    &__list-container {
+        position: relative;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    &__loader {
+        position: absolute;
+        width: auto;
+        left: 18px;
+        right: 26px;
+        min-height: 60px;
+        backdrop-filter: blur(1px);
+        background-color: rgb(255, 255, 255, 0.2);
     }
     
     &__decorative-icon {
@@ -26,12 +42,12 @@
         fill: $filter-background;
 
     }
-    &__list {
-        padding-left: 18px;
-        margin-right: 18px;
-        background-color: $filter-background;;
+    &__list-wrapper {
         max-height: 209px;
         overflow: auto;
+    }
+    &__list {
+        background-color: $filter-background;
         &::-webkit-scrollbar {
             width: 3px;
         }
@@ -69,12 +85,20 @@
             align-items: center;
             gap: 14px;
             margin-left: 10px;
+            width: 100%;
+            max-width: 282px;
+        }
+        &__photo {
+            width: 82px;
+            height: 61px;
+            display: block;
         }
         &__text {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
             max-width: 186px;
+            width: 100%;
             color: $dark-color;
         }
         &__title-link {

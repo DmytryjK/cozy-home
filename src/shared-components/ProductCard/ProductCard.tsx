@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { ProductCardType } from '../../types/types';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
     openPopUpCart,
     openPopUpNotification,
 } from '../../store/reducers/modalsSlice';
+import { addProductToCartBody } from '../../store/reducers/cartSlice';
 import AddToFavoriteBtn from '../AddToFavoriteBtn/AddToFavoriteBtn';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import SliderImages, { ImagesData } from './SliderImages/SliderImages';
+import cartAdded from '../../assets/icons/cart/cart-added.svg';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ProductCard.scss';
@@ -16,13 +18,22 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [priceSpaced, setPriceSpaced] = useState<string>('');
     const [discountPriceSpaced, setDiscountPriceSpaced] = useState<string>('');
     const [imagesData, setImagesData] = useState<ImagesData>({});
-    // const [isWindowInStockReminderOpen, setIsWindowInStockReminderOpen] =
-    //     useState<boolean>(false);
-    // const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
-    //     useState<boolean>(false);
+    const [currentColor, setCurrentColor] = useState<{
+        name: string;
+        hex: string;
+    }>({ name: '', hex: '' });
+    const [isElementAddedToCart, setIsElementAddedToCart] =
+        useState<boolean>(false);
 
-    const { price, priceWithDiscount, discount, productQuantityStatus } =
-        product;
+    const cartBody = useAppSelector((state) => state.cart.cartBody);
+
+    const {
+        price,
+        priceWithDiscount,
+        discount,
+        productQuantityStatus,
+        skuCode,
+    } = product;
 
     const dispatch = useAppDispatch();
 
@@ -43,8 +54,37 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     };
 
     useEffect(() => {
+        if (!currentColor.hex || !product || !cartBody) return;
+        setIsElementAddedToCart(
+            cartBody.some(
+                (item) =>
+                    item.productSkuCode === skuCode &&
+                    item.colorHex === currentColor.hex
+            )
+        );
+    }, [cartBody, product, currentColor]);
+
+    useEffect(() => {
         addSpaceToPrice(price, priceWithDiscount);
     }, [price, priceWithDiscount]);
+
+    const handleAddProductToCart = () => {
+        if (
+            cartBody.some(
+                (item) =>
+                    item.productSkuCode === skuCode &&
+                    item.colorHex === currentColor.hex
+            )
+        )
+            return;
+        dispatch(
+            addProductToCartBody({
+                productSkuCode: skuCode,
+                colorHex: currentColor.hex,
+            })
+        );
+        dispatch(openPopUpCart(true));
+    };
 
     const renderProductStatus = () => {
         if (
@@ -101,18 +141,32 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     </span>
                 </div>
                 <button
-                    className="purchase-block__cart-btn"
+                    className={`purchase-block__cart-btn ${
+                        isElementAddedToCart ? 'reset-border' : ''
+                    }`}
                     type="button"
                     aria-label="додати в кошик"
-                    onClick={() => dispatch(openPopUpCart(true))}
+                    onClick={handleAddProductToCart}
                 >
-                    <svg
-                        className="purchase-block__cart-icon"
-                        width="20"
-                        height="20"
-                    >
-                        <use href={`${headerSprites}#card-icon`} />
-                    </svg>
+                    {cartBody.some(
+                        (item) =>
+                            item.productSkuCode === skuCode &&
+                            item.colorHex === currentColor.hex
+                    ) ? (
+                        <img
+                            className="purchase-block__added-cart"
+                            src={cartAdded}
+                            alt="товар додано в корзину"
+                        />
+                    ) : (
+                        <svg
+                            className="purchase-block__cart-icon"
+                            width="20"
+                            height="20"
+                        >
+                            <use href={`${headerSprites}#card-icon`} />
+                        </svg>
+                    )}
                 </button>
             </>
         );
@@ -137,6 +191,8 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                 productData={product}
                 setImagesData={setImagesData}
                 imagesData={imagesData}
+                setCurrentColor={setCurrentColor}
+                currentColor={currentColor}
             />
             <div className="product-card__purchase-block purchase-block swiper-no-swiping">
                 {renderProductStatus()}

@@ -5,11 +5,15 @@ type Props = {
     error: null | unknown;
     loading: 'idle' | 'pending' | 'succeeded' | 'failed';
     content: () => JSX.Element | JSX.Element[];
+    showPrevState?: boolean;
+    loaderClassName?: string;
 };
 
 const renderServerData = (props: Props) => {
-    const { error, loading, content } = props;
-    let render: JSX.Element | JSX.Element[] = <Loader />;
+    const { error, loading, content, showPrevState, loaderClassName } = props;
+    let render: JSX.Element | JSX.Element[] = (
+        <Loader className={loaderClassName} />
+    );
 
     if (error) {
         render = <ErrorMessage />;
@@ -17,7 +21,21 @@ const renderServerData = (props: Props) => {
         render = content();
     }
 
+    if (showPrevState && loading !== 'succeeded') {
+        render = (
+            <>
+                <Loader className={loaderClassName} />
+                {content()}
+            </>
+        );
+    }
+
     return render;
+};
+
+renderServerData.defultProps = {
+    showPrevState: false,
+    loaderClassName: '',
 };
 
 export default renderServerData;

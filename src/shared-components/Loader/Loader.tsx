@@ -1,19 +1,20 @@
 import loader from '../../assets/icons/loading/loader.svg';
 import './Loader.scss';
 
-type PositionType = 'static' | 'relative' | 'absolute' | 'sticky' | 'fixed';
-
 const LoadingContent = ({
     height = '100%',
     maxHeight = '100%',
-    position = 'static',
+    className = '',
 }: {
     height?: string;
     maxHeight?: string;
-    position?: PositionType;
+    className?: string;
 }) => {
     return (
-        <div className="content-loader" style={{ height, maxHeight, position }}>
+        <div
+            className={`content-loader ${className}`}
+            style={{ height, maxHeight }}
+        >
             <img className="content-loader_image" src={loader} alt="" />
         </div>
     );
@@ -22,7 +23,7 @@ const LoadingContent = ({
 LoadingContent.defaultProps = {
     height: '100%',
     maxHeight: '100%',
-    position: 'static',
+    className: '',
 };
 
 export default LoadingContent;

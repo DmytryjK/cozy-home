@@ -8,7 +8,7 @@
 		display: grid;
 		grid-template-columns: repeat(4, minmax(200px, 1fr));
 		gap: 20px;
-		.content-loader {
+		.content-loader, .error-message {
 			grid-column-start: 1;
 			grid-column-end: 5;
 		}

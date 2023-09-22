@@ -39,18 +39,24 @@ type Props = {
     productData: ProductCardType;
     imagesData: ImagesData;
     setImagesData: React.Dispatch<React.SetStateAction<ImagesData>>;
+    setCurrentColor: React.Dispatch<
+        React.SetStateAction<{ name: string; hex: string }>
+    >;
+    currentColor: { name: string; hex: string };
 };
 
 const SliderImages = (props: Props) => {
     const cardSliderRef = useRef<TSwiper>();
-    const { productData, imagesData, setImagesData } = props;
+    const {
+        productData,
+        imagesData,
+        setImagesData,
+        currentColor,
+        setCurrentColor,
+    } = props;
     const { skuCode, name, shortDescription, colorDtoList, imageDtoList } =
         productData;
 
-    const [currentColor, setCurrentColor] = useState<{
-        name: string;
-        hex: string;
-    }>({ name: '', hex: '' });
     const [currentIndexColor, setCurrentIndexColor] = useState<number>(0);
     const [isColorChosen, setIsColorChosen] = useState(false);
     const uniqIdForInputName = nextId('color-');
@@ -91,6 +97,7 @@ const SliderImages = (props: Props) => {
 
     const handleSlideChange = (color: string, index: number, id: string) => {
         setCurrentColor({ name: color, hex: id });
+        console.log(id);
         setIsColorChosen(true);
         setCurrentIndexColor(index);
 
