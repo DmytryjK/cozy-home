@@ -99,6 +99,7 @@ const Header = () => {
     }, []);
 
     useEffect(() => {
+        if (!cartBodyLocal) return;
         if (cartBodyLocal.length > 0) {
             dispatch(updateCartBody(cartBodyLocal));
         }
