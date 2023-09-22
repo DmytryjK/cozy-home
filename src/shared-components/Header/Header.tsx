@@ -1,7 +1,13 @@
 import { useState, MouseEvent, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
+import {
+    updateCartBody,
+    fetchProductCartInfo,
+    resetCartData,
+    setStatusRemoveCartItemBtn,
+} from '../../store/reducers/cartSlice';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
@@ -32,6 +38,13 @@ const Header = () => {
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
     const dispatch = useAppDispatch();
+    const cartBody = useAppSelector((state) => state.cart.cartBody);
+    const isDeletedItemButtonActive = useAppSelector(
+        (state) => state.cart.isDeletedItemButtonActive
+    );
+    const cartBodyLocal = JSON.parse(
+        localStorage.getItem('cartBody') as string
+    );
 
     const navTabs: Tab[] = [
         { id: 1, title: 'Головна', style: 'header__nav_list_link', url: '/' },
@@ -85,6 +98,25 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        if (cartBodyLocal.length > 0) {
+            dispatch(updateCartBody(cartBodyLocal));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('cartBody', JSON.stringify(cartBody));
+        if (cartBody.length === 0) {
+            dispatch(resetCartData());
+        } else {
+            if (isDeletedItemButtonActive) {
+                dispatch(setStatusRemoveCartItemBtn(false));
+                return;
+            }
+            dispatch(fetchProductCartInfo(cartBody));
+        }
+    }, [cartBody]);
+
     const handleMouseOver = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (
@@ -117,6 +149,12 @@ const Header = () => {
             !target.closest('.cart-dropdown')
         ) {
             setIsPreviewCartActive(false);
+        }
+    };
+
+    const openProductCart = (e: MouseEvent) => {
+        if (cartBody.length === 0) {
+            e.preventDefault();
         }
     };
 
@@ -183,12 +221,15 @@ const Header = () => {
                         className="header-icons__cart"
                         to="/cart"
                         aria-label="Open cart"
+                        onClick={openProductCart}
                         onMouseEnter={() => setIsPreviewCartActive(true)}
                     >
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#card-icon`} />
                         </svg>
-                        <span className="header__icons_cart-counter">9</span>
+                        <span className="header__icons_cart-counter">
+                            {cartBody.length}
+                        </span>
                     </NavLink>
                 </div>
                 <div className="header__mobile_icons">
@@ -207,7 +248,11 @@ const Header = () => {
                         </svg>
                     </button>
                     <div>
-                        <NavLink to="/cart" aria-label="Open cart">
+                        <NavLink
+                            to="/cart"
+                            aria-label="Open cart"
+                            onClick={openProductCart}
+                        >
                             <svg width="21" height="21">
                                 <use href={`${headerSprite}#card-icon`} />
                             </svg>
@@ -217,7 +262,7 @@ const Header = () => {
                                 isSearchOpen ? 'display-none' : ''
                             }`}
                         >
-                            0
+                            {cartBody.length}
                         </span>
                     </div>
                     <BurgerMenu

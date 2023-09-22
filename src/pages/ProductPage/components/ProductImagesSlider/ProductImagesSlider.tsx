@@ -108,7 +108,9 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
 
                 <div className="product-images">
                     <div className="product-images__main-image">
-                        {colorChange && <Loader position="absolute" />}
+                        {colorChange && (
+                            <Loader className="slider-image__loader" />
+                        )}
                         <Swiper
                             ref={swiperRef}
                             spaceBetween={10}

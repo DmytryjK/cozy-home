@@ -84,3 +84,15 @@ export interface ProductInformationType {
 
 export type Loading = 'idle' | 'pending' | 'succeeded' | 'failed';
 export type ErrorType = unknown | null;
+
+export type CartData = {
+    skuCode: string;
+    name: string;
+    price: number;
+    priceWithDiscount: number;
+    imagePath: string;
+    colorName: string;
+    colorHex: string;
+    availableProductQuantity: number;
+    quantityStatus: string;
+};
