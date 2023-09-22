@@ -22,6 +22,10 @@
         position: relative;
         padding-left: 18px;
         padding-right: 18px;
+        &.loading {
+            pointer-events: none;
+            user-select: none;
+        }
     }
 
     &__loader {

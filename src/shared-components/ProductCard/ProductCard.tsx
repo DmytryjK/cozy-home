@@ -69,14 +69,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     }, [price, priceWithDiscount]);
 
     const handleAddProductToCart = () => {
-        if (
-            cartBody.some(
-                (item) =>
-                    item.productSkuCode === skuCode &&
-                    item.colorHex === currentColor.hex
-            )
-        )
-            return;
+        if (isElementAddedToCart) return;
         dispatch(
             addProductToCartBody({
                 productSkuCode: skuCode,
@@ -148,11 +141,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     aria-label="додати в кошик"
                     onClick={handleAddProductToCart}
                 >
-                    {cartBody.some(
-                        (item) =>
-                            item.productSkuCode === skuCode &&
-                            item.colorHex === currentColor.hex
-                    ) ? (
+                    {isElementAddedToCart ? (
                         <img
                             className="purchase-block__added-cart"
                             src={cartAdded}

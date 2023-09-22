@@ -75,7 +75,8 @@ const ProductItem = (props: Props) => {
             <li className="cart-product__item cart-product__info">
                 <NavLink
                     className="cart-product__link"
-                    to={`/product/${skuCode}`}
+                    to={`/product/${skuCode}${colorHex}`}
+                    reloadDocument
                     onClick={handleOpenProductPage}
                 >
                     <img
@@ -87,7 +88,8 @@ const ProductItem = (props: Props) => {
                 <div className="cart-product__text">
                     <NavLink
                         className="cart-product__title-link"
-                        to={`/product/${skuCode}`}
+                        to={`/product/${skuCode}${colorHex}`}
+                        reloadDocument
                         onClick={handleOpenProductPage}
                     >
                         {name}

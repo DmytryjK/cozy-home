@@ -109,6 +109,7 @@ const Header = () => {
         localStorage.setItem('cartBody', JSON.stringify(cartBody));
         if (cartBody.length === 0) {
             dispatch(resetCartData());
+            dispatch(setStatusRemoveCartItemBtn(false));
         } else {
             if (isDeletedItemButtonActive) {
                 dispatch(setStatusRemoveCartItemBtn(false));

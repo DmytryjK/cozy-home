@@ -11,7 +11,9 @@ import renderServerData from '../../../../helpers/renderServerData';
 import './PopUpCart.scss';
 
 const PopUpCart = () => {
-    const { cartData, loading, error } = useAppSelector((state) => state.cart);
+    const { cartData, loading, error, cartBody } = useAppSelector(
+        (state) => state.cart
+    );
     const dispatch = useAppDispatch();
     const isCartShowStore = useAppSelector(
         (state) => state.modals.isPopUpCartOpen
@@ -28,6 +30,12 @@ const PopUpCart = () => {
         if (isCartPopUpShow === isCartShowStore) return;
         dispatch(openPopUpCart(isCartPopUpShow));
     }, [isCartPopUpShow]);
+
+    useEffect(() => {
+        if (cartBody.length === 0) {
+            setIsCartPopUpShow(false);
+        }
+    }, [cartBody]);
 
     const renderCartItems = () => {
         return (
@@ -61,7 +69,11 @@ const PopUpCart = () => {
         >
             <div className="cart-window">
                 <h2 className="cart-window__title">Кошик</h2>
-                <div className="cart-table__container">
+                <div
+                    className={`cart-table__container ${
+                        loading === 'succeeded' ? '' : 'loading'
+                    }`}
+                >
                     {renderServerData({
                         error,
                         loading,
