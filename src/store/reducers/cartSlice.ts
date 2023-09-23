@@ -23,9 +23,16 @@ const initialState: CartInitialState = {
     error: null,
 };
 
+let controller: any;
+
 export const fetchProductCartInfo = createAsyncThunk(
     'cart/fetchProductCartInfo',
-    async function (cartBody: CartBody[], { rejectWithValue }) {
+    async function (cartBody: CartBody[], thunkAPI) {
+        if (controller) {
+            controller.abort();
+        }
+        controller = new AbortController();
+
         try {
             const response = await fetch(`${API_BASE()}product/basket`, {
                 method: 'POST',
@@ -33,14 +40,18 @@ export const fetchProductCartInfo = createAsyncThunk(
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                 },
+                signal: controller.signal,
             });
 
             const result = await response.json();
             if (!response.ok) throw new Error('something went wrong');
 
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );

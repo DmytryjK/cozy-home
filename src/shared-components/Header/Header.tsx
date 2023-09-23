@@ -110,6 +110,7 @@ const Header = () => {
         if (cartBody.length === 0) {
             dispatch(resetCartData());
             dispatch(setStatusRemoveCartItemBtn(false));
+            setIsPreviewCartActive(false);
         } else {
             if (isDeletedItemButtonActive) {
                 dispatch(setStatusRemoveCartItemBtn(false));
