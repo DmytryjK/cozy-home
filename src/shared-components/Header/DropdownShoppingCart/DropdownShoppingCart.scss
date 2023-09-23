@@ -49,9 +49,6 @@
     &__list-wrapper {
         max-height: 209px;
         overflow: auto;
-    }
-    &__list {
-        background-color: $filter-background;
         &::-webkit-scrollbar {
             width: 3px;
         }
@@ -65,6 +62,9 @@
             border-left: 1.5px  rgba($dark-color, 0.7) solid;
             background-clip: padding-box;
         }
+    }
+    &__list {
+        background-color: $filter-background;
     }
     .product-item {
         display: flex;
