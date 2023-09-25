@@ -9,6 +9,7 @@ import {
     CheckoutPage,
 } from './pages';
 import './App.scss';
+import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
 
 const routes = [
     {
@@ -38,6 +39,10 @@ const routes = [
     {
         path: '/checkout',
         element: <CheckoutPage />,
+    },
+    {
+        path: '/checkout/success',
+        element: <CheckoutSuccessPage />,
     },
     // {
     //     path: '/',

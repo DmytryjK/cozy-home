@@ -11,6 +11,7 @@ const Breadcrumbs = () => {
         product: 'Товар',
         cart: 'Кошик',
         checkout: 'Оформлення замовлення',
+        success: 'Успішно',
     };
 
     const pathSegments = location.pathname
