@@ -7,12 +7,16 @@ import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart'
 import RegularCustomerFormLogIn from './components/RegularCustomerFormLogIn/RegularCustomerFormLogIn';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import RegularCustomerLoggedIn from './components/RegularCustomerLoggedIn/RegularCustomerLoggedIn';
+import DeliveryAndPaymentForm from './components/DeliveryAndPaymentForm/DeliveryAndPaymentForm';
+import AddressDelivery from './components/AddressDelivery/AddressDelivery';
 
 type ComponentsType = {
     ResetPassword: JSX.Element;
     NewCustomer: JSX.Element;
     RegularCustomer: JSX.Element;
     RegularCustomerLoggedIn: JSX.Element;
+    DeliveryAndPaymentForm: JSX.Element;
+    AddressDelivery: JSX.Element;
 };
 
 const CheckoutPage = () => {
@@ -22,6 +26,8 @@ const CheckoutPage = () => {
     const [secondStepActive, setSecondStepActive] = useState(false);
     const [resetPasswordActive, setResetPasswordActive] = useState(false);
     const [regularLoggedIn, setRegularLoggedIn] = useState(false);
+    const [selectedDeliveryOption, setSelectedDeliveryOption] =
+        useState<string>('pickup');
 
     const handleCustomerClick = (isRegular: boolean) => {
         setFirstStepActive(true);
@@ -51,9 +57,18 @@ const CheckoutPage = () => {
         RegularCustomerLoggedIn: (
             <RegularCustomerLoggedIn handleSubmit={handleStepClick} />
         ),
+        DeliveryAndPaymentForm: (
+            <DeliveryAndPaymentForm
+                selectedDeliveryOption={selectedDeliveryOption}
+                setSelectedDeliveryOption={setSelectedDeliveryOption}
+            />
+        ),
+        AddressDelivery: <AddressDelivery />,
     };
 
-    const activeComponent = resetPasswordActive
+    const activeComponent = secondStepActive
+        ? 'DeliveryAndPaymentForm'
+        : resetPasswordActive
         ? 'ResetPassword'
         : newCustomerActive
         ? 'NewCustomer'
