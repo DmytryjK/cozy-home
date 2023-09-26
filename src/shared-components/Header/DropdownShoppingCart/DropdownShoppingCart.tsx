@@ -1,14 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
-import { useAppSelector, useAppDispatch } from '../../../hooks/hooks';
+import { useAppSelector } from '../../../hooks/hooks';
 import CartTrashBtn from '../../CartTrashBtn/CartTrashBtn';
 import renderServerData from '../../../helpers/renderServerData';
-import './DropdownShoppingCart.scss';
 import SummaryCart from '../../../pages/ShoppingCartPage/components/SummaryCart/SummaryCart';
+import addSpaceToPrice from '../../../utils/addSpaceToPrice';
+import './DropdownShoppingCart.scss';
 
 const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
     const { cartData, loading, error, cartBody } = useAppSelector(
         (state) => state.cart
+    );
+
+    const productsInfoToCheckout = useAppSelector(
+        (state) => state.cart.productsInfoToCheckout
     );
 
     const handleOpenProductPage = (
@@ -31,10 +36,26 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                             name,
                             colorName,
                             colorHex,
-                            priceWithDiscount,
-                            price,
                             imagePath,
+                            price,
+                            priceWithDiscount,
                         } = product;
+                        const currentProductIndex =
+                            productsInfoToCheckout.findIndex(
+                                (item) =>
+                                    item.skuCode === skuCode &&
+                                    item.colorHex === colorHex
+                            );
+                        const totalPrice =
+                            currentProductIndex > -1
+                                ? productsInfoToCheckout[currentProductIndex]
+                                      .price
+                                : null;
+                        const totalQuantity =
+                            currentProductIndex > -1
+                                ? productsInfoToCheckout[currentProductIndex]
+                                      .quantityToCheckout
+                                : null;
                         return (
                             <li
                                 className="cart-dropdown__item product-item"
@@ -85,18 +106,41 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                     </div>
                                 </div>
                                 <div className="product-item__price">
-                                    <span className="product-item__current-price">
-                                        {price} UAH
-                                    </span>
-                                    <span className="product-item__price-divider">
-                                        x
-                                    </span>
-                                    <span className="product-item__current-quantity">
-                                        1
-                                    </span>
+                                    <div className="product-item__current-price">
+                                        {priceWithDiscount ? (
+                                            <span className="product-item__current-price_discount">
+                                                {addSpaceToPrice(
+                                                    priceWithDiscount
+                                                )}{' '}
+                                                UAH
+                                            </span>
+                                        ) : (
+                                            <span className="product-item__current-price_price">
+                                                {addSpaceToPrice(price)} UAH
+                                            </span>
+                                        )}{' '}
+                                        <span className="product-item__price-divider">
+                                            x {totalQuantity || 1}
+                                        </span>
+                                    </div>
+                                    {priceWithDiscount ? (
+                                        <span
+                                            className={`product-item__current-price_price
+                                        ${
+                                            priceWithDiscount
+                                                ? 'discount-price'
+                                                : ''
+                                        }`}
+                                        >
+                                            {addSpaceToPrice(price)} UAH
+                                        </span>
+                                    ) : null}
                                 </div>
                                 <span className="product-item__total-cost">
-                                    {price * 1} UAH
+                                    {addSpaceToPrice(
+                                        totalPrice || priceWithDiscount || price
+                                    )}{' '}
+                                    UAH
                                 </span>
                             </li>
                         );

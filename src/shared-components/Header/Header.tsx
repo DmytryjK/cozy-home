@@ -7,6 +7,7 @@ import {
     fetchProductCartInfo,
     resetCartData,
     setStatusRemoveCartItemBtn,
+    addProductsInfoToCheckout,
 } from '../../store/reducers/cartSlice';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import DropdownMenu from './DropdownMenu';
@@ -39,6 +40,11 @@ const Header = () => {
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
     const dispatch = useAppDispatch();
     const cartBody = useAppSelector((state) => state.cart.cartBody);
+    const cartData = useAppSelector((state) => state.cart.cartData);
+    const cartTotal = useAppSelector((state) => state.cart.cartTotal);
+    const productsInfoToCheckout = useAppSelector(
+        (state) => state.cart.productsInfoToCheckout
+    );
     const isDeletedItemButtonActive = useAppSelector(
         (state) => state.cart.isDeletedItemButtonActive
     );
@@ -81,6 +87,77 @@ const Header = () => {
     }, []);
 
     useEffect(() => {
+        const productsLocalCheckout = localStorage.getItem('checkoutInfo')
+            ? JSON.parse(localStorage.getItem('checkoutInfo') as string)
+            : [];
+        const checkoutProducts = cartData.map((item) => {
+            const { skuCode, colorHex, price, priceWithDiscount } = item;
+            let localItemQuantity = 1;
+            if (
+                productsLocalCheckout.some((localItem: any) => {
+                    if (
+                        localItem.skuCode === skuCode &&
+                        localItem.colorHex === colorHex &&
+                        localItem.quantityToCheckout > 1
+                    ) {
+                        localItemQuantity = localItem.quantityToCheckout;
+                        return true;
+                    }
+                    return undefined;
+                })
+            ) {
+                return {
+                    skuCode,
+                    colorHex,
+                    price: (priceWithDiscount || price) * localItemQuantity,
+                    quantityToCheckout: localItemQuantity,
+                };
+            }
+            return {
+                skuCode,
+                colorHex,
+                price: priceWithDiscount || price,
+                quantityToCheckout: 1,
+            };
+        });
+        dispatch(addProductsInfoToCheckout(checkoutProducts));
+    }, [cartData]);
+
+    useEffect(() => {
+        if (productsInfoToCheckout.length > 0) {
+            localStorage.setItem(
+                'checkoutInfo',
+                JSON.stringify(productsInfoToCheckout)
+            );
+        }
+    }, [productsInfoToCheckout]);
+
+    useEffect(() => {
+        if (!cartBodyLocal) return;
+        if (cartBodyLocal.length > 0) {
+            dispatch(updateCartBody(cartBodyLocal));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('cartBody', JSON.stringify(cartBody));
+        if (cartBody.length === 0) {
+            if (isDeletedItemButtonActive) {
+                localStorage.setItem('checkoutInfo', JSON.stringify([]));
+            }
+            dispatch(resetCartData());
+            dispatch(setStatusRemoveCartItemBtn(false));
+            setIsPreviewCartActive(false);
+        } else {
+            if (isDeletedItemButtonActive) {
+                dispatch(setStatusRemoveCartItemBtn(false));
+                return;
+            }
+            dispatch(fetchProductCartInfo(cartBody));
+        }
+    }, [cartBody]);
+
+    useEffect(() => {
         if (isSearchOpen) setIsBurgerOpen(false);
     }, [isSearchOpen]);
 
@@ -97,28 +174,6 @@ const Header = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    useEffect(() => {
-        if (!cartBodyLocal) return;
-        if (cartBodyLocal.length > 0) {
-            dispatch(updateCartBody(cartBodyLocal));
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('cartBody', JSON.stringify(cartBody));
-        if (cartBody.length === 0) {
-            dispatch(resetCartData());
-            dispatch(setStatusRemoveCartItemBtn(false));
-            setIsPreviewCartActive(false);
-        } else {
-            if (isDeletedItemButtonActive) {
-                dispatch(setStatusRemoveCartItemBtn(false));
-                return;
-            }
-            dispatch(fetchProductCartInfo(cartBody));
-        }
-    }, [cartBody]);
 
     const handleMouseOver = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
@@ -231,7 +286,7 @@ const Header = () => {
                             <use href={`${headerSprite}#card-icon`} />
                         </svg>
                         <span className="header__icons_cart-counter">
-                            {cartBody.length}
+                            {cartTotal?.totalQuantity || 0}
                         </span>
                     </NavLink>
                 </div>
@@ -265,7 +320,7 @@ const Header = () => {
                                 isSearchOpen ? 'display-none' : ''
                             }`}
                         >
-                            {cartBody.length}
+                            {cartTotal?.totalQuantity || 0}
                         </span>
                     </div>
                     <BurgerMenu

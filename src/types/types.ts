@@ -89,7 +89,7 @@ export type CartData = {
     skuCode: string;
     name: string;
     price: number;
-    priceWithDiscount: number;
+    priceWithDiscount: number | null;
     imagePath: string;
     colorName: string;
     colorHex: string;

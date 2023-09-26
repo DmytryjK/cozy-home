@@ -7,29 +7,34 @@ import EmptyCartMessage from './components/EmptyCartMessage/EmptyCartMessage';
 import './ShoppingCartPage.scss';
 
 const ShoppingCartPage = () => {
-    const cartBody = useAppSelector((state) => state.cart.cartBody);
+    const cartData = useAppSelector((state) => state.cart.cartBody);
+    const loading = useAppSelector((state) => state.cart.loading);
     return (
         <section className="cart">
             <Breadcrumbs />
             <div className="container">
                 <h1 className="cart__title">Кошик</h1>
-                {cartBody.length > 0 ? (
+                {cartData.length > 0 ? (
                     <div className="cart-content">
                         <ProductsList />
-                        <div className="cart__right-side">
-                            <div className="cart__right-sticky">
-                                <SummaryCart
-                                    title="Підсумки кошика"
-                                    bgColor="#FAFAF9"
-                                />
-                                <div className="cart__delivery-block">
-                                    <h3 className="cart__delivery-title">
-                                        Умови доставки
-                                    </h3>
-                                    <DeliveryTerms extraClass="cart__delivery_fz11" />
+                        {loading === 'succeeded' ? (
+                            <div className="cart__right-side">
+                                <div className="cart__right-sticky">
+                                    <SummaryCart
+                                        title="Підсумки кошика"
+                                        bgColor="#FAFAF9"
+                                    />
+                                    <div className="cart__delivery-block">
+                                        <h3 className="cart__delivery-title">
+                                            Умови доставки
+                                        </h3>
+                                        <DeliveryTerms extraClass="cart__delivery_fz11" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            ''
+                        )}
                     </div>
                 ) : (
                     <EmptyCartMessage />

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import { useEffect, useState } from 'react';
 import Modal from '../../../Modal/Modal';
@@ -11,10 +11,12 @@ import renderServerData from '../../../../helpers/renderServerData';
 import './PopUpCart.scss';
 
 const PopUpCart = () => {
-    const { cartData, loading, error, cartBody } = useAppSelector(
-        (state) => state.cart
-    );
+    const cartData = useAppSelector((state) => state.cart.cartData);
+    const loading = useAppSelector((state) => state.cart.loading);
+    const error = useAppSelector((state) => state.cart.error);
+    const cartBody = useAppSelector((state) => state.cart.cartBody);
     const dispatch = useAppDispatch();
+    const { pathname } = useLocation();
     const isCartShowStore = useAppSelector(
         (state) => state.modals.isPopUpCartOpen
     );
@@ -61,7 +63,9 @@ const PopUpCart = () => {
         );
     };
 
-    return (
+    return pathname === '/cart' ? (
+        <div style={{ display: 'none' }} />
+    ) : (
         <Modal
             active={isCartPopUpShow}
             setActive={setIsCartPopUpShow}
