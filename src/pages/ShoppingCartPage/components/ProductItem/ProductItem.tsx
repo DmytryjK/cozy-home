@@ -1,12 +1,6 @@
-import {
-    useState,
-    useEffect,
-    ChangeEvent,
-    Dispatch,
-    SetStateAction,
-} from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 import CartTrashBtn from '../../../../shared-components/CartTrashBtn/CartTrashBtn';
 import ProductItemRight from './ProductItemRight/ProductItemRight';

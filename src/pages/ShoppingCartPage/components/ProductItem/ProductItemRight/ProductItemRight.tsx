@@ -47,7 +47,7 @@ const ProductItemRight = (props: Props) => {
                 })
             );
         }
-    }, [quantity]);
+    }, [quantity, isInputQuantityChange]);
 
     useEffect(() => {
         const currentIndexItem = productsInfoToCheckout.findIndex(
@@ -114,8 +114,10 @@ const ProductItemRight = (props: Props) => {
                     disabled={availableProductQuantity === 0}
                     onChange={handleInputChange}
                     onBlur={(e) => {
+                        setIsInputQuantityChange(true);
                         if (+e.target.value <= availableProductQuantity) {
                             setIsEnoughProductToBuy(true);
+                            setQuantity(+e.target.value);
                         } else if (+e.target.value > availableProductQuantity) {
                             setQuantity(availableProductQuantity);
                             setIsEnoughProductToBuy(true);
@@ -123,7 +125,6 @@ const ProductItemRight = (props: Props) => {
                         if (e.target.value === '') {
                             setQuantity(1);
                         }
-                        setIsInputQuantityChange(true);
                     }}
                 />
                 <button
