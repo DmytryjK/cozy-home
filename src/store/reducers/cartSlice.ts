@@ -2,6 +2,13 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Loading, ErrorType, CartData } from '../../types/types';
 import API_BASE from '../../utils/API_BASE';
 
+type ProductsInfoToCheckout = {
+    skuCode: string;
+    colorHex: string;
+    quantityToCheckout: number;
+    price: number;
+};
+
 type CartBody = {
     productSkuCode: string;
     colorHex: string;
@@ -10,7 +17,10 @@ type CartBody = {
 type CartInitialState = {
     cartBody: CartBody[] | [];
     cartData: CartData[] | [];
+    productsInfoToCheckout: ProductsInfoToCheckout[];
+    cartTotal: { totalQuantity: number; totalCost: number } | null;
     isDeletedItemButtonActive: boolean;
+    isCartPageOpen: boolean;
     loading: Loading;
     error: ErrorType;
 };
@@ -18,7 +28,10 @@ type CartInitialState = {
 const initialState: CartInitialState = {
     cartBody: [],
     cartData: [],
+    productsInfoToCheckout: [],
+    cartTotal: null,
     isDeletedItemButtonActive: false,
+    isCartPageOpen: false,
     loading: 'idle',
     error: null,
 };
@@ -94,6 +107,35 @@ export const cartSlice = createSlice({
         setStatusRemoveCartItemBtn(state, action: PayloadAction<boolean>) {
             state.isDeletedItemButtonActive = action.payload;
         },
+        addProductsInfoToCheckout(
+            state,
+            action: PayloadAction<ProductsInfoToCheckout[] | []>
+        ) {
+            state.productsInfoToCheckout = action.payload;
+        },
+        updateProductsInfoToCheckout(
+            state,
+            action: PayloadAction<ProductsInfoToCheckout>
+        ) {
+            const indexOfPayloadProduct =
+                state.productsInfoToCheckout.findIndex(
+                    (item) =>
+                        item.skuCode === action.payload.skuCode &&
+                        item.colorHex === action.payload.colorHex
+                );
+            if (indexOfPayloadProduct < 0) return;
+
+            state.productsInfoToCheckout = state.productsInfoToCheckout.map(
+                (item, index) =>
+                    index === indexOfPayloadProduct ? action.payload : item
+            );
+        },
+        updateCartTotal(
+            state,
+            action: PayloadAction<{ totalQuantity: number; totalCost: number }>
+        ) {
+            state.cartTotal = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchProductCartInfo.pending, (state) => {
@@ -124,5 +166,8 @@ export const {
     resetCartData,
     setStatusRemoveCartItemBtn,
     removeProductFromCartData,
+    addProductsInfoToCheckout,
+    updateProductsInfoToCheckout,
+    updateCartTotal,
 } = cartSlice.actions;
 export default cartSlice.reducer;

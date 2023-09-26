@@ -7,7 +7,9 @@ import renderServerData from '../../../../helpers/renderServerData';
 import './ProductsList.scss';
 
 const ProductsList = () => {
-    const { cartData, loading, error } = useAppSelector((state) => state.cart);
+    const cartData = useAppSelector((state) => state.cart.cartData);
+    const loading = useAppSelector((state) => state.cart.loading);
+    const error = useAppSelector((state) => state.cart.error);
     const dispatch = useAppDispatch();
 
     const renderCartItems = () => {
@@ -50,6 +52,7 @@ const ProductsList = () => {
                 <button
                     className="cart-table__clear-cart"
                     type="button"
+                    disabled={loading !== 'succeeded'}
                     onClick={() => {
                         dispatch(updateCartBody([]));
                     }}

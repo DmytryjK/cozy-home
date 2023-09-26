@@ -3,7 +3,7 @@
 .cart-product {
     display: grid;
     grid-template-columns: 50px minmax(300px, 364px) minmax(345px, 438px);
-    grid-template-rows: auto 0;
+    grid-template-rows: auto 0px;
     align-items: center;
     padding-bottom: 20px;
     border-bottom: 1px solid $dark-white;
@@ -150,7 +150,6 @@
             grid-template-rows: auto 65px;
         }
         .cart-product {
-            
             &__error-message {
                 visibility: visible;
                 opacity: 1;
