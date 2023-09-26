@@ -7,9 +7,7 @@ import EmptyCartMessage from './components/EmptyCartMessage/EmptyCartMessage';
 import './ShoppingCartPage.scss';
 
 const ShoppingCartPage = () => {
-    const totalQuantity = useAppSelector(
-        (state) => state.cart.cartTotal?.totalQuantity
-    );
+    const cartTotal = useAppSelector((state) => state.cart.cartTotal);
     const cartBody = useAppSelector((state) => state.cart.cartBody);
     const loading = useAppSelector((state) => state.cart.loading);
     return (
@@ -17,7 +15,7 @@ const ShoppingCartPage = () => {
             <Breadcrumbs />
             <div className="container">
                 <h1 className="cart__title">Кошик</h1>
-                {(totalQuantity || cartBody.length) > 0 ? (
+                {(cartTotal?.totalQuantity || cartBody.length) > 0 ? (
                     <div className="cart-content">
                         <ProductsList />
                         {loading === 'succeeded' ? (
