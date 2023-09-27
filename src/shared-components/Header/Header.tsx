@@ -286,7 +286,9 @@ const Header = () => {
                             <use href={`${headerSprite}#card-icon`} />
                         </svg>
                         <span className="header__icons_cart-counter">
-                            {cartTotal?.totalQuantity || 0}
+                            {cartBody.length > 0
+                                ? cartTotal?.totalQuantity || 0
+                                : 0}
                         </span>
                     </NavLink>
                 </div>
@@ -320,7 +322,9 @@ const Header = () => {
                                 isSearchOpen ? 'display-none' : ''
                             }`}
                         >
-                            {cartTotal?.totalQuantity || 0}
+                            {cartBody.length > 0
+                                ? cartTotal?.totalQuantity || 0
+                                : 0}
                         </span>
                     </div>
                     <BurgerMenu

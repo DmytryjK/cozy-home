@@ -90,15 +90,12 @@ const ProductItemRight = (props: Props) => {
                     disabled={availableProductQuantity === 0}
                     onClick={() => {
                         if (!quantity) return;
-                        setIsEnoughProductToBuy(true);
-                        if (quantity > availableProductQuantity) {
-                            setIsEnoughProductToBuy(false);
-                        }
                         if (quantity <= 1) {
                             setQuantity(1);
                         } else {
                             setQuantity(quantity - 1);
                         }
+                        setIsEnoughProductToBuy(true);
                         setIsInputQuantityChange(true);
                     }}
                 />
@@ -137,11 +134,12 @@ const ProductItemRight = (props: Props) => {
                         if (quantity >= availableProductQuantity) {
                             setQuantity((prev) => prev);
                             setIsEnoughProductToBuy(false);
+                            setIsInputQuantityChange(false);
                         } else {
                             setQuantity(quantity + 1);
                             setIsEnoughProductToBuy(true);
+                            setIsInputQuantityChange(true);
                         }
-                        setIsInputQuantityChange(true);
                     }}
                 />
             </div>

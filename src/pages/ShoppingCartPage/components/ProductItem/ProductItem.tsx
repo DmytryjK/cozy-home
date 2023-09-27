@@ -25,6 +25,7 @@ const ProductItem = (props: Props) => {
         imagePath,
         skuCode,
     } = cartData;
+
     useEffect(() => {
         if (cartBody.length === 0 && setAction) {
             setAction(false);
