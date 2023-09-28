@@ -1,20 +1,14 @@
 import { useState, MouseEvent, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
-import {
-    updateCartBody,
-    fetchProductCartInfo,
-    resetCartData,
-    setStatusRemoveCartItemBtn,
-    addProductsInfoToCheckout,
-} from '../../store/reducers/cartSlice';
-import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';
+import CartIcon from './CartIcon/CartIcon';
 import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
+import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import './Header.scss';
 
 export type SubCategoryType = {
@@ -39,18 +33,6 @@ const Header = () => {
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
     const dispatch = useAppDispatch();
-    const cartBody = useAppSelector((state) => state.cart.cartBody);
-    const cartData = useAppSelector((state) => state.cart.cartData);
-    const cartTotal = useAppSelector((state) => state.cart.cartTotal);
-    const productsInfoToCheckout = useAppSelector(
-        (state) => state.cart.productsInfoToCheckout
-    );
-    const isDeletedItemButtonActive = useAppSelector(
-        (state) => state.cart.isDeletedItemButtonActive
-    );
-    const cartBodyLocal = JSON.parse(
-        localStorage.getItem('cartBody') as string
-    );
 
     const navTabs: Tab[] = [
         { id: 1, title: 'Головна', style: 'header__nav_list_link', url: '/' },
@@ -85,77 +67,6 @@ const Header = () => {
     useEffect(() => {
         dispatch(fetchCategoriesWithSubcategories());
     }, []);
-
-    useEffect(() => {
-        const productsLocalCheckout = localStorage.getItem('checkoutInfo')
-            ? JSON.parse(localStorage.getItem('checkoutInfo') as string)
-            : [];
-        const checkoutProducts = cartData.map((item) => {
-            const { skuCode, colorHex, price, priceWithDiscount } = item;
-            let localItemQuantity = 1;
-            if (
-                productsLocalCheckout.some((localItem: any) => {
-                    if (
-                        localItem.skuCode === skuCode &&
-                        localItem.colorHex === colorHex &&
-                        localItem.quantityToCheckout > 1
-                    ) {
-                        localItemQuantity = localItem.quantityToCheckout;
-                        return true;
-                    }
-                    return undefined;
-                })
-            ) {
-                return {
-                    skuCode,
-                    colorHex,
-                    price: (priceWithDiscount || price) * localItemQuantity,
-                    quantityToCheckout: localItemQuantity,
-                };
-            }
-            return {
-                skuCode,
-                colorHex,
-                price: priceWithDiscount || price,
-                quantityToCheckout: 1,
-            };
-        });
-        dispatch(addProductsInfoToCheckout(checkoutProducts));
-    }, [cartData]);
-
-    useEffect(() => {
-        if (productsInfoToCheckout.length > 0) {
-            localStorage.setItem(
-                'checkoutInfo',
-                JSON.stringify(productsInfoToCheckout)
-            );
-        }
-    }, [productsInfoToCheckout]);
-
-    useEffect(() => {
-        if (!cartBodyLocal) return;
-        if (cartBodyLocal.length > 0) {
-            dispatch(updateCartBody(cartBodyLocal));
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('cartBody', JSON.stringify(cartBody));
-        if (cartBody.length === 0) {
-            if (isDeletedItemButtonActive) {
-                localStorage.setItem('checkoutInfo', JSON.stringify([]));
-            }
-            dispatch(resetCartData());
-            dispatch(setStatusRemoveCartItemBtn(false));
-            setIsPreviewCartActive(false);
-        } else {
-            if (isDeletedItemButtonActive) {
-                dispatch(setStatusRemoveCartItemBtn(false));
-                return;
-            }
-            dispatch(fetchProductCartInfo(cartBody));
-        }
-    }, [cartBody]);
 
     useEffect(() => {
         if (isSearchOpen) setIsBurgerOpen(false);
@@ -207,12 +118,6 @@ const Header = () => {
             !target.closest('.cart-dropdown')
         ) {
             setIsPreviewCartActive(false);
-        }
-    };
-
-    const openProductCart = (e: MouseEvent) => {
-        if (cartBody.length === 0) {
-            e.preventDefault();
         }
     };
 
@@ -275,22 +180,7 @@ const Header = () => {
                             0
                         </span>
                     </a>
-                    <NavLink
-                        className="header-icons__cart"
-                        to="/cart"
-                        aria-label="Open cart"
-                        onClick={openProductCart}
-                        onMouseEnter={() => setIsPreviewCartActive(true)}
-                    >
-                        <svg width="21" height="21">
-                            <use href={`${headerSprite}#card-icon`} />
-                        </svg>
-                        <span className="header__icons_cart-counter">
-                            {cartBody.length > 0
-                                ? cartTotal?.totalQuantity || 0
-                                : 0}
-                        </span>
-                    </NavLink>
+                    <CartIcon setIsPreviewCartActive={setIsPreviewCartActive} />
                 </div>
                 <div className="header__mobile_icons">
                     <button
@@ -307,26 +197,7 @@ const Header = () => {
                             <use href={`${headerSprite}#search-icon-header`} />
                         </svg>
                     </button>
-                    <div>
-                        <NavLink
-                            to="/cart"
-                            aria-label="Open cart"
-                            onClick={openProductCart}
-                        >
-                            <svg width="21" height="21">
-                                <use href={`${headerSprite}#card-icon`} />
-                            </svg>
-                        </NavLink>
-                        <span
-                            className={`header__mobile_icons_cart-counter ${
-                                isSearchOpen ? 'display-none' : ''
-                            }`}
-                        >
-                            {cartBody.length > 0
-                                ? cartTotal?.totalQuantity || 0
-                                : 0}
-                        </span>
-                    </div>
+                    <CartIcon setIsPreviewCartActive={setIsPreviewCartActive} />
                     <BurgerMenu
                         isOpen={isBurgerOpen}
                         setIsOpen={setIsBurgerOpen}
