@@ -1,0 +1,164 @@
+@use '../../../../style/variables.scss' as *;
+.form-login {
+    padding-bottom: 30px;
+    border-bottom: 1px solid $dark-white;
+    &__input-email, &__input-password {
+        margin-top: 20px;
+        padding: 4px 20px;
+        height: 44px;
+        display: block;
+        width: 100%;
+        border-radius: 3px;
+        background: $light-color;
+        color: $dark-color;
+        font-size: 14px;
+        font-weight: 500;
+        outline: none;
+        border: 1px solid transparent;
+        transition: 0.2s ease-out border-color;
+        &.form-login__input-password {
+            padding-right: 46px;
+        }
+        &::placeholder {
+            color: $light-grey;
+        }
+        &:focus {
+            border-color: $grey;
+        }
+        &.input_wrong {
+            border: 1px solid red;
+        }
+    }
+
+    &__additional-options {
+        margin-top: 12px;
+    }
+
+    &__label-password {
+        position: relative;
+        display: block;
+    }
+    &__input-password {
+        
+        &[type="password"] {
+            font-size: 18px;
+            &::placeholder {
+                font-size: 14px;
+            }
+        }
+    }
+      
+    &__toggle-visible-password {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
+        &:after {
+            content: '';
+            display: block;
+            background: url('../../../../assets/icons/auth/show-hide-pass.svg') center center/contain no-repeat;
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+
+    &__additional-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    &__remember-user {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+        input {
+            margin: 0;
+        }
+        span {
+            text-wrap: nowrap;
+            color: $grey;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    }
+    &__remember-checkbox {
+        display: block;
+        width: 16px;
+        height: 16px;
+        appearance: none;
+        &:checked ~ .form-login__custom-checkbox:after {
+            opacity: 1;
+        }
+    }
+    &__custom-checkbox {
+        position: absolute;
+        display: block;
+        width: 16px;
+        height: 16px;
+        background-color: transparent;
+        border: 1px solid $grey;
+        overflow: hidden;
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: block;
+            background: url('../../../../assets/icons/auth/accept-checkbox.svg') center center/contain no-repeat;
+            opacity: 0;
+        }
+    }
+    &__forgot-password {
+        color: $grey;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: transparent;
+        border: none;
+        text-wrap: nowrap;
+        cursor: pointer;
+    }
+
+    &__bottom-nav {
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    &__submit, &__register-link {
+        display: block;
+        max-width: 50%;
+        width: 100%;
+        border-radius: 2px;
+        border: 1px solid $dark-color;
+        padding: 12px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+    }
+    &__submit {
+        background: $dark-color;
+        color: $light-color;
+        transition: 0.2s ease-out background-color;
+        &:hover {
+            background-color: $grey;
+        }
+    }
+}

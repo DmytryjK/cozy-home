@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Dispatch } from 'redux';
 import productPageSprite from '../../assets/icons/product-page/product-pageSprite.svg';
 import './Modal.scss';
 
@@ -11,6 +10,8 @@ type Props = {
     setisDataLoadedToServer?: (isSubmitLoadedToServer: boolean) => void | null;
     isSubmitedText?: string | null;
     maxwidth?: string;
+    display?: string;
+    background?: string;
 };
 
 const Modal = ({
@@ -21,6 +22,8 @@ const Modal = ({
     isDataLoadedToServer,
     setisDataLoadedToServer,
     isSubmitedText,
+    display,
+    background,
 }: Props) => {
     useEffect(() => {
         if (active) return undefined;
@@ -54,7 +57,7 @@ const Modal = ({
         >
             <div
                 className="modal__content"
-                style={{ maxWidth: maxwidth }}
+                style={{ maxWidth: maxwidth, display, background }}
                 onMouseDown={(e) => {
                     e.stopPropagation();
                 }}
@@ -110,6 +113,8 @@ Modal.defaultProps = {
     isDataLoadedToServer: false,
     setisDataLoadedToServer: null,
     isSubmitedText: null,
+    display: 'block',
+    background: '#fff',
 };
 
 export default Modal;

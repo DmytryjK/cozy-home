@@ -7,6 +7,7 @@ import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 import renderServerData from '../../../helpers/renderServerData';
 import { useAppSelector } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
+import { PopUpAuth } from '../Auth/Auth';
 
 type Props = {
     isScrolled: boolean;
@@ -22,6 +23,7 @@ const BurgerMenu = (props: Props) => {
     const { error, loading, data } = useAppSelector(
         (state) => state.categories
     );
+    const [isAuthShow, setIsAuthShow] = useState<boolean>(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -172,7 +174,10 @@ const BurgerMenu = (props: Props) => {
                                 <div>Обране</div>
                             </div>
                         </a>
-                        <a href="/">
+                        <button
+                            type="button"
+                            onClick={() => setIsAuthShow(!isAuthShow)}
+                        >
                             <div className="burger-menu__infoWrapper_info">
                                 <svg width="18" height="18">
                                     <use
@@ -181,10 +186,11 @@ const BurgerMenu = (props: Props) => {
                                 </svg>
                                 <div>Вхід / Реєстрація</div>
                             </div>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
+            <PopUpAuth isActive={isAuthShow} setIsActive={setIsAuthShow} />
         </>
     );
 };

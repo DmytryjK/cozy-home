@@ -12,10 +12,14 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
+    user-select: none;
     transition: 0.2s ease-in-out opacity, 0.2s ease-in-out visibility;
     &.dropdown-active {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
+        user-select: auto;
     }
 
     &__list-container {
@@ -212,5 +216,11 @@
         font-family: Montserrat;
         font-size: 14px;
         font-weight: 500;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .cart-dropdown {
+        display: none;
     }
 }
