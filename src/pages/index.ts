@@ -4,6 +4,7 @@ import CategoryPage from './CategoryPage/CategoryPage';
 import ProductPage from './ProductPage/ProductPage';
 import ShoppingCartPage from './ShoppingCartPage/ShoppingCartPage';
 import CheckoutPage from './CheckoutPage/CheckoutPage';
+import SignInPage from './SignInPage/SignInPage';
 
 export {
     MainPage,
@@ -12,4 +13,5 @@ export {
     ProductPage,
     ShoppingCartPage,
     CheckoutPage,
+    SignInPage,
 };

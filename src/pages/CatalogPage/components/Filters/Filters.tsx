@@ -45,17 +45,12 @@ const Filters = () => {
 
     useEffect(() => {
         const header = document.querySelector('.header') as HTMLElement;
-        const headerCart = document.querySelector(
-            '.header__mobile_icons_cart-counter'
-        ) as HTMLElement;
 
         if (isFiltersShowed) {
             header.style.paddingRight = `${userScrollWidth() + 16}px`;
-            headerCart.style.right = `${userScrollWidth() + 52}px`;
             document.body.style.paddingRight = `${userScrollWidth()}px`;
         } else {
             header.style.paddingRight = '16px';
-            headerCart.style.right = '52px';
             document.body.style.paddingRight = '0';
         }
         document.body.style.overflow = isFiltersShowed ? 'hidden' : 'visible';

@@ -7,6 +7,7 @@ import {
     ProductPage,
     ShoppingCartPage,
     CheckoutPage,
+    SignInPage,
 } from './pages';
 import './App.scss';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
@@ -43,6 +44,10 @@ const routes = [
     {
         path: '/checkout/success',
         element: <CheckoutSuccessPage />,
+    },
+    {
+        path: '/signin',
+        element: <SignInPage />,
     },
     // {
     //     path: '/',

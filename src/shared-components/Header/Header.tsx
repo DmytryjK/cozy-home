@@ -283,6 +283,7 @@ const Header = () => {
                         href="/"
                         className="header-icons__profile"
                         aria-label="Open profile"
+                        onClick={(e) => e.preventDefault()}
                         onMouseEnter={() => setIsAuthDropdownActive(true)}
                     >
                         <svg width="21" height="21">

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useFormik, FormikErrors } from 'formik';
+import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValidation';
 import './LoginForm.scss';
 
@@ -73,7 +74,7 @@ const LoginForm = () => {
                     className={`form-login__input-email ${
                         isEmailWrong ? 'input_wrong' : ''
                     }`}
-                    id="login-email"
+                    id={nextId('login-email')}
                     name="email"
                     type="email"
                     placeholder="Email*"
@@ -92,7 +93,7 @@ const LoginForm = () => {
                     className={`form-login__input-password ${
                         isPasswordWrong ? 'input_wrong' : ''
                     }`}
-                    id="login-password"
+                    id={nextId('login-password')}
                     name="password"
                     type={isPasswordHide ? 'password' : 'text'}
                     placeholder="Пароль*"
@@ -130,7 +131,7 @@ const LoginForm = () => {
                 <button className="form-login__submit" type="submit">
                     Увійти
                 </button>
-                <a className="form-login__register-link" href="/">
+                <a className="form-login__register-link" href="/signin">
                     Зареєструватись
                 </a>
             </div>
