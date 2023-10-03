@@ -58,6 +58,10 @@
 			min-width: 100%;
 			height: 100%;
 		}
+
+		.swiper-button-disabled {
+			pointer-events: auto;
+		}
 	}
 
 	// -------------------------- SLIDER THUMBS --------------------------
