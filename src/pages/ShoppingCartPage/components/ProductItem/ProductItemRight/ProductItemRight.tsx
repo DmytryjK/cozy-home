@@ -19,7 +19,9 @@ type Props = {
 const ProductItemRight = (props: Props) => {
     const { cartData, setIsEnoughProductToBuy } = props;
     const {
+        name,
         colorHex,
+        colorName,
         availableProductQuantity,
         price,
         priceWithDiscount,
@@ -40,8 +42,10 @@ const ProductItemRight = (props: Props) => {
         if (isInputQuantityChange) {
             dispatch(
                 updateProductsInfoToCheckout({
+                    productName: name,
                     skuCode,
                     colorHex,
+                    colorName,
                     quantityToCheckout: quantity,
                     price: (priceWithDiscount || price) * quantity,
                 })

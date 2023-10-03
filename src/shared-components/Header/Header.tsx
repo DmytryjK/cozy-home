@@ -148,7 +148,14 @@ const Header = () => {
             ? JSON.parse(localStorage.getItem('checkoutInfo') as string)
             : [];
         const checkoutProducts = cartData.map((item) => {
-            const { skuCode, colorHex, price, priceWithDiscount } = item;
+            const {
+                name,
+                skuCode,
+                colorHex,
+                price,
+                priceWithDiscount,
+                colorName,
+            } = item;
             let localItemQuantity = 1;
             if (
                 productsLocalCheckout.some((localItem: any) => {
@@ -164,15 +171,19 @@ const Header = () => {
                 })
             ) {
                 return {
+                    productName: name,
                     skuCode,
                     colorHex,
+                    colorName,
                     price: (priceWithDiscount || price) * localItemQuantity,
                     quantityToCheckout: localItemQuantity,
                 };
             }
             return {
+                productName: name,
                 skuCode,
                 colorHex,
+                colorName,
                 price: priceWithDiscount || price,
                 quantityToCheckout: 1,
             };

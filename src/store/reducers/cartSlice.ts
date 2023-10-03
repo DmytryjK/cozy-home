@@ -3,8 +3,10 @@ import { Loading, ErrorType, CartData } from '../../types/types';
 import API_BASE from '../../utils/API_BASE';
 
 type ProductsInfoToCheckout = {
+    productName: string;
     skuCode: string;
     colorHex: string;
+    colorName: string;
     quantityToCheckout: number;
     price: number;
 };

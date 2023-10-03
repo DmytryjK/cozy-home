@@ -9,6 +9,7 @@ import ResetPassword from './components/ResetPassword/ResetPassword';
 import RegularCustomerLoggedIn from './components/RegularCustomerLoggedIn/RegularCustomerLoggedIn';
 import DeliveryAndPaymentForm from './components/DeliveryAndPaymentForm/DeliveryAndPaymentForm';
 import AddressDelivery from './components/AddressDelivery/AddressDelivery';
+import ProductsList from './components/ProductsList/ProductsList';
 
 type ComponentsType = {
     ResetPassword: JSX.Element;
@@ -158,9 +159,11 @@ const CheckoutPage = () => {
                         </div>
                         <div className="summary-block">
                             <SummaryCart
-                                title="Підсумки кошика"
+                                title="Ваше замовлення"
                                 bgColor="#FAFAF9"
-                            />
+                            >
+                                <ProductsList />
+                            </SummaryCart>
                         </div>
                     </div>
                 </div>

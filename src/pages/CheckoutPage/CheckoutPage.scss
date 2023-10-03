@@ -1,6 +1,7 @@
 @import '../../style/variables.scss';
 
 .checkout {
+	min-height: calc(100vh - 591px);
 	&__title {
 		font-family: Montserrat Alternates;
 		font-size: 32px;
@@ -94,6 +95,10 @@
 
 			.cart-summary__checkout {
 				display: none;
+			}
+
+			.cart-summary__title {
+				border-color: $grey;
 			}
 		}
 	}

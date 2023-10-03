@@ -45,10 +45,6 @@ const EnlargedPhoto = (props: Props) => {
     }, []);
 
     useEffect(() => {
-        console.log(windowWidth);
-    }, []);
-
-    useEffect(() => {
         if (largePhotoActive) {
             document.body.style.overflow = 'hidden';
         } else {
