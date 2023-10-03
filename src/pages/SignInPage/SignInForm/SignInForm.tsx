@@ -62,7 +62,7 @@ const SignInForm = () => {
             if (!values.password) {
                 errors.password = requiredMessage;
             } else if (
-                !/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g.test(
+                !/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{4,}/g.test(
                     values.password
                 )
             ) {
@@ -74,6 +74,10 @@ const SignInForm = () => {
                 }
             } else if (/[А-Яа-яёЁЇїІіЄєҐґ]/g.test(values.password)) {
                 errors.password = 'Використовуйте латинські літери';
+            } else if (values.password.length < 8) {
+                errors.password = 'Мін. довжина - 8 символів';
+            } else if (/\s/g.test(values.password)) {
+                errors.password = 'Пароль не має містити пробілів';
             }
 
             if (!values.repeatedPassword) {
