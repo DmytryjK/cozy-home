@@ -1,0 +1,42 @@
+@use '../../../../style/variables.scss' as *;
+.checkout__products {
+    margin-top: 40px;
+    .products-header {
+        padding-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        font-weight: 400;
+        color: $dark-color;
+    }
+
+    .products-list {
+        padding: 20px 0;
+        border-bottom: 1px solid $dark-white;
+        border-top: 1px solid $dark-white;
+        &__item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            &:not(:first-child) {
+                margin-top: 16px;
+            }
+            span {
+                font-size: 14px;
+                font-weight: 500;
+                font-family: Montserrat Alternates;
+                color: $grey;
+            }
+            span > .products-list__item-quantity {
+                color: $light-grey;
+            }
+            &-nowrap {
+                text-wrap: nowrap;
+            }
+            &-price {
+                text-wrap: nowrap;
+            }
+        }
+    }
+}
