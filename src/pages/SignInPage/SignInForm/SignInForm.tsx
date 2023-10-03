@@ -44,11 +44,14 @@ const SignInForm = () => {
                 errors.lastName = requiredMessage;
             }
 
-            if (+currentDate[0] > 31) {
+            if (+currentDate[0] > 31 || +currentDate[0] < 1) {
                 errors.birthdate = 'введіть коректний день народження';
-            } else if (+currentDate[1] > 12) {
+            } else if (+currentDate[1] > 12 || +currentDate[1] < 1) {
                 errors.birthdate = 'введіть коректний місяць народження';
-            } else if (+currentDate[2] > new Date().getFullYear()) {
+            } else if (
+                +currentDate[2] > new Date().getFullYear() ||
+                +currentDate[2] < 1900
+            ) {
                 errors.birthdate = 'введіть коректний рік народження';
             }
 
