@@ -13,6 +13,12 @@
     }
 }
 
+@media screen and (max-width: 960px) {
+    .categories-page {
+        margin-top: 30px;
+    }
+}
+
 @media screen and (max-width: 590px) {
     .categories-page {
         &__list {

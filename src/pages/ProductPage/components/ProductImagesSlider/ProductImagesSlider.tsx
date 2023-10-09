@@ -11,6 +11,7 @@ import { useAppSelector } from '../../../../hooks/hooks';
 import EnlargedPhoto from './EnlargedPhoto/EnlargedPhoto';
 import FullScreenLoader from '../../../../shared-components/FullScreenLoader/FullScreenLoader';
 import Loader from '../../../../shared-components/Loader';
+import { API_BASE } from '../../../../utils/API_BASE';
 
 export interface ResponseData {
     id: string;
@@ -51,16 +52,13 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                 colorHex: currentColor?.id,
             };
 
-            const response = await fetch(
-                'https://cozy-home.onrender.com/api/v1/image/pop_up_image',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                }
-            );
+            const response = await fetch(`${API_BASE()}image/popup-image`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
 
             if (!response.ok) {
                 throw new Error('Request failed');

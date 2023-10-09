@@ -1,15 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import { useState } from 'react';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
-import './CheckoutPage.scss';
-import NewCustomerForm from './components/NewCustomerForm/NewCustomerForm';
 import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart';
-import RegularCustomerFormLogIn from './components/RegularCustomerFormLogIn/RegularCustomerFormLogIn';
 import ResetPassword from './components/ResetPassword/ResetPassword';
-import RegularCustomerLoggedIn from './components/RegularCustomerLoggedIn/RegularCustomerLoggedIn';
 import DeliveryAndPaymentForm from './components/DeliveryAndPaymentForm/DeliveryAndPaymentForm';
-import AddressDelivery from './components/AddressDelivery/AddressDelivery';
+import AddressDelivery from './components/DeliveryAndPaymentForm/AddressDelivery/AddressDelivery';
 import ProductsList from './components/ProductsList/ProductsList';
+import CustomerForm from './components/CustomerForm/CustomerForm';
+import RegularCustomerAuth from './components/RegularCustomerAuth/RegularCustomerAuth';
+import './CheckoutPage.scss';
 
 type ComponentsType = {
     ResetPassword: JSX.Element;
@@ -28,7 +27,7 @@ const CheckoutPage = () => {
     const [resetPasswordActive, setResetPasswordActive] = useState(false);
     const [regularLoggedIn, setRegularLoggedIn] = useState(false);
     const [selectedDeliveryOption, setSelectedDeliveryOption] =
-        useState<string>('pickup');
+        useState<string>('postal-delivery');
 
     const handleCustomerClick = (isRegular: boolean) => {
         setFirstStepActive(true);
@@ -48,15 +47,21 @@ const CheckoutPage = () => {
         ResetPassword: (
             <ResetPassword setResetPasswordActive={setResetPasswordActive} />
         ),
-        NewCustomer: <NewCustomerForm handleSubmit={handleStepClick} />,
+        NewCustomer: <CustomerForm handleSubmit={handleStepClick} />,
         RegularCustomer: (
-            <RegularCustomerFormLogIn
+            <RegularCustomerAuth
                 setResetPasswordActive={setResetPasswordActive}
                 setRegularLoggedIn={setRegularLoggedIn}
             />
         ),
         RegularCustomerLoggedIn: (
-            <RegularCustomerLoggedIn handleSubmit={handleStepClick} />
+            <CustomerForm
+                firstName="Анжеліка"
+                lastName="Бажан"
+                phone="+38 (099) 543 - 36 - 51"
+                email="cozyhome@gmail.com"
+                handleSubmit={handleStepClick}
+            />
         ),
         DeliveryAndPaymentForm: (
             <DeliveryAndPaymentForm

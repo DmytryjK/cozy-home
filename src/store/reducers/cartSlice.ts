@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Loading, ErrorType, CartData } from '../../types/types';
-import API_BASE from '../../utils/API_BASE';
+import { API_BASE } from '../../utils/API_BASE';
 
 type ProductsInfoToCheckout = {
     productName: string;

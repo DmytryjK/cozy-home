@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Loading } from '../../types/types';
-import API_BASE from '../../utils/API_BASE';
+import { API_BASE } from '../../utils/API_BASE';
 
 type ProductParams = {
     productSkuCode: string;
@@ -32,7 +32,7 @@ export const fetchImageByColorId = createAsyncThunk(
         try {
             const queryParams = new URLSearchParams({ ...productParams });
             const response = await fetch(
-                `${API_BASE()}image/product_color?${queryParams}`
+                `${API_BASE()}image/product-color?${queryParams}`
             );
             const result = await response.json();
 

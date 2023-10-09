@@ -3,4 +3,9 @@ const API_BASE = () => {
     return globalApi;
 };
 
-export default API_BASE;
+const API_SECURE = () => {
+    const globalApi = 'https://cozy-home.onrender.com/api-secure/v1/';
+    return globalApi;
+};
+
+export { API_BASE, API_SECURE };

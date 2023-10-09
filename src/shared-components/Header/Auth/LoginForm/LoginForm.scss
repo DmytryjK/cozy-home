@@ -39,12 +39,8 @@
         display: block;
     }
     &__input-password {
-        
-        &[type="password"] {
-            font-size: 18px;
-            &::placeholder {
-                font-size: 14px;
-            }
+        &[type="password"] ::placeholder {
+            font-size: 14px;
         }
     }
       

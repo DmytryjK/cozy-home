@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Loading } from '../types/types';
-import API_BASE from '../utils/API_BASE';
+import { API_BASE } from '../utils/API_BASE';
 
 function useFetch(apiQuery: string) {
     const [data, setData] = useState<any[]>([]);
