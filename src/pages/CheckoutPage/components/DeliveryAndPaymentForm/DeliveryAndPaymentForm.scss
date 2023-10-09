@@ -5,8 +5,6 @@
 	flex-direction: column;
 	margin-top: 30px;
 	width: 100%;
-	border-bottom: 1px solid $dark-white;
-	padding-bottom: 40px;
 	
 	&__options {
 		max-width: 640px;
@@ -15,7 +13,9 @@
 			display: flex;
 			flex-direction: column;
 			gap: 10px;
-			margin-bottom: 20px;
+			&:not(:last-child) {
+				margin-bottom: 20px;
+			}
 	
 			&_label {
 				display: flex;
@@ -73,9 +73,7 @@
 
 	&__form {
 		margin-top: 30px;
-
 		.customer-form {
-
 			.customer-form__item {
 				&_button {
 					text-align: left;
@@ -141,4 +139,12 @@
 		}
 		}
 }
+}
+
+@media screen and (max-width: 720px) {
+	.customer-form {
+		&__item {
+			max-width: 100%;
+		}
+	}
 }

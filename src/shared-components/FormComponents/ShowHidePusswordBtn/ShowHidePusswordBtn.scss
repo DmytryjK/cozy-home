@@ -1,0 +1,22 @@
+.show-hide-password {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    &:after {
+        content: '';
+        display: block;
+        background: url('../../../assets/icons/auth/show-hide-pass.svg') center center/contain no-repeat;
+        width: 16px;
+        height: 16px;
+    }
+}
