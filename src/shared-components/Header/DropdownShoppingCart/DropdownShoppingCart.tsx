@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import nextId from 'react-id-generator';
 import { useAppSelector } from '../../../hooks/hooks';
 import CartTrashBtn from '../../CartTrashBtn/CartTrashBtn';
 import renderServerData from '../../../helpers/renderServerData';
@@ -59,7 +58,7 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                         return (
                             <li
                                 className="cart-dropdown__item product-item"
-                                key={nextId('cart-product')}
+                                key={`dropdown-cart${skuCode}-${colorHex}`}
                             >
                                 <CartTrashBtn
                                     skuCode={skuCode}

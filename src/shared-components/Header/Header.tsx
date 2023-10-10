@@ -339,7 +339,6 @@ const Header = () => {
                         isScrolled={isScrolled}
                     />
                 </div>
-                <DropdownShoppingCart isActive={isPreviewCartActive} />
                 <DropdownAuth isActive={isAuthDropdownActive} />
             </header>
             <div>
@@ -348,6 +347,7 @@ const Header = () => {
                     isOpen={isDropdownOpen}
                 />
             </div>
+            <DropdownShoppingCart isActive={isPreviewCartActive} />
         </div>
     );
 };

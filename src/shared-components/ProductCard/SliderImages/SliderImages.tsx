@@ -97,7 +97,6 @@ const SliderImages = (props: Props) => {
 
     const handleSlideChange = (color: string, index: number, id: string) => {
         setCurrentColor({ name: color, hex: id });
-        console.log(id);
         setIsColorChosen(true);
         setCurrentIndexColor(index);
 
@@ -226,7 +225,9 @@ const SliderImages = (props: Props) => {
                     )}
                     {colorDtoList.map((color, index) => {
                         return (
-                            <SwiperSlide key={nextId('productCard-slides')}>
+                            <SwiperSlide
+                                key={`slider-image-${skuCode} ${color.id}`}
+                            >
                                 <div className="product-card__image-wrapper">
                                     {renderedImage(name, index)}
                                 </div>
