@@ -163,25 +163,6 @@
 		}
 	}
 
-	.reveiew-added-wrapper {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 400px;
-		
-		.review-added {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 12px;
-
-			&__title {
-				font-size: 14px;
-				font-weight: 500;
-			}
-		}
-	}
-
 	.stars-rating {
 		display: flex;
 		gap: 8px;

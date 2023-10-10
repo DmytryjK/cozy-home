@@ -8,6 +8,8 @@ import catalogProductsReducer from './reducers/catalogProductsSlice';
 import categoriesReducer from './reducers/categoriesSlice';
 import productInformationReducer from './reducers/productInformationSlice';
 import modalsReducer from './reducers/modalsSlice';
+import recoverPasswordReducer from './reducers/recoverPasswordSlice';
+import dropdownAuthReducer from './reducers/dropdownAuthSlice';
 import cartReducer from './reducers/cartSlice';
 
 export const store = configureStore({
@@ -22,6 +24,8 @@ export const store = configureStore({
         productInformation: productInformationReducer,
         modals: modalsReducer,
         cart: cartReducer,
+        recoverPassword: recoverPasswordReducer,
+        dropdownAuth: dropdownAuthReducer,
     },
 });
 

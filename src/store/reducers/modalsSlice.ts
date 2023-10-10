@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Loading } from '../../types/types';
-import API_BASE from '../../utils/API_BASE';
 
 interface ModalsType {
     isPopUpNotificationOpen: boolean;
     isPopUpCartOpen: boolean;
+    isPasswordForgotten: boolean;
 }
 
 const initialState: ModalsType = {
     isPopUpNotificationOpen: false,
     isPopUpCartOpen: false,
+    isPasswordForgotten: false,
 };
 
 export const modalsSlice = createSlice({
@@ -22,7 +22,14 @@ export const modalsSlice = createSlice({
         openPopUpNotification(state, action: PayloadAction<boolean>) {
             state.isPopUpNotificationOpen = action.payload;
         },
+        openPopUpForgottenPassword(state, action: PayloadAction<boolean>) {
+            state.isPasswordForgotten = action.payload;
+        },
     },
 });
-export const { openPopUpCart, openPopUpNotification } = modalsSlice.actions;
+export const {
+    openPopUpCart,
+    openPopUpNotification,
+    openPopUpForgottenPassword,
+} = modalsSlice.actions;
 export default modalsSlice.reducer;

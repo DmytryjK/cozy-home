@@ -18,6 +18,7 @@ import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import './Header.scss';
+import { setIsAuthDropdownActive } from '../../store/reducers/dropdownAuthSlice';
 
 export type SubCategoryType = {
     id: string;
@@ -38,8 +39,10 @@ const Header = () => {
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [isPreviewCartActive, setIsPreviewCartActive] =
         useState<boolean>(false);
-    const [isAuthDropdownActive, setIsAuthDropdownActive] =
-        useState<boolean>(false);
+
+    const isAuthDropdownActive = useAppSelector(
+        (state) => state.dropdownAuth.isAuthDropdownActive
+    );
 
     const isDeletedItemButtonActive = useAppSelector(
         (state) => state.cart.isDeletedItemButtonActive
@@ -234,7 +237,7 @@ const Header = () => {
             !target.closest('.header-icons__profile') &&
             !target.closest('.auth-dropdown')
         ) {
-            setIsAuthDropdownActive(false);
+            dispatch(setIsAuthDropdownActive(false));
         }
     };
 
@@ -252,7 +255,7 @@ const Header = () => {
             }}
             onMouseLeave={() => {
                 setIsPreviewCartActive(false);
-                setIsAuthDropdownActive(false);
+                dispatch(setIsAuthDropdownActive(false));
             }}
         >
             <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
@@ -295,7 +298,9 @@ const Header = () => {
                         className="header-icons__profile"
                         aria-label="Open profile"
                         onClick={(e) => e.preventDefault()}
-                        onMouseEnter={() => setIsAuthDropdownActive(true)}
+                        onMouseEnter={() =>
+                            dispatch(setIsAuthDropdownActive(true))
+                        }
                     >
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#profile-icon`} />
@@ -340,6 +345,7 @@ const Header = () => {
                     />
                 </div>
                 <DropdownShoppingCart isActive={isPreviewCartActive} />
+
                 <DropdownAuth isActive={isAuthDropdownActive} />
             </header>
             <div>

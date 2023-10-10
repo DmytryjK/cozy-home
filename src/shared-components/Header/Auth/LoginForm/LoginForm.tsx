@@ -3,6 +3,10 @@ import { useFormik, FormikErrors } from 'formik';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValidation';
 import './LoginForm.scss';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import { recoverPassword } from '../../../../store/reducers/recoverPasswordSlice';
+import { setIsAuthDropdownActive } from '../../../../store/reducers/dropdownAuthSlice';
+import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 
 interface FormValues {
     email: string;
@@ -73,6 +77,14 @@ const LoginForm = () => {
         }
     }, [formik.errors.password, formik.errors.email, formik.touched]);
 
+    const dispatch = useAppDispatch();
+
+    function handleForgotPasswordClick() {
+        dispatch(recoverPassword(true));
+        dispatch(setIsAuthDropdownActive(false));
+        dispatch(openPopUpForgottenPassword(true));
+    }
+
     return (
         <form onSubmit={formik.handleSubmit} className="form-login" noValidate>
             <label className="form-login__label-email">
@@ -129,8 +141,12 @@ const LoginForm = () => {
                     <span className="form-login__custom-checkbox" />
                     <span>Запам’ятати мене</span>
                 </label>
-                <button className="form-login__forgot-password" type="button">
-                    Забули пароль?
+                <button
+                    className="form-login__forgot-password"
+                    type="button"
+                    onClick={handleForgotPasswordClick}
+                >
+                    Забули пароль
                 </button>
             </div>
             <div className="form-login__bottom-nav">

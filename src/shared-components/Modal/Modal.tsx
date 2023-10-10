@@ -9,7 +9,9 @@ type Props = {
     isDataLoadedToServer?: boolean;
     setisDataLoadedToServer?: (isSubmitLoadedToServer: boolean) => void | null;
     isSubmitedText?: string | null;
+    isSubmitedSubText?: string | null;
     maxwidth?: string;
+    minHeightOnSubmit?: string;
     display?: string;
     background?: string;
 };
@@ -22,8 +24,10 @@ const Modal = ({
     isDataLoadedToServer,
     setisDataLoadedToServer,
     isSubmitedText,
+    isSubmitedSubText,
     display,
     background,
+    minHeightOnSubmit,
 }: Props) => {
     useEffect(() => {
         if (active) return undefined;
@@ -63,7 +67,10 @@ const Modal = ({
                 }}
             >
                 {isDataLoadedToServer && isSubmitedText ? (
-                    <div className="reveiew-added-wrapper">
+                    <div
+                        className="reveiew-added-wrapper"
+                        style={{ minHeight: minHeightOnSubmit }}
+                    >
                         <div className="review-added">
                             <svg width="20" height="20">
                                 <use
@@ -74,6 +81,11 @@ const Modal = ({
                                 {isSubmitedText}
                             </h2>
                         </div>
+                        {isSubmitedSubText && (
+                            <div className="review-added__text">
+                                {isSubmitedSubText}
+                            </div>
+                        )}
                     </div>
                 ) : (
                     children
@@ -115,6 +127,7 @@ Modal.defaultProps = {
     isSubmitedText: null,
     display: 'block',
     background: '#fff',
+    minHeightOnSubmit: '400px',
 };
 
 export default Modal;
