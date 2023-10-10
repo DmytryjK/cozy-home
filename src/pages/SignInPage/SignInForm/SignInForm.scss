@@ -10,6 +10,9 @@
             margin-top: 11px;
         }
     }
+    .lastName, .email, .password, .phone-number {
+        margin-top: 20px;
+    }
     &__label {
         color: $light-grey;
         font-size: 14px;

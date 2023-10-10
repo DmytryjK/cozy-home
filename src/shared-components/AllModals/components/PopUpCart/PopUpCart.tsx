@@ -1,5 +1,4 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import nextId from 'react-id-generator';
 import { useEffect, useState } from 'react';
 import Modal from '../../../Modal/Modal';
 import { openPopUpCart } from '../../../../store/reducers/modalsSlice';
@@ -48,7 +47,7 @@ const PopUpCart = () => {
                             return (
                                 <li
                                     className="cart-table__item"
-                                    key={nextId('product_for-cart_popup')}
+                                    key={`popUp-cart${cartItem.skuCode}${cartItem.colorHex}`}
                                 >
                                     <ProductItem
                                         cartData={cartItem}

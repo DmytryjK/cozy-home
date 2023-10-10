@@ -30,7 +30,7 @@ const CheckoutSuccessPage = () => {
                             менеджер.
                         </p>
                     </div>
-                    <NavLink to="/">
+                    <NavLink to="/catalog">
                         <p className="checkout-success__button-back">
                             Повернутись в магазин
                         </p>

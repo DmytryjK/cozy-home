@@ -11,7 +11,7 @@
 
 	&__content {
 		display: flex;
-		gap: 104px;
+		gap: 40px;
 		justify-content: space-between;
 		margin-top: 30px;
 
@@ -19,6 +19,7 @@
 			width: 100%;
 			max-width: 792px;
 			position: relative;
+			flex-shrink: 1.1;
 
 			.customer-handler {
 				&__list {
@@ -30,7 +31,9 @@
 						font-size: 16px;
 						font-weight: 400;
 						color: $dark-color;
-						width: 175px;
+						max-width: 175px;
+						width: 100%;
+						min-width: 155px;
 						cursor: pointer;
 					}
 					
@@ -47,8 +50,10 @@
 
 			&__steps {
 				display: flex;
-				gap: 32px;
+				column-gap: 32px;
+				row-gap: 20px;
 				margin-bottom: 20px;
+				flex-wrap: wrap;
 
 				&_step {
 					font-family: Montserrat;
@@ -99,6 +104,39 @@
 
 			.cart-summary__title {
 				border-color: $grey;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 960px) {
+	.checkout {
+		margin-top: 24px;
+	}
+}
+
+@media screen and (max-width: 720px) {
+	.checkout {
+		&__title {
+			font-size: 18px;
+		}
+		&__content {
+			flex-wrap: wrap;
+			.customer-block {
+				max-width: 100%;
+				.customer-handler {
+					&__list {
+						display: flex;
+						margin-bottom: 30px;
+						&_item {
+							font-size: 14px;
+							text-align: center;
+							&.regular-cutomer {
+								text-align: center;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

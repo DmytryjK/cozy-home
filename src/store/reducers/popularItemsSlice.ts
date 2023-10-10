@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
-import API_BASE from '../../utils/API_BASE';
+import { API_BASE } from '../../utils/API_BASE';
 import { ProductCategory } from '../../pages/MainPage/components/PopularItems/types';
 import { RootState } from '../store';
 
@@ -69,7 +69,7 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
         try {
             const queryParams = new URLSearchParams({ ...currentData });
             const response = await fetch(
-                `${API_BASE()}product/homepage/category_status?${queryParams}`
+                `${API_BASE()}product/homepage/category-status?${queryParams}`
             );
 
             const result = await response.json();

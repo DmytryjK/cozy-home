@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
+import AddressDelivery from './AddressDelivery/AddressDelivery';
+import CompanyDelivery from './CompanyDelivery/CompanyDelivery';
 import './DeliveryAndPaymentForm.scss';
-import AddressDelivery from '../AddressDelivery/AddressDelivery';
-import CompanyDelivery from '../CompanyDelivery/CompanyDelivery';
-import PaymentMethod from '../PaymentMethod/PaymentMethod';
 
 export interface DeliveryOption {
     id: string;
@@ -18,44 +17,16 @@ export interface DeliveryCompany {
 
 export const deliveryOptions: DeliveryOption[] = [
     {
-        id: 'pickup',
+        id: 'postal-delivery',
         label: 'Доставка у відділення',
         description:
             'Швидкий та надійний спосіб отримання замовлень. Наша послуга "Доставка у відділення" пропонує зручний спосіб отримати ваші покупки.',
     },
     {
-        id: 'address',
+        id: 'address-delivery',
         label: 'Адресна доставка',
         description:
             'Отримайте ваші замовлення прямо до дверей. Наша послуга "Адресна доставка" дозволяє зручно отримувати товари безпосередньо на вашу адресу.',
-    },
-];
-
-export const deliveryCompany: DeliveryCompany[] = [
-    {
-        id: 1,
-        title: 'Укрпошта',
-        value: 'Укрпошта',
-    },
-    {
-        id: 2,
-        title: 'Нова пошта',
-        value: 'Нова пошта',
-    },
-    {
-        id: 3,
-        title: 'Meest',
-        value: 'Meest',
-    },
-    {
-        id: 4,
-        title: 'Автолюкс',
-        value: 'Автолюкс',
-    },
-    {
-        id: 5,
-        title: 'Делівері',
-        value: 'Делівері',
     },
 ];
 
@@ -66,6 +37,8 @@ type Props = {
 
 const DeliveryAndPaymentForm = (props: Props) => {
     const { selectedDeliveryOption, setSelectedDeliveryOption } = props;
+    const [selectedDeliveryName, setSelectedDeliveryName] =
+        useState<string>('');
 
     const handleOptionChange = (optionId: string) => {
         setSelectedDeliveryOption(optionId);
@@ -88,9 +61,10 @@ const DeliveryAndPaymentForm = (props: Props) => {
                                     checked={
                                         selectedDeliveryOption === option.id
                                     }
-                                    onChange={() =>
-                                        handleOptionChange(option.id)
-                                    }
+                                    onChange={() => {
+                                        handleOptionChange(option.id);
+                                        setSelectedDeliveryName(option.label);
+                                    }}
                                     className="delivery-payment-block__options_option_label_input"
                                 />
                                 {option.label}
@@ -101,15 +75,14 @@ const DeliveryAndPaymentForm = (props: Props) => {
                         </div>
                     ))}
                 </div>
-                <div className="delivery-payment-block__form">
-                    {selectedDeliveryOption === 'pickup' ? (
-                        <CompanyDelivery />
-                    ) : (
-                        <AddressDelivery />
-                    )}
-                </div>
             </div>
-            <PaymentMethod />
+            <div className="delivery-payment-block__form">
+                {selectedDeliveryOption === 'postal-delivery' ? (
+                    <CompanyDelivery />
+                ) : (
+                    <AddressDelivery />
+                )}
+            </div>
         </>
     );
 };

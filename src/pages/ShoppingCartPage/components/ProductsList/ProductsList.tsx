@@ -17,7 +17,7 @@ const ProductsList = () => {
             return (
                 <li
                     className="cart-table__item"
-                    key={nextId('product_for-cart')}
+                    key={`product_for-cart${cartItem.skuCode}-${cartItem.colorHex}`}
                 >
                     <ProductItem cartData={cartItem} />
                 </li>

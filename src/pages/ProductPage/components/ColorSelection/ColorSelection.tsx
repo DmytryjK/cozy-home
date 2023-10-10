@@ -124,7 +124,7 @@ const ColorSelection = ({ setColorChange }: Props) => {
             };
 
             const response = await fetch(
-                'https://cozy-home.onrender.com/api/v1/image/product_card_image',
+                'https://cozy-home.onrender.com/api/v1/image/product-card-image',
                 {
                     method: 'POST',
                     headers: {

@@ -9,7 +9,7 @@ const SubmitButton = ({ title, onClick }: Props) => {
     return (
         <button
             className="submit-button"
-            type="button"
+            type="submit"
             onClick={() => {
                 if (onClick) {
                     onClick();

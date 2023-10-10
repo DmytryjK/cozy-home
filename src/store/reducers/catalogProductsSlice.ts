@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
 import { RootState } from '../store';
 import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
-import API_BASE from '../../utils/API_BASE';
+import { API_BASE } from '../../utils/API_BASE';
 
 const PRODUCTS_SIZE = 6;
 interface CatalogProductsState {
