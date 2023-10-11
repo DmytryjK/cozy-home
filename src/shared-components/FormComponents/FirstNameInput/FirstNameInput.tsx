@@ -2,13 +2,19 @@ import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import './FirstNameInput.scss';
 
-const FirstNameInput = ({ formik }: { formik: any }) => {
+const FirstNameInput = ({
+    formik,
+    additionalClassName,
+}: {
+    formik: any;
+    additionalClassName?: string;
+}) => {
     return (
         <div className="firstName">
             <label className="firstName__label">
                 <span>Ваше ім’я*</span>
                 <input
-                    className="firstName__input"
+                    className={`firstName__input ${additionalClassName}`}
                     id={nextId('first-name')}
                     name="firstName"
                     type="text"
@@ -25,5 +31,7 @@ const FirstNameInput = ({ formik }: { formik: any }) => {
         </div>
     );
 };
-
+FirstNameInput.defaultProps = {
+    additionalClassName: '',
+};
 export default FirstNameInput;

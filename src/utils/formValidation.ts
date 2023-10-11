@@ -6,6 +6,8 @@ const formValidation = (fieldName: string, fieldValue: string) => {
     if (fieldName === 'firstName') {
         if (!fieldValue) {
             error = requiredMessage;
+        } else if (fieldValue.length < 2 || fieldValue.length > 32) {
+            error = 'Поле має містити від 2-х до 32-х символів';
         } else if (!/^[a-zA-ZА-Яа-яёЁЇїІіЄєҐґ]+$/g.test(fieldValue)) {
             error = 'В даному полі мають бути тільки букви';
         }
@@ -14,6 +16,8 @@ const formValidation = (fieldName: string, fieldValue: string) => {
     if (fieldName === 'lastName') {
         if (!fieldValue) {
             error = requiredMessage;
+        } else if (fieldValue.length < 2 || fieldValue.length > 32) {
+            error = 'Поле має містити від 2-х до 32-х символів';
         } else if (!/^[a-zA-ZА-Яа-яёЁЇїІіЄєҐґ]+$/g.test(fieldValue)) {
             error = 'В даному полі мають бути тільки букви';
         }
@@ -39,7 +43,7 @@ const formValidation = (fieldName: string, fieldValue: string) => {
                 error = 'Використовуйте латинські літери';
             } else {
                 error =
-                    'Пароль має складатись з великих, малих літер та спецсимволів';
+                    'Пароль має складатись з великих, малих літер, цифр та спецсимволів';
             }
         } else if (/[А-Яа-яёЁЇїІіЄєҐґ]/g.test(fieldValue)) {
             error = 'Використовуйте латинські літери';
