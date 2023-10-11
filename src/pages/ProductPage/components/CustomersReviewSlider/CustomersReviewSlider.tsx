@@ -1,25 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
+import { useFormik, FormikErrors } from 'formik';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import './CustomersReviewSlider.scss';
 import nextId from 'react-id-generator';
 import Modal from '../../../../shared-components/Modal/Modal';
 import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
 import CustomerReview from './components/CustomerReview/CustomerReview';
 import CommentTextarea from './components/CommentTextArea/CommentTextarea';
 import { useAppSelector } from '../../../../hooks/hooks';
+import formValidation from '../../../../utils/formValidation';
+import {
+    FirstNameInput,
+    EmailInput,
+} from '../../../../shared-components/FormComponents/Inputs';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import './CustomersReviewSlider.scss';
+
+type FormValues = {
+    [key: string]: string;
+    firstName: string;
+    email: string;
+};
 
 const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [nameError, setNameError] = useState(false);
-    const [emailError, setEmailError] = useState(false);
     const [ratingError, setRatingError] = useState(false);
     const [rating, setRating] = useState(0);
-    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
     const [reviewSubmit, setReviewSubmit] = useState<boolean>(false);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
@@ -28,64 +35,51 @@ const CustomersReviewSlider = () => {
         (state) => state.productInformation.productInfo
     );
 
+    useEffect(() => {
+        if (rating !== 0) {
+            setRatingError(false);
+        }
+    }, [rating]);
+
+    const additionalValidation = () => {
+        if (rating === 0) {
+            setRatingError(true);
+        } else {
+            setRatingError(false);
+        }
+    };
+
     const handleStarClick = (selectedRating: number) => {
         setRating(selectedRating);
     };
 
-    const updateSubmitButtonStatus = (newName: string, newEmail: string) => {
-        if (newName.trim() !== '' && newEmail.trim() !== '') {
-            setIsSubmitDisabled(false);
-        } else {
-            setIsSubmitDisabled(true);
-        }
-    };
+    const formik6 = useFormik({
+        initialValues: {
+            firstName: '',
+            email: '',
+            comment: '',
+        },
+        validate: (values: FormValues) => {
+            const errors: FormikErrors<FormValues> = {};
+            const validationFields = ['firstName', 'email'];
 
-    const handleNameChange = (event: any) => {
-        const newName = event.target.value;
-        setName(newName);
-        updateSubmitButtonStatus(newName, email);
-    };
+            validationFields.forEach((fieldName: string) => {
+                const error = formValidation(fieldName, values[fieldName]);
+                if (error) {
+                    errors[fieldName] = error;
+                }
+            });
 
-    const handleEmailChange = (event: any) => {
-        const newEmail = event.target.value;
-        setEmail(newEmail);
-        updateSubmitButtonStatus(name, newEmail);
-    };
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        if (name === '') {
-            setNameError(true);
-        } else {
-            setNameError(false);
-        }
-
-        if (email === '') {
-            setEmailError(true);
-        } else {
-            setEmailError(false);
-        }
-
-        if (rating > 1) {
-            setRatingError(false);
-        } else {
-            setRatingError(true);
-        }
-    };
-
-    useEffect(() => {
-        if (name !== '') {
-            setNameError(false);
-        }
-
-        if (email !== '') {
-            setEmailError(false);
-        }
-
-        if (rating > 1) {
-            setRatingError(false);
-        }
-    }, [name, email, rating]);
+            return errors;
+        },
+        onSubmit: (values, { resetForm }) => {
+            if (ratingError) return;
+            alert(JSON.stringify({ rating, ...values }, null, 2));
+            resetForm();
+            setRating(0);
+            setReviewSubmit(true);
+        },
+    });
 
     const stars = () => {
         return (
@@ -246,37 +240,34 @@ const CustomersReviewSlider = () => {
                     </div>
                     <form
                         className="customers-review__modal_form modal-form"
-                        onSubmit={(e) => handleSubmit(e)}
+                        onSubmit={formik6.handleSubmit}
+                        noValidate
                     >
                         <div className="customers-review__modal_inputs">
-                            <input
-                                type="text"
-                                className={`customers-review__modal_inputs_input ${
-                                    nameError ? 'error' : ''
+                            <FirstNameInput
+                                formik={formik6}
+                                additionalClassName={`${
+                                    formik6.errors.firstName &&
+                                    formik6.touched.firstName
+                                        ? 'inputErrorValidation'
+                                        : ''
                                 }`}
-                                placeholder="Ваше ім’я*"
-                                value={name}
-                                onChange={handleNameChange}
                             />
-                            <input
-                                type="text"
-                                className={`customers-review__modal_inputs_input ${
-                                    emailError ? 'error' : ''
+                            <EmailInput
+                                formik={formik6}
+                                additionalClassName={`${
+                                    formik6.errors.email &&
+                                    formik6.touched.email
+                                        ? 'inputErrorValidation'
+                                        : ''
                                 }`}
-                                placeholder="Ел. пошта*"
-                                value={email}
-                                onChange={handleEmailChange}
                             />
                         </div>
-                        <CommentTextarea />
+                        <CommentTextarea formik={formik6} />
                         <button
-                            onClick={() => {
-                                if (!isSubmitDisabled) {
-                                    setReviewSubmit(true);
-                                }
-                            }}
                             className="customers-review__modal_button"
                             type="submit"
+                            onClick={additionalValidation}
                         >
                             Додати відгук
                         </button>

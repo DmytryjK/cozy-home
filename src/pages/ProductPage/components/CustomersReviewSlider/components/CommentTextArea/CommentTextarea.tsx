@@ -1,7 +1,15 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import './CommentTextarea.scss';
 
-const CommentTextarea: React.FC = () => {
+interface CommentTextareaProps {
+    formik?: any;
+}
+
+const CommentTextarea: React.FC<CommentTextareaProps> = ({
+    formik,
+}: {
+    formik?: any;
+}) => {
     const [comment, setComment] = useState<string>('');
     const [isMaxCharactersExceeded, setIsMaxCharactersExceeded] =
         useState(false);
@@ -22,13 +30,14 @@ const CommentTextarea: React.FC = () => {
     return (
         <div className="comment-textarea">
             <textarea
+                name="comment"
                 cols={30}
                 rows={10}
                 maxLength={500}
                 className="customers-review__modal_inputs_input_comment"
                 placeholder="Ваш комментарий"
-                value={comment}
-                onChange={handleTextareaChange}
+                value={formik ? formik.values.comment : comment}
+                onChange={formik ? formik.handleChange : handleTextareaChange}
             />
             <div
                 className={`character-count ${
@@ -39,6 +48,10 @@ const CommentTextarea: React.FC = () => {
             </div>
         </div>
     );
+};
+
+CommentTextarea.defaultProps = {
+    formik: undefined,
 };
 
 export default CommentTextarea;

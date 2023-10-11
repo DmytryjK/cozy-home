@@ -6,10 +6,12 @@ const EmailInput = ({
     formik,
     required,
     isLabelShow,
+    additionalClassName,
 }: {
     formik: any;
     required?: boolean;
     isLabelShow?: boolean;
+    additionalClassName?: string;
 }) => {
     return (
         <div className="email">
@@ -20,7 +22,7 @@ const EmailInput = ({
                     ''
                 )}
                 <input
-                    className="email__input"
+                    className={`email__input ${additionalClassName}`}
                     id={nextId('email')}
                     style={{ marginTop: isLabelShow ? '14px' : '0' }}
                     name="email"
@@ -43,6 +45,7 @@ const EmailInput = ({
 EmailInput.defaultProps = {
     required: true,
     isLabelShow: true,
+    additionalClassName: '',
 };
 
 export default EmailInput;
