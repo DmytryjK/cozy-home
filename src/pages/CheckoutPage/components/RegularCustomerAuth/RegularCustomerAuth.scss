@@ -1,0 +1,157 @@
+@import '../../../../style/variables.scss';
+
+.regular-customer {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+
+	&__form {
+		width: 100%;
+		max-width: 380px;
+		position: relative;
+		.password, .email {
+			grid-column: 1 / 3;
+		}
+		
+		.customer-form {
+			width: 100%;
+			max-width: 380px;
+		}
+
+		&_footer {
+			grid-column: 1 / 3;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 18px;
+			gap: 20px;
+
+			&_password-reset {
+				border: none;
+				background: none;
+				font-family: Montserrat;
+				font-size: 14px;
+				font-weight: 500;
+				color: $grey;
+				text-wrap: nowrap;
+				cursor: pointer;
+			}
+
+			.submit-button {
+				width: 100%;
+				max-width: 200px;
+				margin-top: 0;
+			}
+		}
+	}
+
+	.custom-line {
+		width: 1px;
+		height: 187px;
+		background: $dark-white;
+	}
+
+	&__login {
+		width: 100%;
+		max-width: 310px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		height: 187px;
+		
+		&_title {
+			font-family: Montserrat;
+			font-size: 14px;
+			font-weight: 500;
+			color: $dark-color;
+			margin-bottom: 14px;
+		}
+		
+		&_button {
+			position: relative;
+			width: 100%;
+			min-width: 230px;
+			padding: 12px 20px 12px 50px;
+			background-color: transparent;
+			border-radius: 3px;
+			border: 1px solid $grey;
+			cursor: pointer;
+			&-img {
+				display: block;
+				position: absolute;
+				width: 24px;
+				height: 24px;
+				background: url('../../../../assets/icons/auth/google-icon.svg') center center no-repeat;
+				top: 50%;
+				transform: translateY(-50%);
+				left: 26px;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	.regular-customer {
+		min-width: 500px;
+	}
+	.regular-customer__form_footer {
+		flex-wrap: wrap;
+		&_password-reset {
+			order: 1;
+			margin: 0 auto;
+			text-align: center;
+		}
+
+		.submit-button  {
+			max-width: 100%;
+		}
+	}
+}
+
+@media screen and (max-width: 950px) {
+	.regular-customer {
+		flex-wrap: wrap;
+		min-width: 100%;
+		&__form {
+			max-width: 100%;
+			.customer-form {
+				max-width: 100%;
+			}
+			&_footer {
+				padding-bottom: 14px;
+				border-bottom: 1px solid $dark-white;
+			}
+		}
+		.custom-line {
+			display: none;
+		}
+		&__login {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			gap: 20px;
+			max-width: 100%;
+			height: auto;
+			&_title {
+				margin: 0;
+				text-wrap: nowrap;
+			}
+			&_button {
+				flex-shrink: 0;
+				padding: 0;
+				width: 40px;
+				height: 40px;
+				min-width: auto;
+				&-img {
+					left: 50%;
+					transform: translateY(-50%) translateX(-50%);
+					background: url('../../../../assets/icons/auth/google-icon_16.svg') center center no-repeat;
+				}
+			}
+			&_button-text {
+				display: none;
+			}
+		}
+	}
+}

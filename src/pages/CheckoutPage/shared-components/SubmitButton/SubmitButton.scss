@@ -12,9 +12,14 @@
 	font-weight: 500;
 	width: 200px;
 	cursor: pointer;
-	transition: background .2s ease-out;s
-
+	transition: background .2s ease-out;
 	&:hover {
 		background: $grey;
+	}
+}
+
+@media screen and (max-width: 991px) {
+	.submit-button:hover {
+		background: $dark-color;
 	}
 }

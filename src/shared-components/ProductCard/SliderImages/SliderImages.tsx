@@ -15,7 +15,7 @@ import Loader from '../../Loader';
 import ErrorMessage from '../../ErrorMessage';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
 import { Loading, ProductCardType } from '../../../types/types';
-import API_BASE from '../../../utils/API_BASE';
+import { API_BASE } from '../../../utils/API_BASE';
 
 type TSwiper = swiper & {
     slides: {
@@ -97,7 +97,6 @@ const SliderImages = (props: Props) => {
 
     const handleSlideChange = (color: string, index: number, id: string) => {
         setCurrentColor({ name: color, hex: id });
-        console.log(id);
         setIsColorChosen(true);
         setCurrentIndexColor(index);
 
@@ -111,7 +110,7 @@ const SliderImages = (props: Props) => {
                 setLoading('idle');
 
                 const response = await fetch(
-                    `${API_BASE()}image/product_color`,
+                    `${API_BASE()}image/product-color`,
                     {
                         method: 'POST',
                         body: JSON.stringify({
@@ -226,7 +225,9 @@ const SliderImages = (props: Props) => {
                     )}
                     {colorDtoList.map((color, index) => {
                         return (
-                            <SwiperSlide key={nextId('productCard-slides')}>
+                            <SwiperSlide
+                                key={`slider-image-${skuCode} ${color.id}`}
+                            >
                                 <div className="product-card__image-wrapper">
                                     {renderedImage(name, index)}
                                 </div>

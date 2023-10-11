@@ -1,11 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import nextId from 'react-id-generator';
 import InputMask from 'react-input-mask';
 import ErrorMessageValidation from '../../../shared-components/Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
+import ShowHidePusswordBtn from '../../../shared-components/FormComponents/ShowHidePusswordBtn/ShowHidePusswordBtn';
+import formValidation from '../../../utils/formValidation';
+import {
+    FirstNameInput,
+    LastNameInput,
+    EmailInput,
+    PasswordInput,
+    PhoneNumberInput,
+} from '../../../shared-components/FormComponents/Inputs';
 import './SignInForm.scss';
 
 interface FormValues {
+    [key: string]: string;
     firstName: string;
     lastName: string;
     birthdate: string;
@@ -16,7 +26,6 @@ interface FormValues {
 }
 
 const SignInForm = () => {
-    const [isPassShow, setIsPassShow] = useState<boolean>(false);
     const [isRepeatedPassShow, setIsRepeatedPassShow] =
         useState<boolean>(false);
     const formik2 = useFormik({
@@ -32,55 +41,40 @@ const SignInForm = () => {
         validate: (values: FormValues) => {
             const errors: FormikErrors<FormValues> = {};
             const requiredMessage = "Це поле обов'язкове для заповнення";
-            const phoneNumberRegex = /^\+38 \(\d{3}\) \d{3} - \d{2} - \d{2}$/;
-
             const currentDate = values.birthdate.split('.');
 
-            if (!values.firstName) {
-                errors.firstName = requiredMessage;
-            }
+            const validationFields = [
+                'firstName',
+                'lastName',
+                'phone',
+                'password',
+                'email',
+            ];
 
-            if (!values.lastName) {
-                errors.lastName = requiredMessage;
-            }
-
-            if (+currentDate[0] > 31 || +currentDate[0] < 1) {
-                errors.birthdate = 'введіть коректний день народження';
-            } else if (+currentDate[1] > 12 || +currentDate[1] < 1) {
-                errors.birthdate = 'введіть коректний місяць народження';
-            } else if (
-                +currentDate[2] > new Date().getFullYear() ||
-                +currentDate[2] < 1900
-            ) {
-                errors.birthdate = 'введіть коректний рік народження';
-            }
-
-            if (values.phone === '+38 (___) ___ - __ - __') {
-                errors.phone = requiredMessage;
-            } else if (!phoneNumberRegex.test(values.phone)) {
-                errors.phone =
-                    'введіть повний номер телефону, наприклад +38 099 999 99 99';
-            }
-
-            if (!values.password) {
-                errors.password = requiredMessage;
-            } else if (
-                !/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{4,}/g.test(
-                    values.password
-                )
-            ) {
-                if (/[А-Яа-яёЁЇїІіЄєҐґ]/g.test(values.password)) {
-                    errors.password = 'Використовуйте латинські літери';
-                } else {
-                    errors.password =
-                        'Пароль має складатись з великих, малих літер та спецсимволів';
+            validationFields.forEach((fieldName: string) => {
+                const error = formValidation(fieldName, values[fieldName]);
+                if (error) {
+                    errors[fieldName] = error;
                 }
-            } else if (/[А-Яа-яёЁЇїІіЄєҐґ]/g.test(values.password)) {
-                errors.password = 'Використовуйте латинські літери';
-            } else if (values.password.length < 8) {
-                errors.password = 'Мін. довжина - 8 символів';
-            } else if (/\s/g.test(values.password)) {
-                errors.password = 'Пароль не має містити пробілів';
+            });
+
+            if (currentDate[0] !== '') {
+                if (+currentDate[0] > 31 || +currentDate[0] < 1) {
+                    errors.birthdate = 'введіть коректний день народження';
+                } else if (+currentDate[1] > 12 || +currentDate[1] < 1) {
+                    errors.birthdate = 'введіть коректний місяць народження';
+                } else if (
+                    +currentDate[2] > new Date().getFullYear() ||
+                    +currentDate[2] < 1900
+                ) {
+                    errors.birthdate = 'введіть коректний рік народження';
+                }
+
+                if (!values.repeatedPassword) {
+                    errors.repeatedPassword = requiredMessage;
+                } else if (values.repeatedPassword !== values.password) {
+                    errors.repeatedPassword = 'Пароль не співпадає';
+                }
             }
 
             if (!values.repeatedPassword) {
@@ -89,19 +83,11 @@ const SignInForm = () => {
                 errors.repeatedPassword = 'Пароль не співпадає';
             }
 
-            if (!values.email) {
-                errors.email = requiredMessage;
-            } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-            ) {
-                errors.email =
-                    'Введіть коректний емейл, наприклад example@domain.com';
-            }
-
             return errors;
         },
-        onSubmit: (values) => {
+        onSubmit: (values, { resetForm }) => {
             alert(JSON.stringify(values, null, 2));
+            resetForm();
         },
     });
     return (
@@ -110,46 +96,8 @@ const SignInForm = () => {
             onSubmit={formik2.handleSubmit}
             noValidate
         >
-            <div className="signin-form__wrapper">
-                <label className="signin-form__label">
-                    <span>Ваше ім’я*</span>
-                    <input
-                        className="signin-form__input signin-form__firstName-input"
-                        id={nextId('first-name')}
-                        name="firstName"
-                        type="text"
-                        placeholder="Ім’я"
-                        onChange={formik2.handleChange}
-                        onBlur={formik2.handleBlur}
-                        value={formik2.values.firstName}
-                        required
-                    />
-                </label>
-                {formik2.touched.firstName && formik2.errors.firstName ? (
-                    <ErrorMessageValidation
-                        message={formik2.errors.firstName}
-                    />
-                ) : null}
-            </div>
-            <div className="signin-form__wrapper">
-                <label className="signin-form__label">
-                    <span>Ваше прізвище*</span>
-                    <input
-                        className="signin-form__input signin-form__lastName-input"
-                        id={nextId('last-name')}
-                        name="lastName"
-                        type="text"
-                        placeholder="Прізвище"
-                        onChange={formik2.handleChange}
-                        onBlur={formik2.handleBlur}
-                        value={formik2.values.lastName}
-                        required
-                    />
-                </label>
-                {formik2.touched.lastName && formik2.errors.lastName ? (
-                    <ErrorMessageValidation message={formik2.errors.lastName} />
-                ) : null}
-            </div>
+            <FirstNameInput formik={formik2} />
+            <LastNameInput formik={formik2} />
             <div className="signin-form__wrapper">
                 <label className="signin-form__label">
                     <span>Дата народження</span>
@@ -171,54 +119,8 @@ const SignInForm = () => {
                     />
                 ) : null}
             </div>
-            <div className="signin-form__wrapper">
-                <label className="signin-form__label">
-                    <span>Телефон*</span>
-                    <InputMask
-                        mask="+38 (999) 999 - 99 - 99"
-                        className="signin-form__input signin-form__phone-input"
-                        id={nextId('phone')}
-                        type="phone"
-                        name="phone"
-                        onChange={formik2.handleChange}
-                        onBlur={formik2.handleBlur}
-                        value={formik2.values.phone}
-                        placeholder="+38 (___) ___ - __ - __"
-                        required
-                    />
-                </label>
-                {formik2.touched.phone && formik2.errors.phone ? (
-                    <ErrorMessageValidation message={formik2.errors.phone} />
-                ) : null}
-            </div>
-            <div className="signin-form__wrapper">
-                <label className="signin-form__label">
-                    <span>Пароль*</span>
-                    <span className="signin-form__input-wrapper">
-                        <input
-                            className="signin-form__input signin-form__password-input"
-                            id={nextId('password')}
-                            name="password"
-                            onChange={formik2.handleChange}
-                            onBlur={formik2.handleBlur}
-                            value={formik2.values.password}
-                            type={isPassShow ? 'text' : 'password'}
-                            placeholder="Пароль"
-                            required
-                        />
-                        <button
-                            className="signin-form__toggle-visible-password"
-                            type="button"
-                            aria-label="показати / приховати пароль"
-                            title="показати / приховати пароль"
-                            onClick={() => setIsPassShow(!isPassShow)}
-                        />
-                    </span>
-                </label>
-                {formik2.touched.password && formik2.errors.password ? (
-                    <ErrorMessageValidation message={formik2.errors.password} />
-                ) : null}
-            </div>
+            <PhoneNumberInput formik={formik2} />
+            <PasswordInput formik={formik2} />
             <div className="signin-form__wrapper">
                 <label className="signin-form__label">
                     <span>Повтор пароля*</span>
@@ -232,16 +134,12 @@ const SignInForm = () => {
                             value={formik2.values.repeatedPassword}
                             type={isRepeatedPassShow ? 'text' : 'password'}
                             placeholder="Повтор пароля"
+                            autoComplete="new-password"
                             required
                         />
-                        <button
-                            className="signin-form__toggle-visible-password"
-                            type="button"
-                            aria-label="показати / приховати пароль"
-                            title="показати / приховати пароль"
-                            onClick={() =>
-                                setIsRepeatedPassShow(!isRepeatedPassShow)
-                            }
+                        <ShowHidePusswordBtn
+                            setIsPasswordHide={setIsRepeatedPassShow}
+                            isPasswordHide={isRepeatedPassShow}
                         />
                     </span>
                 </label>
@@ -252,25 +150,7 @@ const SignInForm = () => {
                     />
                 ) : null}
             </div>
-            <div className="signin-form__wrapper">
-                <label className="signin-form__label">
-                    <span>Email*</span>
-                    <input
-                        className="signin-form__input signin-form__email-input"
-                        id={nextId('email')}
-                        name="email"
-                        onChange={formik2.handleChange}
-                        onBlur={formik2.handleBlur}
-                        value={formik2.values.email}
-                        type="email"
-                        placeholder="example@gmail.com"
-                        required
-                    />
-                </label>
-                {formik2.touched.email && formik2.errors.email ? (
-                    <ErrorMessageValidation message={formik2.errors.email} />
-                ) : null}
-            </div>
+            <EmailInput formik={formik2} />
             <div className="signin-form__wrapper_checkbox">
                 <label
                     className="signin-form__email-label"

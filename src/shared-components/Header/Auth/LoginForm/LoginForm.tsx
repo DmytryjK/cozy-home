@@ -1,13 +1,17 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { useState, useEffect } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValidation';
+import ShowHidePusswordBtn from '../../../FormComponents/ShowHidePusswordBtn/ShowHidePusswordBtn';
+import formValidation from '../../../../utils/formValidation';
 import './LoginForm.scss';
 import { useAppDispatch } from '../../../../hooks/hooks';
 import { recoverPassword } from '../../../../store/reducers/authSlice';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 
 interface FormValues {
+    [key: string]: string;
     email: string;
     password: string;
 }
@@ -26,41 +30,20 @@ const LoginForm = () => {
         },
         validate: (values: FormValues) => {
             const errors: FormikErrors<FormValues> = {};
+            const validationFields = ['password', 'email'];
 
-            if (!values.email) {
-                errors.email = 'Необхідно заповнити поле Email';
-            } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-            ) {
-                errors.email =
-                    'Введіть коректний емейл, наприклад example@domain.com';
-            }
-
-            if (!values.password) {
-                errors.password = 'Необхідно заповнити поле Пароль';
-            } else if (
-                !/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{4,}/g.test(
-                    values.password
-                )
-            ) {
-                if (/[А-Яа-яёЁЇїІіЄєҐґ]/g.test(values.password)) {
-                    errors.password = 'Використовуйте латинські літери';
-                } else {
-                    errors.password =
-                        'Пароль має складатись з великих, малих літер та спецсимволів';
+            validationFields.forEach((fieldName: string) => {
+                const error = formValidation(fieldName, values[fieldName]);
+                if (error) {
+                    errors[fieldName] = error;
                 }
-            } else if (/[А-Яа-яёЁЇїІіЄєҐґ]/g.test(values.password)) {
-                errors.password = 'Використовуйте латинські літери';
-            } else if (values.password.length < 8) {
-                errors.password = 'Мін. довжина - 8 символів';
-            } else if (/\s/g.test(values.password)) {
-                errors.password = 'Пароль не має містити пробілів';
-            }
+            });
 
             return errors;
         },
-        onSubmit: (values) => {
+        onSubmit: (values, { resetForm }) => {
             alert(JSON.stringify(values, null, 2));
+            resetForm();
         },
     });
 
@@ -122,12 +105,9 @@ const LoginForm = () => {
                     autoComplete="off"
                     required
                 />
-                <button
-                    className="form-login__toggle-visible-password"
-                    type="button"
-                    aria-label="показати / приховати пароль"
-                    title="показати / приховати пароль"
-                    onClick={() => setIsPasswordHide(!isPasswordHide)}
+                <ShowHidePusswordBtn
+                    setIsPasswordHide={setIsPasswordHide}
+                    isPasswordHide={isPasswordHide}
                 />
             </label>
             {formik.touched.password && formik.errors.password ? (

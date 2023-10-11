@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { FiltersBody, FilterOptions } from '../../types/catalogFiltersTypes';
-import API_BASE from '../../utils/API_BASE';
+import { API_BASE } from '../../utils/API_BASE';
 import { ErrorType, Loading } from '../../types/types';
 import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import { RootState } from '../store';
