@@ -12,7 +12,6 @@
     "@types/react": "^18.2.12",
     "@types/react-dom": "^18.2.5",
     "@types/react-router-dom": "^5.3.3",
-    "classnames": "^2.3.2",
     "formik": "^2.4.5",
     "html-react-parser": "^4.2.0",
     "rc-slider": "^10.2.1",

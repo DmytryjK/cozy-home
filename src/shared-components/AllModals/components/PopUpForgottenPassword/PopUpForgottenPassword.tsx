@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { FormikErrors, useFormik } from 'formik';
-import classNames from 'classnames';
 import nextId from 'react-id-generator';
 import Modal from '../../../Modal/Modal';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
@@ -111,14 +110,12 @@ const PopUpForgottenPassword = () => {
                     <div className="forgotten-password__sign-in-wrapper">
                         <label className="forgotten-password__sign-in-label">
                             <input
-                                className={classNames(
-                                    'forgotten-password__sign-in-input',
-                                    'forgotten-password__sign-in-email-input',
-                                    {
-                                        'forgotten-password__sign-in-input--error':
-                                            formik6.errors.email,
-                                    }
-                                )}
+                                className={`forgotten-password__sign-in-input forgotten-password__sign-in-email-input 
+                                    ${
+                                        formik6.errors.email
+                                            ? 'forgotten-password__sign-in-input--error'
+                                            : ''
+                                    }`}
                                 id={nextId('email')}
                                 name="email"
                                 onChange={formik6.handleChange}

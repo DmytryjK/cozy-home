@@ -18,7 +18,6 @@ import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import './Header.scss';
-import { setIsAuthDropdownActive } from '../../store/reducers/dropdownAuthSlice';
 
 export type SubCategoryType = {
     id: string;
@@ -40,9 +39,8 @@ const Header = () => {
     const [isPreviewCartActive, setIsPreviewCartActive] =
         useState<boolean>(false);
 
-    const isAuthDropdownActive = useAppSelector(
-        (state) => state.dropdownAuth.isAuthDropdownActive
-    );
+    const [isAuthDropdownActive, setIsAuthDropdownActive] =
+        useState<boolean>(false);
 
     const isDeletedItemButtonActive = useAppSelector(
         (state) => state.cart.isDeletedItemButtonActive
@@ -237,7 +235,7 @@ const Header = () => {
             !target.closest('.header-icons__profile') &&
             !target.closest('.auth-dropdown')
         ) {
-            dispatch(setIsAuthDropdownActive(false));
+            setIsAuthDropdownActive(false);
         }
     };
 
@@ -255,7 +253,7 @@ const Header = () => {
             }}
             onMouseLeave={() => {
                 setIsPreviewCartActive(false);
-                dispatch(setIsAuthDropdownActive(false));
+                setIsAuthDropdownActive(false);
             }}
         >
             <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
@@ -298,9 +296,7 @@ const Header = () => {
                         className="header-icons__profile"
                         aria-label="Open profile"
                         onClick={(e) => e.preventDefault()}
-                        onMouseEnter={() =>
-                            dispatch(setIsAuthDropdownActive(true))
-                        }
+                        onMouseEnter={() => setIsAuthDropdownActive(true)}
                     >
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#profile-icon`} />

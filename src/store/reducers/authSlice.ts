@@ -8,7 +8,7 @@ const initialState: ModalsType = {
     isPasswordRecovered: false,
 };
 
-export const recoverPasswordSlice = createSlice({
+export const authSlice = createSlice({
     name: 'modals',
     initialState,
     reducers: {
@@ -17,5 +17,5 @@ export const recoverPasswordSlice = createSlice({
         },
     },
 });
-export const { recoverPassword } = recoverPasswordSlice.actions;
-export default recoverPasswordSlice.reducer;
+export const { recoverPassword } = authSlice.actions;
+export default authSlice.reducer;

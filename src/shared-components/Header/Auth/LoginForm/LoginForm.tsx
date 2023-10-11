@@ -4,8 +4,7 @@ import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValidation';
 import './LoginForm.scss';
 import { useAppDispatch } from '../../../../hooks/hooks';
-import { recoverPassword } from '../../../../store/reducers/recoverPasswordSlice';
-import { setIsAuthDropdownActive } from '../../../../store/reducers/dropdownAuthSlice';
+import { recoverPassword } from '../../../../store/reducers/authSlice';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 
 interface FormValues {
@@ -17,6 +16,8 @@ const LoginForm = () => {
     const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
     const [isPasswordWrong, setIsPasswordWrong] = useState<boolean>(false);
     const [isPasswordHide, setIsPasswordHide] = useState<boolean>(true);
+    const [isAuthDropdownActive, setIsAuthDropdownActive] =
+        useState<boolean>(false);
 
     const formik = useFormik({
         initialValues: {
@@ -81,7 +82,7 @@ const LoginForm = () => {
 
     function handleForgotPasswordClick() {
         dispatch(recoverPassword(true));
-        dispatch(setIsAuthDropdownActive(false));
+        setIsAuthDropdownActive(false);
         dispatch(openPopUpForgottenPassword(true));
     }
 
