@@ -12,17 +12,12 @@ interface FormValues {
 }
 
 const PopUpForgottenPassword = () => {
-    const MAX_QUANTITY_OF_CHARS = 300;
     const dispatch = useAppDispatch();
     const isPopUpOpenStore = useAppSelector(
         (state) => state.modals.isPasswordForgotten
     );
     const [isNotificationPopUpShow, setIsNotificationPopUpShow] =
         useState<boolean>(isPopUpOpenStore);
-    const [currentTextAtCommentField, setCurrentTextAtCommentField] =
-        useState<string>('');
-    const [isLimitCharClassActive, setIsLimitCharClassActive] =
-        useState<boolean>(false);
 
     const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
         useState<boolean>(false);
@@ -36,14 +31,6 @@ const PopUpForgottenPassword = () => {
         if (isNotificationPopUpShow === isPopUpOpenStore) return;
         dispatch(openPopUpForgottenPassword(isNotificationPopUpShow));
     }, [isNotificationPopUpShow]);
-
-    useEffect(() => {
-        if (currentTextAtCommentField.length === MAX_QUANTITY_OF_CHARS) {
-            setIsLimitCharClassActive(true);
-        } else {
-            setIsLimitCharClassActive(false);
-        }
-    }, [currentTextAtCommentField]);
 
     const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
     const [notRegisteredError, setNotRegisteredError] =
@@ -103,8 +90,7 @@ const PopUpForgottenPassword = () => {
 
                 <form
                     onSubmit={formik6.handleSubmit}
-                    // className="form-login"
-                    // noValidate
+                    noValidate
                     className="forgotten-password__modal-form modal-form"
                 >
                     <div className="forgotten-password__sign-in-wrapper">
