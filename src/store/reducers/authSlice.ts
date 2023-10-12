@@ -11,11 +11,6 @@ const initialState: ModalsType = {
 export const authSlice = createSlice({
     name: 'modals',
     initialState,
-    reducers: {
-        recoverPassword(state, action: PayloadAction<boolean>) {
-            state.isPasswordRecovered = action.payload;
-        },
-    },
+    reducers: {},
 });
-export const { recoverPassword } = authSlice.actions;
 export default authSlice.reducer;

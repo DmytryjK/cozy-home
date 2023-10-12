@@ -7,7 +7,6 @@ import ShowHidePusswordBtn from '../../../FormComponents/ShowHidePusswordBtn/Sho
 import formValidation from '../../../../utils/formValidation';
 import './LoginForm.scss';
 import { useAppDispatch } from '../../../../hooks/hooks';
-import { recoverPassword } from '../../../../store/reducers/authSlice';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 
 interface FormValues {
@@ -64,7 +63,6 @@ const LoginForm = () => {
     const dispatch = useAppDispatch();
 
     function handleForgotPasswordClick() {
-        dispatch(recoverPassword(true));
         setIsAuthDropdownActive(false);
         dispatch(openPopUpForgottenPassword(true));
     }

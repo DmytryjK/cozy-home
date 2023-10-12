@@ -13,26 +13,26 @@ interface FormValues {
 
 const PopUpForgottenPassword = () => {
     const dispatch = useAppDispatch();
-    const isPopUpOpenStore = useAppSelector(
+    const isPopUpForgottenPAsswordOpen = useAppSelector(
         (state) => state.modals.isPasswordForgotten
     );
     const [isNotificationPopUpShow, setIsNotificationPopUpShow] =
-        useState<boolean>(isPopUpOpenStore);
+        useState<boolean>(isPopUpForgottenPAsswordOpen);
 
     const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
         useState<boolean>(false);
 
     useEffect(() => {
-        if (isPopUpOpenStore === isNotificationPopUpShow) return;
-        setIsNotificationPopUpShow(isPopUpOpenStore);
-    }, [isPopUpOpenStore]);
+        if (isPopUpForgottenPAsswordOpen === isNotificationPopUpShow) return;
+        setIsNotificationPopUpShow(isPopUpForgottenPAsswordOpen);
+    }, [isPopUpForgottenPAsswordOpen]);
 
     useEffect(() => {
-        if (isNotificationPopUpShow === isPopUpOpenStore) return;
+        if (isNotificationPopUpShow === isPopUpForgottenPAsswordOpen) return;
         dispatch(openPopUpForgottenPassword(isNotificationPopUpShow));
     }, [isNotificationPopUpShow]);
 
-    const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
+    // const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
     const [notRegisteredError, setNotRegisteredError] =
         useState<boolean>(false);
 
@@ -64,13 +64,13 @@ const PopUpForgottenPassword = () => {
         },
     });
 
-    useEffect(() => {
-        if (formik6.errors.email && formik6.touched.email) {
-            setIsEmailWrong(true);
-        } else {
-            setIsEmailWrong(false);
-        }
-    }, [formik6.errors.email, formik6.touched]);
+    // useEffect(() => {
+    //     if (formik6.errors.email && formik6.touched.email) {
+    //         setIsEmailWrong(true);
+    //     } else {
+    //         setIsEmailWrong(false);
+    //     }
+    // }, [formik6.errors.email, formik6.touched]);
 
     return (
         <div className="forgotten-password__modal">
