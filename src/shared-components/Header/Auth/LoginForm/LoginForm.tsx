@@ -6,6 +6,8 @@ import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValida
 import ShowHidePusswordBtn from '../../../FormComponents/ShowHidePusswordBtn/ShowHidePusswordBtn';
 import formValidation from '../../../../utils/formValidation';
 import './LoginForm.scss';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 
 interface FormValues {
     [key: string]: string;
@@ -17,6 +19,8 @@ const LoginForm = () => {
     const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
     const [isPasswordWrong, setIsPasswordWrong] = useState<boolean>(false);
     const [isPasswordHide, setIsPasswordHide] = useState<boolean>(true);
+    const [isAuthDropdownActive, setIsAuthDropdownActive] =
+        useState<boolean>(false);
 
     const formik = useFormik({
         initialValues: {
@@ -55,6 +59,13 @@ const LoginForm = () => {
             setIsPasswordWrong(false);
         }
     }, [formik.errors.password, formik.errors.email, formik.touched]);
+
+    const dispatch = useAppDispatch();
+
+    function handleForgotPasswordClick() {
+        setIsAuthDropdownActive(false);
+        dispatch(openPopUpForgottenPassword(true));
+    }
 
     return (
         <form onSubmit={formik.handleSubmit} className="form-login" noValidate>
@@ -109,8 +120,12 @@ const LoginForm = () => {
                     <span className="form-login__custom-checkbox" />
                     <span>Запам’ятати мене</span>
                 </label>
-                <button className="form-login__forgot-password" type="button">
-                    Забули пароль?
+                <button
+                    className="form-login__forgot-password"
+                    type="button"
+                    onClick={handleForgotPasswordClick}
+                >
+                    Забули пароль
                 </button>
             </div>
             <div className="form-login__bottom-nav">

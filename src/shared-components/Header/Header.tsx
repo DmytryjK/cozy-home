@@ -38,6 +38,7 @@ const Header = () => {
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [isPreviewCartActive, setIsPreviewCartActive] =
         useState<boolean>(false);
+
     const [isAuthDropdownActive, setIsAuthDropdownActive] =
         useState<boolean>(false);
 
@@ -51,6 +52,10 @@ const Header = () => {
     );
     const cartBodyLocal = JSON.parse(
         localStorage.getItem('cartBody') as string
+    );
+
+    const isPopUpForgottenPAsswordOpen = useAppSelector(
+        (state) => state.modals.isPasswordForgotten
     );
 
     const dropdownLink = document.getElementsByClassName('link-dropdown');
@@ -339,8 +344,13 @@ const Header = () => {
                         isScrolled={isScrolled}
                     />
                 </div>
-                <DropdownAuth isActive={isAuthDropdownActive} />
                 <DropdownShoppingCart isActive={isPreviewCartActive} />
+
+                <DropdownAuth
+                    isActive={
+                        isAuthDropdownActive && !isPopUpForgottenPAsswordOpen
+                    }
+                />
             </header>
             <div>
                 <DropdownMenu
