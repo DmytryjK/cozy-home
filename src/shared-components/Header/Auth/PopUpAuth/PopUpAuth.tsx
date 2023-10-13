@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import googleIcon from '../../../../assets/icons/auth/google-icon.svg';
 import Modal from '../../../Modal/Modal';
