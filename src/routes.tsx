@@ -49,6 +49,10 @@ const routes = [
         path: '/signin',
         element: <SignInPage />,
     },
+    {
+        path: '/cabinet',
+        element: <div>Кабінет користувача</div>,
+    },
     // {
     //     path: '/',
     //     element: [
