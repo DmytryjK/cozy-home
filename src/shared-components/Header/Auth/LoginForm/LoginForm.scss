@@ -1,5 +1,6 @@
 @use '../../../../style/variables.scss' as *;
 .form-login {
+    position: relative;
     padding-bottom: 30px;
     border-bottom: 1px solid $dark-white;
     &__input-email, &__input-password {
@@ -155,6 +156,18 @@
         transition: 0.2s ease-out background-color;
         &:hover {
             background-color: $grey;
+        }
+    }
+
+    &__loader {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+
+        img {
+            width: 40px;
+            height: 40px;
         }
     }
 }

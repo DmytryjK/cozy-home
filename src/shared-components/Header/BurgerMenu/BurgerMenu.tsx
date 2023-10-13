@@ -24,6 +24,7 @@ const BurgerMenu = (props: Props) => {
         (state) => state.categories
     );
     const [isAuthShow, setIsAuthShow] = useState<boolean>(false);
+    const jwtToken = useAppSelector((state) => state.auth.jwtToken);
 
     useEffect(() => {
         const handleResize = () => {
@@ -36,6 +37,12 @@ const BurgerMenu = (props: Props) => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    useEffect(() => {
+        if (jwtToken) {
+            setIsAuthShow(false);
+        }
+    }, [jwtToken]);
 
     useEffect(() => {
         document.body.style.paddingRight = isOpen
@@ -174,19 +181,44 @@ const BurgerMenu = (props: Props) => {
                                 <div>Обране</div>
                             </div>
                         </a>
-                        <button
-                            type="button"
-                            onClick={() => setIsAuthShow(!isAuthShow)}
-                        >
-                            <div className="burger-menu__infoWrapper_info">
-                                <svg width="18" height="18">
-                                    <use
-                                        href={`${headerSprite}#profile-icon`}
-                                    />
-                                </svg>
-                                <div>Вхід / Реєстрація</div>
-                            </div>
-                        </button>
+                        {jwtToken ? (
+                            <NavLink
+                                className="burger-menu__cabinet"
+                                to="/cabinet"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                <div className="burger-menu__infoWrapper_info">
+                                    <svg
+                                        className="burger-menu__profile-icon profile-icon_active"
+                                        width="18"
+                                        height="18"
+                                    >
+                                        <use
+                                            href={`${headerSprite}#profile-icon`}
+                                        />
+                                    </svg>
+                                    <div>Особистий кабінет</div>
+                                </div>
+                            </NavLink>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={() => setIsAuthShow(true)}
+                            >
+                                <div className="burger-menu__infoWrapper_info">
+                                    <svg
+                                        className="burger-menu__profile-icon"
+                                        width="18"
+                                        height="18"
+                                    >
+                                        <use
+                                            href={`${headerSprite}#profile-icon`}
+                                        />
+                                    </svg>
+                                    <div>Вхід / Реєстрація</div>
+                                </div>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

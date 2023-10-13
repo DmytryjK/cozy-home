@@ -1,3 +1,4 @@
+import { SetStateAction, Dispatch } from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import googleIcon from '../../../../assets/icons/auth/google-icon.svg';
 import './DropdownAuth.scss';

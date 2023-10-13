@@ -1,5 +1,5 @@
 import { useState, MouseEvent, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
 import {
@@ -57,10 +57,13 @@ const Header = () => {
     const isPopUpForgottenPAsswordOpen = useAppSelector(
         (state) => state.modals.isPasswordForgotten
     );
+    const jwtToken = useAppSelector((state) => state.auth.jwtToken);
 
     const dropdownLink = document.getElementsByClassName('link-dropdown');
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
     const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
 
     const navTabs: Tab[] = [
         { id: 1, title: 'Головна', style: 'header__nav_list_link', url: '/' },
@@ -95,6 +98,10 @@ const Header = () => {
     useEffect(() => {
         dispatch(fetchCategoriesWithSubcategories());
     }, []);
+
+    useEffect(() => {
+        setIsAuthDropdownActive(false);
+    }, [jwtToken]);
 
     useEffect(() => {
         if (isSearchOpen) setIsBurgerOpen(false);
@@ -236,7 +243,7 @@ const Header = () => {
         if (
             !target.matches('.header') &&
             !target.matches('.header__icons') &&
-            !target.closest('.header-icons__profile') &&
+            !target.closest('.header__icons-profile') &&
             !target.closest('.auth-dropdown')
         ) {
             setIsAuthDropdownActive(false);
@@ -295,17 +302,22 @@ const Header = () => {
                     </label>
                 </div>
                 <div className="header__icons">
-                    <a
-                        href="/"
-                        className="header-icons__profile"
+                    <NavLink
+                        to={jwtToken ? '/cabinet' : '#'}
+                        className={`header__icons-profile ${
+                            jwtToken ? 'profile_active' : ''
+                        }`}
                         aria-label="Open profile"
-                        onClick={(e) => e.preventDefault()}
-                        onMouseEnter={() => setIsAuthDropdownActive(true)}
+                        onMouseEnter={() =>
+                            jwtToken
+                                ? setIsAuthDropdownActive(false)
+                                : setIsAuthDropdownActive(true)
+                        }
                     >
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#profile-icon`} />
                         </svg>
-                    </a>
+                    </NavLink>
                     <a href="/" aria-label="Open favorite">
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#favorite-icon`} />

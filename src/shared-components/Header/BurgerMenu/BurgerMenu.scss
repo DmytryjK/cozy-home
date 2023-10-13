@@ -147,6 +147,13 @@
 			min-height: 48px;
 		}
 	}
+
+	&__profile-icon {
+		fill: $dark-white;
+		&.profile-icon_active {
+			fill: $dark-color;
+		}
+	}
 }
 
 .burger-menu-active {

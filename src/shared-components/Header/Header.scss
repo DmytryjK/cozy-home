@@ -117,6 +117,18 @@
 			width: 20px;
 			height: 20px;
 		}
+
+		&-profile {
+			svg {
+				fill: #fff;
+			}
+			&.profile_active {
+				svg {
+					fill: $dark-color;
+				}
+			}
+		}
+		
 	}
 
 	&__mobile {
