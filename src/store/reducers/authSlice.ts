@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { FormikState } from 'formik';
-import { API_BASE } from '../../utils/API_BASE';
+import { API_SECURE, API_BASE } from '../../utils/API_BASE';
 import { Loading, ErrorType } from '../../types/types';
 
 type JwtPayload = {
@@ -12,6 +12,8 @@ interface AuthType {
     jwtToken: string;
     loginLoading: Loading;
     loginError: ErrorType;
+    logoutLoading: Loading;
+    logoutError: ErrorType;
 }
 
 const initialState: AuthType = {
@@ -19,6 +21,8 @@ const initialState: AuthType = {
     jwtToken: '',
     loginLoading: 'idle',
     loginError: null,
+    logoutLoading: 'idle',
+    logoutError: null,
 };
 
 export const userLogIn = createAsyncThunk(
@@ -81,22 +85,56 @@ export const userLogIn = createAsyncThunk(
 );
 
 export const userLogOut = createAsyncThunk(
-    'auth/userLogIn',
+    'auth/userLogOut',
     async function (jwt: string, { rejectWithValue }) {
         try {
-            fetch(`${API_BASE()}auth/logout`, {
+            const response = await fetch(`${API_SECURE()}user/logout`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
-            }).then((response) => console.log(response));
-            return '';
+            });
+
+            if (!response.ok) {
+                throw new Error('Щось пішло не так');
+            }
+
+            return null;
         } catch (error: unknown) {
-            console.log(error);
-            return rejectWithValue(error);
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
         }
     }
 );
+
+// export const fetchUserProfileInfo = createAsyncThunk(
+//     'auth/fetchUserProfileInfo',
+//     async function (jwt: string, { rejectWithValue }) {
+//         try {
+//             const response = await fetch(`${API_SECURE()}user/profile`, {
+//                 method: 'GET',
+//                 headers: {
+//                     Authorization: `Bearer ${jwt}`,
+//                 },
+//             });
+
+//             if (!response.ok) {
+//                 throw new Error('Щось пішло не так');
+//             }
+//             const data = await response.json();
+//             console.log(data);
+//             return '';
+//         } catch (error: unknown) {
+//             if (error instanceof Error) {
+//                 console.log(error.message);
+//                 return rejectWithValue(error.message);
+//             }
+//             return null;
+//         }
+//     }
+// );
 
 export const authSlice = createSlice({
     name: 'modals',
@@ -122,10 +160,8 @@ export const authSlice = createSlice({
 
                 if (isUserRemember) {
                     localStorage.setItem('token', token);
-                    // sessionStorage.setItem('token', '');
                 } else {
                     sessionStorage.setItem('token', token);
-                    // localStorage.setItem('token', '');
                 }
             }
         );
@@ -134,6 +170,23 @@ export const authSlice = createSlice({
             (state, action: PayloadAction<unknown>) => {
                 state.loginLoading = 'failed';
                 state.loginError = action.payload;
+            }
+        );
+        builder.addCase(userLogOut.pending, (state) => {
+            state.logoutLoading = 'pending';
+            state.logoutError = null;
+        });
+        builder.addCase(userLogOut.fulfilled, (state) => {
+            state.logoutLoading = 'succeeded';
+            sessionStorage.setItem('token', '');
+            localStorage.setItem('token', '');
+            state.jwtToken = '';
+        });
+        builder.addCase(
+            userLogOut.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loginLoading = 'failed';
+                state.logoutError = action.payload;
             }
         );
     },
