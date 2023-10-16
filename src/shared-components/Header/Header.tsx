@@ -9,6 +9,7 @@ import {
     setStatusRemoveCartItemBtn,
     updateCartBody,
 } from '../../store/reducers/cartSlice';
+import { userLogOut } from '../../store/reducers/authSlice';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';
@@ -318,6 +319,17 @@ const Header = () => {
                             <use href={`${headerSprite}#profile-icon`} />
                         </svg>
                     </NavLink>
+                    {jwtToken ? (
+                        <button
+                            className="temporaty-logout"
+                            type="button"
+                            onClick={() => dispatch(userLogOut(jwtToken))}
+                        >
+                            logout
+                        </button>
+                    ) : (
+                        ''
+                    )}
                     <a href="/" aria-label="Open favorite">
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#favorite-icon`} />
