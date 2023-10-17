@@ -8,6 +8,7 @@ import {
     ShoppingCartPage,
     CheckoutPage,
     SignInPage,
+    ActivationPage,
 } from './pages';
 import './App.scss';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
@@ -52,6 +53,10 @@ const routes = [
     {
         path: '/cabinet',
         element: <div>Кабінет користувача</div>,
+    },
+    {
+        path: '/api/v1/auth/activate',
+        element: <ActivationPage />,
     },
     // {
     //     path: '/',

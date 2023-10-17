@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import nextId from 'react-id-generator';
 import InputMask from 'react-input-mask';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import ErrorMessageValidation from '../../../shared-components/Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import ShowHidePusswordBtn from '../../../shared-components/FormComponents/ShowHidePusswordBtn/ShowHidePusswordBtn';
 import formValidation from '../../../utils/formValidation';
@@ -12,6 +13,9 @@ import {
     PasswordInput,
     PhoneNumberInput,
 } from '../../../shared-components/FormComponents/Inputs';
+import { userSignInByEmail } from '../../../store/reducers/authSlice';
+import Loader from '../../../shared-components/Loader';
+import successIcon from '../../../assets/icons/auth/success_icon.svg';
 import './SignInForm.scss';
 
 interface FormValues {
@@ -28,6 +32,8 @@ interface FormValues {
 const SignInForm = () => {
     const [isRepeatedPassShow, setIsRepeatedPassShow] =
         useState<boolean>(false);
+    const signinLoading = useAppSelector((state) => state.auth.signinLoading);
+    const dispatch = useAppDispatch();
     const formik2 = useFormik({
         initialValues: {
             firstName: '',
@@ -43,6 +49,10 @@ const SignInForm = () => {
             const requiredMessage = "Це поле обов'язкове для заповнення";
             const currentDate = values.birthdate.split('.');
 
+            const currentDay = new Date().getDate();
+            const currentMonth = new Date().getMonth() + 1;
+            const currentYear = new Date().getFullYear();
+
             const validationFields = [
                 'firstName',
                 'lastName',
@@ -50,6 +60,10 @@ const SignInForm = () => {
                 'password',
                 'email',
             ];
+
+            const inputDateSummary =
+                +currentDate[0] + +currentDate[1] + +currentDate[2];
+            const currentDateSummary = currentDay + currentMonth + currentYear;
 
             validationFields.forEach((fieldName: string) => {
                 const error = formValidation(fieldName, values[fieldName]);
@@ -64,10 +78,17 @@ const SignInForm = () => {
                 } else if (+currentDate[1] > 12 || +currentDate[1] < 1) {
                     errors.birthdate = 'введіть коректний місяць народження';
                 } else if (
-                    +currentDate[2] > new Date().getFullYear() ||
+                    +currentDate[2] > currentYear ||
                     +currentDate[2] < 1900
                 ) {
                     errors.birthdate = 'введіть коректний рік народження';
+                } else if (
+                    inputDateSummary > currentDateSummary ||
+                    (+currentDate[1] > currentMonth &&
+                        +currentDate[2] >= currentYear)
+                ) {
+                    errors.birthdate =
+                        'дата народження не може бути більша за поточну';
                 }
 
                 if (!values.repeatedPassword) {
@@ -86,13 +107,34 @@ const SignInForm = () => {
             return errors;
         },
         onSubmit: (values, { resetForm }) => {
-            alert(JSON.stringify(values, null, 2));
-            resetForm();
+            const { firstName, lastName, birthdate, phone, password, email } =
+                values;
+            const reverseBirthday = birthdate
+                .split('.')
+                .reverse()
+                .toString()
+                .replaceAll(',', '-');
+            dispatch(
+                userSignInByEmail({
+                    authData: {
+                        email,
+                        password,
+                        firstName,
+                        lastName,
+                        birthday: reverseBirthday || '',
+                        phoneNumber: phone,
+                        roles: ['admin'],
+                    },
+                    resetForm,
+                })
+            );
         },
     });
     return (
         <form
-            className="signin-form"
+            className={`signin-form ${
+                signinLoading === 'pending' ? 'loading-data' : ''
+            }`}
             onSubmit={formik2.handleSubmit}
             noValidate
         >
@@ -165,7 +207,27 @@ const SignInForm = () => {
                     <span>Отримувати повідомлення про знижки та акції</span>
                 </label>
             </div>
-            <button className="signin-form__submit" type="submit">
+            {signinLoading === 'pending' ? (
+                <Loader className="signin-form__loader" />
+            ) : (
+                ''
+            )}
+            {signinLoading === 'succeeded' ? (
+                <div className="signin-form__confirmation-message">
+                    <img src={successIcon} alt="" />
+                    <span>
+                        Для активації акаунту перейдіть по посиланню на вашій
+                        електронній пошті.
+                    </span>
+                </div>
+            ) : (
+                ''
+            )}
+            <button
+                className="signin-form__submit"
+                type="submit"
+                disabled={signinLoading === 'pending'}
+            >
                 Зареєструватися
             </button>
         </form>

@@ -18,6 +18,7 @@ import { DropdownAuth } from './Auth/Auth';
 import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
+import TemporatyAdminNavPanel from './TemporatyAdminNavPanel/TemporatyAdminNavPanel';
 import './Header.scss';
 
 export type SubCategoryType = {
@@ -302,6 +303,7 @@ const Header = () => {
                         />
                     </label>
                 </div>
+                {jwtToken ? <TemporatyAdminNavPanel /> : ''}
                 <div className="header__icons">
                     <NavLink
                         to={jwtToken ? '/cabinet' : '#'}
@@ -319,7 +321,7 @@ const Header = () => {
                             <use href={`${headerSprite}#profile-icon`} />
                         </svg>
                     </NavLink>
-                    {jwtToken ? (
+                    {/* {jwtToken ? (
                         <button
                             className="temporaty-logout"
                             type="button"
@@ -329,7 +331,7 @@ const Header = () => {
                         </button>
                     ) : (
                         ''
-                    )}
+                    )} */}
                     <a href="/" aria-label="Open favorite">
                         <svg width="21" height="21">
                             <use href={`${headerSprite}#favorite-icon`} />

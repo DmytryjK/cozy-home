@@ -1,0 +1,31 @@
+.admin-panel {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 240px;
+
+    &__del-user {
+        display: flex;
+        max-width: 100%;
+        width: 100%;
+    }
+    &__user-email {
+        outline: none;
+        max-width: 100%;
+        width: 100%;
+        border: 1px solid rgb(116, 116, 116);
+        padding: 3px 10px;
+    }
+    button {
+        background-color: rgb(235, 235, 235);
+        border:none;
+        cursor: pointer;
+        border: 1px solid rgb(116, 116, 116);
+        min-height: 30px;
+        &:hover {
+            background-color: rgb(226, 226, 226);
+        }
+    }
+}

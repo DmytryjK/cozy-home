@@ -2,6 +2,17 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { FormikState } from 'formik';
 import { API_SECURE, API_BASE } from '../../utils/API_BASE';
 import { Loading, ErrorType } from '../../types/types';
+import { RootState } from '../store';
+
+type AuthData = {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    birthday?: string;
+    roles: string[];
+};
 
 type JwtPayload = {
     token: string;
@@ -14,6 +25,8 @@ interface AuthType {
     loginError: ErrorType;
     logoutLoading: Loading;
     logoutError: ErrorType;
+    signinLoading: Loading;
+    signinError: ErrorType;
 }
 
 const initialState: AuthType = {
@@ -23,6 +36,8 @@ const initialState: AuthType = {
     loginError: null,
     logoutLoading: 'idle',
     logoutError: null,
+    signinLoading: 'idle',
+    signinError: null,
 };
 
 export const userLogIn = createAsyncThunk(
@@ -109,6 +124,108 @@ export const userLogOut = createAsyncThunk(
     }
 );
 
+export const userSignInByEmail = createAsyncThunk(
+    'auth/userSignInByEmail',
+    async function (
+        {
+            authData,
+            resetForm,
+        }: {
+            authData: AuthData;
+            resetForm: (
+                nextState?:
+                    | Partial<
+                          FormikState<{
+                              firstName: string;
+                              lastName: string;
+                              birthdate: string;
+                              phone: string;
+                              password: string;
+                              repeatedPassword: string;
+                              email: string;
+                          }>
+                      >
+                    | undefined
+            ) => void;
+        },
+        { rejectWithValue }
+    ) {
+        try {
+            const response = await fetch(`${API_BASE()}auth/signup`, {
+                method: 'POST',
+                body: JSON.stringify({ ...authData }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            });
+
+            if (response.status === 400) {
+                throw new Error('Цей емейл вже зареєстрований');
+            } else if (!response.ok) {
+                throw new Error('Щось пішло не так, спробуйте ще раз');
+            }
+            resetForm();
+            return null;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
+export const userActivateEmail = createAsyncThunk(
+    'auth/userActivateEmail',
+    async function (activationToken: string, { rejectWithValue }) {
+        try {
+            const response = await fetch(
+                `${API_BASE()}auth/activate?activationToken=${activationToken}`
+            );
+
+            if (!response.ok) {
+                throw new Error('Щось пішло не так');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
+export const temporaryDelUser = createAsyncThunk(
+    'auth/temporaryDelUser',
+    async function (
+        { email, jwt }: { email: string; jwt: string },
+        { rejectWithValue }
+    ) {
+        try {
+            const response = await fetch(`${API_BASE()}auth/delete-account`, {
+                method: 'POST',
+                body: JSON.stringify({ email }),
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Щось пішло не так');
+            }
+            return '';
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
 // export const fetchUserProfileInfo = createAsyncThunk(
 //     'auth/fetchUserProfileInfo',
 //     async function (jwt: string, { rejectWithValue }) {
@@ -172,6 +289,7 @@ export const authSlice = createSlice({
                 state.loginError = action.payload;
             }
         );
+
         builder.addCase(userLogOut.pending, (state) => {
             state.logoutLoading = 'pending';
             state.logoutError = null;
@@ -189,6 +307,49 @@ export const authSlice = createSlice({
                 state.logoutError = action.payload;
             }
         );
+
+        builder.addCase(userSignInByEmail.pending, (state) => {
+            state.signinLoading = 'pending';
+            state.signinError = null;
+        });
+        builder.addCase(userSignInByEmail.fulfilled, (state) => {
+            state.signinLoading = 'succeeded';
+        });
+        builder.addCase(
+            userSignInByEmail.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.signinLoading = 'failed';
+                state.signinError = action.payload;
+            }
+        );
+
+        builder.addCase(userActivateEmail.pending, (state) => {
+            state.signinLoading = 'pending';
+            state.signinError = null;
+        });
+        builder.addCase(
+            userActivateEmail.fulfilled,
+            (state, action: PayloadAction<{ token: string }>) => {
+                state.signinLoading = 'succeeded';
+                state.jwtToken = action.payload.token;
+                sessionStorage.setItem('token', action.payload.token);
+            }
+        );
+        builder.addCase(
+            userActivateEmail.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.signinLoading = 'failed';
+                state.signinError = action.payload;
+            }
+        );
+
+        builder.addCase(temporaryDelUser.pending, (state) => {});
+        builder.addCase(temporaryDelUser.fulfilled, (state) => {
+            state.jwtToken = '';
+            sessionStorage.setItem('token', '');
+            localStorage.setItem('token', '');
+        });
+        builder.addCase(temporaryDelUser.rejected, (state) => {});
     },
 });
 
