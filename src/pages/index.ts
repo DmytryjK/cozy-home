@@ -5,6 +5,7 @@ import ProductPage from './ProductPage/ProductPage';
 import ShoppingCartPage from './ShoppingCartPage/ShoppingCartPage';
 import CheckoutPage from './CheckoutPage/CheckoutPage';
 import SignInPage from './SignInPage/SignInPage';
+import ActivationPage from './ActivationPage/ActivationPage';
 
 export {
     MainPage,
@@ -14,4 +15,5 @@ export {
     ShoppingCartPage,
     CheckoutPage,
     SignInPage,
+    ActivationPage,
 };

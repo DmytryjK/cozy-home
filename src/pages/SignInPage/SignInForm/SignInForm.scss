@@ -1,9 +1,14 @@
 @use '../../../style/variables.scss' as *;
 
 .signin-form {
+    position: relative;
     margin-top: 40px;
     max-width: 500px;
     width: 100%;
+    &.loading-data {
+        user-select: none;
+        pointer-events: none;
+    }
     &__wrapper {
         margin-top: 20px;
         &_checkbox {
@@ -124,6 +129,37 @@
             background: url('../../../assets/icons/auth/show-hide-pass.svg') center center/contain no-repeat;
             width: 16px;
             height: 16px;
+        }
+    }
+
+    &__confirmation-message {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+        margin-top: 30px;
+        padding: 20px 20px;
+        color: $dark-color;
+        font-size: 15px;
+        font-weight: 500;
+        background: $filter-background;
+        border-radius: 3px;
+
+        img {
+            margin-top: 3px;
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &__loader {
+        position: absolute;
+        top: 0;
+        bottom: 100px;
+        height: auto !important;
+        backdrop-filter: blur(1px);
+        img {
+            width: 45px; 
+            height: 45px;
         }
     }
 }

@@ -1,0 +1,22 @@
+@use '../../../style/variables.scss' as *;
+.auth-success {
+    margin-top: 42px;
+    margin-bottom: 30px;
+    &__top-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    &__title {
+        color: $grey;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    &__subtitle {
+        margin-top: 12px;
+        color: $light-grey;
+        font-size: 14px;
+        font-weight: 500;
+    }
+}
