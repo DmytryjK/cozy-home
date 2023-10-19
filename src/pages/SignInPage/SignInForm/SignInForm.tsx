@@ -32,7 +32,10 @@ interface FormValues {
 const SignInForm = () => {
     const [isRepeatedPassShow, setIsRepeatedPassShow] =
         useState<boolean>(false);
-    const signinLoading = useAppSelector((state) => state.auth.signinLoading);
+    const emailLinksLoading = useAppSelector(
+        (state) => state.auth.emailLinksLoading
+    );
+
     const dispatch = useAppDispatch();
     const formik2 = useFormik({
         initialValues: {
@@ -133,7 +136,7 @@ const SignInForm = () => {
     return (
         <form
             className={`signin-form ${
-                signinLoading === 'pending' ? 'loading-data' : ''
+                emailLinksLoading === 'pending' ? 'loading-data' : ''
             }`}
             onSubmit={formik2.handleSubmit}
             noValidate
@@ -207,12 +210,12 @@ const SignInForm = () => {
                     <span>Отримувати повідомлення про знижки та акції</span>
                 </label>
             </div>
-            {signinLoading === 'pending' ? (
+            {emailLinksLoading === 'pending' ? (
                 <Loader className="signin-form__loader" />
             ) : (
                 ''
             )}
-            {signinLoading === 'succeeded' ? (
+            {emailLinksLoading === 'succeeded' ? (
                 <div className="signin-form__confirmation-message">
                     <img src={successIcon} alt="" />
                     <span>
@@ -226,7 +229,7 @@ const SignInForm = () => {
             <button
                 className="signin-form__submit"
                 type="submit"
-                disabled={signinLoading === 'pending'}
+                disabled={emailLinksLoading === 'pending'}
             >
                 Зареєструватися
             </button>

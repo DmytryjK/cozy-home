@@ -4,15 +4,23 @@ import ShowHidePusswordBtn from '../ShowHidePusswordBtn/ShowHidePusswordBtn';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import './PasswordInput.scss';
 
-const PasswordInput = ({ formik }: { formik: any }) => {
+const PasswordInput = ({
+    formik,
+    isLabelShow,
+    additionalClassName,
+}: {
+    formik: any;
+    isLabelShow?: boolean;
+    additionalClassName?: string;
+}) => {
     const [isPassShow, setIsPassShow] = useState<boolean>(false);
     return (
         <div className="password">
             <label className="password__label">
-                <span>Пароль*</span>
+                {isLabelShow ? <span>Пароль*</span> : ''}
                 <span className="password__input-wrapper">
                     <input
-                        className="password__input"
+                        className={`password__input ${additionalClassName}`}
                         id={nextId('password')}
                         name="password"
                         onChange={formik.handleChange}
@@ -34,6 +42,11 @@ const PasswordInput = ({ formik }: { formik: any }) => {
             ) : null}
         </div>
     );
+};
+
+PasswordInput.defaultProps = {
+    isLabelShow: true,
+    additionalClassName: '',
 };
 
 export default PasswordInput;

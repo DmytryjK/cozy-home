@@ -1,5 +1,3 @@
-import React from 'react';
-import nextId from 'react-id-generator';
 import {
     MainPage,
     CatalogPage,
@@ -9,6 +7,7 @@ import {
     CheckoutPage,
     SignInPage,
     ActivationPage,
+    ResetPasswordPage,
 } from './pages';
 import './App.scss';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
@@ -58,15 +57,10 @@ const routes = [
         path: '/api/v1/auth/activate',
         element: <ActivationPage />,
     },
-    // {
-    //     path: '/',
-    //     element: [
-    //         <ProductPage key={nextId('page-item')} />,
-    //         <CatalogPage key={nextId('page-item')} />,
-    //         <CategoryPage key={nextId('page-item')} />,
-    //         <MainPage key={nextId('page-item')} />,
-    //     ],
-    // },
+    {
+        path: '/api/v1/auth/login/reset',
+        element: <ResetPasswordPage />,
+    },
 ];
 
 export default routes;
