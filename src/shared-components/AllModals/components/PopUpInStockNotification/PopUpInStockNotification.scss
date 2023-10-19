@@ -16,29 +16,16 @@
             justify-content: space-between;
             gap: 20px;
         }
-        &__name, &__phone {
-            padding: 12px 20px;
-            color: $dark-color;
-            font-size: 14px;
-            font-weight: 500;
-            max-width: 400px;
-            width: 100%;
-            border-radius: 3px;
-            background-color: $filter-background;
-            border: 1px solid transparent;
-            outline: none;
-            transition: 0.2s ease-out border;
-            &::placeholder {
-                color: $light-grey;
-            }
-            &:focus {
-                border: 1px solid $light-grey;
-            }
+
+        .firstName, .phone-number {
+            width: 50%;
         }
+
         &__comment-wrapper {
             position: relative;
             padding-bottom: 18px;
         }
+
         &__comment {
             position: relative;
             margin-top: 20px;
@@ -127,6 +114,9 @@
             }
             &__comment {
                 max-height: 120px;
+            }
+            .firstName, .phone-number {
+                width: 100%;
             }
         }
     }

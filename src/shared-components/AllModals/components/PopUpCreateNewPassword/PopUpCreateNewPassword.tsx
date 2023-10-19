@@ -31,7 +31,7 @@ const PopUpCreateNewPassword = () => {
     const [isPasswordLoadetToServer, setIsPasswordLoadetToServer] =
         useState<boolean>(false);
 
-    const formik7 = useFormik({
+    const formik9 = useFormik({
         initialValues: {
             password: '',
         },
@@ -76,13 +76,13 @@ const PopUpCreateNewPassword = () => {
 
     useEffect(() => {
         if (isPopUpOpen === false && newPasswordLoading !== 'pending') {
-            formik7.resetForm();
+            formik9.resetForm();
         }
     }, [isPopUpOpen]);
 
     useEffect(() => {
         if (newPasswordError && typeof newPasswordError === 'string') {
-            formik7.setErrors({
+            formik9.setErrors({
                 password: newPasswordError,
             });
         }
@@ -109,15 +109,15 @@ const PopUpCreateNewPassword = () => {
             <h1 className="create-password__title">Введіть новий пароль</h1>
 
             <form
-                onSubmit={formik7.handleSubmit}
+                onSubmit={formik9.handleSubmit}
                 noValidate
                 className="create-password__form"
             >
                 <PasswordInput
-                    formik={formik7}
+                    formik={formik9}
                     isLabelShow={false}
                     additionalClassName={`${
-                        formik7.errors.password && formik7.touched.password
+                        formik9.errors.password && formik9.touched.password
                             ? 'create-password__incorrect-password'
                             : ''
                     }`}

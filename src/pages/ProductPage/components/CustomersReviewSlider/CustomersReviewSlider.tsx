@@ -53,7 +53,7 @@ const CustomersReviewSlider = () => {
         setRating(selectedRating);
     };
 
-    const formik6 = useFormik({
+    const formik7 = useFormik({
         initialValues: {
             firstName: '',
             email: '',
@@ -240,30 +240,30 @@ const CustomersReviewSlider = () => {
                     </div>
                     <form
                         className="customers-review__modal_form modal-form"
-                        onSubmit={formik6.handleSubmit}
+                        onSubmit={formik7.handleSubmit}
                         noValidate
                     >
                         <div className="customers-review__modal_inputs">
                             <FirstNameInput
-                                formik={formik6}
+                                formik={formik7}
                                 additionalClassName={`${
-                                    formik6.errors.firstName &&
-                                    formik6.touched.firstName
+                                    formik7.errors.firstName &&
+                                    formik7.touched.firstName
                                         ? 'inputErrorValidation'
                                         : ''
                                 }`}
                             />
                             <EmailInput
-                                formik={formik6}
+                                formik={formik7}
                                 additionalClassName={`${
-                                    formik6.errors.email &&
-                                    formik6.touched.email
+                                    formik7.errors.email &&
+                                    formik7.touched.email
                                         ? 'inputErrorValidation'
                                         : ''
                                 }`}
                             />
                         </div>
-                        <CommentTextarea formik={formik6} />
+                        <CommentTextarea formik={formik7} />
                         <button
                             className="customers-review__modal_button"
                             type="submit"
