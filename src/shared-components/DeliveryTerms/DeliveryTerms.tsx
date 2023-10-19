@@ -4,8 +4,8 @@ const DeliveryTerms = ({ extraClass }: { extraClass?: string }) => {
     return (
         <div className={`delivery-terms ${extraClass}`}>
             <b className="delivery-terms__main">Оплата:</b> <br />
-            При отриманні накладеним платежем <b>(вся Україна)</b>
-            або готівкою кур'єру <b>(Київ)</b>
+            При отриманні накладеним платежем <b>(вся Україна)</b> або готівкою
+            кур'єру <b>(Київ)</b>
             <br /> На банківську карту (передоплата)
             <br /> На розрахунковий рахунок (передоплата)
             <br />
