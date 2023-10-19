@@ -21,7 +21,7 @@ const RegularCustomerAuth = (props: Props) => {
     const { setResetPasswordActive, setRegularLoggedIn } = props;
     const [isPasswordHide, setIsPasswordHide] = useState<boolean>(true);
 
-    const formik5 = useFormik({
+    const formik6 = useFormik({
         initialValues: {
             password: '',
             email: '',
@@ -51,11 +51,11 @@ const RegularCustomerAuth = (props: Props) => {
             <div className="regular-customer__form">
                 <form
                     className="customer-form"
-                    onSubmit={formik5.handleSubmit}
+                    onSubmit={formik6.handleSubmit}
                     noValidate
                 >
-                    <EmailInput formik={formik5} />
-                    <PasswordInput formik={formik5} />
+                    <EmailInput formik={formik6} />
+                    <PasswordInput formik={formik6} />
                     <div className="regular-customer__form_footer">
                         <button
                             type="button"

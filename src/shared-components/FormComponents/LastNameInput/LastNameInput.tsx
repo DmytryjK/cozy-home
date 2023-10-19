@@ -2,11 +2,17 @@ import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import './LastNameInput.scss';
 
-const LastNameInput = ({ formik }: { formik: any }) => {
+const LastNameInput = ({
+    formik,
+    isLabelShow,
+}: {
+    formik: any;
+    isLabelShow?: boolean;
+}) => {
     return (
         <div className="lastName">
             <label className="lastName__label">
-                <span>Ваше прізвище*</span>
+                {isLabelShow ? <span>Ваше прізвище*</span> : ''}
                 <input
                     className="lastName__input"
                     id={nextId('last-name')}
@@ -24,6 +30,10 @@ const LastNameInput = ({ formik }: { formik: any }) => {
             ) : null}
         </div>
     );
+};
+
+LastNameInput.defaultProps = {
+    isLabelShow: true,
 };
 
 export default LastNameInput;

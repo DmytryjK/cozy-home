@@ -29,7 +29,7 @@ const PopUpForgottenPassword = () => {
     const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
         useState<boolean>(true);
 
-    const formik6 = useFormik({
+    const formik8 = useFormik({
         initialValues: {
             email: '',
         },
@@ -69,13 +69,13 @@ const PopUpForgottenPassword = () => {
             isNotificationPopUpShow === false &&
             emailLinksLoading !== 'pending'
         ) {
-            formik6.resetForm();
+            formik8.resetForm();
         }
     }, [isNotificationPopUpShow]);
 
     useEffect(() => {
         if (emailLinksError && typeof emailLinksError === 'string') {
-            formik6.setErrors({
+            formik8.setErrors({
                 email: emailLinksError,
             });
         }
@@ -105,17 +105,17 @@ const PopUpForgottenPassword = () => {
                 </h1>
 
                 <form
-                    onSubmit={formik6.handleSubmit}
+                    onSubmit={formik8.handleSubmit}
                     noValidate
                     className="forgotten-password__modal-form modal-form"
                 >
                     <div className="forgotten-password__sign-in-wrapper">
                         <EmailInput
-                            formik={formik6}
+                            formik={formik8}
                             required
                             isLabelShow={false}
                             additionalClassName={`${
-                                formik6.errors.email && formik6.touched.email
+                                formik8.errors.email && formik8.touched.email
                                     ? 'forgotten-password__sign-in-input--error'
                                     : ''
                             }`}

@@ -1,8 +1,21 @@
 import { useEffect, useState } from 'react';
-import Modal from '../../../Modal/Modal';
+import { useFormik, FormikErrors } from 'formik';
 import { openPopUpNotification } from '../../../../store/reducers/modalsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import {
+    FirstNameInput,
+    PhoneNumberInput,
+} from '../../../FormComponents/Inputs';
+import formValidation from '../../../../utils/formValidation';
+import Modal from '../../../Modal/Modal';
 import './PopUpInStockNotification.scss';
+
+type FormValues = {
+    [key: string]: string;
+    firstName: string;
+    phone: string;
+    comment: string;
+};
 
 const PopUpInStockNotification = () => {
     const MAX_QUANTITY_OF_CHARS = 300;
@@ -38,6 +51,40 @@ const PopUpInStockNotification = () => {
         }
     }, [currentTextAtCommentField]);
 
+    const formik10 = useFormik({
+        initialValues: {
+            firstName: '',
+            phone: '',
+            comment: '',
+        },
+        validate: (values: FormValues) => {
+            const errors: FormikErrors<FormValues> = {};
+
+            const validationFields = ['firstName', 'phone'];
+
+            validationFields.forEach((fieldName: string) => {
+                const error = formValidation(fieldName, values[fieldName]);
+                if (error) {
+                    errors[fieldName] = error;
+                }
+            });
+
+            return errors;
+        },
+        onSubmit: (values, { resetForm }) => {
+            setIsSubmitedFormNotification(true);
+            alert(JSON.stringify(values, null, 2));
+            resetForm();
+        },
+    });
+
+    useEffect(() => {
+        if (isNotificationPopUpShow === false || isPopUpOpenStore === false) {
+            formik10.resetForm();
+            setCurrentTextAtCommentField('');
+        }
+    }, [isNotificationPopUpShow, isPopUpOpenStore]);
+
     return (
         <Modal
             active={isNotificationPopUpShow}
@@ -53,33 +100,29 @@ const PopUpInStockNotification = () => {
                 </h2>
                 <form
                     className="inStock-window__form inStock-form"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        setIsSubmitedFormNotification(true);
-                    }}
+                    onSubmit={formik10.handleSubmit}
+                    noValidate
                 >
                     <div className="inStock-form__inputs-wrapper">
-                        <input
-                            className="inStock-form__name"
-                            type="text"
+                        <FirstNameInput
+                            formik={formik10}
+                            isLabelShow={false}
                             placeholder="Ваше ім’я*"
-                            required
                         />
-                        <input
-                            className="inStock-form__phone"
-                            type="text"
+                        <PhoneNumberInput
+                            formik={formik10}
+                            isLabelShow={false}
                             placeholder="Номер телефона*"
-                            required
                         />
                     </div>
                     <div className="inStock-form__comment-wrapper">
                         <textarea
                             className="inStock-form__comment"
                             id="inStock-form__comment"
-                            name="comments"
+                            name="comment"
                             cols={30}
                             rows={10}
-                            value={currentTextAtCommentField}
+                            value={formik10.values.comment}
                             maxLength={MAX_QUANTITY_OF_CHARS}
                             onChange={(e) => {
                                 if (
@@ -89,6 +132,7 @@ const PopUpInStockNotification = () => {
                                     setCurrentTextAtCommentField(
                                         e.target.value
                                     );
+                                    formik10.handleChange(e);
                                 } else {
                                     setCurrentTextAtCommentField(
                                         e.target.value.slice(
