@@ -6,6 +6,7 @@ import ShoppingCartPage from './ShoppingCartPage/ShoppingCartPage';
 import CheckoutPage from './CheckoutPage/CheckoutPage';
 import SignInPage from './SignInPage/SignInPage';
 import ActivationPage from './ActivationPage/ActivationPage';
+import ResetPasswordPage from './ResetPasswordPage/ResetPasswordPage';
 
 export {
     MainPage,
@@ -16,4 +17,5 @@ export {
     CheckoutPage,
     SignInPage,
     ActivationPage,
+    ResetPasswordPage,
 };

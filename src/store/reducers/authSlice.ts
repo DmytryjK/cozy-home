@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { FormikState } from 'formik';
 import { API_SECURE, API_BASE } from '../../utils/API_BASE';
 import { Loading, ErrorType } from '../../types/types';
-import { RootState } from '../store';
 
 type AuthData = {
     email: string;
@@ -27,6 +26,10 @@ interface AuthType {
     logoutError: ErrorType;
     signinLoading: Loading;
     signinError: ErrorType;
+    newPasswordLoading: Loading;
+    newPasswordError: ErrorType;
+    emailLinksLoading: Loading;
+    emailLinksError: ErrorType;
 }
 
 const initialState: AuthType = {
@@ -38,6 +41,10 @@ const initialState: AuthType = {
     logoutError: null,
     signinLoading: 'idle',
     signinError: null,
+    newPasswordLoading: 'idle',
+    newPasswordError: null,
+    emailLinksLoading: 'idle',
+    emailLinksError: null,
 };
 
 export const userLogIn = createAsyncThunk(
@@ -197,6 +204,88 @@ export const userActivateEmail = createAsyncThunk(
     }
 );
 
+export const userForgotPasswordRequest = createAsyncThunk(
+    'auth/userForgotPasswordRequest',
+    async function (email: string, { rejectWithValue }) {
+        try {
+            const response = await fetch(`${API_BASE()}auth/login/forgot`, {
+                method: 'POST',
+                body: JSON.stringify({ email }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            });
+
+            if (response.status === 404) {
+                throw new Error('Такий емейл не зареєстрований');
+            } else if (!response.ok) {
+                throw new Error('Щось пішло не так');
+            }
+
+            return '';
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
+export const userResetPassword = createAsyncThunk(
+    'auth/userResetPassword',
+    async function (
+        {
+            resetPasswordToken,
+            password,
+            resetForm,
+        }: {
+            resetPasswordToken: string;
+            password: string;
+            resetForm: (
+                nextState?:
+                    | Partial<
+                          FormikState<{
+                              email: string;
+                              password: string;
+                              isUserRemember: boolean;
+                          }>
+                      >
+                    | undefined
+            ) => void;
+        },
+        { rejectWithValue }
+    ) {
+        try {
+            const response = await fetch(
+                `${API_BASE()}auth/login/reset?resetPasswordToken=${resetPasswordToken}`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ password }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            );
+            if (response.status === 404) {
+                throw new Error(
+                    'Посилання недійсне, спробуйте відправити запит ще раз'
+                );
+            } else if (!response.ok) {
+                throw new Error('Щось пішло не так');
+            }
+            resetForm();
+            const data = await response.json();
+            return data;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
 export const temporaryDelUser = createAsyncThunk(
     'auth/temporaryDelUser',
     async function (
@@ -212,7 +301,6 @@ export const temporaryDelUser = createAsyncThunk(
                     'Content-type': 'application/json; charset=UTF-8',
                 },
             });
-
             if (!response.ok) {
                 throw new Error('Щось пішло не так');
             }
@@ -309,17 +397,17 @@ export const authSlice = createSlice({
         );
 
         builder.addCase(userSignInByEmail.pending, (state) => {
-            state.signinLoading = 'pending';
-            state.signinError = null;
+            state.emailLinksLoading = 'pending';
+            state.emailLinksError = null;
         });
         builder.addCase(userSignInByEmail.fulfilled, (state) => {
-            state.signinLoading = 'succeeded';
+            state.emailLinksLoading = 'succeeded';
         });
         builder.addCase(
             userSignInByEmail.rejected,
             (state, action: PayloadAction<unknown>) => {
-                state.signinLoading = 'failed';
-                state.signinError = action.payload;
+                state.emailLinksLoading = 'failed';
+                state.emailLinksError = action.payload;
             }
         );
 
@@ -340,6 +428,41 @@ export const authSlice = createSlice({
             (state, action: PayloadAction<unknown>) => {
                 state.signinLoading = 'failed';
                 state.signinError = action.payload;
+            }
+        );
+
+        builder.addCase(userForgotPasswordRequest.pending, (state) => {
+            state.emailLinksLoading = 'pending';
+            state.emailLinksError = null;
+        });
+        builder.addCase(userForgotPasswordRequest.fulfilled, (state) => {
+            state.emailLinksLoading = 'succeeded';
+        });
+        builder.addCase(
+            userForgotPasswordRequest.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.emailLinksLoading = 'failed';
+                state.emailLinksError = action.payload;
+            }
+        );
+
+        builder.addCase(userResetPassword.pending, (state) => {
+            state.newPasswordLoading = 'pending';
+            state.newPasswordError = null;
+        });
+        builder.addCase(
+            userResetPassword.fulfilled,
+            (state, action: PayloadAction<{ token: string }>) => {
+                state.newPasswordLoading = 'succeeded';
+                state.jwtToken = action.payload.token;
+                sessionStorage.setItem('token', action.payload.token);
+            }
+        );
+        builder.addCase(
+            userResetPassword.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.newPasswordLoading = 'failed';
+                state.newPasswordError = action.payload;
             }
         );
 

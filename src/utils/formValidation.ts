@@ -58,7 +58,10 @@ const formValidation = (fieldName: string, fieldValue: string) => {
         if (!fieldValue) {
             error = requiredMessage;
         } else if (
-            !/^(?=.{0,64}@(\S))[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{1,})(\S[a-zA-Z0-9_])$/i.test(
+            // !/^(?=.{0,64}@(\S))[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{1,})(\S[a-zA-Z0-9_])$/i.test(
+            //     fieldValue
+            // )
+            !/^(?=.{0,64}@(\S))[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]{1,})$/i.test(
                 fieldValue
             )
         ) {

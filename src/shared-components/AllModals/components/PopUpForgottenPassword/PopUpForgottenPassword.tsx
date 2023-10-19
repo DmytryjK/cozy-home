@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { FormikErrors, useFormik } from 'formik';
-import nextId from 'react-id-generator';
 import Modal from '../../../Modal/Modal';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
+import { userForgotPasswordRequest } from '../../../../store/reducers/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import formValidation from '../../../../utils/formValidation';
+import { EmailInput } from '../../../FormComponents/Inputs';
+import Loader from '../../../Loader';
 import './PopUpForgottenPassword.scss';
-import ErrorMessageValidation from '../../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 
 interface FormValues {
+    [key: string]: string;
     email: string;
 }
 
@@ -16,11 +19,40 @@ const PopUpForgottenPassword = () => {
     const isPopUpForgottenPAsswordOpen = useAppSelector(
         (state) => state.modals.isPasswordForgotten
     );
+
+    const { emailLinksError, emailLinksLoading } = useAppSelector(
+        (state) => state.auth
+    );
     const [isNotificationPopUpShow, setIsNotificationPopUpShow] =
         useState<boolean>(isPopUpForgottenPAsswordOpen);
 
     const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
-        useState<boolean>(false);
+        useState<boolean>(true);
+
+    const formik6 = useFormik({
+        initialValues: {
+            email: '',
+        },
+        validate: (values: FormValues) => {
+            const errors: FormikErrors<FormValues> = {};
+            const fields = ['email'];
+
+            fields.forEach((fieldName: string) => {
+                const error = formValidation(fieldName, values[fieldName]);
+                if (error) {
+                    errors[fieldName] = error;
+                }
+            });
+
+            if (isNotificationPopUpShow === false) {
+                delete errors.email;
+            }
+            return errors;
+        },
+        onSubmit: (values) => {
+            dispatch(userForgotPasswordRequest(values.email));
+        },
+    });
 
     useEffect(() => {
         if (isPopUpForgottenPAsswordOpen === isNotificationPopUpShow) return;
@@ -32,45 +64,28 @@ const PopUpForgottenPassword = () => {
         dispatch(openPopUpForgottenPassword(isNotificationPopUpShow));
     }, [isNotificationPopUpShow]);
 
-    // const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
-    const [notRegisteredError, setNotRegisteredError] =
-        useState<boolean>(false);
+    useEffect(() => {
+        if (
+            isNotificationPopUpShow === false &&
+            emailLinksLoading !== 'pending'
+        ) {
+            formik6.resetForm();
+        }
+    }, [isNotificationPopUpShow]);
 
-    const formik6 = useFormik({
-        initialValues: {
-            email: '',
-        },
-        validate: (values: FormValues) => {
-            const errors: FormikErrors<FormValues> = {};
-            const requiredMessage = "Це поле обов'язкове для заповнення";
+    useEffect(() => {
+        if (emailLinksError && typeof emailLinksError === 'string') {
+            formik6.setErrors({
+                email: emailLinksError,
+            });
+        }
+    }, [emailLinksError]);
 
-            if (!values.email) {
-                errors.email = requiredMessage;
-            } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-            ) {
-                errors.email =
-                    'Введіть коректний емейл, наприклад example@domain.com';
-            }
-
-            if (notRegisteredError) {
-                errors.email = 'Даний email не зареєстрований';
-            }
-
-            return errors;
-        },
-        onSubmit: () => {
+    useEffect(() => {
+        if (emailLinksLoading === 'succeeded') {
             setIsSubmitedFormNotification(true);
-        },
-    });
-
-    // useEffect(() => {
-    //     if (formik6.errors.email && formik6.touched.email) {
-    //         setIsEmailWrong(true);
-    //     } else {
-    //         setIsEmailWrong(false);
-    //     }
-    // }, [formik6.errors.email, formik6.touched]);
+        }
+    }, [emailLinksLoading]);
 
     return (
         <div className="forgotten-password__modal">
@@ -80,8 +95,9 @@ const PopUpForgottenPassword = () => {
                 isDataLoadedToServer={isSubmitedFormNotification}
                 setisDataLoadedToServer={setIsSubmitedFormNotification}
                 isSubmitedText="Готово!"
-                isSubmitedSubText="Лист із новим паролем вже у Вас на пошті."
+                isSubmitedSubText="Лист з посиланням на відновлення паролю вже у Вас на пошті."
                 maxwidth="500px"
+                minHeight="334px"
                 minHeightOnSubmit="100px"
             >
                 <h1 className="forgotten-password__modal-title">
@@ -94,33 +110,26 @@ const PopUpForgottenPassword = () => {
                     className="forgotten-password__modal-form modal-form"
                 >
                     <div className="forgotten-password__sign-in-wrapper">
-                        <label className="forgotten-password__sign-in-label">
-                            <input
-                                className={`forgotten-password__sign-in-input forgotten-password__sign-in-email-input 
-                                    ${
-                                        formik6.errors.email
-                                            ? 'forgotten-password__sign-in-input--error'
-                                            : ''
-                                    }`}
-                                id={nextId('email')}
-                                name="email"
-                                onChange={formik6.handleChange}
-                                onBlur={formik6.handleBlur}
-                                value={formik6.values.email}
-                                type="email"
-                                placeholder="Ваш Email*"
-                                required
-                            />
-                        </label>
-                        {formik6.touched.email && formik6.errors.email ? (
-                            <ErrorMessageValidation
-                                message={formik6.errors.email}
-                            />
-                        ) : null}
+                        <EmailInput
+                            formik={formik6}
+                            required
+                            isLabelShow={false}
+                            additionalClassName={`${
+                                formik6.errors.email && formik6.touched.email
+                                    ? 'forgotten-password__sign-in-input--error'
+                                    : ''
+                            }`}
+                        />
                     </div>
+                    {emailLinksLoading === 'pending' ? (
+                        <Loader className="forgotten-password__loader" />
+                    ) : (
+                        ''
+                    )}
                     <button
                         className="forgotten-password__sign-in-submit"
                         type="submit"
+                        disabled={emailLinksLoading === 'pending'}
                     >
                         Відправити
                     </button>

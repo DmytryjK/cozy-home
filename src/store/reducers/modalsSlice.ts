@@ -4,12 +4,14 @@ interface ModalsType {
     isPopUpNotificationOpen: boolean;
     isPopUpCartOpen: boolean;
     isPasswordForgotten: boolean;
+    isCreateNewPasswordOpen: boolean;
 }
 
 const initialState: ModalsType = {
     isPopUpNotificationOpen: false,
     isPopUpCartOpen: false,
     isPasswordForgotten: false,
+    isCreateNewPasswordOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -25,11 +27,15 @@ export const modalsSlice = createSlice({
         openPopUpForgottenPassword(state, action: PayloadAction<boolean>) {
             state.isPasswordForgotten = action.payload;
         },
+        openPopUpCreateNewPassword(state, action: PayloadAction<boolean>) {
+            state.isCreateNewPasswordOpen = action.payload;
+        },
     },
 });
 export const {
     openPopUpCart,
     openPopUpNotification,
     openPopUpForgottenPassword,
+    openPopUpCreateNewPassword,
 } = modalsSlice.actions;
 export default modalsSlice.reducer;

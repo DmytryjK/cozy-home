@@ -14,6 +14,7 @@ type Props = {
     minHeightOnSubmit?: string;
     display?: string;
     background?: string;
+    minHeight?: string;
 };
 
 const Modal = ({
@@ -28,6 +29,7 @@ const Modal = ({
     display,
     background,
     minHeightOnSubmit,
+    minHeight,
 }: Props) => {
     useEffect(() => {
         if (active) return undefined;
@@ -61,7 +63,7 @@ const Modal = ({
         >
             <div
                 className="modal__content"
-                style={{ maxWidth: maxwidth, display, background }}
+                style={{ maxWidth: maxwidth, display, background, minHeight }}
                 onMouseDown={(e) => {
                     e.stopPropagation();
                 }}
@@ -128,6 +130,7 @@ Modal.defaultProps = {
     display: 'block',
     background: '#fff',
     minHeightOnSubmit: '400px',
+    minHeight: '400px',
 };
 
 export default Modal;
