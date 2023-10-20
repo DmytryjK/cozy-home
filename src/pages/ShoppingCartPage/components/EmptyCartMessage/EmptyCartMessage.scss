@@ -1,11 +1,10 @@
 @use '../../../../style/variables.scss' as *;
 
 .cart-empty {
-    padding: 40px 0;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    min-height: calc(100vh - 650px);
+    min-height: calc(100vh - 632px);
     height: 100%;
     &__content {
         display: flex;
@@ -26,5 +25,11 @@
         text-decoration-line: underline;
         text-decoration-skip-ink: none;
         text-underline-offset: 3px;
+    }
+}
+
+@media (max-width: 767px) {
+    .cart-empty {
+        min-height: calc(100vh - 332px);
     }
 }
