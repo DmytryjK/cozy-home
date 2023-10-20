@@ -9,7 +9,6 @@ import {
     ActivationPage,
     ResetPasswordPage,
 } from './pages';
-import './App.scss';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
 
 const routes = [

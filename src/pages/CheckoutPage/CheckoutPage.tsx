@@ -1,5 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { useAppSelector } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart';
 import ResetPassword from './components/ResetPassword/ResetPassword';
@@ -28,6 +30,15 @@ const CheckoutPage = () => {
     const [regularLoggedIn, setRegularLoggedIn] = useState(false);
     const [selectedDeliveryOption, setSelectedDeliveryOption] =
         useState<string>('postal-delivery');
+    const navigate = useNavigate();
+    const cartTotal = useAppSelector((state) => state.cart.cartTotal);
+
+    useEffect(() => {
+        if (!cartTotal) return;
+        if (cartTotal.totalQuantityToCheckout === 0) {
+            navigate(-1);
+        }
+    }, [cartTotal]);
 
     const handleCustomerClick = (isRegular: boolean) => {
         setFirstStepActive(true);

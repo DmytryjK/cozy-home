@@ -169,6 +169,7 @@ const Header = () => {
                 price,
                 priceWithDiscount,
                 colorName,
+                availableProductQuantity,
             } = item;
             let localItemQuantity = 1;
             if (
@@ -199,7 +200,9 @@ const Header = () => {
                 colorHex,
                 colorName,
                 price: priceWithDiscount || price,
-                quantityToCheckout: 1,
+                quantityToCheckout: availableProductQuantity
+                    ? 1
+                    : availableProductQuantity,
             };
         });
         dispatch(addProductsInfoToCheckout(checkoutProducts));

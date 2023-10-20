@@ -119,7 +119,10 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                             </span>
                                         )}{' '}
                                         <span className="product-item__price-divider">
-                                            x {totalQuantity || 1}
+                                            x{' '}
+                                            {totalQuantity === null
+                                                ? 1
+                                                : totalQuantity}
                                         </span>
                                     </div>
                                     {priceWithDiscount ? (

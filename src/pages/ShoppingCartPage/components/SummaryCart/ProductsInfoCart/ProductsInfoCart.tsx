@@ -5,7 +5,8 @@ import { updateCartTotal } from '../../../../../store/reducers/cartSlice';
 import pluralizeUkrainian from '../../../../../helpers/pluralizeUkrainian';
 
 const ProductsInfoCart = () => {
-    const [totalQuantity, setTotalQuantity] = useState<number>(0);
+    const [totalCheckoutQuantity, setTotalCheckoutQuantity] =
+        useState<number>(0);
     const [totalCost, setTotalCost] = useState<number>(0);
     const productsInfoToCheckout = useAppSelector(
         (state) => state.cart.productsInfoToCheckout
@@ -15,14 +16,25 @@ const ProductsInfoCart = () => {
     useEffect(() => {
         let quantity = 0;
         let cost = 0;
+        let checkoutQuantity = 0;
+
         productsInfoToCheckout.forEach((item) => {
             const { price, quantityToCheckout } = item;
-            quantity += quantityToCheckout;
+            quantity += quantityToCheckout || 1;
+
+            if (quantityToCheckout === 0) return;
+            checkoutQuantity += quantityToCheckout;
             cost += price;
         });
-        setTotalQuantity(quantity);
+        setTotalCheckoutQuantity(checkoutQuantity);
         setTotalCost(cost);
-        dispatch(updateCartTotal({ totalQuantity: quantity, totalCost: cost }));
+        dispatch(
+            updateCartTotal({
+                totalQuantity: quantity,
+                totalCost: cost,
+                totalQuantityToCheckout: checkoutQuantity,
+            })
+        );
     }, [productsInfoToCheckout]);
 
     return (
@@ -30,7 +42,7 @@ const ProductsInfoCart = () => {
             <span className="cart-summary__quantity">
                 Разом (
                 <span>
-                    {pluralizeUkrainian(totalQuantity, [
+                    {pluralizeUkrainian(totalCheckoutQuantity, [
                         'товар',
                         'товари',
                         'товарів',
