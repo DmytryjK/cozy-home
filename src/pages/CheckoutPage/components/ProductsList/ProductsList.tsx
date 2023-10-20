@@ -15,6 +15,8 @@ const ProductsList = () => {
             </div>
             <ul className="checkout__products-list products-list">
                 {productsInfoToCheckout.map((item) => {
+                    const { quantityToCheckout } = item;
+                    if (quantityToCheckout < 1) return '';
                     return (
                         <li
                             className="products-list__item"

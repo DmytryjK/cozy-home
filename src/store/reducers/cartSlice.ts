@@ -20,7 +20,11 @@ type CartInitialState = {
     cartBody: CartBody[] | [];
     cartData: CartData[] | [];
     productsInfoToCheckout: ProductsInfoToCheckout[];
-    cartTotal: { totalQuantity: number; totalCost: number } | null;
+    cartTotal: {
+        totalQuantity: number;
+        totalCost: number;
+        totalQuantityToCheckout: number;
+    } | null;
     isDeletedItemButtonActive: boolean;
     isCartPageOpen: boolean;
     loading: Loading;
@@ -134,7 +138,11 @@ export const cartSlice = createSlice({
         },
         updateCartTotal(
             state,
-            action: PayloadAction<{ totalQuantity: number; totalCost: number }>
+            action: PayloadAction<{
+                totalQuantity: number;
+                totalCost: number;
+                totalQuantityToCheckout: number;
+            }>
         ) {
             state.cartTotal = action.payload;
         },
