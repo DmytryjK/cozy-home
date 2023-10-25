@@ -1,5 +1,11 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+    createSlice,
+    PayloadAction,
+    createAsyncThunk,
+    ActionReducerMapBuilder,
+} from '@reduxjs/toolkit';
 import { FormikState } from 'formik';
+import fetchData from '../../utils/fetchData';
 import { API_SECURE, API_BASE } from '../../utils/API_BASE';
 import { Loading, ErrorType } from '../../types/types';
 
@@ -18,6 +24,7 @@ type JwtPayload = {
     isUserRemember: boolean;
 };
 interface AuthType {
+    [key: string]: boolean | string | Loading | ErrorType;
     isPasswordRecovered: boolean;
     jwtToken: string;
     loginLoading: Loading;
@@ -47,6 +54,33 @@ const initialState: AuthType = {
     emailLinksError: null,
 };
 
+const builderPending = (
+    builder: ActionReducerMapBuilder<AuthType>,
+    actionName: any,
+    login: string,
+    error: string
+) => {
+    builder.addCase(actionName.pending, (state) => {
+        state[login] = 'pending';
+        state[error] = null;
+    });
+};
+
+const builderRejected = (
+    builder: ActionReducerMapBuilder<AuthType>,
+    actionName: any,
+    login: string,
+    error: string
+) => {
+    builder.addCase(
+        actionName.rejected,
+        (state, action: PayloadAction<unknown>) => {
+            state[login] = 'failed';
+            state[error] = action.payload;
+        }
+    );
+};
+
 export const userLogIn = createAsyncThunk(
     'auth/userLogIn',
     async function (
@@ -74,14 +108,12 @@ export const userLogIn = createAsyncThunk(
         { rejectWithValue }
     ) {
         try {
-            const response = await fetch(`${API_BASE()}auth/login`, {
+            const response = await fetchData({
                 method: 'POST',
-                body: JSON.stringify({
+                request: `${API_BASE()}auth/login`,
+                body: {
                     username: email,
                     password,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
                 },
             });
 
@@ -110,8 +142,9 @@ export const userLogOut = createAsyncThunk(
     'auth/userLogOut',
     async function (jwt: string, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_SECURE()}user/logout`, {
+            const response = await fetchData({
                 method: 'GET',
+                request: `${API_SECURE()}user/logout`,
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
@@ -158,12 +191,10 @@ export const userSignInByEmail = createAsyncThunk(
         { rejectWithValue }
     ) {
         try {
-            const response = await fetch(`${API_BASE()}auth/signup`, {
+            const response = await fetchData({
                 method: 'POST',
-                body: JSON.stringify({ ...authData }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
+                request: `${API_BASE()}auth/signup`,
+                body: { ...authData },
             });
 
             if (response.status === 400) {
@@ -186,9 +217,10 @@ export const userActivateEmail = createAsyncThunk(
     'auth/userActivateEmail',
     async function (activationToken: string, { rejectWithValue }) {
         try {
-            const response = await fetch(
-                `${API_BASE()}auth/activate?activationToken=${activationToken}`
-            );
+            const response = await fetchData({
+                method: 'GET',
+                request: `${API_BASE()}auth/activate?activationToken=${activationToken}`,
+            });
 
             if (!response.ok) {
                 throw new Error('Щось пішло не так');
@@ -208,12 +240,10 @@ export const userForgotPasswordRequest = createAsyncThunk(
     'auth/userForgotPasswordRequest',
     async function (email: string, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_BASE()}auth/login/forgot`, {
+            const response = await fetchData({
                 method: 'POST',
-                body: JSON.stringify({ email }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
+                request: `${API_BASE()}auth/login/forgot`,
+                body: { email },
             });
 
             if (response.status === 404) {
@@ -257,16 +287,12 @@ export const userResetPassword = createAsyncThunk(
         { rejectWithValue }
     ) {
         try {
-            const response = await fetch(
-                `${API_BASE()}auth/login/reset?resetPasswordToken=${resetPasswordToken}`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({ password }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            );
+            const response = await fetchData({
+                method: 'POST',
+                request: `${API_BASE()}auth/login/reset?resetPasswordToken=${resetPasswordToken}`,
+                body: { password },
+            });
+
             if (response.status === 404) {
                 throw new Error(
                     'Посилання недійсне, спробуйте відправити запит ще раз'
@@ -293,9 +319,10 @@ export const temporaryDelUser = createAsyncThunk(
         { rejectWithValue }
     ) {
         try {
-            const response = await fetch(`${API_BASE()}auth/delete-account`, {
+            const response = await fetchData({
                 method: 'POST',
-                body: JSON.stringify({ email }),
+                request: `${API_BASE()}auth/delete-account`,
+                body: { email },
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                     'Content-type': 'application/json; charset=UTF-8',
@@ -350,10 +377,7 @@ export const authSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(userLogIn.pending, (state) => {
-            state.loginLoading = 'pending';
-            state.loginError = null;
-        });
+        builderPending(builder, userLogIn, 'loginLoading', 'loginError');
         builder.addCase(
             userLogIn.fulfilled,
             (state, action: PayloadAction<JwtPayload | null>) => {
@@ -370,51 +394,39 @@ export const authSlice = createSlice({
                 }
             }
         );
-        builder.addCase(
-            userLogIn.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.loginLoading = 'failed';
-                state.loginError = action.payload;
-            }
-        );
+        builderRejected(builder, userLogIn, 'loginLoading', 'loginError');
 
-        builder.addCase(userLogOut.pending, (state) => {
-            state.logoutLoading = 'pending';
-            state.logoutError = null;
-        });
+        builderPending(builder, userLogOut, 'logoutLoading', 'logoutError');
         builder.addCase(userLogOut.fulfilled, (state) => {
             state.logoutLoading = 'succeeded';
             sessionStorage.setItem('token', '');
             localStorage.setItem('token', '');
             state.jwtToken = '';
         });
-        builder.addCase(
-            userLogOut.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.loginLoading = 'failed';
-                state.logoutError = action.payload;
-            }
-        );
+        builderRejected(builder, userLogOut, 'logoutLoading', 'logoutError');
 
-        builder.addCase(userSignInByEmail.pending, (state) => {
-            state.emailLinksLoading = 'pending';
-            state.emailLinksError = null;
-        });
+        builderPending(
+            builder,
+            userSignInByEmail,
+            'emailLinksLoading',
+            'emailLinksError'
+        );
         builder.addCase(userSignInByEmail.fulfilled, (state) => {
             state.emailLinksLoading = 'succeeded';
         });
-        builder.addCase(
-            userSignInByEmail.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.emailLinksLoading = 'failed';
-                state.emailLinksError = action.payload;
-            }
+        builderRejected(
+            builder,
+            userSignInByEmail,
+            'emailLinksLoading',
+            'emailLinksError'
         );
 
-        builder.addCase(userActivateEmail.pending, (state) => {
-            state.signinLoading = 'pending';
-            state.signinError = null;
-        });
+        builderPending(
+            builder,
+            userActivateEmail,
+            'signinLoading',
+            'signinError'
+        );
         builder.addCase(
             userActivateEmail.fulfilled,
             (state, action: PayloadAction<{ token: string }>) => {
@@ -423,33 +435,35 @@ export const authSlice = createSlice({
                 sessionStorage.setItem('token', action.payload.token);
             }
         );
-        builder.addCase(
-            userActivateEmail.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.signinLoading = 'failed';
-                state.signinError = action.payload;
-            }
+        builderRejected(
+            builder,
+            userActivateEmail,
+            'signinLoading',
+            'signinError'
         );
 
-        builder.addCase(userForgotPasswordRequest.pending, (state) => {
-            state.emailLinksLoading = 'pending';
-            state.emailLinksError = null;
-        });
+        builderPending(
+            builder,
+            userForgotPasswordRequest,
+            'emailLinksLoading',
+            'emailLinksError'
+        );
         builder.addCase(userForgotPasswordRequest.fulfilled, (state) => {
             state.emailLinksLoading = 'succeeded';
         });
-        builder.addCase(
-            userForgotPasswordRequest.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.emailLinksLoading = 'failed';
-                state.emailLinksError = action.payload;
-            }
+        builderRejected(
+            builder,
+            userForgotPasswordRequest,
+            'emailLinksLoading',
+            'emailLinksError'
         );
 
-        builder.addCase(userResetPassword.pending, (state) => {
-            state.newPasswordLoading = 'pending';
-            state.newPasswordError = null;
-        });
+        builderPending(
+            builder,
+            userResetPassword,
+            'newPasswordLoading',
+            'newPasswordError'
+        );
         builder.addCase(
             userResetPassword.fulfilled,
             (state, action: PayloadAction<{ token: string }>) => {
@@ -458,12 +472,11 @@ export const authSlice = createSlice({
                 sessionStorage.setItem('token', action.payload.token);
             }
         );
-        builder.addCase(
-            userResetPassword.rejected,
-            (state, action: PayloadAction<unknown>) => {
-                state.newPasswordLoading = 'failed';
-                state.newPasswordError = action.payload;
-            }
+        builderRejected(
+            builder,
+            userResetPassword,
+            'newPasswordLoading',
+            'newPasswordError'
         );
 
         builder.addCase(temporaryDelUser.pending, (state) => {});
