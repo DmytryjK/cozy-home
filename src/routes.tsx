@@ -54,6 +54,10 @@ const routes = [
         element: <UserCabinet />,
     },
     {
+        path: '/cabinet/:name',
+        element: <UserCabinet />,
+    },
+    {
         path: '/api/v1/auth/activate',
         element: <ActivationPage />,
     },
