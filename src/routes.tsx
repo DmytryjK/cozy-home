@@ -8,6 +8,7 @@ import {
     SignInPage,
     ActivationPage,
     ResetPasswordPage,
+    UserCabinet,
 } from './pages';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
 
@@ -50,7 +51,7 @@ const routes = [
     },
     {
         path: '/cabinet',
-        element: <div>Кабінет користувача</div>,
+        element: <UserCabinet />,
     },
     {
         path: '/api/v1/auth/activate',
