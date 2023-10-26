@@ -53,7 +53,7 @@ export const fetchProductCartInfo = createAsyncThunk(
         controller = new AbortController();
 
         try {
-            const response = await fetch(`${API_BASE()}product/basket`, {
+            const response = await fetch(`${API_BASE}product/basket`, {
                 method: 'POST',
                 body: JSON.stringify([...cartBody]),
                 headers: {

@@ -9,7 +9,6 @@ import {
     setStatusRemoveCartItemBtn,
     updateCartBody,
 } from '../../store/reducers/cartSlice';
-import { userLogOut } from '../../store/reducers/authSlice';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';

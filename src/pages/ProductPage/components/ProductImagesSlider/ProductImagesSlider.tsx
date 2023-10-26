@@ -1,10 +1,5 @@
-import './ProductImagesSlider.scss';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Controller } from 'swiper';
-
 import nextId from 'react-id-generator';
 import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
@@ -12,6 +7,10 @@ import EnlargedPhoto from './EnlargedPhoto/EnlargedPhoto';
 import FullScreenLoader from '../../../../shared-components/FullScreenLoader/FullScreenLoader';
 import Loader from '../../../../shared-components/Loader';
 import { API_BASE } from '../../../../utils/API_BASE';
+import './ProductImagesSlider.scss';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
 export interface ResponseData {
     id: string;
@@ -52,7 +51,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                 colorHex: currentColor?.id,
             };
 
-            const response = await fetch(`${API_BASE()}image/popup-image`, {
+            const response = await fetch(`${API_BASE}image/popup-image`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

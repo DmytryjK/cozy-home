@@ -32,7 +32,7 @@ export const fetchImageByColorId = createAsyncThunk(
         try {
             const queryParams = new URLSearchParams({ ...productParams });
             const response = await fetch(
-                `${API_BASE()}image/product-color?${queryParams}`
+                `${API_BASE}image/product-color?${queryParams}`
             );
             const result = await response.json();
 

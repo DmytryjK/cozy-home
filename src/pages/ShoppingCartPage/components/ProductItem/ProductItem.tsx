@@ -1,7 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../../hooks/hooks';
-
 import CartTrashBtn from '../../../../shared-components/CartTrashBtn/CartTrashBtn';
 import ProductItemRight from './ProductItemRight/ProductItemRight';
 import type { CartData } from '../../../../types/types';

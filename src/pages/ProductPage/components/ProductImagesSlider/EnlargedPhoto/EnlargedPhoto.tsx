@@ -1,13 +1,13 @@
-import './EnlargedPhoto.scss';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Controller, Navigation } from 'swiper';
 import nextId from 'react-id-generator';
 import { useEffect, useState } from 'react';
 import productPageSprite from '../../../../../assets/icons/product-page/product-pageSprite.svg';
 import { ResponseData } from '../ProductImagesSlider';
+import './EnlargedPhoto.scss';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
 type Props = {
     setLargePhotoActive: React.Dispatch<React.SetStateAction<boolean>>;

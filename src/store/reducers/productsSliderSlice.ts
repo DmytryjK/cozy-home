@@ -25,7 +25,7 @@ export const fetchNewItemsAllProducts = createAsyncThunk(
     async function (_, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/homepage/status?status=0&countOfProducts=20`
+                `${API_BASE}product/homepage/status?status=0&countOfProducts=20`
             );
             const result = await response.json();
 
@@ -53,7 +53,7 @@ export const fetchMightBeInterestProducts = createAsyncThunk(
                 productSkuCode,
             });
             const response = await fetch(
-                `${API_BASE()}product/collection?${queryParams}`
+                `${API_BASE}product/collection?${queryParams}`
             );
             const result = await response.json();
 

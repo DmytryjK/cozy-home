@@ -1,4 +1,3 @@
-import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import './AddToFavoriteBtn.scss';
 
 const AddToFavoriteBtn = ({ isActive }: { isActive?: true | false }) => {

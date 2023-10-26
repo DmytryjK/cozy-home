@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { fetchCatalogProductsByFilters } from '../../../../../store/reducers/catalogProductsSlice';
 import {
-    fetchFiltersOptionsForFilteredProducts,
     resetFilters,
     updateCurrentPage,
 } from '../../../../../store/reducers/catalogFilterSlice';

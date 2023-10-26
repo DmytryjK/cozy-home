@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Loading, ProductInformationType } from '../../types/types';
 import { API_BASE } from '../../utils/API_BASE';
+import fetchData from '../../utils/fetchData';
 
 type ProductParamsType = {
     productSkuCode: string;
@@ -55,13 +56,11 @@ export const fetchProductInfoByScuWithColor = createAsyncThunk(
     'productInformation/fetchProductInfoByScuWithColor',
     async function (params: ProductParamsType, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_BASE()}product/skuCode`, {
+            const response = await fetchData({
                 method: 'POST',
-                body: JSON.stringify({
+                request: `${API_BASE}product/skuCode`,
+                body: {
                     ...params,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
                 },
             });
 
