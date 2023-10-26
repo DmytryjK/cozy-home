@@ -1,0 +1,14 @@
+.cabinet {
+    min-height: calc(100vh - 600px);
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 70px;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .cabinet {
+        margin-top: 30px;
+    }
+}

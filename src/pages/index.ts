@@ -7,6 +7,7 @@ import CheckoutPage from './CheckoutPage/CheckoutPage';
 import SignInPage from './SignInPage/SignInPage';
 import ActivationPage from './ActivationPage/ActivationPage';
 import ResetPasswordPage from './ResetPasswordPage/ResetPasswordPage';
+import UserCabinet from './UserCabinet/UserCabinet';
 
 export {
     MainPage,
@@ -18,4 +19,5 @@ export {
     SignInPage,
     ActivationPage,
     ResetPasswordPage,
+    UserCabinet,
 };
