@@ -3,9 +3,8 @@ import { SwiperSlide, Swiper } from 'swiper/react';
 import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import type swiper from 'swiper';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { useAppDispatch } from '../../../hooks/hooks';
 import {
-    fetchProductInfoByScuWithColor,
     updateProductColor,
     updateProductSku,
 } from '../../../store/reducers/productInformationSlice';
@@ -109,19 +108,16 @@ const SliderImages = (props: Props) => {
                 setImageSrc('');
                 setLoading('idle');
 
-                const response = await fetch(
-                    `${API_BASE()}image/product-color`,
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            productSkuCode: skuCode,
-                            colorHex: id,
-                        }),
-                        headers: {
-                            'Content-type': 'application/json; charset=UTF-8',
-                        },
-                    }
-                );
+                const response = await fetch(`${API_BASE}image/product-color`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        productSkuCode: skuCode,
+                        colorHex: id,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                });
 
                 setLoading('pending');
                 const result: ImageSrc = await response.json();

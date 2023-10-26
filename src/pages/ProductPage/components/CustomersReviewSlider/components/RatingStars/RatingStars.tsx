@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ratingSprite from '../../../../../../assets/icons/rating/sprite-rating.svg';
 import './RatingStars.scss';
 

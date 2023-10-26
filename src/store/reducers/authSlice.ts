@@ -110,7 +110,7 @@ export const userLogIn = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE()}auth/login`,
+                request: `${API_BASE}auth/login`,
                 body: {
                     username: email,
                     password,
@@ -144,7 +144,7 @@ export const userLogOut = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'GET',
-                request: `${API_SECURE()}user/logout`,
+                request: `${API_SECURE}user/logout`,
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
@@ -193,7 +193,7 @@ export const userSignInByEmail = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE()}auth/signup`,
+                request: `${API_BASE}auth/signup`,
                 body: { ...authData },
             });
 
@@ -219,7 +219,7 @@ export const userActivateEmail = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'GET',
-                request: `${API_BASE()}auth/activate?activationToken=${activationToken}`,
+                request: `${API_BASE}auth/activate?activationToken=${activationToken}`,
             });
 
             if (!response.ok) {
@@ -242,7 +242,7 @@ export const userForgotPasswordRequest = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE()}auth/login/forgot`,
+                request: `${API_BASE}auth/login/forgot`,
                 body: { email },
             });
 
@@ -289,7 +289,7 @@ export const userResetPassword = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE()}auth/login/reset?resetPasswordToken=${resetPasswordToken}`,
+                request: `${API_BASE}auth/login/reset?resetPasswordToken=${resetPasswordToken}`,
                 body: { password },
             });
 
@@ -321,7 +321,7 @@ export const temporaryDelUser = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE()}auth/delete-account`,
+                request: `${API_BASE}auth/delete-account`,
                 body: { email },
                 headers: {
                     Authorization: `Bearer ${jwt}`,

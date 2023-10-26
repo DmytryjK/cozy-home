@@ -31,7 +31,7 @@ export const fetchPopularItemsAllProducts = createAsyncThunk(
     async function (_, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}product/homepage/status?status=1&countOfProducts=8`
+                `${API_BASE}product/homepage/status?status=1&countOfProducts=8`
             );
             const result = await response.json();
 
@@ -48,7 +48,7 @@ export const fetchPopularItemsAllСategories = createAsyncThunk(
     'popularItems/fetchPopularItemsAllСategories',
     async function (_, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_BASE()}category`);
+            const response = await fetch(`${API_BASE}category`);
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
@@ -69,7 +69,7 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
         try {
             const queryParams = new URLSearchParams({ ...currentData });
             const response = await fetch(
-                `${API_BASE()}product/homepage/category-status?${queryParams}`
+                `${API_BASE}product/homepage/category-status?${queryParams}`
             );
 
             const result = await response.json();

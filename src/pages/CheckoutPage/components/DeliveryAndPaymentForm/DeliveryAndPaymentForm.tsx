@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AddressDelivery from './AddressDelivery/AddressDelivery';
 import CompanyDelivery from './CompanyDelivery/CompanyDelivery';
 import './DeliveryAndPaymentForm.scss';

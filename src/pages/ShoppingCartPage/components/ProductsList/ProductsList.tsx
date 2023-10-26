@@ -1,4 +1,3 @@
-import nextId from 'react-id-generator';
 import { NavLink } from 'react-router-dom';
 import ProductItem from '../ProductItem/ProductItem';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';

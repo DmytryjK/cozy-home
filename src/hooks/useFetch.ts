@@ -7,7 +7,7 @@ function useFetch(apiQuery: string) {
     const [loading, setLoading] = useState<Loading>('idle');
     const [error, setError] = useState<unknown | null>(null);
 
-    const url = `${API_BASE()}${apiQuery}`;
+    const url = `${API_BASE}${apiQuery}`;
 
     useEffect(() => {
         async function fetchData() {

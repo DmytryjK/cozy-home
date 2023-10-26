@@ -4,6 +4,7 @@ import { API_BASE } from '../../utils/API_BASE';
 import { ErrorType, Loading } from '../../types/types';
 import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import { RootState } from '../store';
+import fetchData from '../../utils/fetchData';
 
 const PRODUCTS_SIZE = 6;
 
@@ -50,21 +51,16 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
         { rejectWithValue }
     ) {
         try {
-            const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        parentCategoryId: categoryId,
-                        ...(subcategoryId
-                            ? { subCategories: [subcategoryId] }
-                            : {}),
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            );
+            const response = await fetchData({
+                method: 'POST',
+                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
+                body: {
+                    parentCategoryId: categoryId,
+                    ...(subcategoryId
+                        ? { subCategories: [subcategoryId] }
+                        : {}),
+                },
+            });
 
             const result = await response.json();
 
@@ -87,20 +83,15 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
             const state = getState() as RootState;
             const { filtersBody, localFiltersState } = state.catalogFilters;
 
-            const response = await fetch(
-                `${API_BASE()}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        ...filterInvalidBodyParams(
-                            isFiltersActive ? localFiltersState : filtersBody
-                        ),
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            );
+            const response = await fetchData({
+                method: 'POST',
+                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
+                body: {
+                    ...filterInvalidBodyParams(
+                        isFiltersActive ? localFiltersState : filtersBody
+                    ),
+                },
+            });
 
             const result = await response.json();
 

@@ -26,7 +26,7 @@ export const fetchSixCategoriesWithPhoto = createAsyncThunk(
     async function (_, { rejectWithValue }) {
         try {
             const response = await fetch(
-                `${API_BASE()}category/homepage/categories`
+                `${API_BASE}category/homepage/categories`
             );
             const result = await response.json();
 

@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate, redirect } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { userActivateEmail } from '../../store/reducers/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Loader from '../../shared-components/Loader';
-import ErrorMessage from '../../shared-components/ErrorMessage';
 import RegistrationSuccess from './RegistrationSuccess/RegistrationSuccess';
 import RegistrationFailed from './RegistrationFailed/RegistrationFailed';
 import './ActivationPage.scss';
 
 const ActivationPage = () => {
     const dispatch = useAppDispatch();
-    const { search, pathname } = useLocation();
+    const { search } = useLocation();
     const navigate = useNavigate();
     const activationToken = search.replace('?activationToken=', '');
     const { jwtToken, signinLoading, signinError } = useAppSelector(

@@ -3,6 +3,7 @@ import { ProductCardType, Loading } from '../../types/types';
 import { RootState } from '../store';
 import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import { API_BASE } from '../../utils/API_BASE';
+import fetchData from '../../utils/fetchData';
 
 const PRODUCTS_SIZE = 6;
 interface CatalogProductsState {
@@ -34,22 +35,18 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
                 ? `&fieldName=${filtersSort.fieldName}&direction=${filtersSort.direction}`
                 : '';
 
-            const response = await fetch(
-                `${API_BASE()}product/filter?page=${
+            const response = await fetchData({
+                method: 'POST',
+                request: `${API_BASE}product/filter?page=${
                     page !== null ? page : currentPage
                 }&size=${PRODUCTS_SIZE}${activeSortParams}`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        ...filterInvalidBodyParams(
-                            isFiltersActive ? localFiltersState : filtersBody
-                        ),
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            );
+                body: {
+                    ...filterInvalidBodyParams(
+                        isFiltersActive ? localFiltersState : filtersBody
+                    ),
+                },
+            });
+
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
@@ -65,9 +62,10 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByCategories',
     async function (id: string, { rejectWithValue }) {
         try {
-            const response = await fetch(
-                `${API_BASE()}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}`
-            );
+            const response = await fetchData({
+                method: 'GET',
+                request: `${API_BASE}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}`,
+            });
 
             const result = await response.json();
 

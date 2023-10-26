@@ -45,7 +45,6 @@ const CatalogueBlock = () => {
                         title={categoryName}
                         alt={categoryName}
                         srcImg={imagePath}
-                        srcWebp={imagePath}
                     />
                 );
             })
@@ -58,7 +57,6 @@ const CatalogueBlock = () => {
                 title={sortedData[1].categoryName}
                 alt={sortedData[1].categoryName}
                 srcImg={sortedData[1].imagePath}
-                srcWebp={sortedData[1].imagePath}
             />
         );
         return render as JSX.Element[];
