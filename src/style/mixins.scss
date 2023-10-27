@@ -1,0 +1,23 @@
+@import './variables.scss';
+
+@mixin dark-btn {
+    width: 100%;
+    padding: 16px 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: $dark-color;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s ease-out background-color;
+    cursor: pointer;
+    &:hover {
+        background-color: $grey;
+    }
+
+    @media screen and (max-width: 991px) {
+        &:hover {
+            background-color: $dark-color;
+        }
+    }
+}

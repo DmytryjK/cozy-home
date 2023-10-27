@@ -1,10 +1,5 @@
-import { useState } from 'react';
 import { useFormik, FormikErrors } from 'formik';
-import nextId from 'react-id-generator';
-import InputMask from 'react-input-mask';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import ErrorMessageValidation from '../../../shared-components/Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
-import ShowHidePusswordBtn from '../../../shared-components/FormComponents/ShowHidePusswordBtn/ShowHidePusswordBtn';
 import formValidation from '../../../utils/formValidation';
 import {
     FirstNameInput,
@@ -12,7 +7,9 @@ import {
     EmailInput,
     PasswordInput,
     PhoneNumberInput,
+    BirthDateInput,
 } from '../../../shared-components/FormComponents/Inputs';
+import { reverseBirthdayForServer } from '../../../utils/birthdateChanges/birthdateChanges';
 import { userSignInByEmail } from '../../../store/reducers/authSlice';
 import Loader from '../../../shared-components/Loader';
 import successIcon from '../../../assets/icons/auth/success_icon.svg';
@@ -30,8 +27,6 @@ interface FormValues {
 }
 
 const SignInForm = () => {
-    const [isRepeatedPassShow, setIsRepeatedPassShow] =
-        useState<boolean>(false);
     const emailLinksLoading = useAppSelector(
         (state) => state.auth.emailLinksLoading
     );
@@ -49,12 +44,6 @@ const SignInForm = () => {
         },
         validate: (values: FormValues) => {
             const errors: FormikErrors<FormValues> = {};
-            const requiredMessage = "Це поле обов'язкове для заповнення";
-            const currentDate = values.birthdate.split('.');
-
-            const currentDay = new Date().getDate();
-            const currentMonth = new Date().getMonth() + 1;
-            const currentYear = new Date().getFullYear();
 
             const validationFields = [
                 'firstName',
@@ -62,11 +51,8 @@ const SignInForm = () => {
                 'phone',
                 'password',
                 'email',
+                'birthdate',
             ];
-
-            const inputDateSummary =
-                +currentDate[0] + +currentDate[1] + +currentDate[2];
-            const currentDateSummary = currentDay + currentMonth + currentYear;
 
             validationFields.forEach((fieldName: string) => {
                 const error = formValidation(fieldName, values[fieldName]);
@@ -75,36 +61,12 @@ const SignInForm = () => {
                 }
             });
 
-            if (currentDate[0] !== '') {
-                if (+currentDate[0] > 31 || +currentDate[0] < 1) {
-                    errors.birthdate = 'введіть коректний день народження';
-                } else if (+currentDate[1] > 12 || +currentDate[1] < 1) {
-                    errors.birthdate = 'введіть коректний місяць народження';
-                } else if (
-                    +currentDate[2] > currentYear ||
-                    +currentDate[2] < 1900
-                ) {
-                    errors.birthdate = 'введіть коректний рік народження';
-                } else if (
-                    inputDateSummary > currentDateSummary ||
-                    (+currentDate[1] > currentMonth &&
-                        +currentDate[2] >= currentYear)
-                ) {
-                    errors.birthdate =
-                        'дата народження не може бути більша за поточну';
-                }
-
+            if (values.password && formik2.touched.repeatedPassword) {
                 if (!values.repeatedPassword) {
-                    errors.repeatedPassword = requiredMessage;
+                    errors.repeatedPassword = 'Необхідно заповнити дане поле';
                 } else if (values.repeatedPassword !== values.password) {
-                    errors.repeatedPassword = 'Пароль не співпадає';
+                    errors.repeatedPassword = 'Паролі мають співпадати';
                 }
-            }
-
-            if (!values.repeatedPassword) {
-                errors.repeatedPassword = requiredMessage;
-            } else if (values.repeatedPassword !== values.password) {
-                errors.repeatedPassword = 'Пароль не співпадає';
             }
 
             return errors;
@@ -112,11 +74,6 @@ const SignInForm = () => {
         onSubmit: (values, { resetForm }) => {
             const { firstName, lastName, birthdate, phone, password, email } =
                 values;
-            const reverseBirthday = birthdate
-                .split('.')
-                .reverse()
-                .toString()
-                .replaceAll(',', '-');
             dispatch(
                 userSignInByEmail({
                     authData: {
@@ -124,7 +81,7 @@ const SignInForm = () => {
                         password,
                         firstName,
                         lastName,
-                        birthday: reverseBirthday || '',
+                        birthday: reverseBirthdayForServer(birthdate),
                         phoneNumber: phone,
                         roles: ['admin'],
                     },
@@ -143,58 +100,14 @@ const SignInForm = () => {
         >
             <FirstNameInput formik={formik2} />
             <LastNameInput formik={formik2} />
-            <div className="signin-form__wrapper">
-                <label className="signin-form__label">
-                    <span>Дата народження</span>
-                    <InputMask
-                        mask="99.99.9999"
-                        className="signin-form__input ssignin-form__birthday-input"
-                        id={nextId('birth-date')}
-                        name="birthdate"
-                        onChange={formik2.handleChange}
-                        onBlur={formik2.handleBlur}
-                        value={formik2.values.birthdate}
-                        placeholder="дд/мм/рррр"
-                        required
-                    />
-                </label>
-                {formik2.touched.birthdate && formik2.errors.birthdate ? (
-                    <ErrorMessageValidation
-                        message={formik2.errors.birthdate}
-                    />
-                ) : null}
-            </div>
+            <BirthDateInput formik={formik2} />
             <PhoneNumberInput formik={formik2} />
             <PasswordInput formik={formik2} />
-            <div className="signin-form__wrapper">
-                <label className="signin-form__label">
-                    <span>Повтор пароля*</span>
-                    <span className="signin-form__input-wrapper">
-                        <input
-                            className="signin-form__input signin-form__password-input"
-                            id={nextId('repeatedPassword')}
-                            name="repeatedPassword"
-                            onChange={formik2.handleChange}
-                            onBlur={formik2.handleBlur}
-                            value={formik2.values.repeatedPassword}
-                            type={isRepeatedPassShow ? 'text' : 'password'}
-                            placeholder="Повтор пароля"
-                            autoComplete="new-password"
-                            required
-                        />
-                        <ShowHidePusswordBtn
-                            setIsPasswordHide={setIsRepeatedPassShow}
-                            isPasswordHide={isRepeatedPassShow}
-                        />
-                    </span>
-                </label>
-                {formik2.touched.repeatedPassword &&
-                formik2.errors.repeatedPassword ? (
-                    <ErrorMessageValidation
-                        message={formik2.errors.repeatedPassword}
-                    />
-                ) : null}
-            </div>
+            <PasswordInput
+                formik={formik2}
+                label="Повтор пароля*"
+                name="repeatedPassword"
+            />
             <EmailInput formik={formik2} />
             <div className="signin-form__wrapper_checkbox">
                 <label
