@@ -1,0 +1,50 @@
+@use '../../../../style/variables.scss' as *;
+@use '../../../../style/mixins.scss' as *;
+.user-contacts {
+    &__form {
+        max-width: 800px;
+        width: 100%;
+    }
+    &__form-wrapper {
+        margin-top: 40px;
+        display: grid;
+        grid-column: repeat(auto-fill, minmax(1fr, 380px));
+        justify-items: flex-end;
+        gap: 20px;
+    }
+    &__form-left, &__form-right {
+        max-width: 380px;
+        width: 100%;
+        div:not(:first-child) {
+            margin-top: 20px;
+        }
+    }
+    &__form-left {
+        grid-column: 1 / 1;
+    }
+    &__form-right {
+        grid-column: 2 / 2;
+    }
+
+    &__form-submit {    
+        grid-column: 1 / 1;
+        margin-top: 50px;
+        max-width: 380px;
+        @include dark-btn;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .user-contacts {
+        &__form-wrapper {
+            grid-column: 1fr;
+            justify-items: stretch;
+        }
+        &__form-left {
+            grid-column: 1 / 1;
+        }
+        &__form-right {
+            grid-column: 1 / 1;
+        }
+    }
+}

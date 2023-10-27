@@ -8,28 +8,34 @@ const PasswordInput = ({
     formik,
     isLabelShow,
     additionalClassName,
+    name,
+    label,
+    isRequired,
 }: {
     formik: any;
     isLabelShow?: boolean;
     additionalClassName?: string;
+    name?: string;
+    label?: string;
+    isRequired?: boolean;
 }) => {
     const [isPassShow, setIsPassShow] = useState<boolean>(false);
     return (
         <div className="password">
             <label className="password__label">
-                {isLabelShow ? <span>Пароль*</span> : ''}
+                {isLabelShow ? <span>{label}</span> : ''}
                 <span className="password__input-wrapper">
                     <input
                         className={`password__input ${additionalClassName}`}
                         id={nextId('password')}
-                        name="password"
+                        name={name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.password}
+                        value={formik.values[name || 'password']}
                         type={isPassShow ? 'text' : 'password'}
-                        placeholder="Пароль"
+                        placeholder={label}
                         autoComplete="new-password"
-                        required
+                        required={isRequired}
                     />
                     <ShowHidePusswordBtn
                         setIsPasswordHide={setIsPassShow}
@@ -37,8 +43,11 @@ const PasswordInput = ({
                     />
                 </span>
             </label>
-            {formik.touched.password && formik.errors.password ? (
-                <ErrorMessageValidation message={formik.errors.password} />
+            {formik.touched[name || 'password'] &&
+            formik.errors[name || 'password'] ? (
+                <ErrorMessageValidation
+                    message={formik.errors[name || 'password']}
+                />
             ) : null}
         </div>
     );
@@ -47,6 +56,9 @@ const PasswordInput = ({
 PasswordInput.defaultProps = {
     isLabelShow: true,
     additionalClassName: '',
+    name: 'password',
+    label: 'Пароль*',
+    isRequired: true,
 };
 
 export default PasswordInput;
