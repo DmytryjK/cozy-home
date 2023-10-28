@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import UserContacts from './UserContacts/UserContacts';
 import UserFavorites from './UserFavorites/UserFavorites';
 import MobileContent from './MobileContent/MobileContent';
@@ -28,6 +29,9 @@ const CabinetContent = () => {
     >(null);
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
 
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
     useEffect(() => {
         const checkSize = () => {
             const screenWidth = window.screen.width;
@@ -52,6 +56,7 @@ const CabinetContent = () => {
     useEffect(() => {
         if (
             currentScreenSize === 'desktop' &&
+            pathname === '/cabinet' &&
             (activeLink?.href === '' || !activeLink)
         ) {
             setActiveLink({
@@ -59,7 +64,27 @@ const CabinetContent = () => {
                 href: listOfRoutes[0].href,
             });
         }
-    }, [currentScreenSize, activeLink]);
+    }, [currentScreenSize, activeLink, pathname]);
+
+    useEffect(() => {
+        if (!activeLink) return;
+        if (activeLink.href === '' && currentScreenSize === 'mobile') {
+            navigate('/cabinet');
+        } else {
+            navigate(`${activeLink.href}`);
+        }
+    }, [activeLink, currentScreenSize]);
+
+    useEffect(() => {
+        listOfRoutes.forEach((route) => {
+            if (pathname === route.href && activeLink?.href !== route.href) {
+                setActiveLink({
+                    title: route.title,
+                    href: route.href,
+                });
+            }
+        });
+    }, [pathname]);
 
     return (
         <div className="cabinet-content">
