@@ -1,21 +1,12 @@
-import { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router';
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import { UserActiveLinkContext } from '../UserCabinet';
-
 import listOfRoutes from '../ListOfRoutes';
 import './CabinetNavigation.scss';
 
 const CabinetNavigation = () => {
-    const navigate = useNavigate();
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
-
-    useEffect(() => {
-        if (!activeLink?.href) {
-            navigate('/cabinet');
-        }
-    }, [activeLink]);
 
     return (
         <nav className="cabinet-navigation">
@@ -34,20 +25,7 @@ const CabinetNavigation = () => {
                                         : ''
                                 }`}
                                 to={href}
-                                onClick={() => {
-                                    setActiveLink((prev) => {
-                                        if (!prev || prev.href !== href) {
-                                            return {
-                                                title,
-                                                href,
-                                            };
-                                        }
-                                        return {
-                                            title: '',
-                                            href: '',
-                                        };
-                                    });
-                                }}
+                                onClick={() => setActiveLink({ title, href })}
                             >
                                 {link.title}
                             </NavLink>

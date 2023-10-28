@@ -33,7 +33,7 @@
 
     &__form-submit {    
         grid-column: 1 / 1;
-        margin-top: 50px;
+        margin-top: 30px;
         max-width: 380px;
         @include dark-btn;
     }
@@ -56,12 +56,19 @@
 
 @media screen and (max-width: 767px) {
     .user-contacts {
+        margin-top: 5px;
+        &__title {
+            display: none;
+        }
+        &__form-wrapper {
+            margin-top: 0;
+        }
         &__form-left, &__form-right {
             max-width: 100%;
         }
         &__form-submit {
             margin: 0 auto;
-            margin-top: 50px;
+            margin-top: 20px;
             grid-column: 1 / 2;
         }
     }
