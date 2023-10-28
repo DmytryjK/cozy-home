@@ -17,7 +17,7 @@
         
     }
     &__link {
-        &.active {
+        &-active {
             color: $accent-color;
             position: relative;
             &:after {
@@ -34,5 +34,11 @@
     &__close {
         margin-top: 60px;
         color: $light-grey;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .cabinet-navigation {
+        display: none;
     }
 }

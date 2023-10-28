@@ -1,36 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
-import { LinkType } from '../UserCabinet';
+import { UserActiveLinkContext } from '../UserCabinet';
+
+import listOfRoutes from '../ListOfRoutes';
 import './CabinetNavigation.scss';
 
 const CabinetNavigation = () => {
-    const { pathname } = useLocation();
     const navigate = useNavigate();
-    const listOfLinks = [
-        {
-            title: 'Контактна інформація',
-            href: '/cabinet/contacts',
-        },
-        {
-            title: 'Список бажань',
-            href: '/cabinet/favorites',
-        },
-    ];
-    const [activeLink, setActiveLink] = useState<LinkType>(listOfLinks[0]);
+    const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
 
     useEffect(() => {
-        if (pathname === '/cabinet') {
-            const name = listOfLinks[0].href;
-            navigate(`${name}`);
+        if (!activeLink?.href) {
+            navigate('/cabinet');
         }
-    }, []);
+    }, [activeLink]);
 
     return (
         <nav className="cabinet-navigation">
             <ul className="cabinet-navigation__list">
-                {listOfLinks.map((link) => {
+                {listOfRoutes.map((link) => {
                     const { title, href } = link;
                     return (
                         <li
@@ -38,14 +28,26 @@ const CabinetNavigation = () => {
                             key={nextId(`${title}-`)}
                         >
                             <NavLink
-                                className="cabinet-navigation__link"
+                                className={`cabinet-navigation__link ${
+                                    activeLink?.href === href
+                                        ? 'cabinet-navigation__link-active'
+                                        : ''
+                                }`}
                                 to={href}
-                                onClick={() =>
-                                    setActiveLink({
-                                        title,
-                                        href,
-                                    })
-                                }
+                                onClick={() => {
+                                    setActiveLink((prev) => {
+                                        if (!prev || prev.href !== href) {
+                                            return {
+                                                title,
+                                                href,
+                                            };
+                                        }
+                                        return {
+                                            title: '',
+                                            href: '',
+                                        };
+                                    });
+                                }}
                             >
                                 {link.title}
                             </NavLink>
