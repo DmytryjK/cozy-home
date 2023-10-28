@@ -1,6 +1,11 @@
 @use '../../../../style/variables.scss' as *;
-@use '../../../../style/mixins.scss' as *;
+@import '../../../../style/mixins.scss';
 .user-contacts {
+    &__title {
+        color: $dark-color;
+        font-size: 32px;
+        font-weight: 500;
+    }
     &__form {
         max-width: 800px;
         width: 100%;
@@ -45,6 +50,19 @@
         }
         &__form-right {
             grid-column: 1 / 1;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .user-contacts {
+        &__form-left, &__form-right {
+            max-width: 100%;
+        }
+        &__form-submit {
+            margin: 0 auto;
+            margin-top: 50px;
+            grid-column: 1 / 2;
         }
     }
 }

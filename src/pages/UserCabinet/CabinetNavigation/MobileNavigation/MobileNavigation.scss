@@ -1,0 +1,41 @@
+@use '../../../../style/variables.scss' as *;
+.admin-panel {
+    display: none;
+}
+.nav-mobile {
+    display: none;
+    &__link {
+        position: relative;
+        display: block;
+        padding: 14px 0;
+        width: 100%;
+        &-decorative {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            svg {
+                fill: $dark-color;
+            }
+        }
+
+        &-active {
+            color: $accent-color;
+            .nav-mobile__link-decorative {
+                transform: rotate(180deg) translateY(50%);
+                svg {
+                    fill: $accent-color;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .nav-mobile {
+        display: block;
+    }
+}
