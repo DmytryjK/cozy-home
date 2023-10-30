@@ -2,9 +2,7 @@
 @import '../../../../style/mixins.scss';
 .user-contacts {
     &__title {
-        color: $dark-color;
-        font-size: 32px;
-        font-weight: 500;
+        @include user-cabinet_title;
     }
     &__form {
         max-width: 800px;
@@ -39,31 +37,23 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 961px) {
     .user-contacts {
+        margin-top: 5px;
+        &__form {
+            padding-bottom: 40px;
+        }
         &__form-wrapper {
+            margin-top: 0;
             grid-column: 1fr;
             justify-items: stretch;
         }
         &__form-left {
             grid-column: 1 / 1;
+            max-width: 100%;
         }
         &__form-right {
             grid-column: 1 / 1;
-        }
-    }
-}
-
-@media screen and (max-width: 767px) {
-    .user-contacts {
-        margin-top: 5px;
-        &__title {
-            display: none;
-        }
-        &__form-wrapper {
-            margin-top: 0;
-        }
-        &__form-left, &__form-right {
             max-width: 100%;
         }
         &__form-submit {

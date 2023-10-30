@@ -6,45 +6,6 @@
         font-family: Montserrat Alternates;
         font-weight: 600;
     }
-    &__nav {
-        margin-top: 20px;
-    }
-    &__nav-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    &__nav-item {
-        padding: 8px;
-        &:first-child {
-            padding-left: 0;
-        }
-    }
-    &__nav-btn {
-        position: relative;
-        font-size: 16px;
-        font-weight: 400;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        &:after {
-            content: '';
-            position: absolute;
-            height: 0px;
-            width: 100%;
-            bottom: -4px;
-            left: 0;
-            right: 0;
-            background-color: transparent;
-        }
-        &.active{
-            font-weight: 600;
-            &:after {
-                height: 1px;
-                background-color: $accent-color;            
-            }
-        }
-    }
 
     &__products {
         height: 100%;

@@ -4,7 +4,7 @@
 }
 .nav-mobile {
     display: none;
-    &__link {
+    &__link, &__close {
         position: relative;
         display: block;
         padding: 14px 0;
@@ -35,9 +35,12 @@
             }
         }
     }
+    &__close {
+        color: $light-grey;
+    }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 961px) {
     .nav-mobile {
         display: block;
     }

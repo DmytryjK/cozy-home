@@ -60,6 +60,9 @@ const MobileNavigation = () => {
                     );
                 })}
             </ul>
+            <NavLink className="nav-mobile__close" to="/">
+                Вихід
+            </NavLink>
         </nav>
     );
 };

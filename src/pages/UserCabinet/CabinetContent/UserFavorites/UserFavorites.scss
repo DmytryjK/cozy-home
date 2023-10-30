@@ -1,0 +1,34 @@
+@use '../../../../style/variables.scss' as *;
+@import '../../../../style/mixins.scss';
+.user-favorites {
+    &__title {
+        padding-left: 8px;
+        @include user-cabinet_title;
+    };
+    .categories-nav__btn {
+        color: $grey;
+        font-weight: 500;
+        &.active {
+            color: $dark-color;
+            font-weight: 500;
+        }
+    }
+
+    &__products {
+        margin-top: 50px;
+        display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		justify-self: center;
+		align-self: center;
+		justify-content: center;
+		gap: 50px 32px;
+    }
+    &__pagination-wrapper {
+        margin-top: 85px;
+        text-align: center;
+    }
+
+    .content-loader {
+        grid-column: 1 / 4;
+    }
+}
