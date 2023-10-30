@@ -1,4 +1,11 @@
-import { ReactNode, useEffect, useState, useContext } from 'react';
+import {
+    ReactNode,
+    useEffect,
+    useState,
+    useContext,
+    createContext,
+    useMemo,
+} from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import UserContacts from './UserContacts/UserContacts';
 import UserFavorites from './UserFavorites/UserFavorites';
@@ -6,6 +13,8 @@ import MobileContent from './MobileContent/MobileContent';
 import { LinkType, UserActiveLinkContext } from '../UserCabinet';
 import listOfRoutes from '../ListOfRoutes';
 import DesktopContent from './DesktopContent/DesktopContent';
+import useFetch from '../../../hooks/useFetch';
+import { Loading } from '../../../types/types';
 import './CabinetContent.scss';
 
 export const renderUserCabinetContent = (activeLink: LinkType | null) => {
@@ -23,11 +32,20 @@ export const renderUserCabinetContent = (activeLink: LinkType | null) => {
     return res;
 };
 
+export const FavoritesContext = createContext<{ loading: Loading; data: any }>({
+    loading: 'idle',
+    data: null,
+});
+
 const CabinetContent = () => {
     const [currentScreenSize, setCurrentScreenSize] = useState<
         'desktop' | 'mobile' | null
     >(null);
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
+
+    const { loading, data } = useFetch(
+        `product/homepage/status?status=1&countOfProducts=12`
+    );
 
     const navigate = useNavigate();
     const { pathname } = useLocation();
@@ -35,14 +53,14 @@ const CabinetContent = () => {
     useEffect(() => {
         const checkSize = () => {
             const screenWidth = window.screen.width;
-            if (screenWidth <= 767) {
+            if (screenWidth <= 961) {
                 setCurrentScreenSize('mobile');
             } else {
                 setCurrentScreenSize('desktop');
             }
         };
 
-        if (window.screen.width <= 767) {
+        if (window.screen.width <= 961) {
             setCurrentScreenSize('mobile');
         } else {
             setCurrentScreenSize('desktop');
@@ -88,11 +106,21 @@ const CabinetContent = () => {
 
     return (
         <div className="cabinet-content">
-            {currentScreenSize === 'desktop' ? (
-                <DesktopContent />
-            ) : (
-                <MobileContent />
-            )}
+            <FavoritesContext.Provider
+                value={useMemo(
+                    () => ({
+                        loading,
+                        data,
+                    }),
+                    [loading, data]
+                )}
+            >
+                {currentScreenSize === 'desktop' ? (
+                    <DesktopContent />
+                ) : (
+                    <MobileContent />
+                )}
+            </FavoritesContext.Provider>
         </div>
     );
 };

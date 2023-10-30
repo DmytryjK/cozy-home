@@ -8,6 +8,11 @@ interface ColorDtoList {
     name: string;
 }
 
+export interface ActiveCategory {
+    name: string;
+    id: string;
+}
+
 export interface ProductCardType {
     skuCode: string;
     name: string;

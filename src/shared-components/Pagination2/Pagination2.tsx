@@ -1,42 +1,23 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import nextId from 'react-id-generator';
-import paginationSprite from '../../../../assets/icons/pagination/pagination-sprites.svg';
-import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
-import './Pagination.scss';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import moveUserToPageUp from '../../../../utils/moveUserToPageUp';
-import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
+import paginationSprite from '../../assets/icons/pagination/pagination-sprites.svg';
+import moveUserToPageUp from '../../utils/moveUserToPageUp';
+import './Pagination2.scss';
 
-const Pagination = () => {
+const Pagination2 = ({
+    countOfPages,
+    currentPage,
+    setCurrentPage,
+}: {
+    countOfPages: number;
+    currentPage: number;
+    setCurrentPage: Dispatch<SetStateAction<number>>;
+}) => {
     const [clickedPage, setClickedPage] = useState<number>(0);
     const [isPaginationInit, setIsPaginationInit] = useState<boolean>(true);
     const [pages, setPages] = useState<number[]>([]);
-    const currentPage = useAppSelector(
-        (state) => state.catalogFilters.currentPage
-    );
-    const countOfPages = useAppSelector(
-        (state) => state.catalogFilters.filterOptions?.countOfPages
-    );
-    const parentCategoryId = useAppSelector(
-        (state) => state.catalogFilters.filtersBody.parentCategoryId
-    );
-    const subCategoryId = useAppSelector(
-        (state) => state.catalogFilters.filtersBody.subCategoryId
-    );
-    const loadingProducts = useAppSelector(
-        (state) => state.catalogProducts.loading
-    );
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        console.log(clickedPage, currentPage);
-    }, [clickedPage, currentPage]);
-
-    useEffect(() => {
-        dispatch(updateCurrentPage(0));
-    }, [parentCategoryId, subCategoryId]);
 
     useEffect(() => {
         if (!countOfPages) {
@@ -52,11 +33,11 @@ const Pagination = () => {
 
     useEffect(() => {
         if (pages.length === 0) {
-            dispatch(updateCurrentPage(0));
+            setCurrentPage(0);
             return;
         }
         if (pages.length - 1 < currentPage && currentPage !== 0) {
-            dispatch(updateCurrentPage(pages.length - 1));
+            setCurrentPage(pages.length - 1);
         }
     }, [pages, currentPage]);
 
@@ -64,23 +45,8 @@ const Pagination = () => {
         if (pages.length === 0) return;
         if (clickedPage === null) return;
         setIsPaginationInit(false);
-        dispatch(updateCurrentPage(clickedPage));
+        setCurrentPage(clickedPage);
     }, [clickedPage]);
-
-    useEffect(() => {
-        if (currentPage !== clickedPage) {
-            setClickedPage(currentPage);
-            return undefined;
-        }
-        if (isPaginationInit) return undefined;
-        const promise: any = dispatch(
-            fetchCatalogProductsByFilters({ page: clickedPage })
-        );
-
-        return () => {
-            promise.abort();
-        };
-    }, [currentPage, isPaginationInit]);
 
     const getDots = () => {
         return (
@@ -122,7 +88,7 @@ const Pagination = () => {
 
     const renderPagination = () => {
         return pages.map((page, index) => {
-            if (clickedPage < 4) {
+            if (clickedPage < 3) {
                 if (index === 4 && pages.length > 5) {
                     return getDots();
                 }
@@ -130,21 +96,18 @@ const Pagination = () => {
                     return '';
                 }
             }
-            if (clickedPage >= 4 && clickedPage < pages.length - 2) {
-                if (
-                    index === clickedPage - 3 ||
-                    (index === clickedPage + 1 && index !== pages.length - 1)
-                ) {
+            if (clickedPage >= 3 && clickedPage < pages.length - 3) {
+                if (index === 1 || index === clickedPage + 2) {
                     return getDots();
                 }
                 if (
-                    (index > 0 && index < clickedPage - 3) ||
+                    (index > 0 && index < clickedPage - 1) ||
                     (index > clickedPage + 1 && index < pages.length - 1)
                 ) {
                     return '';
                 }
             }
-            if (clickedPage >= pages.length - 2 && pages.length > 5) {
+            if (clickedPage >= pages.length - 3 && pages.length > 5) {
                 if (index === 1) {
                     return getDots();
                 }
@@ -156,10 +119,7 @@ const Pagination = () => {
         });
     };
     return (
-        <div
-            className="main-content__pagination pagination"
-            style={{ ...inlineStyle() }}
-        >
+        <div className="pagination" style={{ ...inlineStyle() }}>
             <ul className=" pagination__list">{renderPagination()}</ul>
             <button
                 className="pagination__prev-btn"
@@ -189,4 +149,4 @@ const Pagination = () => {
     );
 };
 
-export default Pagination;
+export default Pagination2;

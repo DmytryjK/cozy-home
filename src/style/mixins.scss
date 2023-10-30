@@ -21,3 +21,13 @@
         }
     }
 }
+
+@mixin user-cabinet_title {
+    color: $dark-color;
+    font-size: 32px;
+    font-weight: 500;
+
+    @media screen and (max-width: 961px) {
+        display: none;
+    }
+}

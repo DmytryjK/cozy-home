@@ -10,15 +10,11 @@ import {
 } from '../../../../store/reducers/popularItemsSlice';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import renderServerData from '../../../../helpers/renderServerData';
+import NavigationListOfCategories from '../../../../shared-components/NavigationListOfCategories/NavigationListOfCategories';
+import { ActiveCategory } from '../../../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
 import 'swiper/css/grid';
-import { ProductCategory } from './types';
-
-type ActiveCategory = {
-    name: string;
-    id: string;
-};
 
 const PopularItems: FC = () => {
     const [activeCategory, setActiveCategory] = useState<ActiveCategory>({
@@ -55,28 +51,6 @@ const PopularItems: FC = () => {
         };
     }, [activeCategory]);
 
-    const handleChangeTab = (
-        e: React.MouseEvent<HTMLButtonElement>,
-        id: string
-    ) => {
-        const currentCategory = e.currentTarget.getAttribute('data-value');
-        if (!currentCategory) return;
-        setActiveCategory({
-            name: currentCategory,
-            id,
-        });
-    };
-
-    const renderedCategories = () => {
-        const renderResult: ProductCategory[] = [
-            { id: '', name: 'Всі товари' },
-        ];
-        if (Object.keys(categories).length !== 0) {
-            renderResult.push(...categories);
-        }
-        return renderResult;
-    };
-
     const items = () => {
         const content = [];
         for (let i = 0; i < Math.min(products.length, 8); i += 1) {
@@ -95,32 +69,11 @@ const PopularItems: FC = () => {
         <section className="popular-items">
             <div className="container">
                 <h2 className="popular-items__title">Популярні товари</h2>
-                <nav className="popular-items__nav">
-                    <ul className="popular-items__nav-list">
-                        {renderedCategories().map((category) => {
-                            const { name, id } = category;
-                            return (
-                                <li
-                                    key={nextId('category-nav')}
-                                    className="popular-items__nav-item"
-                                >
-                                    <button
-                                        className={
-                                            activeCategory.name === name
-                                                ? 'popular-items__nav-btn active'
-                                                : 'popular-items__nav-btn'
-                                        }
-                                        type="button"
-                                        data-value={name}
-                                        onClick={(e) => handleChangeTab(e, id)}
-                                    >
-                                        {name}
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </nav>
+                <NavigationListOfCategories
+                    categories={categories}
+                    activeCategory={activeCategory}
+                    setActiveCategory={setActiveCategory}
+                />
             </div>
             <div className="container container_pd-right-off">
                 <div
