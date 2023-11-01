@@ -179,7 +179,7 @@ export const userSignInByEmail = createAsyncThunk(
                               firstName: string;
                               lastName: string;
                               birthdate: string;
-                              phone: string;
+                              phoneNumber: string;
                               password: string;
                               repeatedPassword: string;
                               email: string;
@@ -341,32 +341,32 @@ export const temporaryDelUser = createAsyncThunk(
     }
 );
 
-// export const fetchUserProfileInfo = createAsyncThunk(
-//     'auth/fetchUserProfileInfo',
-//     async function (jwt: string, { rejectWithValue }) {
-//         try {
-//             const response = await fetch(`${API_SECURE()}user/profile`, {
-//                 method: 'GET',
-//                 headers: {
-//                     Authorization: `Bearer ${jwt}`,
-//                 },
-//             });
+export const fetchUserProfileInfo = createAsyncThunk(
+    'auth/fetchUserProfileInfo',
+    async function (jwt: string, { rejectWithValue }) {
+        try {
+            const response = await fetch(`${API_SECURE}user/profile`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            });
 
-//             if (!response.ok) {
-//                 throw new Error('Щось пішло не так');
-//             }
-//             const data = await response.json();
-//             console.log(data);
-//             return '';
-//         } catch (error: unknown) {
-//             if (error instanceof Error) {
-//                 console.log(error.message);
-//                 return rejectWithValue(error.message);
-//             }
-//             return null;
-//         }
-//     }
-// );
+            if (!response.ok) {
+                throw new Error('Щось пішло не так');
+            }
+            const data = await response.json();
+            console.log(data);
+            return '';
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.log(error.message);
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
 
 export const authSlice = createSlice({
     name: 'modals',

@@ -10,6 +10,7 @@ import productInformationReducer from './reducers/productInformationSlice';
 import modalsReducer from './reducers/modalsSlice';
 import authReducer from './reducers/authSlice';
 import cartReducer from './reducers/cartSlice';
+import userActionsReducer from './reducers/userActionsSlice';
 
 export const store = configureStore({
     reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
         modals: modalsReducer,
         cart: cartReducer,
         auth: authReducer,
+        userActions: userActionsReducer,
     },
 });
 

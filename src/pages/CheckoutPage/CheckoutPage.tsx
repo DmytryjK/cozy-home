@@ -69,7 +69,7 @@ const CheckoutPage = () => {
             <CustomerForm
                 firstName="Анжеліка"
                 lastName="Бажан"
-                phone="+38 (099) 543 - 36 - 51"
+                phoneNumber="+38 (099) 543 - 36 - 51"
                 email="cozyhome@gmail.com"
                 handleSubmit={handleStepClick}
             />
