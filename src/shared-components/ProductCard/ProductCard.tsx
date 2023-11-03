@@ -21,19 +21,14 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [currentColor, setCurrentColor] = useState<{
         name: string;
         hex: string;
-    }>({ name: '', hex: '' });
+        quantityStatus: string;
+    }>({ name: '', hex: '', quantityStatus: '' });
     const [isElementAddedToCart, setIsElementAddedToCart] =
         useState<boolean>(false);
 
     const cartBody = useAppSelector((state) => state.cart.cartBody);
 
-    const {
-        price,
-        priceWithDiscount,
-        discount,
-        productQuantityStatus,
-        skuCode,
-    } = product;
+    const { price, priceWithDiscount, discount, skuCode } = product;
 
     const dispatch = useAppDispatch();
 
@@ -80,15 +75,20 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     };
 
     const renderProductStatus = () => {
-        if (
-            productQuantityStatus === 'Немає на складі' ||
-            productQuantityStatus === 'Немає в наявності'
-        ) {
+        if (currentColor.quantityStatus === 'Немає в наявності') {
             return (
                 <>
                     <div className="purchase-block__price-block">
                         <span className="purchase-block__out-status">
-                            {productQuantityStatus}
+                            {currentColor.quantityStatus}
+                        </span>
+                        <span className="purchase-block__price">
+                            <span className="purchase-block__current-currency purchase-block__current-currency_not-available">
+                                {discount
+                                    ? discountPriceSpaced || priceWithDiscount
+                                    : priceSpaced || price}
+                                {' UAH'}
+                            </span>
                         </span>
                     </div>
                     <button
@@ -164,8 +164,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     return (
         <div
             className={`product-card ${
-                productQuantityStatus === 'Немає на складі' ||
-                productQuantityStatus === 'Немає в наявності'
+                currentColor.quantityStatus === 'Немає в наявності'
                     ? 'out-of-stock'
                     : ''
             } `}

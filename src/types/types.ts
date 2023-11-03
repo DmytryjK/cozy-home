@@ -6,6 +6,7 @@ interface ImageDtoList {
 interface ColorDtoList {
     id: string;
     name: string;
+    quantityStatus: string;
 }
 
 export interface ActiveCategory {
