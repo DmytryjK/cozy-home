@@ -39,9 +39,13 @@ type Props = {
     imagesData: ImagesData;
     setImagesData: React.Dispatch<React.SetStateAction<ImagesData>>;
     setCurrentColor: React.Dispatch<
-        React.SetStateAction<{ name: string; hex: string }>
+        React.SetStateAction<{
+            name: string;
+            hex: string;
+            quantityStatus: string;
+        }>
     >;
-    currentColor: { name: string; hex: string };
+    currentColor: { name: string; hex: string; quantityStatus: string };
 };
 
 const SliderImages = (props: Props) => {
@@ -68,8 +72,8 @@ const SliderImages = (props: Props) => {
 
     useEffect(() => {
         if (!isColorChosen && imageDtoList.length > 0) {
-            const { name, id } = colorDtoList[0];
-            setCurrentColor({ name, hex: id });
+            const { name, id, quantityStatus } = colorDtoList[0];
+            setCurrentColor({ name, hex: id, quantityStatus });
         }
     }, [isColorChosen, imageDtoList]);
 
@@ -94,8 +98,13 @@ const SliderImages = (props: Props) => {
         }
     }, [imageSrc, imageDtoList]);
 
-    const handleSlideChange = (color: string, index: number, id: string) => {
-        setCurrentColor({ name: color, hex: id });
+    const handleSlideChange = (
+        color: string,
+        index: number,
+        id: string,
+        quantityStatus: string
+    ) => {
+        setCurrentColor({ name: color, hex: id, quantityStatus });
         setIsColorChosen(true);
         setCurrentIndexColor(index);
 
@@ -198,10 +207,11 @@ const SliderImages = (props: Props) => {
                     onSlideChange={(swiper) => {
                         colorDtoList.forEach((item, index) => {
                             if (swiper.activeIndex === index) {
-                                const { name, id } = item;
+                                const { name, id, quantityStatus } = item;
                                 setCurrentColor({
                                     name,
                                     hex: id,
+                                    quantityStatus,
                                 });
                             }
                         });
@@ -246,7 +256,7 @@ const SliderImages = (props: Props) => {
                     </h2>
                     <fieldset className="product-card__color-checkboxes">
                         {colorDtoList.map((color, index) => {
-                            const { name, id } = color;
+                            const { name, id, quantityStatus } = color;
                             return (
                                 <label
                                     className="product-card__checkbox-label"
@@ -263,11 +273,21 @@ const SliderImages = (props: Props) => {
                                             (!isColorChosen && index === 0)
                                         }
                                         onChange={() =>
-                                            handleSlideChange(name, index, id)
+                                            handleSlideChange(
+                                                name,
+                                                index,
+                                                id,
+                                                quantityStatus
+                                            )
                                         }
                                     />
                                     <span
-                                        className="product-card__checked-checkbox"
+                                        className={`product-card__checked-checkbox ${
+                                            quantityStatus ===
+                                            'Немає в наявності'
+                                                ? 'product-card__checked-checkbox_not-available'
+                                                : ''
+                                        }`}
                                         style={{ backgroundColor: `${id}` }}
                                     />
                                 </label>

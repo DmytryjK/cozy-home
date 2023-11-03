@@ -156,6 +156,19 @@
         &:checked ~ .product-card__checked-checkbox:after {
             border-color: white;
         }  
+        &:checked ~ .product-card__checked-checkbox_not-available {
+            &:before {
+                content: '';
+                position: absolute;
+                display: block;
+                border-radius: 50%;
+                top: 0px;
+                right: 0px;
+                left: 0px;
+                bottom: 0px;
+                background: url('../../assets/icons/colors/color_out-stock.svg') center center/cover no-repeat;
+            }
+        }
     }
     &__checked-checkbox {
         position: absolute;
@@ -176,14 +189,18 @@
             border-radius: 50%;
             border: 3px solid transparent;
         }
-        &.gray {
-            background-color: $grey;
-        }
-        &.black {
-            background-color: $dark-color;
-        }
-        &.orange {
-            background-color: #D99616;
+        &_not-available {
+            &:before {
+                content: '';
+                position: absolute;
+                display: block;
+                border-radius: 50%;
+                top: -8px;
+                right: -8px;
+                left: -8px;
+                bottom: -8px;
+                background: url('../../assets/icons/colors/color_out-stock.svg') center center/cover no-repeat;
+            }
         }
     }
 
@@ -227,6 +244,13 @@
         &__price-block_sale {
             color: $dark-color; 
         }
+        &__current-currency {
+            &_not-available {
+                font-size: 18px;
+                font-weight: 600;
+                color: $light-grey;
+            }
+        }
 
         &__cart-btn {
             display: flex;
@@ -256,8 +280,7 @@
     }
 }
 
-
-@media (max-width: 991px) {
+@media screen and (max-width: 991px) {
     .product-card {
         &__favorite {
             background-color: red;
@@ -288,6 +311,14 @@
             .purchase-block__cart-icon {
                 fill: $dark-color;
             }
-        }   
+        }
+        &.out-of-stock {
+            .purchase-block__cart-btn:hover {
+                background-color: transparent;
+                .purchase-block__bell-icon{
+                    stroke: $dark-color;
+                }
+            } 
+        }
     }
 }
