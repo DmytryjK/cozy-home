@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Loading, ErrorType, CartData } from '../../types/types';
-import { API_BASE } from '../../utils/API_BASE';
+import { API_BASE, API_SECURE } from '../../utils/API_BASE';
+import { RootState } from '../store';
 
 type ProductsInfoToCheckout = {
     productName: string;
@@ -14,6 +15,13 @@ type ProductsInfoToCheckout = {
 type CartBody = {
     productSkuCode: string;
     colorHex: string;
+    quantity?: string;
+};
+
+type CartBodyServer = {
+    skuCode: string;
+    colorHex: string;
+    quantity?: number;
 };
 
 type CartInitialState = {
@@ -44,6 +52,113 @@ const initialState: CartInitialState = {
 
 let controller: any;
 
+export const fetchCartDataForAuthUser = createAsyncThunk(
+    'cart/fetchCartDataForAuthUser',
+    async function (_, thunkAPI) {
+        // if (controller) {
+        //     controller.abort();
+        // }
+        // controller = new AbortController();
+
+        const state = thunkAPI.getState() as RootState;
+        const { jwtToken } = state.auth;
+        if (!jwtToken) {
+            throw new Error('Для цього запиту потрібно бути авторизованим');
+        }
+
+        try {
+            const response = await fetch(`${API_SECURE}basket`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            });
+
+            if (!response.ok) throw new Error('Упс, щось пішло не так :(');
+            const result = await response.json();
+
+            return result;
+        } catch (error: any) {
+            // if (error.name === 'AbortError') {
+            //     return thunkAPI.rejectWithValue('');
+            // }
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
+export const updateCartInfoForAuthUser = createAsyncThunk(
+    'cart/updateCartInfoForAuthUser',
+    async function (cartBody: CartBodyServer, thunkAPI) {
+        // if (controller) {
+        //     controller.abort();
+        // }
+        // controller = new AbortController();
+
+        const state = thunkAPI.getState() as RootState;
+        const { jwtToken } = state.auth;
+
+        if (!jwtToken) {
+            throw new Error('Для цього запиту потрібно бути авторизованим');
+        }
+
+        try {
+            const response = await fetch(`${API_SECURE}basket`, {
+                method: 'POST',
+                body: JSON.stringify(cartBody),
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            });
+
+            if (!response.ok) throw new Error('something went wrong');
+            const result = await response.json();
+
+            return result;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                // if (error.name === 'AbortError') {
+                //     return thunkAPI.rejectWithValue('');
+                // }
+                return thunkAPI.rejectWithValue(error.message);
+            }
+            return '';
+        }
+    }
+);
+
+export const resetCartDataWhenUserLogOut = createAsyncThunk(
+    'cart/resetCartDataWhenUserLogOut',
+    async function (cartBody: CartBody[], thunkAPI) {
+        const state = thunkAPI.getState() as RootState;
+        const { jwtToken } = state.auth;
+        if (!jwtToken) {
+            throw new Error('Для цього запиту потрібно бути авторизованим');
+        }
+
+        try {
+            const response = await fetch(`${API_SECURE}basket`, {
+                method: 'POST',
+                body: JSON.stringify([...cartBody]),
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+                signal: controller.signal,
+            });
+
+            if (!response.ok) throw new Error('something went wrong');
+
+            const result = await response.json();
+            return result;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
 export const fetchProductCartInfo = createAsyncThunk(
     'cart/fetchProductCartInfo',
     async function (cartBody: CartBody[], thunkAPI) {
@@ -62,8 +177,8 @@ export const fetchProductCartInfo = createAsyncThunk(
                 signal: controller.signal,
             });
 
-            const result = await response.json();
             if (!response.ok) throw new Error('something went wrong');
+            const result = await response.json();
 
             return result;
         } catch (error: any) {

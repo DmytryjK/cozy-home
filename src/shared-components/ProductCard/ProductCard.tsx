@@ -5,7 +5,11 @@ import {
     openPopUpCart,
     openPopUpNotification,
 } from '../../store/reducers/modalsSlice';
-import { addProductToCartBody } from '../../store/reducers/cartSlice';
+import {
+    addProductToCartBody,
+    updateCartInfoForAuthUser,
+    fetchCartDataForAuthUser,
+} from '../../store/reducers/cartSlice';
 import AddToFavoriteBtn from '../AddToFavoriteBtn/AddToFavoriteBtn';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import SliderImages, { ImagesData } from './SliderImages/SliderImages';
@@ -24,6 +28,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     }>({ name: '', hex: '' });
     const [isElementAddedToCart, setIsElementAddedToCart] =
         useState<boolean>(false);
+    const jwtToken = useAppSelector((state) => state.auth.jwtToken);
 
     const cartBody = useAppSelector((state) => state.cart.cartBody);
 
@@ -70,12 +75,23 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
 
     const handleAddProductToCart = () => {
         if (isElementAddedToCart) return;
-        dispatch(
-            addProductToCartBody({
-                productSkuCode: skuCode,
-                colorHex: currentColor.hex,
-            })
-        );
+        if (jwtToken) {
+            dispatch(
+                updateCartInfoForAuthUser({
+                    skuCode,
+                    colorHex: currentColor.hex,
+                    quantity: 1,
+                })
+            );
+            dispatch(fetchCartDataForAuthUser());
+        } else {
+            dispatch(
+                addProductToCartBody({
+                    productSkuCode: skuCode,
+                    colorHex: currentColor.hex,
+                })
+            );
+        }
         dispatch(openPopUpCart(true));
     };
 

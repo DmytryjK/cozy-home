@@ -8,6 +8,7 @@ import {
     resetCartData,
     setStatusRemoveCartItemBtn,
     updateCartBody,
+    fetchCartDataForAuthUser,
 } from '../../store/reducers/cartSlice';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
@@ -136,7 +137,11 @@ const Header = () => {
                 dispatch(setStatusRemoveCartItemBtn(false));
                 return;
             }
-            dispatch(fetchProductCartInfo(cartBody));
+            if (jwtToken) {
+                dispatch(fetchCartDataForAuthUser());
+            } else {
+                dispatch(fetchProductCartInfo(cartBody));
+            }
         }
     }, [cartBody]);
 
