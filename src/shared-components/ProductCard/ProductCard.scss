@@ -21,7 +21,7 @@
     }
     &.out-of-stock{
         .product-card {
-            &__sales-text, &__slider-link, &__content {
+            &__sales-text, &__slider-link, &__title, &__description {
                 opacity: 40%;
             }
             &__favorite {
