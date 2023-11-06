@@ -1,8 +1,7 @@
 @use '../../../../../style/variables.scss' as *;
 .nothing-to-search {
-	padding: 50px 24px;
+	padding: 128px 24px 50px 24px;
 	width: auto;
-	border-top: 1px solid $dark-white;
     bottom: 0;
     font-size: 20px;
     &__text {
@@ -10,7 +9,7 @@
         text-align: center;
         color: $dark-color;
         font-size: 16px;
-        max-width: 414px;
+        max-width: 510px;
         font-weight: 500;
     }
     &__clear-filters {
@@ -53,3 +52,15 @@
         }
     }
 };
+
+@media screen and (max-width: 991px) {
+    .nothing-to-search {
+        &__clear-filters:hover {
+            background-color: $light-color;
+            color: $dark-color;
+            .nothing-to-search__clear-filters_text::after {
+                background: url('../../../../../assets/icons/filters/reject-icon.svg') center center/cover no-repeat;
+            }
+        }
+    }  
+}
