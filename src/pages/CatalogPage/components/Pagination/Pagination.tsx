@@ -31,10 +31,6 @@ const Pagination = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        console.log(clickedPage, currentPage);
-    }, [clickedPage, currentPage]);
-
-    useEffect(() => {
         dispatch(updateCurrentPage(0));
     }, [parentCategoryId, subCategoryId]);
 
