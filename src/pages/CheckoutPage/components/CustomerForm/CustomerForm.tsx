@@ -16,7 +16,7 @@ interface FormValues {
     [key: string]: string;
     firstName: string;
     lastName: string;
-    phone: string;
+    phoneNumber: string;
     email: string;
 }
 
@@ -24,17 +24,17 @@ type Props = {
     handleSubmit: (isRegular: boolean) => void;
     firstName?: string;
     lastName?: string;
-    phone?: string;
+    phoneNumber?: string;
     email?: string;
 };
 
 const CustomerForm = (props: Props) => {
-    const { handleSubmit, firstName, lastName, phone, email } = props;
+    const { handleSubmit, firstName, lastName, phoneNumber, email } = props;
     const formik3 = useFormik({
         initialValues: {
             firstName: firstName || '',
             lastName: lastName || '',
-            phone: phone || '',
+            phoneNumber: phoneNumber || '',
             email: email || '',
         },
         validate: (values: FormValues) => {
@@ -42,7 +42,7 @@ const CustomerForm = (props: Props) => {
             const validationFields = [
                 'firstName',
                 'lastName',
-                'phone',
+                'phoneNumber',
                 'email',
             ];
 

@@ -13,7 +13,7 @@ import './PopUpInStockNotification.scss';
 type FormValues = {
     [key: string]: string;
     firstName: string;
-    phone: string;
+    phoneNumber: string;
     comment: string;
 };
 
@@ -54,13 +54,13 @@ const PopUpInStockNotification = () => {
     const formik10 = useFormik({
         initialValues: {
             firstName: '',
-            phone: '',
+            phoneNumber: '',
             comment: '',
         },
         validate: (values: FormValues) => {
             const errors: FormikErrors<FormValues> = {};
 
-            const validationFields = ['firstName', 'phone'];
+            const validationFields = ['firstName', 'phoneNumber'];
 
             validationFields.forEach((fieldName: string) => {
                 const error = formValidation(fieldName, values[fieldName]);

@@ -7,6 +7,8 @@ import {
     useMemo,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { useAppDispatch } from '../../../hooks/hooks';
+import { getUserProfileData } from '../../../store/reducers/userActionsSlice';
 import UserContacts from './UserContacts/UserContacts';
 import UserFavorites from './UserFavorites/UserFavorites';
 import MobileContent from './MobileContent/MobileContent';
@@ -42,6 +44,7 @@ const CabinetContent = () => {
         'desktop' | 'mobile' | null
     >(null);
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
+    const dispatch = useAppDispatch();
 
     const { loading, data } = useFetch(
         `product/homepage/status?status=1&countOfProducts=12`
@@ -49,6 +52,10 @@ const CabinetContent = () => {
 
     const navigate = useNavigate();
     const { pathname } = useLocation();
+
+    useEffect(() => {
+        dispatch(getUserProfileData());
+    }, []);
 
     useEffect(() => {
         const checkSize = () => {

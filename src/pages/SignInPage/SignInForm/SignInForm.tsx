@@ -20,7 +20,7 @@ interface FormValues {
     firstName: string;
     lastName: string;
     birthdate: string;
-    phone: string;
+    phoneNumber: string;
     password: string;
     repeatedPassword: string;
     email: string;
@@ -37,7 +37,7 @@ const SignInForm = () => {
             firstName: '',
             lastName: '',
             birthdate: '',
-            phone: '',
+            phoneNumber: '',
             password: '',
             repeatedPassword: '',
             email: '',
@@ -48,7 +48,7 @@ const SignInForm = () => {
             const validationFields = [
                 'firstName',
                 'lastName',
-                'phone',
+                'phoneNumber',
                 'password',
                 'email',
                 'birthdate',
@@ -72,8 +72,14 @@ const SignInForm = () => {
             return errors;
         },
         onSubmit: (values, { resetForm }) => {
-            const { firstName, lastName, birthdate, phone, password, email } =
-                values;
+            const {
+                firstName,
+                lastName,
+                birthdate,
+                phoneNumber,
+                password,
+                email,
+            } = values;
             dispatch(
                 userSignInByEmail({
                     authData: {
@@ -82,7 +88,7 @@ const SignInForm = () => {
                         firstName,
                         lastName,
                         birthday: reverseBirthdayForServer(birthdate),
-                        phoneNumber: phone,
+                        phoneNumber,
                         roles: ['admin'],
                     },
                     resetForm,

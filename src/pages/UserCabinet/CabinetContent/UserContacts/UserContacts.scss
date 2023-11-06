@@ -9,6 +9,7 @@
         width: 100%;
     }
     &__form-wrapper {
+        position: relative;
         margin-top: 40px;
         display: grid;
         grid-column: repeat(auto-fill, minmax(1fr, 380px));
@@ -34,6 +35,10 @@
         margin-top: 30px;
         max-width: 380px;
         @include dark-btn;
+    }
+
+    &__loader {
+        @include loader-blur;
     }
 }
 

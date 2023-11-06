@@ -27,7 +27,7 @@ const formValidation = (
         }
     }
 
-    if (fieldName === 'phone') {
+    if (fieldName === 'phoneNumber') {
         if (fieldValue === '+38 (___) ___ - __ - __' || !fieldValue) {
             error = requiredMessage;
         } else if (!phoneNumberRegex.test(fieldValue)) {
@@ -56,8 +56,8 @@ const formValidation = (
                 error = 'Пароль не має містити пробілів';
             }
         }
-
         if (isRequired) {
+            console.log(fieldName);
             if (!fieldValue) {
                 error = requiredMessage;
             }

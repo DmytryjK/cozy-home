@@ -19,18 +19,18 @@ const PhoneNumberInput = ({
                 <InputMask
                     mask="+38 (999) 999 - 99 - 99"
                     className="phone-number__input"
-                    id={nextId('phone')}
+                    id={nextId('phoneNumber')}
                     type="phone"
-                    name="phone"
+                    name="phoneNumber"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.phone}
+                    value={formik.values.phoneNumber}
                     placeholder={placeholder}
                     required
                 />
             </label>
-            {formik.touched.phone && formik.errors.phone ? (
-                <ErrorMessageValidation message={formik.errors.phone} />
+            {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                <ErrorMessageValidation message={formik.errors.phoneNumber} />
             ) : null}
         </div>
     );

@@ -67,8 +67,8 @@
 	// -------------------------- SLIDER THUMBS --------------------------
 
 	.product-images__slider-thumbs {
-
 		.swiper-wrapper {
+			justify-content: center;
 		.swiper-slide {
 			opacity: 0.7;
 			cursor: pointer;
