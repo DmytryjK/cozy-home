@@ -39,21 +39,18 @@ const CategoryList = () => {
     const categories = useAppSelector((state) => state.categories.data);
 
     useEffect(() => {
-        if (data.length === 0 || loading !== 'succeeded') return undefined;
-        if (categories.length === 0) return undefined;
+        if (data.length === 0 || loading !== 'succeeded') return;
+        if (categories.length === 0) return;
 
         const loadedCategory = data.find(
             (category) => category.name === categoryName
         );
         const { id } = loadedCategory as CategoriesType;
         dispatch(updateCurrentCategory(id));
-        let promise1: any;
-        let promise2: any;
+
         if (!subCategoryName) {
-            promise1 = dispatch(
-                fetchFiltersOptionsByCategory({ categoryId: id })
-            );
-            promise2 = dispatch(fetchCatalogProductsByCategories(id));
+            dispatch(fetchFiltersOptionsByCategory({ categoryId: id }));
+            dispatch(fetchCatalogProductsByCategories(id));
             dispatch(updateFilterSortParam(null));
         } else if (subCategoryName) {
             const loadedSubCategory = categories
@@ -79,12 +76,6 @@ const CategoryList = () => {
                 })
             );
         }
-
-        return () => {
-            if (!promise1 || !promise2) return;
-            promise1.abort();
-            promise2.abort();
-        };
     }, [loading, data, pathname, categories]);
 
     const renderedItems = () => {

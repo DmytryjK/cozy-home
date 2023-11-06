@@ -18,6 +18,8 @@ const initialState: CatalogProductsState = {
     error: null,
 };
 
+let controller: any;
+
 export const fetchCatalogProductsByFilters = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByFilters',
     async function (
@@ -25,10 +27,15 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
             page = null,
             isFiltersActive = false,
         }: { page?: number | null; isFiltersActive?: boolean },
-        { rejectWithValue, getState }
+        thunkAPI
     ) {
+        if (controller) {
+            controller.abort();
+        }
+        controller = new AbortController();
+
         try {
-            const state = getState() as RootState;
+            const state = thunkAPI.getState() as RootState;
             const { filtersBody, filtersSort, currentPage, localFiltersState } =
                 state.catalogFilters;
             const activeSortParams = filtersSort
@@ -45,6 +52,7 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
                         isFiltersActive ? localFiltersState : filtersBody
                     ),
                 },
+                signal: controller.signal,
             });
 
             const result = await response.json();
@@ -52,19 +60,28 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
             if (!response.ok) throw new Error('something went wrong');
 
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
 
 export const fetchCatalogProductsByCategories = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByCategories',
-    async function (id: string, { rejectWithValue }) {
+    async function (id: string, thunkAPI) {
+        if (controller) {
+            controller.abort();
+        }
+        controller = new AbortController();
+
         try {
             const response = await fetchData({
                 method: 'GET',
                 request: `${API_BASE}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}`,
+                signal: controller.signal,
             });
 
             const result = await response.json();
@@ -72,8 +89,11 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
             if (!response.ok) throw new Error('something went wrong');
 
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );

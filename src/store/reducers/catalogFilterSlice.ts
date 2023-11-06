@@ -41,6 +41,8 @@ const initialState: CatalogFilterState = {
     error: null,
 };
 
+let controller: any;
+
 export const fetchFiltersOptionsByCategory = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsByCategory',
     async function (
@@ -48,8 +50,13 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
             categoryId,
             subcategoryId = null,
         }: { categoryId: string; subcategoryId?: string | null },
-        { rejectWithValue }
+        thunkAPI
     ) {
+        if (controller) {
+            controller.abort();
+        }
+        controller = new AbortController();
+
         try {
             const response = await fetchData({
                 method: 'POST',
@@ -60,6 +67,7 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
                         ? { subCategories: [subcategoryId] }
                         : {}),
                 },
+                signal: controller.signal,
             });
 
             const result = await response.json();
@@ -67,8 +75,11 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
             if (!response.ok) throw new Error('something went wrong');
 
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
@@ -77,10 +88,15 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsForFilteredProducts',
     async function (
         { isFiltersActive = false }: { isFiltersActive?: boolean },
-        { rejectWithValue, getState }
+        thunkAPI
     ) {
+        if (controller) {
+            controller.abort();
+        }
+        controller = new AbortController();
+
         try {
-            const state = getState() as RootState;
+            const state = thunkAPI.getState() as RootState;
             const { filtersBody, localFiltersState } = state.catalogFilters;
 
             const response = await fetchData({
@@ -91,6 +107,7 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
                         isFiltersActive ? localFiltersState : filtersBody
                     ),
                 },
+                signal: controller.signal,
             });
 
             const result = await response.json();
@@ -98,8 +115,11 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
             if (!response.ok) throw new Error('something went wrong');
 
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
