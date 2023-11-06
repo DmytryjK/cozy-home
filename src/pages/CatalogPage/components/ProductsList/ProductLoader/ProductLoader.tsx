@@ -45,8 +45,8 @@ const ProductLoader = () => {
             return (
                 <div className="nothing-to-search">
                     <p className="nothing-to-search__text">
-                        Вашому вибору відповідає 0 товарів. Будь ласка,
-                        спробуйте прибрати один або кілька фільтрів.
+                        Вашому вибору відповідає 0 товарів. <br />
+                        Будь ласка, спробуйте прибрати один або кілька фільтрів.
                     </p>
                     <button
                         className="nothing-to-search__clear-filters"
