@@ -11,6 +11,7 @@ import {
     UserCabinet,
 } from './pages';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
+import PrivateRoutes from './PrivateRoutes';
 
 const routes = [
     {
@@ -50,20 +51,28 @@ const routes = [
         element: <SignInPage />,
     },
     {
-        path: '/cabinet',
-        element: <UserCabinet />,
-    },
-    {
-        path: '/cabinet/:name',
-        element: <UserCabinet />,
-    },
-    {
         path: '/api/v1/auth/activate',
         element: <ActivationPage />,
     },
     {
         path: '/api/v1/auth/login/reset',
         element: <ResetPasswordPage />,
+    },
+    {
+        path: '/cabinet',
+        element: (
+            <PrivateRoutes>
+                <UserCabinet />
+            </PrivateRoutes>
+        ),
+    },
+    {
+        path: '/cabinet/:name',
+        element: (
+            <PrivateRoutes>
+                <UserCabinet />
+            </PrivateRoutes>
+        ),
     },
 ];
 

@@ -4,7 +4,10 @@ import {
     Dispatch,
     SetStateAction,
     useMemo,
+    useEffect,
 } from 'react';
+import { useNavigate, redirect } from 'react-router';
+import { useAppSelector } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import CabinetNavigation from './CabinetNavigation/CabinetNavigation';
 import CabinetContent from './CabinetContent/CabinetContent';
@@ -27,6 +30,7 @@ export const UserActiveLinkContext = createContext<ActiveLinkContextType>({
 
 const UserCabinet = () => {
     const [activeLink, setActiveLink] = useState<LinkType | null>(null);
+
     return (
         <>
             <Breadcrumbs />
