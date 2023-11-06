@@ -7,7 +7,7 @@ import {
     useMemo,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { useAppDispatch } from '../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { getUserProfileData } from '../../../store/reducers/userActionsSlice';
 import UserContacts from './UserContacts/UserContacts';
 import UserFavorites from './UserFavorites/UserFavorites';
@@ -44,6 +44,7 @@ const CabinetContent = () => {
         'desktop' | 'mobile' | null
     >(null);
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
+    const { jwtToken } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
     const { loading, data } = useFetch(
@@ -93,6 +94,7 @@ const CabinetContent = () => {
 
     useEffect(() => {
         if (!activeLink) return;
+        if (!jwtToken) return;
         if (activeLink.href === '' && currentScreenSize === 'mobile') {
             navigate('/cabinet');
         } else {
