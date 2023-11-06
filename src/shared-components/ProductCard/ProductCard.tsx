@@ -83,7 +83,7 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     quantity: 1,
                 })
             );
-            dispatch(fetchCartDataForAuthUser());
+            // dispatch(fetchCartDataForAuthUser());
         } else {
             dispatch(
                 addProductToCartBody({
