@@ -82,7 +82,6 @@ export const updateUserProfileData = createAsyncThunk(
             if (!response.ok) throw new Error('Щосі пішло не так :(');
 
             const data = await response.json();
-            // resetForm();
             return data;
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -111,6 +110,24 @@ export const userActionsSlice = createSlice({
         );
         builder.addCase(
             getUserProfileData.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loadingContacts = 'failed';
+                state.errorContacts = action.payload;
+            }
+        );
+        builder.addCase(updateUserProfileData.pending, (state) => {
+            state.loadingContacts = 'pending';
+            state.errorContacts = null;
+        });
+        builder.addCase(
+            updateUserProfileData.fulfilled,
+            (state, action: PayloadAction<UserProfileData>) => {
+                state.loadingContacts = 'succeeded';
+                state.userProfileData = action.payload;
+            }
+        );
+        builder.addCase(
+            updateUserProfileData.rejected,
             (state, action: PayloadAction<unknown>) => {
                 state.loadingContacts = 'failed';
                 state.errorContacts = action.payload;

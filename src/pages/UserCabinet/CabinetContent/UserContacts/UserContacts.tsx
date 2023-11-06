@@ -117,49 +117,51 @@ const UserContacts = () => {
     return (
         <div className="user-contacts">
             <h1 className="user-contacts__title">Контактна інформація</h1>
-            {loadingContacts === 'pending' ? (
-                <Loader />
-            ) : (
-                <form
-                    className="user-contacts__form"
-                    onSubmit={formik11.handleSubmit}
-                    noValidate
-                >
-                    <div className="user-contacts__form-wrapper">
-                        <div className="user-contacts__form-left">
-                            <FirstNameInput formik={formik11} />
-                            <LastNameInput formik={formik11} />
-                            <BirthDateInput formik={formik11} />
-                            <EmailInput formik={formik11} />
-                            <PhoneNumberInput formik={formik11} />
-                        </div>
-                        <div className="user-contacts__form-right">
-                            <PasswordInput
-                                formik={formik11}
-                                label="Старий пароль"
-                                name="oldpassword"
-                                isRequired={false}
-                            />
-                            <PasswordInput
-                                formik={formik11}
-                                label="Новий пароль"
-                                isRequired={false}
-                            />
-                            <PasswordInput
-                                formik={formik11}
-                                label="Повторіть пароль*"
-                                name="repeatedPassword"
-                            />
-                        </div>
-                        <button
-                            className="user-contacts__form-submit"
-                            type="submit"
-                        >
-                            Зберегти
-                        </button>
+            <form
+                className="user-contacts__form"
+                onSubmit={formik11.handleSubmit}
+                noValidate
+            >
+                <div className="user-contacts__form-wrapper">
+                    {loadingContacts === 'pending' ? (
+                        <Loader className="user-contacts__loader" />
+                    ) : (
+                        ''
+                    )}
+                    <div className="user-contacts__form-left">
+                        <FirstNameInput formik={formik11} />
+                        <LastNameInput formik={formik11} />
+                        <BirthDateInput formik={formik11} />
+                        <EmailInput formik={formik11} />
+                        <PhoneNumberInput formik={formik11} />
                     </div>
-                </form>
-            )}
+                    <div className="user-contacts__form-right">
+                        <PasswordInput
+                            formik={formik11}
+                            label="Старий пароль"
+                            name="oldpassword"
+                            isRequired={false}
+                        />
+                        <PasswordInput
+                            formik={formik11}
+                            label="Новий пароль"
+                            isRequired={false}
+                        />
+                        <PasswordInput
+                            formik={formik11}
+                            label="Повторіть пароль*"
+                            name="repeatedPassword"
+                        />
+                    </div>
+                    <button
+                        className="user-contacts__form-submit"
+                        type="submit"
+                        disabled={loadingContacts === 'pending'}
+                    >
+                        Зберегти
+                    </button>
+                </div>
+            </form>
         </div>
     );
 };
