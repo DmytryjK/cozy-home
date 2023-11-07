@@ -1,4 +1,4 @@
-interface ImageDtoList {
+export interface ImageDtoList {
     id: string;
     imagePath: string;
     color: string;
