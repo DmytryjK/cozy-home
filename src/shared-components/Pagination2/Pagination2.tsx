@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
@@ -10,13 +11,13 @@ const Pagination2 = ({
     countOfPages,
     currentPage,
     setCurrentPage,
+    setIsPaginationInit,
 }: {
-    countOfPages: number;
+    countOfPages: number | undefined;
     currentPage: number;
     setCurrentPage: Dispatch<SetStateAction<number>>;
+    setIsPaginationInit: Dispatch<SetStateAction<boolean>>;
 }) => {
-    const [clickedPage, setClickedPage] = useState<number>(0);
-    const [isPaginationInit, setIsPaginationInit] = useState<boolean>(true);
     const [pages, setPages] = useState<number[]>([]);
 
     useEffect(() => {
@@ -43,10 +44,10 @@ const Pagination2 = ({
 
     useEffect(() => {
         if (pages.length === 0) return;
-        if (clickedPage === null) return;
-        setIsPaginationInit(false);
-        setCurrentPage(clickedPage);
-    }, [clickedPage]);
+        if (currentPage === null) return;
+        setCurrentPage(currentPage);
+        moveUserToPageUp();
+    }, [currentPage]);
 
     const getDots = () => {
         return (
@@ -61,13 +62,13 @@ const Pagination2 = ({
             <li className="pagination__item" key={nextId('page-')}>
                 <button
                     className={`pagination__page-btn ${
-                        clickedPage === page - 1 ? 'active' : ''
+                        currentPage === page - 1 ? 'active' : ''
                     }`}
                     type="button"
                     data-value={page}
                     onClick={() => {
-                        setClickedPage(page - 1);
-                        moveUserToPageUp();
+                        setCurrentPage(page - 1);
+                        setIsPaginationInit(false);
                     }}
                 >
                     {page}
@@ -88,7 +89,7 @@ const Pagination2 = ({
 
     const renderPagination = () => {
         return pages.map((page, index) => {
-            if (clickedPage < 3) {
+            if (currentPage < 3) {
                 if (index === 4 && pages.length > 5) {
                     return getDots();
                 }
@@ -96,18 +97,18 @@ const Pagination2 = ({
                     return '';
                 }
             }
-            if (clickedPage >= 3 && clickedPage < pages.length - 3) {
-                if (index === 1 || index === clickedPage + 2) {
+            if (currentPage >= 3 && currentPage < pages.length - 3) {
+                if (index === 1 || index === currentPage + 2) {
                     return getDots();
                 }
                 if (
-                    (index > 0 && index < clickedPage - 1) ||
-                    (index > clickedPage + 1 && index < pages.length - 1)
+                    (index > 0 && index < currentPage - 1) ||
+                    (index > currentPage + 1 && index < pages.length - 1)
                 ) {
                     return '';
                 }
             }
-            if (clickedPage >= pages.length - 3 && pages.length > 5) {
+            if (currentPage >= pages.length - 3 && pages.length > 5) {
                 if (index === 1) {
                     return getDots();
                 }
@@ -119,33 +120,41 @@ const Pagination2 = ({
         });
     };
     return (
-        <div className="pagination" style={{ ...inlineStyle() }}>
-            <ul className=" pagination__list">{renderPagination()}</ul>
-            <button
-                className="pagination__prev-btn"
-                type="button"
-                onClick={() => {
-                    setClickedPage(clickedPage - 1);
-                }}
-                disabled={clickedPage <= 0}
-            >
-                <svg width={24} height={24} className="prev-btn__icon">
-                    <use href={`${paginationSprite}#prev`} />
-                </svg>
-            </button>
-            <button
-                className="pagination__next-btn"
-                type="button"
-                onClick={() => {
-                    setClickedPage(clickedPage + 1);
-                }}
-                disabled={clickedPage >= pages.length - 1}
-            >
-                <svg width={24} height={24} className="next-btn__icon">
-                    <use href={`${paginationSprite}#next`} />
-                </svg>
-            </button>
-        </div>
+        <>
+            {countOfPages ? (
+                <div className="pagination" style={{ ...inlineStyle() }}>
+                    <ul className=" pagination__list">{renderPagination()}</ul>
+                    <button
+                        className="pagination__prev-btn"
+                        type="button"
+                        onClick={() => {
+                            setCurrentPage(currentPage - 1);
+                            setIsPaginationInit(false);
+                        }}
+                        disabled={currentPage <= 0}
+                    >
+                        <svg width={24} height={24} className="prev-btn__icon">
+                            <use href={`${paginationSprite}#prev`} />
+                        </svg>
+                    </button>
+                    <button
+                        className="pagination__next-btn"
+                        type="button"
+                        onClick={() => {
+                            setCurrentPage(currentPage + 1);
+                            setIsPaginationInit(false);
+                        }}
+                        disabled={currentPage >= pages.length - 1}
+                    >
+                        <svg width={24} height={24} className="next-btn__icon">
+                            <use href={`${paginationSprite}#next`} />
+                        </svg>
+                    </button>
+                </div>
+            ) : (
+                ''
+            )}
+        </>
     );
 };
 

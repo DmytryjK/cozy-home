@@ -32,6 +32,7 @@ const UserFavorites = () => {
     ];
     const countOfPages = 10;
     const [currentPage, setCurrentPage] = useState<number>(0);
+    const [isPaginationInit, setIsPaginationInit] = useState<boolean>(true);
 
     const { data, loading } = useContext(FavoritesContext);
 
@@ -64,6 +65,7 @@ const UserFavorites = () => {
                     countOfPages={countOfPages}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
+                    setIsPaginationInit={setIsPaginationInit}
                 />
             </div>
         </div>

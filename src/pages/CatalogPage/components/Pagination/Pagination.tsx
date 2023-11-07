@@ -25,14 +25,12 @@ const Pagination = () => {
     const subCategoryId = useAppSelector(
         (state) => state.catalogFilters.filtersBody.subCategoryId
     );
-    const loadingProducts = useAppSelector(
-        (state) => state.catalogProducts.loading
-    );
+
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(updateCurrentPage(0));
-    }, [parentCategoryId, subCategoryId]);
+    // useEffect(() => {
+    //     dispatch(updateCurrentPage(0));
+    // }, [parentCategoryId, subCategoryId]);
 
     useEffect(() => {
         if (!countOfPages) {
@@ -63,20 +61,14 @@ const Pagination = () => {
         dispatch(updateCurrentPage(clickedPage));
     }, [clickedPage]);
 
-    useEffect(() => {
-        if (currentPage !== clickedPage) {
-            setClickedPage(currentPage);
-            return undefined;
-        }
-        if (isPaginationInit) return undefined;
-        const promise: any = dispatch(
-            fetchCatalogProductsByFilters({ page: clickedPage })
-        );
-
-        return () => {
-            promise.abort();
-        };
-    }, [currentPage, isPaginationInit]);
+    // useEffect(() => {
+    //     if (currentPage !== clickedPage) {
+    //         setClickedPage(currentPage);
+    //         return;
+    //     }
+    //     if (isPaginationInit) return;
+    //     dispatch(fetchCatalogProductsByFilters({ page: clickedPage }));
+    // }, [currentPage, isPaginationInit]);
 
     const getDots = () => {
         return (

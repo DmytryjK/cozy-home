@@ -1,9 +1,10 @@
 interface ImageDtoList {
     id: string;
     imagePath: string;
+    color: string;
 }
 
-interface ColorDtoList {
+export interface ColorDtoList {
     id: string;
     name: string;
     quantityStatus: string;
