@@ -5,6 +5,7 @@ import Filters from './components/Filters/Filters';
 import SortProducts from './components/SortProducts/SortProducts';
 import SearchedQuantity from './components/SearchedQuantity/SearchedQuantity';
 import Pagination from './components/Pagination/Pagination';
+import Navigation from './components/Navigation/Navigation';
 import ProductsList from './components/ProductsList/ProductsList';
 import OpenFiltersButton from './components/OpenFiltersButton/OpenFiltersButton';
 import './CatalogPage.scss';
@@ -27,7 +28,8 @@ const CatalogPage = () => {
                             <ProductsList />
                         </div>
                         <div className="main-content__bottom">
-                            <Pagination />
+                            {/* <Pagination /> */}
+                            <Navigation />
                         </div>
                     </div>
                 </div>

@@ -222,6 +222,7 @@ const Filters = () => {
                             dispatch(resetFilters(id));
                             dispatch(showHideFilters(false)); // close window on mobile
                             moveUserToPageUp();
+                            dispatch(updateCurrentPage(0));
                         }}
                     >
                         <span className="buttons__reject_text">скасувати</span>
