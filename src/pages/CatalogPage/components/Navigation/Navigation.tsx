@@ -41,14 +41,12 @@ const Navigation = () => {
     }, [currentPage]);
 
     return (
-        <div className="catalog-navigation">
-            <Pagination2
-                countOfPages={countOfPages}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                setIsPaginationInit={setIsPaginationInit}
-            />
-        </div>
+        <Pagination2
+            countOfPages={countOfPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            setIsPaginationInit={setIsPaginationInit}
+        />
     );
 };
 
