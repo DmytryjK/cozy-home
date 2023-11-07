@@ -7,8 +7,9 @@ import {
     updateProductImages,
 } from '../../../../store/reducers/productInformationSlice';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
-import './ColorSelection.scss';
 import { ResponseData } from '../ProductImagesSlider/ProductImagesSlider';
+import { sortColors } from '../../../../shared-components/ProductCard/SliderImages/SliderImages';
+import './ColorSelection.scss';
 
 type Props = {
     setColorChange: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,6 +28,7 @@ const ColorSelection = ({ setColorChange }: Props) => {
     const currentSkuCode = useAppSelector(
         (state) => state.productInformation.currentSku
     );
+    const colorDtoSort = sortColors(colorDtoList);
 
     const localColorCurrent = JSON.parse(
         localStorage.getItem('currentColor') ||
@@ -79,10 +81,10 @@ const ColorSelection = ({ setColorChange }: Props) => {
     }, [dispatch, currentSkuCode]);
 
     useEffect(() => {
-        if (!hex || colorDtoList.length === 0) return;
-        const colorName = colorDtoList.filter((color) => color.id === hex)[0]
+        if (!hex || colorDtoSort.length === 0) return;
+        const colorName = colorDtoSort.filter((color) => color.id === hex)[0]
             .name;
-        const colorStatus = colorDtoList.filter((color) => color.id === hex)[0]
+        const colorStatus = colorDtoSort.filter((color) => color.id === hex)[0]
             .quantityStatus;
 
         localStorage.setItem(
@@ -154,7 +156,7 @@ const ColorSelection = ({ setColorChange }: Props) => {
                 Колір: <span>{currentColor?.name}</span>
             </span>
             <ul className="color-selection__list">
-                {colorDtoList.map((color) => {
+                {colorDtoSort.map((color) => {
                     const { id, name, quantityStatus } = color;
                     return (
                         <li

@@ -13,7 +13,12 @@ import 'swiper/css/pagination';
 import Loader from '../../Loader';
 import ErrorMessage from '../../ErrorMessage';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
-import { Loading, ProductCardType } from '../../../types/types';
+import {
+    Loading,
+    ProductCardType,
+    ColorDtoList,
+    ImageDtoList,
+} from '../../../types/types';
 import { API_BASE } from '../../../utils/API_BASE';
 
 type TSwiper = swiper & {
@@ -48,6 +53,43 @@ type Props = {
     currentColor: { name: string; hex: string; quantityStatus: string };
 };
 
+export const sortColors = (colorDtoList: ColorDtoList[]) => {
+    const colorDtoSort: ColorDtoList[] = JSON.parse(
+        JSON.stringify(colorDtoList)
+    );
+    return colorDtoSort.sort((a, b) => {
+        const valuesOfAvailability = [
+            'Немає в наявності',
+            'Закінчується',
+            'В наявності',
+        ];
+        const compareA = valuesOfAvailability.indexOf(a.quantityStatus);
+        const compareB = valuesOfAvailability.indexOf(b.quantityStatus);
+        if (compareA < compareB) {
+            return 1;
+        }
+        if (compareA > compareB) {
+            return -1;
+        }
+        return 0;
+    });
+};
+
+const sortColorByFirstImg = (
+    colorDtoList: ColorDtoList[],
+    imageDtoList: ImageDtoList[]
+) => {
+    return sortColors(colorDtoList).sort((a, b) => {
+        if (a.name === imageDtoList[0].color) {
+            return -1;
+        }
+        if (b.name === imageDtoList[0].color) {
+            return 1;
+        }
+        return 0;
+    });
+};
+
 const SliderImages = (props: Props) => {
     const cardSliderRef = useRef<TSwiper>();
     const {
@@ -70,24 +112,27 @@ const SliderImages = (props: Props) => {
 
     const dispatch = useAppDispatch();
 
+    const colorDtoSort = sortColorByFirstImg(colorDtoList, imageDtoList);
+
     useEffect(() => {
         if (!isColorChosen && imageDtoList.length > 0) {
-            const { name, id, quantityStatus } = colorDtoList[0];
+            const { name, id, quantityStatus } = colorDtoSort[0];
             setCurrentColor({ name, hex: id, quantityStatus });
+            setCurrentIndexColor(0);
         }
     }, [isColorChosen, imageDtoList]);
 
     useEffect(() => {
         setImagesData({
             [currentIndexColor]: {
-                imageSrc: imageDtoList[0]?.imagePath || imageNotFound,
+                imageSrc: imageDtoList[0].imagePath || imageNotFound,
             },
         });
     }, [imageDtoList]);
 
     useEffect(() => {
         if (imageSrc) {
-            if (Object.keys(imagesData).length < colorDtoList.length) {
+            if (Object.keys(imagesData).length < colorDtoSort.length) {
                 setImagesData((prev) => ({
                     ...prev,
                     [currentIndexColor]: {
@@ -139,29 +184,24 @@ const SliderImages = (props: Props) => {
             } catch (errors) {
                 setError(errors);
                 setLoading('failed');
+                setImageSrc(imageNotFound);
             }
         }
         if (
             error === null &&
             imagesData &&
-            Object.keys(imagesData).length < colorDtoList.length
+            Object.keys(imagesData).length < colorDtoSort.length
         )
             fetchData();
     };
 
     const renderedImage = (name: string, index: number) => {
         let result: JSX.Element = <Loader />;
-        if (error) {
-            result = <ErrorMessage />;
-        } else if (loading === 'succeeded') {
+        if (error || loading === 'succeeded') {
             result = (
                 <img
                     className="product-card__image"
-                    src={
-                        imagesData[index]
-                            ? imagesData[index].imageSrc
-                            : imageNotFound
-                    }
+                    src={imagesData[index] ? imagesData[index].imageSrc : ''}
                     alt={name}
                 />
             );
@@ -205,7 +245,7 @@ const SliderImages = (props: Props) => {
                         cardSliderRef.current = swiper as TSwiper;
                     }}
                     onSlideChange={(swiper) => {
-                        colorDtoList.forEach((item, index) => {
+                        colorDtoSort.forEach((item, index) => {
                             if (swiper.activeIndex === index) {
                                 const { name, id, quantityStatus } = item;
                                 setCurrentColor({
@@ -218,7 +258,7 @@ const SliderImages = (props: Props) => {
                         setIsColorChosen(true);
                     }}
                 >
-                    {colorDtoList.length === 0 && (
+                    {colorDtoSort.length === 0 && (
                         <SwiperSlide>
                             <div className="product-card__image-wrapper">
                                 <img
@@ -229,7 +269,7 @@ const SliderImages = (props: Props) => {
                             </div>
                         </SwiperSlide>
                     )}
-                    {colorDtoList.map((color, index) => {
+                    {colorDtoSort.map((color, index) => {
                         return (
                             <SwiperSlide
                                 key={`slider-image-${skuCode} ${color.id}`}
@@ -255,7 +295,7 @@ const SliderImages = (props: Props) => {
                         </NavLink>
                     </h2>
                     <fieldset className="product-card__color-checkboxes">
-                        {colorDtoList.map((color, index) => {
+                        {colorDtoSort.map((color, index) => {
                             const { name, id, quantityStatus } = color;
                             return (
                                 <label
