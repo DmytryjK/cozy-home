@@ -234,8 +234,7 @@ const SliderImages = (props: Props) => {
             <NavLink
                 className="product-card__slider-link"
                 to={`/product/${skuCode}${currentColor.hex}`}
-                reloadDocument
-                onClick={handleLinkClick}
+                onMouseDown={handleLinkClick}
             >
                 <Swiper
                     className="product-card__slider"
@@ -288,8 +287,8 @@ const SliderImages = (props: Props) => {
                         <NavLink
                             className="product-card__title-link"
                             to={`/product/${skuCode}${currentColor.hex}`}
-                            reloadDocument
-                            onClick={handleLinkClick}
+                            // reloadDocument
+                            onMouseDown={handleLinkClick}
                         >
                             {name}
                         </NavLink>
