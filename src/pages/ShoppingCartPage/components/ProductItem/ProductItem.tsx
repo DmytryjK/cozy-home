@@ -52,8 +52,8 @@ const ProductItem = (props: Props) => {
                 <NavLink
                     className="cart-product__link"
                     to={`/product/${skuCode}${colorHex}`}
-                    reloadDocument
-                    onClick={handleOpenProductPage}
+                    // reloadDocument
+                    onMouseDown={handleOpenProductPage}
                 >
                     <img
                         className="cart-product__photo"
@@ -65,8 +65,8 @@ const ProductItem = (props: Props) => {
                     <NavLink
                         className="cart-product__title-link"
                         to={`/product/${skuCode}${colorHex}`}
-                        reloadDocument
-                        onClick={handleOpenProductPage}
+                        // reloadDocument
+                        onMouseDown={handleOpenProductPage}
                     >
                         {name}
                     </NavLink>

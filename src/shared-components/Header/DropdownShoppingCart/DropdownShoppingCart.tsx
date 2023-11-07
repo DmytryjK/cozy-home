@@ -68,8 +68,8 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                     <NavLink
                                         className="produt-item__link"
                                         to={`/product/${skuCode}${colorHex}`}
-                                        reloadDocument
-                                        onClick={() => {
+                                        // reloadDocument
+                                        onMouseDown={() => {
                                             handleOpenProductPage(
                                                 skuCode,
                                                 colorHex,
@@ -87,8 +87,8 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                         <NavLink
                                             className="product-item__title-link"
                                             to={`/product/${skuCode}${colorHex}`}
-                                            reloadDocument
-                                            onClick={() => {
+                                            // reloadDocument
+                                            onMouseDown={() => {
                                                 handleOpenProductPage(
                                                     skuCode,
                                                     colorHex,
