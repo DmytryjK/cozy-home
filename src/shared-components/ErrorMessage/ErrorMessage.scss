@@ -11,11 +11,14 @@
         color: rgb(54, 54, 54);
     }
     &_reload-page {
+        background-color: transparent;
+        border: none;
         text-decoration: underline;
         text-underline-offset: 4px;
         font-size: 16px;
         font-weight: 500;
         color: rgb(54, 54, 54);
+        cursor: pointer;
     }
 }
 

@@ -1,14 +1,20 @@
+import { useNavigate } from 'react-router';
 import './ErrorMessage.scss';
 
-const ErrorMessage = () => {
+const ErrorMessage = ({ message }: { message?: string }) => {
+    const navigate = useNavigate();
     return (
         <div className="error-message">
             <p className="error-message_text">
-                Упс... Щось пішло не так. Спробуйте ще раз.
+                {message || 'Упс... Щось пішло не так. Спробуйте ще раз.'}
             </p>
-            <a className="error-message_reload-page" href="/">
+            <button
+                className="error-message_reload-page"
+                onClick={() => navigate(0)}
+                type="button"
+            >
                 Оновити сторінку
-            </a>
+            </button>
         </div>
     );
 };
