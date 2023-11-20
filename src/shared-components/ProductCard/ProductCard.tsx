@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { ProductCardType } from '../../types/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
@@ -189,4 +189,4 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

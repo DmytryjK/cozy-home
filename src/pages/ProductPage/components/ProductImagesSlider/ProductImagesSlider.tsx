@@ -80,10 +80,10 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
     useEffect(() => {
         if (swiperRef.current) {
             const { swiper } = swiperRef.current;
-            swiper.slideTo(0);
+            swiper?.slideTo(0);
             setActiveIndex(0);
         }
-    }, [currentColor]);
+    }, [currentColor, imagesFromStore]);
 
     const handleFirstSwiper = (swiper: any) => {
         setFirstSwiper(swiper);
@@ -98,12 +98,9 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
     };
 
     const renderSlider = () => {
-        if (!imagesFromStore) return null;
-        if (imagesFromStore.length === 0) return null;
         return (
             <>
                 {isPopUpLoading && <FullScreenLoader />}
-
                 <div className="product-images">
                     <div className="product-images__main-image">
                         {colorChange && (
@@ -119,17 +116,18 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                             controller={{ control: secondSwiper }}
                             className="product-images__slider"
                         >
-                            {imagesFromStore.map((image, index) => (
-                                <SwiperSlide
-                                    key={nextId('swiper-image')}
-                                    onClick={() => handleSliderClick(index)}
-                                >
-                                    <img
-                                        src={image.desktopImagePath}
-                                        alt="Slider images"
-                                    />
-                                </SwiperSlide>
-                            ))}
+                            {imagesFromStore &&
+                                imagesFromStore.map((image, index) => (
+                                    <SwiperSlide
+                                        key={nextId('swiper-image')}
+                                        onClick={() => handleSliderClick(index)}
+                                    >
+                                        <img
+                                            src={image.desktopImagePath}
+                                            alt="Slider images"
+                                        />
+                                    </SwiperSlide>
+                                ))}
                         </Swiper>
                         <Swiper
                             onSwiper={setThumbsSwiper}
@@ -139,23 +137,24 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                             modules={[Navigation, Thumbs]}
                             className="product-images__slider-thumbs"
                         >
-                            {imagesFromStore.map((image, index) => (
-                                <SwiperSlide
-                                    key={nextId('swiper-image')}
-                                    className={
-                                        activeIndex === index
-                                            ? 'swiper-slide-thumb-active'
-                                            : ''
-                                    }
-                                >
-                                    <div className="product-images__slider-thumbs-wrapper">
-                                        <img
-                                            src={image.sliderImagePath}
-                                            alt="Slider images"
-                                        />
-                                    </div>
-                                </SwiperSlide>
-                            ))}
+                            {imagesFromStore &&
+                                imagesFromStore.map((image, index) => (
+                                    <SwiperSlide
+                                        key={nextId('swiper-image')}
+                                        className={
+                                            activeIndex === index
+                                                ? 'swiper-slide-thumb-active'
+                                                : ''
+                                        }
+                                    >
+                                        <div className="product-images__slider-thumbs-wrapper">
+                                            <img
+                                                src={image.sliderImagePath}
+                                                alt="Slider images"
+                                            />
+                                        </div>
+                                    </SwiperSlide>
+                                ))}
                         </Swiper>
                     </div>
                 </div>
