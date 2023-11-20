@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
@@ -340,4 +340,4 @@ const SliderImages = (props: Props) => {
     );
 };
 
-export default SliderImages;
+export default memo(SliderImages);

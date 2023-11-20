@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import {
@@ -29,7 +29,6 @@ const ColorSelection = ({ setColorChange }: Props) => {
         (state) => state.productInformation.currentSku
     );
     const colorDtoSort = sortColors(colorDtoList);
-
     const localColorCurrent = JSON.parse(
         localStorage.getItem('currentColor') ||
             JSON.stringify({
@@ -46,42 +45,27 @@ const ColorSelection = ({ setColorChange }: Props) => {
     const currentPath = useLocation().pathname;
 
     useEffect(() => {
-        const { hex } = localColorCurrent;
-        if (localProductSku && hex) {
-            dispatch(
-                fetchProductInfoByScuWithColor({
-                    productSkuCode: localProductSku,
-                    colorHex: hex,
-                })
-            );
-        } else {
-            const regex = /\D/g;
-            const skuFromLink = pathname.replace(regex, ''); // Удаляем все, кроме цифр
-            dispatch(
-                fetchProductInfoByScuWithColor({
-                    productSkuCode: skuFromLink,
-                    colorHex: hash,
-                })
-            );
-            localStorage.setItem('productSkuCode', skuFromLink);
-            localStorage.setItem(
-                'currentColor',
-                JSON.stringify({
-                    hex: hash,
-                })
-            );
-        }
-        if (!currentSkuCode || !currentColor) return;
+        const regex = /\D/g;
+        const skuFromLink = pathname.replace(regex, ''); // Удаляем все, кроме цифр
+        if (skuFromLink === skuCode) return;
         dispatch(
             fetchProductInfoByScuWithColor({
-                productSkuCode: currentSkuCode,
-                colorHex: currentColor.id,
+                productSkuCode: skuFromLink,
+                colorHex: hash,
             })
         );
-    }, [dispatch, currentSkuCode]);
+        localStorage.setItem('productSkuCode', skuFromLink);
+        localStorage.setItem(
+            'currentColor',
+            JSON.stringify({
+                hex: hash,
+            })
+        );
+    }, [pathname, hash, skuCode]);
 
     useEffect(() => {
         if (!hex || colorDtoSort.length === 0) return;
+        if (!colorDtoSort.some((color) => color.id === hex)) return;
         const colorName = colorDtoSort.filter((color) => color.id === hex)[0]
             .name;
         const colorStatus = colorDtoSort.filter((color) => color.id === hex)[0]
@@ -193,4 +177,4 @@ const ColorSelection = ({ setColorChange }: Props) => {
     );
 };
 
-export default ColorSelection;
+export default memo(ColorSelection);
