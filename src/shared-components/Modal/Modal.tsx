@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+/* eslint-disable react/jsx-no-useless-fragment */
+import { useEffect, useState, memo } from 'react';
 import productPageSprite from '../../assets/icons/product-page/product-pageSprite.svg';
 import './Modal.scss';
 
@@ -31,6 +32,21 @@ const Modal = ({
     minHeightOnSubmit,
     minHeight,
 }: Props) => {
+    const [showChildren, setShowChildren] = useState(true);
+
+    useEffect(() => {
+        let timeout: any;
+        if (active) {
+            setShowChildren(true);
+        } else {
+            timeout = setTimeout(() => {
+                setShowChildren(false);
+            }, 200);
+        }
+
+        return () => clearTimeout(timeout);
+    }, [active]);
+
     useEffect(() => {
         if (active) return undefined;
         if (!setisDataLoadedToServer) return undefined;
@@ -54,6 +70,7 @@ const Modal = ({
 
         return () => clearTimeout(closeWindowTimeout);
     }, [isDataLoadedToServer, active]);
+
     return (
         <div
             className={active ? 'modal modal_active' : 'modal'}
@@ -63,7 +80,12 @@ const Modal = ({
         >
             <div
                 className="modal__content"
-                style={{ maxWidth: maxwidth, display, background, minHeight }}
+                style={{
+                    maxWidth: maxwidth,
+                    display,
+                    background,
+                    minHeight,
+                }}
                 onMouseDown={(e) => {
                     e.stopPropagation();
                 }}
@@ -90,7 +112,7 @@ const Modal = ({
                         )}
                     </div>
                 ) : (
-                    children
+                    <>{showChildren ? children : ''}</>
                 )}
                 <button
                     className="modal__content_close-btn"
@@ -133,4 +155,4 @@ Modal.defaultProps = {
     minHeight: '400px',
 };
 
-export default Modal;
+export default memo(Modal);

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValidation';
@@ -178,4 +178,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default memo(LoginForm);

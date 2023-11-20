@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useEffect } from 'react';
+import { useState, MouseEvent, useEffect, useCallback, memo } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
@@ -208,7 +208,7 @@ const Header = () => {
         dispatch(addProductsInfoToCheckout(checkoutProducts));
     }, [cartData]);
 
-    const handleMouseOver = (event: MouseEvent) => {
+    const handleMouseOver = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (
             dropdownLink[0]?.contains(target) ||
@@ -216,9 +216,9 @@ const Header = () => {
         ) {
             setIsDropdownOpen(true);
         }
-    };
+    }, []);
 
-    const handleMouseOut = (event: MouseEvent) => {
+    const handleMouseOut = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (
             !(
@@ -229,9 +229,9 @@ const Header = () => {
         ) {
             setIsDropdownOpen(false);
         }
-    };
+    }, []);
 
-    const handleCloseCartPreview = (event: MouseEvent) => {
+    const handleCloseCartPreview = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (
             !target.matches('.header') &&
@@ -241,9 +241,9 @@ const Header = () => {
         ) {
             setIsPreviewCartActive(false);
         }
-    };
+    }, []);
 
-    const handleCloseAuthDropdown = (event: MouseEvent) => {
+    const handleCloseAuthDropdown = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (
             !target.matches('.header') &&
@@ -253,7 +253,7 @@ const Header = () => {
         ) {
             setIsAuthDropdownActive(false);
         }
-    };
+    }, []);
 
     return (
         <div
@@ -391,4 +391,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default memo(Header);
