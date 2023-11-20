@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import googleIcon from '../../../../assets/icons/auth/google-icon.svg';
 import './DropdownAuth.scss';
@@ -33,4 +34,4 @@ const DropdownAuth = ({ isActive }: { isActive: boolean }) => {
         </div>
     );
 };
-export default DropdownAuth;
+export default memo(DropdownAuth);

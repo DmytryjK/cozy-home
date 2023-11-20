@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import './DropdownMenu.scss';
 import '../Header.scss';
 import nextId from 'react-id-generator';
@@ -73,4 +73,4 @@ const DropdownMenu = (props: Props) => {
     );
 };
 
-export default DropdownMenu;
+export default memo(DropdownMenu);

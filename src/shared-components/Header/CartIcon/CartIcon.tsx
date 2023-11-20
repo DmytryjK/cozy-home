@@ -4,6 +4,8 @@ import {
     Dispatch,
     useEffect,
     useState,
+    memo,
+    useCallback,
 } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
@@ -29,13 +31,13 @@ const CartIcon = (props: Props) => {
         }
     }, []);
 
-    const openProductCart = (e: MouseEvent) => {
+    const openProductCart = useCallback((e: MouseEvent) => {
         if (cartBody.length === 0) {
             e.preventDefault();
         } else {
             setIsBurgerOpen(false);
         }
-    };
+    }, []);
     return (
         <NavLink
             className="header-icons__cart cart-icon"
@@ -58,4 +60,4 @@ const CartIcon = (props: Props) => {
     );
 };
 
-export default CartIcon;
+export default memo(CartIcon);

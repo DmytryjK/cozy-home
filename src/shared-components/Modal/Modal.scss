@@ -23,9 +23,9 @@
 		width: 100%;
 		min-height: 400px;
 		transform: scale(0.8);
-		transition: 0.2s ease-out transform;
 		user-select: none;
 		pointer-events: none;
+		transition: 0.2s ease-out transform;
 
 		&_close-btn {
 			position: absolute;

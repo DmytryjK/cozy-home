@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
 import CartTrashBtn from '../../CartTrashBtn/CartTrashBtn';
@@ -203,4 +204,4 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
     );
 };
 
-export default DropdownShoppingCart;
+export default memo(DropdownShoppingCart);
