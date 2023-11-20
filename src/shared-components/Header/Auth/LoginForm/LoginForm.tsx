@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValidation';
@@ -7,6 +7,11 @@ import ShowHidePusswordBtn from '../../../FormComponents/ShowHidePusswordBtn/Sho
 import formValidation from '../../../../utils/formValidation';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
+import {
+    updateCartInfoForAuthUser,
+    resetCartDataWhenUserLogOut,
+    fetchCartDataForAuthUser,
+} from '../../../../store/reducers/cartSlice';
 import { userLogIn, setJwtToken } from '../../../../store/reducers/authSlice';
 import Loader from '../../../Loader';
 import './LoginForm.scss';
@@ -22,12 +27,14 @@ const LoginForm = () => {
     const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
     const [isPasswordWrong, setIsPasswordWrong] = useState<boolean>(false);
     const [isPasswordHide, setIsPasswordHide] = useState<boolean>(true);
-
     const { jwtToken, loginError, loginLoading } = useAppSelector(
         (state) => state.auth
     );
     const sessionStorJwt = sessionStorage.getItem('token');
     const localStorJwt = localStorage.getItem('token');
+    const productsInfoToCheckout = useAppSelector(
+        (state) => state.cart.productsInfoToCheckout
+    );
 
     const dispatch = useAppDispatch();
 
@@ -36,6 +43,15 @@ const LoginForm = () => {
             dispatch(setJwtToken(sessionStorJwt || localStorJwt || ''));
         }
     }, [sessionStorJwt, localStorJwt]);
+
+    useEffect(() => {
+        if (jwtToken && loginLoading === 'succeeded') {
+            // dispatch(updateCartInfoForAuthUser([]));
+            // dispatch(resetCartDataWhenUserLogOut([]));
+            // dispatch(fetchCartDataForAuthUser());
+            // dispatch(updateCartInfoForAuthUser(productsInfoToCheckout));
+        }
+    }, [jwtToken]);
 
     const formik = useFormik({
         initialValues: {
@@ -178,4 +194,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default memo(LoginForm);

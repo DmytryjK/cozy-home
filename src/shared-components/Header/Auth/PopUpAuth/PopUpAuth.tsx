@@ -23,7 +23,7 @@ const PopUpAuth = ({
                 <h2 className="auth-popup__title">
                     Вхід до особистого кабінету
                 </h2>
-                <LoginForm />
+                {isActive ? <LoginForm /> : ''}
                 <div className="auth-popup__login-by-service login-by-service">
                     <h3 className="login-by-service__title">
                         Увійдіть як користувач

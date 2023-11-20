@@ -28,6 +28,7 @@ const ProductsInfoCart = () => {
         });
         setTotalCheckoutQuantity(checkoutQuantity);
         setTotalCost(cost);
+        console.log(productsInfoToCheckout);
         dispatch(
             updateCartTotal({
                 totalQuantity: quantity,

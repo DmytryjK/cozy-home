@@ -75,23 +75,46 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
 
     const handleAddProductToCart = () => {
         if (isElementAddedToCart) return;
+        // if (jwtToken) {
+        //     console.log('tokrn');
+        //     // dispatch(
+        //     //     updateCartInfoForAuthUser([
+        //     //         {
+        //     //             skuCode,
+        //     //             colorHex: currentColor.hex,
+        //     //             quantity: 1,
+        //     //         },
+        //     //     ])
+        //     // );
+        //     // dispatch(fetchCartDataForAuthUser());
+        // } else {
+        //     dispatch(
+        //         addProductToCartBody({
+        //             productSkuCode: skuCode,
+        //             colorHex: currentColor.hex,
+        //         })
+        //     );
+        // }
         if (jwtToken) {
             dispatch(
-                updateCartInfoForAuthUser({
-                    skuCode,
-                    colorHex: currentColor.hex,
-                    quantity: 1,
-                })
-            );
-            // dispatch(fetchCartDataForAuthUser());
-        } else {
-            dispatch(
-                addProductToCartBody({
-                    productSkuCode: skuCode,
-                    colorHex: currentColor.hex,
-                })
+                updateCartInfoForAuthUser([
+                    {
+                        skuCode,
+                        colorHex: currentColor.hex,
+                        productName: '',
+                        colorName: '',
+                        quantityToCheckout: 1,
+                        price: 0,
+                    },
+                ])
             );
         }
+        dispatch(
+            addProductToCartBody({
+                productSkuCode: skuCode,
+                colorHex: currentColor.hex,
+            })
+        );
         dispatch(openPopUpCart(true));
     };
 

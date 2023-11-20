@@ -83,7 +83,7 @@ const SignInForm = () => {
                         lastName,
                         birthday: reverseBirthdayForServer(birthdate),
                         phoneNumber: phone,
-                        roles: ['admin'],
+                        roles: ['customer'],
                     },
                     resetForm,
                 })

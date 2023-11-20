@@ -14,7 +14,7 @@
     pointer-events: none;
     user-select: none;
     transition: 0.2s ease-in-out opacity, 0.2s ease-in-out visibility;
-    &.auth-dropdown_active {
+    &_active {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;

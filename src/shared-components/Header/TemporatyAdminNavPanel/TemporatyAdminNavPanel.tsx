@@ -4,6 +4,7 @@ import {
     userLogOut,
     temporaryDelUser,
 } from '../../../store/reducers/authSlice';
+import { resetCartDataWhenUserLogOut } from '../../../store/reducers/cartSlice';
 import './TemporatyAdminNavPanel.scss';
 
 const TemporatyAdminNavPanel = () => {
@@ -34,6 +35,12 @@ const TemporatyAdminNavPanel = () => {
                     delete user
                 </button>
             </form>
+            <button
+                type="button"
+                onClick={() => dispatch(resetCartDataWhenUserLogOut())}
+            >
+                Clear server cart
+            </button>
             <button
                 className="admin-panel__btn"
                 type="button"

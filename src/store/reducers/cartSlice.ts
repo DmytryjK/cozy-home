@@ -15,13 +15,27 @@ type ProductsInfoToCheckout = {
 type CartBody = {
     productSkuCode: string;
     colorHex: string;
-    quantity?: string;
+    quantity?: number;
 };
 
 type CartBodyServer = {
     skuCode: string;
     colorHex: string;
-    quantity?: number;
+    quantity: number;
+};
+
+type ResponseCartWhenLoginUpdate = {
+    colorHex: string;
+    colorName: string;
+    favorite: boolean;
+    imagePath: string;
+    price: number;
+    priceWithDiscount: number | null;
+    productName: string;
+    quantity: number;
+    quantityStatus: string;
+    skuCode: string;
+    availableProductQuantity?: number;
 };
 
 type CartInitialState = {
@@ -90,11 +104,23 @@ export const fetchCartDataForAuthUser = createAsyncThunk(
 
 export const updateCartInfoForAuthUser = createAsyncThunk(
     'cart/updateCartInfoForAuthUser',
-    async function (cartBody: CartBodyServer, thunkAPI) {
+    async function (
+        productsInfoToCheckout: ProductsInfoToCheckout[],
+        thunkAPI
+    ) {
         // if (controller) {
         //     controller.abort();
         // }
         // controller = new AbortController();
+
+        const cartDataForServer = productsInfoToCheckout.map((item) => {
+            const { skuCode, colorHex, quantityToCheckout } = item;
+            return {
+                skuCode,
+                colorHex,
+                quantity: quantityToCheckout,
+            };
+        });
 
         const state = thunkAPI.getState() as RootState;
         const { jwtToken } = state.auth;
@@ -106,7 +132,7 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
         try {
             const response = await fetch(`${API_SECURE}basket`, {
                 method: 'POST',
-                body: JSON.stringify(cartBody),
+                body: JSON.stringify(cartDataForServer),
                 headers: {
                     Authorization: `Bearer ${jwtToken}`,
                     'Content-type': 'application/json; charset=UTF-8',
@@ -131,7 +157,7 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
 
 export const resetCartDataWhenUserLogOut = createAsyncThunk(
     'cart/resetCartDataWhenUserLogOut',
-    async function (cartBody: CartBody[], thunkAPI) {
+    async function (_, thunkAPI) {
         const state = thunkAPI.getState() as RootState;
         const { jwtToken } = state.auth;
         if (!jwtToken) {
@@ -139,14 +165,13 @@ export const resetCartDataWhenUserLogOut = createAsyncThunk(
         }
 
         try {
-            const response = await fetch(`${API_SECURE}basket`, {
+            const response = await fetch(`${API_SECURE}basket/replace`, {
                 method: 'POST',
-                body: JSON.stringify([...cartBody]),
+                body: JSON.stringify([]),
                 headers: {
                     Authorization: `Bearer ${jwtToken}`,
                     'Content-type': 'application/json; charset=UTF-8',
                 },
-                signal: controller.signal,
             });
 
             if (!response.ok) throw new Error('something went wrong');
@@ -276,6 +301,138 @@ export const cartSlice = createSlice({
         );
         builder.addCase(
             fetchProductCartInfo.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loading = 'failed';
+                state.error = action.payload;
+            }
+        );
+        builder.addCase(updateCartInfoForAuthUser.pending, (state) => {
+            state.loading = 'pending';
+            state.error = null;
+        });
+        builder.addCase(
+            updateCartInfoForAuthUser.fulfilled,
+            (state, action: PayloadAction<ResponseCartWhenLoginUpdate[]>) => {
+                state.loading = 'succeeded';
+                // state.cartData = action.payload.map((item) => {
+                //     const {
+                //         skuCode,
+                //         productName,
+                //         price,
+                //         priceWithDiscount,
+                //         colorHex,
+                //         colorName,
+                //         imagePath,
+                //         quantity,
+                //         quantityStatus,
+                //     } = item;
+                //     return {
+                //         skuCode,
+                //         name: productName,
+                //         price,
+                //         priceWithDiscount,
+                //         imagePath,
+                //         colorName,
+                //         colorHex,
+                //         availableProductQuantity: 10,
+                //         quantityStatus,
+                //     };
+                // });
+                state.productsInfoToCheckout = action.payload.map((item) => {
+                    const {
+                        productName,
+                        skuCode,
+                        colorHex,
+                        colorName,
+                        price,
+                        priceWithDiscount,
+                        quantity,
+                    } = item;
+                    return {
+                        productName,
+                        skuCode,
+                        colorHex,
+                        colorName,
+                        quantityToCheckout: quantity,
+                        price: priceWithDiscount || price,
+                    };
+                });
+                localStorage.setItem(
+                    'checkoutInfo',
+                    JSON.stringify(state.productsInfoToCheckout)
+                );
+                state.cartBody = action.payload.map((item) => {
+                    return {
+                        productSkuCode: item.skuCode,
+                        colorHex: item.colorHex,
+                    };
+                });
+                const total = {
+                    totalQuantity: 0,
+                    totalCost: 0,
+                    totalQuantityToCheckout: 0,
+                };
+
+                action.payload.forEach((item) => {
+                    const {
+                        quantity,
+                        priceWithDiscount,
+                        price,
+                        availableProductQuantity,
+                    } = item;
+
+                    total.totalQuantity += quantity;
+                    total.totalCost += priceWithDiscount || price;
+                    total.totalQuantityToCheckout += availableProductQuantity
+                        ? quantity
+                        : 1;
+                });
+                state.cartTotal = total;
+            }
+        );
+        builder.addCase(
+            updateCartInfoForAuthUser.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loading = 'failed';
+                state.error = action.payload;
+            }
+        );
+        builder.addCase(fetchCartDataForAuthUser.pending, (state) => {
+            state.loading = 'pending';
+            state.error = null;
+        });
+        builder.addCase(
+            fetchCartDataForAuthUser.fulfilled,
+            (state, action: PayloadAction<ResponseCartWhenLoginUpdate[]>) => {
+                state.loading = 'succeeded';
+                state.cartData = action.payload.map((item) => {
+                    const {
+                        skuCode,
+                        productName,
+                        price,
+                        priceWithDiscount,
+                        colorHex,
+                        colorName,
+                        imagePath,
+                        quantity,
+                        quantityStatus,
+                    } = item;
+                    return {
+                        skuCode,
+                        name: productName,
+                        price,
+                        priceWithDiscount,
+                        imagePath,
+                        colorName,
+                        colorHex,
+                        availableProductQuantity: 10,
+                        quantityStatus,
+                    };
+                });
+            }
+        );
+        builder.addCase(
+            fetchCartDataForAuthUser.rejected,
             (state, action: PayloadAction<unknown>) => {
                 state.loading = 'failed';
                 state.error = action.payload;

@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import './DropdownMenu.scss';
 import '../Header.scss';
 import nextId from 'react-id-generator';
@@ -22,10 +22,7 @@ const DropdownMenu = (props: Props) => {
         return data.map((category) => {
             const { name, id } = category;
             return (
-                <ul
-                    key={nextId('main-page-item')}
-                    className="dropdown-menu__list"
-                >
+                <ul key={`category-${id}`} className="dropdown-menu__list">
                     <li className="dropdown-menu__list_title">
                         <NavLink to={`/catalog/${name}`} reloadDocument>
                             {name}
@@ -38,7 +35,7 @@ const DropdownMenu = (props: Props) => {
                                 const subName = subCategory.name;
                                 return (
                                     <li
-                                        key={nextId('main-page-item')}
+                                        key={`subcategory-${subId}`}
                                         className="dropdown-menu__list_items_item"
                                     >
                                         <NavLink
@@ -73,4 +70,4 @@ const DropdownMenu = (props: Props) => {
     );
 };
 
-export default DropdownMenu;
+export default memo(DropdownMenu);

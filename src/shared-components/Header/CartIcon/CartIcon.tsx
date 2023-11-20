@@ -4,10 +4,13 @@ import {
     Dispatch,
     useEffect,
     useState,
+    memo,
+    useCallback,
 } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAppSelector } from '../../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../../hooks/hooks';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
+import userScreenWith from '../../../utils/userScreenWith';
 import './CartIcon.scss';
 
 type Props = {
@@ -17,25 +20,34 @@ type Props = {
 
 const CartIcon = (props: Props) => {
     const [isDesktop, setIsDesktop] = useState<boolean>(true);
-    const cartBody = useAppSelector((state) => state.cart.cartBody);
+    // const cartBody = useAppSelector((state) => state.cart.cartBody);
+    const productsInfoToCheckout = useAppSelector(
+        (state) => state.cart.productsInfoToCheckout
+    );
     const cartTotal = useAppSelector((state) => state.cart.cartTotal);
+    const dispatch = useAppDispatch();
     const { setIsPreviewCartActive, setIsBurgerOpen } = props;
 
     useEffect(() => {
-        if (window.innerWidth <= 960) {
+        if (userScreenWith() <= 960) {
             setIsDesktop(false);
         } else {
             setIsDesktop(true);
         }
     }, []);
 
-    const openProductCart = (e: MouseEvent) => {
-        if (cartBody.length === 0) {
+    const openProductCart = useCallback((e: MouseEvent) => {
+        if (productsInfoToCheckout.length === 0) {
             e.preventDefault();
         } else {
             setIsBurgerOpen(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        console.log(cartTotal, productsInfoToCheckout, 'asdfasdf');
+    }, [cartTotal, productsInfoToCheckout]);
+
     return (
         <NavLink
             className="header-icons__cart cart-icon"
@@ -52,10 +64,12 @@ const CartIcon = (props: Props) => {
                 <use href={`${headerSprite}#card-icon`} />
             </svg>
             <span className="header__icons_cart-counter cart-icon__counter">
-                {cartBody.length > 0 ? cartTotal?.totalQuantity || 0 : 0}
+                {productsInfoToCheckout.length > 0
+                    ? cartTotal?.totalQuantity || 0
+                    : 0}
             </span>
         </NavLink>
     );
 };
 
-export default CartIcon;
+export default memo(CartIcon);
