@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import './LastNameInput.scss';
@@ -36,4 +37,4 @@ LastNameInput.defaultProps = {
     isLabelShow: true,
 };
 
-export default LastNameInput;
+export default memo(LastNameInput);

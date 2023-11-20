@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction, memo } from 'react';
 import nextId from 'react-id-generator';
 import './CustomSelect.scss';
 
@@ -95,4 +95,4 @@ const CustomSelect = (props: Props) => {
     );
 };
 
-export default CustomSelect;
+export default memo(CustomSelect);

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, memo } from 'react';
 import './ShowHidePusswordBtn.scss';
 
 const ShowHidePusswordBtn = ({
@@ -19,4 +19,4 @@ const ShowHidePusswordBtn = ({
     );
 };
 
-export default ShowHidePusswordBtn;
+export default memo(ShowHidePusswordBtn);

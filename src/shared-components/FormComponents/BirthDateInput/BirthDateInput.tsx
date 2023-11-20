@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import nextId from 'react-id-generator';
 import InputMask from 'react-input-mask';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
@@ -26,4 +27,4 @@ const BirthDateInput = ({ formik }: { formik: any }) => {
     );
 };
 
-export default BirthDateInput;
+export default memo(BirthDateInput);

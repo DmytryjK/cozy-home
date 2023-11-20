@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import './EmailInput.scss';
@@ -48,4 +49,4 @@ EmailInput.defaultProps = {
     additionalClassName: '',
 };
 
-export default EmailInput;
+export default memo(EmailInput);

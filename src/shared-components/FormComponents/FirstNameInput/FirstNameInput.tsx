@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import './FirstNameInput.scss';
@@ -40,4 +41,4 @@ FirstNameInput.defaultProps = {
     isLabelShow: true,
     placeholder: 'Ім’я',
 };
-export default FirstNameInput;
+export default memo(FirstNameInput);
