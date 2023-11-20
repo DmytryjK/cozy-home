@@ -9,6 +9,7 @@ import {
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import { ResponseData } from '../ProductImagesSlider/ProductImagesSlider';
 import { sortColors } from '../../../../shared-components/ProductCard/SliderImages/SliderImages';
+import moveUserToPageUp from '../../../../utils/moveUserToPageUp';
 import './ColorSelection.scss';
 
 type Props = {
@@ -48,6 +49,7 @@ const ColorSelection = ({ setColorChange }: Props) => {
         const regex = /\D/g;
         const skuFromLink = pathname.replace(regex, ''); // Удаляем все, кроме цифр
         if (skuFromLink === skuCode) return;
+        moveUserToPageUp('productPage');
         dispatch(
             fetchProductInfoByScuWithColor({
                 productSkuCode: skuFromLink,

@@ -1,7 +1,12 @@
-const moveUserToPageUp = () => {
-    const catalogProductsHtml = document.getElementById('catalog-content');
+const moveUserToPageUp = (selectorId = 'catalog-content', offset = -80) => {
+    const catalogProductsHtml = document.getElementById(selectorId);
     if (!catalogProductsHtml) return;
-    const yOffset = window.screen.width > 991 ? -80 : -50;
+    let yOffset;
+    if (offset) {
+        yOffset = window.screen.width > 991 ? offset || -80 : -50;
+    } else {
+        yOffset = 0;
+    }
     const y =
         catalogProductsHtml.getBoundingClientRect().top +
         window.pageYOffset +
