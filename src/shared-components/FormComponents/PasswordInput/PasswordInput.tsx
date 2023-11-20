@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import nextId from 'react-id-generator';
 import ShowHidePusswordBtn from '../ShowHidePusswordBtn/ShowHidePusswordBtn';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
@@ -61,4 +61,4 @@ PasswordInput.defaultProps = {
     isRequired: true,
 };
 
-export default PasswordInput;
+export default memo(PasswordInput);

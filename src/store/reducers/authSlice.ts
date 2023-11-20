@@ -112,7 +112,7 @@ export const userLogIn = createAsyncThunk(
                 method: 'POST',
                 request: `${API_BASE}auth/login`,
                 body: {
-                    username: email,
+                    email,
                     password,
                 },
             });

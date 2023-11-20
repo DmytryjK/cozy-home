@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import formValidation from '../../../utils/formValidation';
@@ -30,7 +31,6 @@ const SignInForm = () => {
     const emailLinksLoading = useAppSelector(
         (state) => state.auth.emailLinksLoading
     );
-
     const dispatch = useAppDispatch();
     const formik2 = useFormik({
         initialValues: {
@@ -156,4 +156,4 @@ const SignInForm = () => {
     );
 };
 
-export default SignInForm;
+export default memo(SignInForm);

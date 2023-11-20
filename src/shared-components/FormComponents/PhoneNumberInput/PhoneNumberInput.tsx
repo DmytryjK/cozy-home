@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import nextId from 'react-id-generator';
 import InputMask from 'react-input-mask';
 import ErrorMessageValidation from '../../Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
@@ -41,4 +42,4 @@ PhoneNumberInput.defaultProps = {
     placeholder: '+38 (___) ___ - __ - __',
 };
 
-export default PhoneNumberInput;
+export default memo(PhoneNumberInput);
