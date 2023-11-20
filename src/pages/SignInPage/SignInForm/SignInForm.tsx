@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import formValidation from '../../../utils/formValidation';
@@ -12,6 +12,7 @@ import {
 } from '../../../shared-components/FormComponents/Inputs';
 import { reverseBirthdayForServer } from '../../../utils/birthdateChanges/birthdateChanges';
 import { userSignInByEmail } from '../../../store/reducers/authSlice';
+import ErrorMessage from '../../../shared-components/ErrorMessage';
 import Loader from '../../../shared-components/Loader';
 import successIcon from '../../../assets/icons/auth/success_icon.svg';
 import './SignInForm.scss';
@@ -31,7 +32,11 @@ const SignInForm = () => {
     const emailLinksLoading = useAppSelector(
         (state) => state.auth.emailLinksLoading
     );
+    const emailLinksError = useAppSelector(
+        (state) => state.auth.emailLinksError
+    );
     const dispatch = useAppDispatch();
+
     const formik2 = useFormik({
         initialValues: {
             firstName: '',
@@ -142,6 +147,11 @@ const SignInForm = () => {
                         електронній пошті.
                     </span>
                 </div>
+            ) : (
+                ''
+            )}
+            {emailLinksError ? (
+                <ErrorMessage message={emailLinksError as string} />
             ) : (
                 ''
             )}

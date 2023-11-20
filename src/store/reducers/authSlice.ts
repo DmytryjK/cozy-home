@@ -123,7 +123,7 @@ export const userLogIn = createAsyncThunk(
             };
 
             if (response.status === 401) {
-                throw new Error('Пошта або пароль не існують');
+                throw new Error('Неправильна пошта або пароль');
             } else if (!response.ok) {
                 throw new Error('Щось пішло не так');
             }

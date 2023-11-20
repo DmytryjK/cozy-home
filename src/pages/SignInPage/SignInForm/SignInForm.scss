@@ -162,6 +162,18 @@
             height: 45px;
         }
     }
+
+    .error-message {
+        bottom: 25px;
+        position: absolute;
+    }
+    .error-message_text {
+        color: red;
+        font-size: 12px;
+    }
+    .error-message_reload-page {
+        display: none;
+    }
 }
 @media screen and (max-width: 991px) {
     .signin-form {

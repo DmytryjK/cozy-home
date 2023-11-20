@@ -57,7 +57,6 @@ const formValidation = (
             }
         }
         if (isRequired) {
-            console.log(fieldName);
             if (!fieldValue) {
                 error = requiredMessage;
             }
