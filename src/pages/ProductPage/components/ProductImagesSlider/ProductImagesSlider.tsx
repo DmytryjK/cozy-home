@@ -1,7 +1,6 @@
+import { memo, useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Controller } from 'swiper';
-import nextId from 'react-id-generator';
-import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import EnlargedPhoto from './EnlargedPhoto/EnlargedPhoto';
 import FullScreenLoader from '../../../../shared-components/FullScreenLoader/FullScreenLoader';
@@ -119,7 +118,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                             {imagesFromStore &&
                                 imagesFromStore.map((image, index) => (
                                     <SwiperSlide
-                                        key={nextId('swiper-image')}
+                                        key={image.id}
                                         onClick={() => handleSliderClick(index)}
                                     >
                                         <img
@@ -140,7 +139,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                             {imagesFromStore &&
                                 imagesFromStore.map((image, index) => (
                                     <SwiperSlide
-                                        key={nextId('swiper-image')}
+                                        key={image.id}
                                         className={
                                             activeIndex === index
                                                 ? 'swiper-slide-thumb-active'
@@ -177,4 +176,4 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
     return <>{renderSlider()}</>;
 };
 
-export default ProductImagesSlider;
+export default memo(ProductImagesSlider);

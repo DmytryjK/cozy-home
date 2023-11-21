@@ -1,6 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Controller, Navigation } from 'swiper';
-import nextId from 'react-id-generator';
 import { useEffect, useState } from 'react';
 import productPageSprite from '../../../../../assets/icons/product-page/product-pageSprite.svg';
 import { ResponseData } from '../ProductImagesSlider';
@@ -76,7 +75,7 @@ const EnlargedPhoto = (props: Props) => {
                 className="product-images__enlarged_slider"
             >
                 {popUpImages?.map((popUpImage) => (
-                    <SwiperSlide key={nextId('swiper-enlarged-image')}>
+                    <SwiperSlide key={popUpImage.id}>
                         <img
                             src={
                                 windowWidth > 700

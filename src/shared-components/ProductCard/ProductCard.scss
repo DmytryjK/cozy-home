@@ -81,6 +81,7 @@
     }
     &__slider-link {
         display: block;
+        pointer-events: all;
     }
     &__image-wrapper {
         display: flex;
