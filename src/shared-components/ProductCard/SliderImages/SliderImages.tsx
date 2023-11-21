@@ -1,9 +1,16 @@
-import { useState, useEffect, useRef, memo } from 'react';
+import {
+    useState,
+    useEffect,
+    useRef,
+    memo,
+    useCallback,
+    MouseEvent,
+} from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import type swiper from 'swiper';
-import { useAppDispatch } from '../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
     updateProductColor,
     updateProductSku,
@@ -110,8 +117,16 @@ const SliderImages = (props: Props) => {
     const [loading, setLoading] = useState<Loading>('succeeded');
     const [error, setError] = useState<unknown | null>(null);
 
-    const dispatch = useAppDispatch();
+    const [isLinkClicked, setIsLinkClicked] = useState(false);
+    const currentSkuStore = useAppSelector(
+        (state) => state.productInformation.currentSku
+    );
+    const currentColorStore = useAppSelector(
+        (state) => state.productInformation.currentColor
+    );
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const colorDtoSort = sortColorByFirstImg(colorDtoList, imageDtoList);
 
     useEffect(() => {
@@ -142,6 +157,13 @@ const SliderImages = (props: Props) => {
             }
         }
     }, [imageSrc, imageDtoList]);
+
+    useEffect(() => {
+        if (!isLinkClicked) return;
+        if (currentSkuStore && currentColorStore) {
+            navigate(`/product/${currentSkuStore}${currentColorStore.id}`);
+        }
+    }, [isLinkClicked, currentSkuStore, currentColorStore]);
 
     const handleSlideChange = (
         color: string,
@@ -209,7 +231,8 @@ const SliderImages = (props: Props) => {
         return result;
     };
 
-    const handleLinkClick = () => {
+    const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
         localStorage.setItem('productSkuCode', skuCode);
         localStorage.setItem(
             'currentColor',
@@ -227,6 +250,7 @@ const SliderImages = (props: Props) => {
                 quantityStatus: '',
             })
         );
+        setIsLinkClicked(true);
     };
 
     return (
@@ -234,7 +258,6 @@ const SliderImages = (props: Props) => {
             <NavLink
                 className="product-card__slider-link"
                 to={`/product/${skuCode}${currentColor.hex}`}
-                onMouseDown={handleLinkClick}
                 onClick={handleLinkClick}
             >
                 <Swiper
@@ -272,7 +295,7 @@ const SliderImages = (props: Props) => {
                     {colorDtoSort.map((color, index) => {
                         return (
                             <SwiperSlide
-                                key={`slider-image-${skuCode} ${color.id}`}
+                                key={`slider-image-${skuCode}${color.id}`}
                             >
                                 <div className="product-card__image-wrapper">
                                     {renderedImage(name, index)}
@@ -289,7 +312,6 @@ const SliderImages = (props: Props) => {
                             className="product-card__title-link"
                             to={`/product/${skuCode}${currentColor.hex}`}
                             // reloadDocument
-                            onMouseDown={handleLinkClick}
                             onClick={handleLinkClick}
                         >
                             {name}

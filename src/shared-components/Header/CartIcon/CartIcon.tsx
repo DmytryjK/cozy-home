@@ -31,13 +31,13 @@ const CartIcon = (props: Props) => {
         }
     }, []);
 
-    const openProductCart = useCallback((e: MouseEvent) => {
+    const openProductCart = (e: MouseEvent) => {
         if (cartBody.length === 0) {
             e.preventDefault();
         } else {
             setIsBurgerOpen(false);
         }
-    }, []);
+    };
     return (
         <NavLink
             className="header-icons__cart cart-icon"
