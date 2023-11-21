@@ -6,6 +6,7 @@ const AddToFavoriteBtn = ({ isActive }: { isActive?: true | false }) => {
             className={`favorite-btn ${isActive ? 'active' : ''}`}
             type="button"
             aria-label="додати в обране"
+            tabIndex={-1}
         >
             <svg
                 className="favorite-btn__icon"
