@@ -18,7 +18,7 @@ import {
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Loader from '../../Loader';
-import ErrorMessage from '../../ErrorMessage';
+import ErrorMessage from '../../UserMessages/ErrorMessage';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
 import {
     Loading,

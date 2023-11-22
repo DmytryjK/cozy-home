@@ -1,4 +1,4 @@
-import ErrorMessage from '../../shared-components/ErrorMessage';
+import ErrorMessage from '../../shared-components/UserMessages/ErrorMessage';
 import Loader from '../../shared-components/Loader';
 
 type Props = {

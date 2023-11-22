@@ -1,0 +1,25 @@
+@use '../../../style/variables.scss' as *;
+.error-message_small {
+    &-inner {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    .error-message {
+        &__text {
+            font-size: 14px;
+            font-weight: 500;
+            color: $grey;
+            &_additional {
+                margin-top: 10px;
+                font-size: 14px;
+                font-weight: 500;
+                color: $light-grey;
+            }
+        }
+        &__icon {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}

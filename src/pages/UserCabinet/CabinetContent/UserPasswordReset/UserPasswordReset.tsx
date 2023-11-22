@@ -1,13 +1,6 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, memo } from 'react';
 import { useFormik, FormikErrors } from 'formik';
-import {
-    FirstNameInput,
-    LastNameInput,
-    EmailInput,
-    PhoneNumberInput,
-    PasswordInput,
-    BirthDateInput,
-} from '../../../../shared-components/FormComponents/Inputs';
+import { PasswordInput } from '../../../../shared-components/FormComponents/Inputs';
 import {
     updatetUserProfilePassword,
     resetUpdatePasswordStatus,
@@ -15,6 +8,10 @@ import {
 import formValidation from '../../../../utils/formValidation';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import Loader from '../../../../shared-components/Loader';
+import {
+    ErrorMessageSmall,
+    SuccessMessage,
+} from '../../../../shared-components/UserMessages/UserMessages';
 import './UserPasswordReset.scss';
 
 interface FormValues {
@@ -61,6 +58,13 @@ const UserPasswordReset = () => {
                     errors.repeatedPassword = 'Необхідно заповнити дане поле';
                 } else if (values.repeatedPassword !== values.password) {
                     errors.repeatedPassword = 'Паролі мають співпадати';
+                }
+
+                if (values.oldpassword === values.password) {
+                    errors.password =
+                        'Старий та новий паролі мають відрізнятись';
+                    errors.oldpassword =
+                        'Старий та новий паролі мають відрізнятись';
                 }
             }
 
@@ -130,20 +134,6 @@ const UserPasswordReset = () => {
                             name="repeatedPassword"
                         />
                     </div>
-                    {updatePasswordStatus === 'succeeded' ? (
-                        <div className="update-password__success">
-                            Пароль успішно змінено
-                        </div>
-                    ) : (
-                        ''
-                    )}
-                    {errorUpdatePassword ? (
-                        <div className="update-password__failed">
-                            {errorUpdatePassword as string}
-                        </div>
-                    ) : (
-                        ''
-                    )}
                     <button
                         className="user-contacts__form-submit"
                         type="submit"
@@ -151,6 +141,18 @@ const UserPasswordReset = () => {
                     >
                         Зберегти
                     </button>
+                    {updatePasswordStatus === 'succeeded' ? (
+                        <SuccessMessage text="Пароль успішно змінено" />
+                    ) : (
+                        ''
+                    )}
+                    {errorUpdatePassword ? (
+                        <ErrorMessageSmall
+                            text={errorUpdatePassword as string}
+                        />
+                    ) : (
+                        ''
+                    )}
                 </div>
             </form>
         </div>

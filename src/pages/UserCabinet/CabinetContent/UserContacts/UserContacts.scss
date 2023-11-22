@@ -5,13 +5,13 @@
         @include user-cabinet_title;
     }
     &__form {
-        max-width: 800px;
+        max-width: 380px;
         width: 100%;
     }
     &__form-wrapper {
         position: relative;
         margin-top: 40px;
-        display: grid;
+        // display: grid;
         gap: 20px;
     }
     &__form-left, &__form-right {
@@ -45,12 +45,16 @@
     &__update-failed {
         color: $warning;
     }
+    .success-message, .error-message_small {
+        justify-content: center;
+    }
 }
 
 @media screen and (max-width: 961px) {
     .user-contacts {
         margin-top: 5px;
         &__form {
+            max-width: 100%;
             padding-bottom: 40px;
         }
         &__form-wrapper {
