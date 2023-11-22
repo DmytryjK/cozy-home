@@ -113,6 +113,14 @@ const PopUpCreateNewPassword = () => {
                 noValidate
                 className="create-password__form"
             >
+                <input
+                    hidden
+                    type="text"
+                    name="username"
+                    defaultValue=""
+                    autoComplete="username"
+                    style={{ display: 'none' }}
+                />
                 <PasswordInput
                     formik={formik9}
                     isLabelShow={false}

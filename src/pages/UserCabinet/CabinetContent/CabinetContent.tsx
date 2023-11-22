@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { getUserProfileData } from '../../../store/reducers/userActionsSlice';
 import UserContacts from './UserContacts/UserContacts';
 import UserFavorites from './UserFavorites/UserFavorites';
+import UserPasswordReset from './UserPasswordReset/UserPasswordReset';
 import MobileContent from './MobileContent/MobileContent';
 import { LinkType, UserActiveLinkContext } from '../UserCabinet';
 import listOfRoutes from '../ListOfRoutes';
@@ -27,6 +28,9 @@ export const renderUserCabinetContent = (activeLink: LinkType | null) => {
             break;
         case listOfRoutes[1].href:
             res = <UserFavorites />;
+            break;
+        case listOfRoutes[2].href:
+            res = <UserPasswordReset />;
             break;
         default:
             res = '';
