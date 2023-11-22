@@ -8,7 +8,10 @@ import {
     PasswordInput,
     BirthDateInput,
 } from '../../../../shared-components/FormComponents/Inputs';
-import { updateUserProfileData } from '../../../../store/reducers/userActionsSlice';
+import {
+    updateUserProfileData,
+    resetUserProfileDataStatus,
+} from '../../../../store/reducers/userActionsSlice';
 import formValidation from '../../../../utils/formValidation';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import Loader from '../../../../shared-components/Loader';
@@ -28,9 +31,12 @@ interface FormValues {
 
 const UserContacts = () => {
     const dispatch = useAppDispatch();
-    const { loadingContacts, errorContacts, userProfileData } = useAppSelector(
-        (state) => state.userActions
-    );
+    const { loadingUserPersonalInfo, errorUserPersonalInfo, userProfileData } =
+        useAppSelector((state) => state.userActions);
+
+    useEffect(() => {
+        dispatch(resetUserProfileDataStatus());
+    }, []);
 
     const formik11 = useFormik({
         initialValues: {
@@ -123,40 +129,36 @@ const UserContacts = () => {
                 noValidate
             >
                 <div className="user-contacts__form-wrapper">
-                    {loadingContacts === 'pending' ? (
+                    {loadingUserPersonalInfo === 'pending' ? (
                         <Loader className="user-contacts__loader" />
                     ) : (
                         ''
                     )}
-                    <div className="user-contacts__form-left">
+                    <div className="user-contacts__form-left user-contacts__form-wrapper_start">
                         <FirstNameInput formik={formik11} />
                         <LastNameInput formik={formik11} />
                         <BirthDateInput formik={formik11} />
                         <EmailInput formik={formik11} />
                         <PhoneNumberInput formik={formik11} />
                     </div>
-                    <div className="user-contacts__form-right">
-                        <PasswordInput
-                            formik={formik11}
-                            label="Старий пароль"
-                            name="oldpassword"
-                            isRequired={false}
-                        />
-                        <PasswordInput
-                            formik={formik11}
-                            label="Новий пароль"
-                            isRequired={false}
-                        />
-                        <PasswordInput
-                            formik={formik11}
-                            label="Повторіть пароль*"
-                            name="repeatedPassword"
-                        />
-                    </div>
+                    {loadingUserPersonalInfo === 'succeeded' ? (
+                        <div className="user-contacts__update-success">
+                            Дані успішно збережено
+                        </div>
+                    ) : (
+                        ''
+                    )}
+                    {errorUserPersonalInfo ? (
+                        <div className="user-contacts__update-failed">
+                            Щось пішло не так, спробуйте зберегти дані ще раз
+                        </div>
+                    ) : (
+                        ''
+                    )}
                     <button
                         className="user-contacts__form-submit"
                         type="submit"
-                        disabled={loadingContacts === 'pending'}
+                        disabled={loadingUserPersonalInfo === 'pending'}
                     >
                         Зберегти
                     </button>
