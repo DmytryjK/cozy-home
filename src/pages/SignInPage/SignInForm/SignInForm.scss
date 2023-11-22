@@ -163,16 +163,9 @@
         }
     }
 
-    .error-message {
-        bottom: 25px;
-        position: absolute;
-    }
-    .error-message_text {
-        color: red;
-        font-size: 12px;
-    }
-    .error-message_reload-page {
-        display: none;
+    .error-message_small, .success-message  {
+        margin-top: 10px;
+        justify-content: center;
     }
 }
 @media screen and (max-width: 991px) {

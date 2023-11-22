@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import formValidation from '../../../utils/formValidation';
@@ -12,9 +12,11 @@ import {
 } from '../../../shared-components/FormComponents/Inputs';
 import { reverseBirthdayForServer } from '../../../utils/birthdateChanges/birthdateChanges';
 import { userSignInByEmail } from '../../../store/reducers/authSlice';
-import ErrorMessage from '../../../shared-components/ErrorMessage';
 import Loader from '../../../shared-components/Loader';
-import successIcon from '../../../assets/icons/auth/success_icon.svg';
+import {
+    ErrorMessageSmall,
+    SuccessMessage,
+} from '../../../shared-components/UserMessages/UserMessages';
 import './SignInForm.scss';
 
 interface FormValues {
@@ -139,22 +141,6 @@ const SignInForm = () => {
             ) : (
                 ''
             )}
-            {emailLinksLoading === 'succeeded' ? (
-                <div className="signin-form__confirmation-message">
-                    <img src={successIcon} alt="" />
-                    <span>
-                        Для активації акаунту перейдіть по посиланню на вашій
-                        електронній пошті.
-                    </span>
-                </div>
-            ) : (
-                ''
-            )}
-            {emailLinksError ? (
-                <ErrorMessage message={emailLinksError as string} />
-            ) : (
-                ''
-            )}
             <button
                 className="signin-form__submit"
                 type="submit"
@@ -162,6 +148,16 @@ const SignInForm = () => {
             >
                 Зареєструватися
             </button>
+            {emailLinksLoading === 'succeeded' ? (
+                <SuccessMessage text="Для активації акаунту перейдіть по посиланню на вашій електронній пошті." />
+            ) : (
+                ''
+            )}
+            {emailLinksError ? (
+                <ErrorMessageSmall text={emailLinksError as string} />
+            ) : (
+                ''
+            )}
         </form>
     );
 };

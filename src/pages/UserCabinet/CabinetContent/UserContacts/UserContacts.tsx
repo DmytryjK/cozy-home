@@ -15,6 +15,10 @@ import {
 import formValidation from '../../../../utils/formValidation';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import Loader from '../../../../shared-components/Loader';
+import {
+    ErrorMessageSmall,
+    SuccessMessage,
+} from '../../../../shared-components/UserMessages/UserMessages';
 import './UserContacts.scss';
 
 interface FormValues {
@@ -141,20 +145,6 @@ const UserContacts = () => {
                         <EmailInput formik={formik11} />
                         <PhoneNumberInput formik={formik11} />
                     </div>
-                    {loadingUserPersonalInfo === 'succeeded' ? (
-                        <div className="user-contacts__update-success">
-                            Дані успішно збережено
-                        </div>
-                    ) : (
-                        ''
-                    )}
-                    {errorUserPersonalInfo ? (
-                        <div className="user-contacts__update-failed">
-                            Щось пішло не так, спробуйте зберегти дані ще раз
-                        </div>
-                    ) : (
-                        ''
-                    )}
                     <button
                         className="user-contacts__form-submit"
                         type="submit"
@@ -162,6 +152,16 @@ const UserContacts = () => {
                     >
                         Зберегти
                     </button>
+                    {loadingUserPersonalInfo === 'succeeded' ? (
+                        <SuccessMessage text="Дані успішно збережені!" />
+                    ) : (
+                        ''
+                    )}
+                    {errorUserPersonalInfo ? (
+                        <ErrorMessageSmall text="Щось пішло не так, спробуйте зберегти дані ще раз" />
+                    ) : (
+                        ''
+                    )}
                 </div>
             </form>
         </div>
