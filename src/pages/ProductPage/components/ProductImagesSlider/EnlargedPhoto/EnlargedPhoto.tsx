@@ -1,6 +1,6 @@
+import { useEffect, useState, useRef, RefObject } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Controller, Navigation } from 'swiper';
-import { useEffect, useState } from 'react';
 import productPageSprite from '../../../../../assets/icons/product-page/product-pageSprite.svg';
 import { ResponseData } from '../ProductImagesSlider';
 import './EnlargedPhoto.scss';
@@ -30,15 +30,30 @@ const EnlargedPhoto = (props: Props) => {
     } = props;
 
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+    const test = useRef<HTMLDivElement>(null);
 
     const handleResize = () => {
         setWindowWidth(window.innerWidth);
     };
 
+    const closeSlider = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (
+            !target.closest('.swiper-slide') &&
+            !target.closest('.enlarged-block__content_header_sliderCounter') &&
+            !target.closest('.swiper-button-next') &&
+            !target.closest('.swiper-button-prev')
+        ) {
+            setLargePhotoActive(false);
+        }
+    };
+
     useEffect(() => {
         window.addEventListener('resize', handleResize);
+        test.current?.addEventListener('click', closeSlider);
 
         return () => {
+            test.current?.removeEventListener('click', closeSlider);
             window.removeEventListener('resize', handleResize);
         };
     }, []);
@@ -71,7 +86,6 @@ const EnlargedPhoto = (props: Props) => {
                 onSwiper={handleSecondSwiper}
                 onSlideChange={handleSlideChange}
                 controller={{ control: firstSwiper }}
-                grabCursor
                 className="product-images__enlarged_slider"
             >
                 {popUpImages?.map((popUpImage) => (
@@ -91,7 +105,7 @@ const EnlargedPhoto = (props: Props) => {
     };
 
     return (
-        <div className="enlarged-block">
+        <div className="enlarged-block" ref={test}>
             <div className="enlarged-block__content">
                 <div className="enlarged-block__content_header">
                     <div className="enlarged-block__content_header_sliderCounter">
