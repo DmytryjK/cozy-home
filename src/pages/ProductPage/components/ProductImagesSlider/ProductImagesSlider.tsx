@@ -77,12 +77,12 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
     };
 
     useEffect(() => {
-        if (swiperRef.current) {
+        if (swiperRef.current && imagesFromStore && thumbsSwiper) {
             const { swiper } = swiperRef.current;
-            swiper?.slideTo(0);
+            swiper.slideTo(0, 0, false);
             setActiveIndex(0);
         }
-    }, [currentColor, imagesFromStore]);
+    }, [imagesFromStore]);
 
     const handleFirstSwiper = (swiper: any) => {
         setFirstSwiper(swiper);
@@ -126,6 +126,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                         <Swiper
                             ref={swiperRef}
                             spaceBetween={10}
+                            initialSlide={0}
                             navigation
                             thumbs={{ swiper: thumbsSwiper }}
                             modules={[Navigation, Thumbs, Controller]}
@@ -135,6 +136,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                                 if (firstSwiper) {
                                     const swiper = swiperRef.current?.swiper;
                                     if (swiper) {
+                                        setActiveIndex(swiper.activeIndex);
                                         thumbnailListMove(
                                             swiper.activeIndex,
                                             swiper.previousIndex,
@@ -162,6 +164,9 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                             onSwiper={setThumbsSwiper}
                             spaceBetween={10}
                             slidesPerView={4}
+                            modules={[Navigation, Thumbs]}
+                            centerInsufficientSlides
+                            watchSlidesProgress
                             breakpoints={{
                                 320: {
                                     slidesPerView: 3,
@@ -180,15 +185,19 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                                     spaceBetween: 10,
                                 },
                             }}
-                            centerInsufficientSlides
-                            // watchSlidesProgress
-                            // modules={[Navigation, Thumbs]}
                             className="product-images__slider-thumbs"
                         >
                             {imagesFromStore &&
-                                imagesFromStore.map((image) => {
+                                imagesFromStore.map((image, index) => {
                                     return (
-                                        <SwiperSlide key={image.id}>
+                                        <SwiperSlide
+                                            key={image.id}
+                                            className={
+                                                index === activeIndex
+                                                    ? 'thumbnail-slide_active'
+                                                    : ''
+                                            }
+                                        >
                                             <div className="product-images__slider-thumbs-wrapper">
                                                 <img
                                                     src={image.sliderImagePath}
