@@ -1,10 +1,13 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo } from 'react';
 import NavigationListOfCategories from '../../../../shared-components/NavigationListOfCategories/NavigationListOfCategories';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import Pagination2 from '../../../../shared-components/Pagination2/Pagination2';
+import { getUserFavorites } from '../../../../store/reducers/userActionsSlice';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import Loader from '../../../../shared-components/Loader';
 import { ActiveCategory, ProductCardType } from '../../../../types/types';
 import { FavoritesContext } from '../CabinetContent';
+
 import './UserFavorites.scss';
 
 const UserFavorites = () => {
@@ -26,15 +29,26 @@ const UserFavorites = () => {
             name: 'Test3',
         },
         {
-            id: '112`341234123',
+            id: '112341234123',
             name: 'Test4',
         },
     ];
     const countOfPages = 10;
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [isPaginationInit, setIsPaginationInit] = useState<boolean>(true);
-
+    const dispatch = useAppDispatch();
     const { data, loading } = useContext(FavoritesContext);
+    const { loadingUserFavorites, errorUserFavorites, userFavorites } =
+        useAppSelector((state) => state.userActions);
+
+    // useEffect(() => {
+    //     dispatch(
+    //         getUserFavorites({
+    //             page: 0,
+    //             size: 6,
+    //         })
+    //     );
+    // }, []);
 
     return (
         <div className="user-favorites">
@@ -45,10 +59,10 @@ const UserFavorites = () => {
                 setActiveCategory={setActiveCategory}
             />
             <ul className="user-favorites__products">
-                {loading !== 'succeeded' ? (
+                {loadingUserFavorites !== 'succeeded' ? (
                     <Loader />
                 ) : (
-                    data.map((product: ProductCardType) => {
+                    userFavorites?.map((product: ProductCardType) => {
                         return (
                             <li
                                 className="user-favorites__item"
@@ -72,4 +86,4 @@ const UserFavorites = () => {
     );
 };
 
-export default UserFavorites;
+export default memo(UserFavorites);

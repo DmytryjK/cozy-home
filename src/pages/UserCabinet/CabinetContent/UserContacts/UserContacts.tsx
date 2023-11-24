@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, memo, useState } from 'react';
 import { useFormik, FormikErrors } from 'formik';
 import {
     FirstNameInput,
@@ -35,6 +35,7 @@ interface FormValues {
 
 const UserContacts = () => {
     const dispatch = useAppDispatch();
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const { loadingUserPersonalInfo, errorUserPersonalInfo, userProfileData } =
         useAppSelector((state) => state.userActions);
 
@@ -99,6 +100,7 @@ const UserContacts = () => {
                 email,
                 repeatedPassword,
             } = values;
+            setIsFormSubmitted(true);
             dispatch(
                 updateUserProfileData({
                     email,
@@ -152,7 +154,8 @@ const UserContacts = () => {
                     >
                         Зберегти
                     </button>
-                    {loadingUserPersonalInfo === 'succeeded' ? (
+                    {loadingUserPersonalInfo === 'succeeded' &&
+                    isFormSubmitted ? (
                         <SuccessMessage text="Дані успішно збережені!" />
                     ) : (
                         ''
@@ -168,4 +171,4 @@ const UserContacts = () => {
     );
 };
 
-export default UserContacts;
+export default memo(UserContacts);

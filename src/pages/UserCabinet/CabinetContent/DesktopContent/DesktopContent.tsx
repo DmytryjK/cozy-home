@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { renderUserCabinetContent } from '../CabinetContent';
 import { UserActiveLinkContext } from '../../UserCabinet';
 
@@ -7,4 +7,4 @@ const DesktopContent = () => {
     return <>{renderUserCabinetContent(activeLink)}</>;
 };
 
-export default DesktopContent;
+export default memo(DesktopContent);
