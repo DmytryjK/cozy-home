@@ -5,10 +5,14 @@ import {
     useContext,
     createContext,
     useMemo,
+    memo,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { getUserProfileData } from '../../../store/reducers/userActionsSlice';
+import {
+    getUserProfileData,
+    getUserFavorites,
+} from '../../../store/reducers/userActionsSlice';
 import UserContacts from './UserContacts/UserContacts';
 import UserFavorites from './UserFavorites/UserFavorites';
 import UserPasswordReset from './UserPasswordReset/UserPasswordReset';
@@ -60,6 +64,12 @@ const CabinetContent = () => {
 
     useEffect(() => {
         dispatch(getUserProfileData());
+        dispatch(
+            getUserFavorites({
+                page: 0,
+                size: 6,
+            })
+        );
     }, []);
 
     useEffect(() => {
@@ -138,4 +148,4 @@ const CabinetContent = () => {
     );
 };
 
-export default CabinetContent;
+export default memo(CabinetContent);

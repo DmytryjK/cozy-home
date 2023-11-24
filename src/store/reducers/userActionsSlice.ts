@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { FormikState } from 'formik';
 import fetchData from '../../utils/fetchData';
 import { API_SECURE } from '../../utils/API_BASE';
 import { RootState } from '../store';
-import { Loading, ErrorType } from '../../types/types';
+import { Loading, ErrorType, ProductCardType } from '../../types/types';
 
 interface UserProfileContacts {
     [key: string]: string;
@@ -21,12 +20,52 @@ interface UserProfilePasswords {
     repeatedNewPassword: string;
 }
 
+// interface FavoriteProduct {
+//     skuCode: string;
+//     name: string;
+//     shortDescription: string;
+//     price: 0;
+//     discount: string;
+//     priceWithDiscount: 0;
+//     imageDtoList: [
+//         {
+//             id: string;
+//             imagePath: string;
+//             color: string;
+//         }
+//     ];
+//     colorDtoList: [
+//         {
+//             id: string;
+//             name: string;
+//             quantityStatus: string;
+//             favorite: true;
+//         }
+//     ];
+//     productQuantityStatus: string;
+// }
+
+// export interface UserFavoritesType {
+//     favoritesProducts: ProductCardType[];
+//     categories: [
+//         {
+//             id: string;
+//             name: string;
+//         }
+//     ];
+//     countOfPages: number;
+// }
+
 interface UserActions {
     loadingUserPersonalInfo: Loading;
     errorUserPersonalInfo: ErrorType;
     updatePasswordStatus: Loading;
     errorUpdatePassword: ErrorType;
     userProfileData: UserProfileContacts | null;
+    // userFavorites: UserFavoritesType | null;
+    userFavorites: ProductCardType[] | null;
+    loadingUserFavorites: Loading;
+    errorUserFavorites: ErrorType;
 }
 
 const initialState: UserActions = {
@@ -35,6 +74,9 @@ const initialState: UserActions = {
     updatePasswordStatus: 'idle',
     errorUpdatePassword: null,
     userProfileData: null,
+    userFavorites: null,
+    loadingUserFavorites: 'idle',
+    errorUserFavorites: null,
 };
 
 export const getUserProfileData = createAsyncThunk(
@@ -135,6 +177,38 @@ export const updatetUserProfilePassword = createAsyncThunk(
     }
 );
 
+export const getUserFavorites = createAsyncThunk(
+    'userActions/getUserFavorites',
+    async function (
+        { page, size }: { page: number; size: number },
+        { rejectWithValue, getState }
+    ) {
+        const states = getState() as RootState;
+        const { jwtToken } = states.auth;
+        try {
+            if (!jwtToken)
+                throw new Error('Потрібна авторизація для даного запиту');
+            const response = await fetchData({
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                request: `${API_SECURE}user/favorites?page=${page}&size=${size}`,
+            });
+
+            if (!response.ok) throw new Error('Щосі пішло не так :(');
+
+            const data = await response.json();
+            return data;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
 export const userActionsSlice = createSlice({
     name: 'userActions',
     initialState,
@@ -200,6 +274,24 @@ export const userActionsSlice = createSlice({
             (state, action: PayloadAction<unknown>) => {
                 state.updatePasswordStatus = 'failed';
                 state.errorUpdatePassword = action.payload;
+            }
+        );
+        builder.addCase(getUserFavorites.pending, (state) => {
+            state.loadingUserFavorites = 'pending';
+            state.errorUserFavorites = null;
+        });
+        builder.addCase(
+            getUserFavorites.fulfilled,
+            (state, action: PayloadAction<ProductCardType[]>) => {
+                state.loadingUserFavorites = 'succeeded';
+                state.userFavorites = action.payload;
+            }
+        );
+        builder.addCase(
+            getUserFavorites.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loadingUserFavorites = 'failed';
+                state.errorUserFavorites = action.payload;
             }
         );
     },

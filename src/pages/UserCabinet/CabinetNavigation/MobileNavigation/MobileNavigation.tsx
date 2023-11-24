@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import { UserActiveLinkContext } from '../../UserCabinet';
@@ -67,4 +67,4 @@ const MobileNavigation = () => {
     );
 };
 
-export default MobileNavigation;
+export default memo(MobileNavigation);
