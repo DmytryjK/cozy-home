@@ -1,11 +1,4 @@
-import {
-    useState,
-    useEffect,
-    useRef,
-    memo,
-    useCallback,
-    MouseEvent,
-} from 'react';
+import { useState, useEffect, useRef, memo, MouseEvent, useMemo } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import nextId from 'react-id-generator';
@@ -18,7 +11,7 @@ import {
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Loader from '../../Loader';
-import ErrorMessage from '../../UserMessages/ErrorMessage';
+import AddToFavoriteBtn from '../../AddToFavoriteBtn/AddToFavoriteBtn';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
 import {
     Loading,
@@ -57,7 +50,11 @@ type Props = {
             quantityStatus: string;
         }>
     >;
-    currentColor: { name: string; hex: string; quantityStatus: string };
+    currentColor: {
+        name: string;
+        hex: string;
+        quantityStatus: string;
+    };
 };
 
 export const sortColors = (colorDtoList: ColorDtoList[]) => {
@@ -106,8 +103,14 @@ const SliderImages = (props: Props) => {
         currentColor,
         setCurrentColor,
     } = props;
-    const { skuCode, name, shortDescription, colorDtoList, imageDtoList } =
-        productData;
+    const {
+        skuCode,
+        name,
+        shortDescription,
+        colorDtoList,
+        imageDtoList,
+        favorite,
+    } = productData;
 
     const [currentIndexColor, setCurrentIndexColor] = useState<number>(0);
     const [isColorChosen, setIsColorChosen] = useState(false);
@@ -124,7 +127,6 @@ const SliderImages = (props: Props) => {
     const currentColorStore = useAppSelector(
         (state) => state.productInformation.currentColor
     );
-
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const colorDtoSort = sortColorByFirstImg(colorDtoList, imageDtoList);

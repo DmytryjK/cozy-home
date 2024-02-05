@@ -34,7 +34,11 @@
         }
     }
     &__close {
+        background-color: transparent;
+        border: none;
+        text-align: left;
         color: $light-grey;
+        cursor: pointer;
     }
 }
 

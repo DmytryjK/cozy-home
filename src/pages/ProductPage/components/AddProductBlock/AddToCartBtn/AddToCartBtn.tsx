@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../../../hooks/hooks';
 import {
     openPopUpNotification,
@@ -119,4 +119,4 @@ const AddToCartBtn = () => {
     );
 };
 
-export default AddToCartBtn;
+export default memo(AddToCartBtn);

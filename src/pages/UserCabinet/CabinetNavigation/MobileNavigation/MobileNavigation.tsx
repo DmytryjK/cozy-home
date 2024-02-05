@@ -1,13 +1,16 @@
 import { useContext, memo } from 'react';
 import { NavLink } from 'react-router-dom';
-import nextId from 'react-id-generator';
 import { UserActiveLinkContext } from '../../UserCabinet';
 import listOfRoutes from '../../ListOfRoutes';
 import { renderUserCabinetContent } from '../../CabinetContent/CabinetContent';
+import { userLogOut } from '../../../../store/reducers/authSlice';
+import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import './MobileNavigation.scss';
 
 const MobileNavigation = () => {
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
+    const dispatch = useAppDispatch();
+    const { jwtToken } = useAppSelector((state) => state.auth);
 
     return (
         <nav className="nav-mobile">
@@ -17,7 +20,7 @@ const MobileNavigation = () => {
                     return (
                         <li
                             className="nav-mobile__item"
-                            key={nextId('nav-mobile-cabinet')}
+                            key={`${href}${title}-mobile`}
                         >
                             <NavLink
                                 className={`nav-mobile__link ${
@@ -60,9 +63,15 @@ const MobileNavigation = () => {
                     );
                 })}
             </ul>
-            <NavLink className="nav-mobile__close" to="/">
+            <button
+                className="nav-mobile__close"
+                type="button"
+                onClick={() => {
+                    dispatch(userLogOut(jwtToken));
+                }}
+            >
                 Вихід
-            </NavLink>
+            </button>
         </nav>
     );
 };

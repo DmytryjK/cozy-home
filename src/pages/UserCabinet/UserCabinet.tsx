@@ -4,10 +4,8 @@ import {
     Dispatch,
     SetStateAction,
     useMemo,
-    useEffect,
+    memo,
 } from 'react';
-import { useNavigate, redirect } from 'react-router';
-import { useAppSelector } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import CabinetNavigation from './CabinetNavigation/CabinetNavigation';
 import CabinetContent from './CabinetContent/CabinetContent';
@@ -40,7 +38,7 @@ const UserCabinet = () => {
                         <UserActiveLinkContext.Provider
                             value={useMemo(
                                 () => ({ activeLink, setActiveLink }),
-                                [activeLink, setActiveLink]
+                                [activeLink]
                             )}
                         >
                             <CabinetNavigation />
@@ -53,4 +51,4 @@ const UserCabinet = () => {
     );
 };
 
-export default UserCabinet;
+export default memo(UserCabinet);

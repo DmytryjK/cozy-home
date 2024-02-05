@@ -67,6 +67,10 @@
         font-weight: 500;
         z-index: 2;
     }
+    &__slider-link {
+        position: relative;
+        display: block;
+    }
     &__favorite {
         position: absolute;
         right: 12px;
@@ -78,10 +82,7 @@
         background-color: $light-color;
         transition: 0.2s ease-out transform;
         z-index: 2;
-    }
-    &__slider-link {
-        display: block;
-        pointer-events: all;
+        cursor: grab;
     }
     &__image-wrapper {
         display: flex;

@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
 import { API_BASE } from '../../utils/API_BASE';
+import fetchData from '../../utils/fetchData';
+import { RootState } from '../store';
 
 export interface NewItemsInitialState {
     newProducts: ProductCardType[];
@@ -22,11 +24,20 @@ const initialState: NewItemsInitialState = {
 
 export const fetchNewItemsAllProducts = createAsyncThunk(
     'productsSlider/fetchNewItemsAllProducts',
-    async function (_, { rejectWithValue }) {
+    async function (_, { rejectWithValue, getState }) {
         try {
-            const response = await fetch(
-                `${API_BASE}product/homepage/status?status=0&countOfProducts=20`
-            );
+            const states = getState() as RootState;
+            const { jwtToken } = states.auth;
+            const response = await fetchData({
+                method: 'GET',
+                request: `${API_BASE}product/homepage/status?status=0&countOfProducts=20`,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    ...(jwtToken
+                        ? { Authorization: `Bearer ${jwtToken}` }
+                        : {}),
+                },
+            });
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
@@ -45,16 +56,26 @@ export const fetchMightBeInterestProducts = createAsyncThunk(
             collectionId,
             productSkuCode,
         }: { collectionId: string; productSkuCode: string },
-        { rejectWithValue }
+        { rejectWithValue, getState }
     ) {
         try {
             const queryParams = new URLSearchParams({
                 collectionId,
                 productSkuCode,
             });
-            const response = await fetch(
-                `${API_BASE}product/collection?${queryParams}`
-            );
+
+            const states = getState() as RootState;
+            const { jwtToken } = states.auth;
+            const response = await fetchData({
+                method: 'GET',
+                request: `${API_BASE}product/collection?${queryParams}`,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    ...(jwtToken
+                        ? { Authorization: `Bearer ${jwtToken}` }
+                        : {}),
+                },
+            });
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');

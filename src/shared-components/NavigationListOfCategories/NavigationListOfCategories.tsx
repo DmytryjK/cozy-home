@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import nextId from 'react-id-generator';
 import { ProductCategory } from '../../pages/MainPage/components/PopularItems/types';
-import { ActiveCategory } from '../../types/types';
+import { NavigationCategory } from '../../types/types';
 import './NavigationListOfCategories.scss';
 
 const NavigationListOfCategories = ({
@@ -10,8 +10,8 @@ const NavigationListOfCategories = ({
     setActiveCategory,
 }: {
     categories: ProductCategory[];
-    activeCategory: ActiveCategory;
-    setActiveCategory: Dispatch<SetStateAction<ActiveCategory>>;
+    activeCategory: NavigationCategory;
+    setActiveCategory: Dispatch<SetStateAction<NavigationCategory>>;
 }) => {
     const handleChangeTab = (
         e: React.MouseEvent<HTMLButtonElement>,

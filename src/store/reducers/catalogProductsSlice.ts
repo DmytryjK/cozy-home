@@ -33,11 +33,11 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
             controller.abort();
         }
         controller = new AbortController();
-
         try {
             const state = thunkAPI.getState() as RootState;
             const { filtersBody, filtersSort, currentPage, localFiltersState } =
                 state.catalogFilters;
+            const { jwtToken } = state.auth;
             const activeSortParams = filtersSort
                 ? `&fieldName=${filtersSort.fieldName}&direction=${filtersSort.direction}`
                 : '';
@@ -51,6 +51,12 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
                     ...filterInvalidBodyParams(
                         isFiltersActive ? localFiltersState : filtersBody
                     ),
+                },
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    ...(jwtToken
+                        ? { Authorization: `Bearer ${jwtToken}` }
+                        : {}),
                 },
                 signal: controller.signal,
             });
@@ -78,9 +84,17 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
         controller = new AbortController();
 
         try {
+            const state = thunkAPI.getState() as RootState;
+            const { jwtToken } = state.auth;
             const response = await fetchData({
                 method: 'GET',
                 request: `${API_BASE}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}`,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    ...(jwtToken
+                        ? { Authorization: `Bearer ${jwtToken}` }
+                        : {}),
+                },
                 signal: controller.signal,
             });
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useRef } from 'react';
 import { ProductCardType } from '../../types/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
@@ -18,18 +18,19 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [priceSpaced, setPriceSpaced] = useState<string>('');
     const [discountPriceSpaced, setDiscountPriceSpaced] = useState<string>('');
     const [imagesData, setImagesData] = useState<ImagesData>({});
+    const [isElementAddedToCart, setIsElementAddedToCart] =
+        useState<boolean>(false);
+
+    const cartBody = useAppSelector((state) => state.cart.cartBody);
+    const { price, priceWithDiscount, discount, skuCode, favorite } = product;
+
     const [currentColor, setCurrentColor] = useState<{
         name: string;
         hex: string;
         quantityStatus: string;
     }>({ name: '', hex: '', quantityStatus: '' });
-    const [isElementAddedToCart, setIsElementAddedToCart] =
-        useState<boolean>(false);
-
-    const cartBody = useAppSelector((state) => state.cart.cartBody);
-
-    const { price, priceWithDiscount, discount, skuCode } = product;
-
+    const jwtToken = useAppSelector((state) => state.auth.jwtToken);
+    const favoriteBtnProductCardRef = useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
 
     const addSpaceToPrice = (
@@ -160,7 +161,6 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
             </>
         );
     };
-
     return (
         <div
             className={`product-card ${
@@ -169,8 +169,19 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     : ''
             } `}
         >
-            <div className="product-card__favorite">
-                <AddToFavoriteBtn />
+            <div
+                className="product-card__favorite"
+                ref={favoriteBtnProductCardRef}
+            >
+                {favorite !== null && jwtToken ? (
+                    <AddToFavoriteBtn
+                        productSkuCode={skuCode}
+                        isFavorite={favorite}
+                        reference={favoriteBtnProductCardRef}
+                    />
+                ) : (
+                    ''
+                )}
             </div>
             {discount ? (
                 <div className="product-card__sales-text">{discount}%</div>

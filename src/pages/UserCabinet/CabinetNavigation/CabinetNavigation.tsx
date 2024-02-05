@@ -1,12 +1,15 @@
 import { useContext, memo } from 'react';
 import { NavLink } from 'react-router-dom';
-import nextId from 'react-id-generator';
 import { UserActiveLinkContext } from '../UserCabinet';
 import listOfRoutes from '../ListOfRoutes';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { userLogOut } from '../../../store/reducers/authSlice';
 import './CabinetNavigation.scss';
 
 const CabinetNavigation = () => {
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
+    const dispatch = useAppDispatch();
+    const { jwtToken } = useAppSelector((state) => state.auth);
 
     return (
         <nav className="cabinet-navigation">
@@ -16,7 +19,7 @@ const CabinetNavigation = () => {
                     return (
                         <li
                             className="cabinet-navigation__item"
-                            key={nextId(`${title}-`)}
+                            key={`${href}${title}-desktop`}
                         >
                             <NavLink
                                 className={`cabinet-navigation__link ${
@@ -33,9 +36,15 @@ const CabinetNavigation = () => {
                     );
                 })}
             </ul>
-            <NavLink className="cabinet-navigation__close" to="/">
+            <button
+                className="cabinet-navigation__close"
+                type="button"
+                onClick={() => {
+                    dispatch(userLogOut(jwtToken));
+                }}
+            >
                 Вихід
-            </NavLink>
+            </button>
         </nav>
     );
 };

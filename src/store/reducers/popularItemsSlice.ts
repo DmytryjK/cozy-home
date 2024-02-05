@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProductCardType, Loading } from '../../types/types';
 import { API_BASE } from '../../utils/API_BASE';
 import { ProductCategory } from '../../pages/MainPage/components/PopularItems/types';
+import fetchData from '../../utils/fetchData';
 import { RootState } from '../store';
 
 interface PopularItemsInitialState {
@@ -28,11 +29,20 @@ const initialState: PopularItemsInitialState = {
 
 export const fetchPopularItemsAllProducts = createAsyncThunk(
     'popularItems/fetchPopularItemsAllProducts',
-    async function (_, { rejectWithValue }) {
+    async function (_, { rejectWithValue, getState }) {
         try {
-            const response = await fetch(
-                `${API_BASE}product/homepage/status?status=1&countOfProducts=8`
-            );
+            const states = getState() as RootState;
+            const { jwtToken } = states.auth;
+            const response = await fetchData({
+                method: 'GET',
+                request: `${API_BASE}product/homepage/status?status=1&countOfProducts=8`,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    ...(jwtToken
+                        ? { Authorization: `Bearer ${jwtToken}` }
+                        : {}),
+                },
+            });
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
@@ -64,13 +74,22 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
     'popularItems/fetchPopularItemsProductsByСategories',
     async function (
         currentData: GetProductsByCategoryType,
-        { rejectWithValue }
+        { rejectWithValue, getState }
     ) {
         try {
             const queryParams = new URLSearchParams({ ...currentData });
-            const response = await fetch(
-                `${API_BASE}product/homepage/category-status?${queryParams}`
-            );
+            const states = getState() as RootState;
+            const { jwtToken } = states.auth;
+            const response = await fetchData({
+                method: 'GET',
+                request: `${API_BASE}product/homepage/category-status?${queryParams}`,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    ...(jwtToken
+                        ? { Authorization: `Bearer ${jwtToken}` }
+                        : {}),
+                },
+            });
 
             const result = await response.json();
 

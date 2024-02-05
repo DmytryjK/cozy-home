@@ -1,9 +1,60 @@
+import { useEffect, memo, useState, RefObject } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import {
+    toggleFavoriteProduct,
+    resetFavoriteStatus,
+} from '../../store/reducers/userActionsSlice';
 import './AddToFavoriteBtn.scss';
 
-const AddToFavoriteBtn = ({ isActive }: { isActive?: true | false }) => {
+interface PropsType {
+    productSkuCode: string;
+    isFavorite: boolean;
+    reference?: RefObject<HTMLDivElement | null>;
+}
+
+const AddToFavoriteBtn = (props: PropsType) => {
+    const { productSkuCode, isFavorite, reference } = props;
+    const [isAddedToFavorite, setIsAddedToFavorite] = useState(isFavorite);
+    const [isClicked, setIsClicked] = useState(false);
+    const loading = useAppSelector(
+        (state) => state.userActions.loadingAddToFavorite
+    );
+    const error = useAppSelector(
+        (state) => state.userActions.errorAddToFavorite
+    );
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (isClicked && error) {
+            setIsClicked(false);
+            setIsAddedToFavorite(!isAddedToFavorite);
+            dispatch(resetFavoriteStatus());
+        }
+    }, [error, isClicked]);
+
+    useEffect(() => {
+        if (loading === 'succeeded' && isClicked) {
+            dispatch(resetFavoriteStatus());
+        }
+    }, [loading]);
+
+    useEffect(() => {
+        if (!reference || !reference.current) return;
+        if (isAddedToFavorite) {
+            reference.current.style.cssText = 'transform: translateX(0)';
+        } else {
+            reference.current.style.cssText = '';
+        }
+    }, [isAddedToFavorite, reference]);
+
     return (
         <button
-            className={`favorite-btn ${isActive ? 'active' : ''}`}
+            className={`favorite-btn ${isAddedToFavorite ? 'active' : ''}`}
+            onClick={() => {
+                setIsClicked(true);
+                setIsAddedToFavorite(!isAddedToFavorite);
+                dispatch(toggleFavoriteProduct(productSkuCode));
+            }}
             type="button"
             aria-label="додати в обране"
             tabIndex={-1}
@@ -29,8 +80,4 @@ const AddToFavoriteBtn = ({ isActive }: { isActive?: true | false }) => {
     );
 };
 
-AddToFavoriteBtn.defaultProps = {
-    isActive: false,
-};
-
-export default AddToFavoriteBtn;
+export default memo(AddToFavoriteBtn);
