@@ -375,6 +375,9 @@ export const authSlice = createSlice({
         setJwtToken: (state, action: PayloadAction<string>) => {
             state.jwtToken = action.payload;
         },
+        resetUserLogoutStatus: (state, action: PayloadAction<Loading>) => {
+            state.logoutLoading = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builderPending(builder, userLogIn, 'loginLoading', 'loginError');
@@ -489,5 +492,5 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setJwtToken } = authSlice.actions;
+export const { setJwtToken, resetUserLogoutStatus } = authSlice.actions;
 export default authSlice.reducer;

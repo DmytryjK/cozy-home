@@ -11,13 +11,13 @@ import {
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import renderServerData from '../../../../helpers/renderServerData';
 import NavigationListOfCategories from '../../../../shared-components/NavigationListOfCategories/NavigationListOfCategories';
-import { ActiveCategory } from '../../../../types/types';
+import { NavigationCategory } from '../../../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
 import 'swiper/css/grid';
 
 const PopularItems: FC = () => {
-    const [activeCategory, setActiveCategory] = useState<ActiveCategory>({
+    const [activeCategory, setActiveCategory] = useState<NavigationCategory>({
         name: 'Всі товари',
         id: '',
     });

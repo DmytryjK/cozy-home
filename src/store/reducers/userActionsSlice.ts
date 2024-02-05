@@ -2,7 +2,12 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import fetchData from '../../utils/fetchData';
 import { API_SECURE } from '../../utils/API_BASE';
 import { RootState } from '../store';
-import { Loading, ErrorType, ProductCardType } from '../../types/types';
+import type {
+    Loading,
+    ErrorType,
+    ProductCardType,
+    NavigationCategory,
+} from '../../types/types';
 
 interface UserProfileContacts {
     [key: string]: string;
@@ -20,41 +25,11 @@ interface UserProfilePasswords {
     repeatedNewPassword: string;
 }
 
-// interface FavoriteProduct {
-//     skuCode: string;
-//     name: string;
-//     shortDescription: string;
-//     price: 0;
-//     discount: string;
-//     priceWithDiscount: 0;
-//     imageDtoList: [
-//         {
-//             id: string;
-//             imagePath: string;
-//             color: string;
-//         }
-//     ];
-//     colorDtoList: [
-//         {
-//             id: string;
-//             name: string;
-//             quantityStatus: string;
-//             favorite: true;
-//         }
-//     ];
-//     productQuantityStatus: string;
-// }
-
-// export interface UserFavoritesType {
-//     favoritesProducts: ProductCardType[];
-//     categories: [
-//         {
-//             id: string;
-//             name: string;
-//         }
-//     ];
-//     countOfPages: number;
-// }
+export interface UserFavoritesType {
+    products: ProductCardType[];
+    countOfProducts: number;
+    countOfPages: number;
+}
 
 interface UserActions {
     loadingUserPersonalInfo: Loading;
@@ -62,10 +37,14 @@ interface UserActions {
     updatePasswordStatus: Loading;
     errorUpdatePassword: ErrorType;
     userProfileData: UserProfileContacts | null;
-    // userFavorites: UserFavoritesType | null;
-    userFavorites: ProductCardType[] | null;
+    userFavorites: UserFavoritesType | null;
+    userFavoritsCategories: NavigationCategory[];
     loadingUserFavorites: Loading;
+    loadingUserFavoritesCategories: Loading;
     errorUserFavorites: ErrorType;
+    errorUserFavoritesCategories: ErrorType;
+    loadingAddToFavorite: Loading;
+    errorAddToFavorite: ErrorType;
 }
 
 const initialState: UserActions = {
@@ -75,8 +54,13 @@ const initialState: UserActions = {
     errorUpdatePassword: null,
     userProfileData: null,
     userFavorites: null,
+    userFavoritsCategories: [],
     loadingUserFavorites: 'idle',
+    loadingUserFavoritesCategories: 'idle',
     errorUserFavorites: null,
+    errorUserFavoritesCategories: null,
+    loadingAddToFavorite: 'idle',
+    errorAddToFavorite: null,
 };
 
 export const getUserProfileData = createAsyncThunk(
@@ -95,7 +79,7 @@ export const getUserProfileData = createAsyncThunk(
                 request: `${API_SECURE}user/profile`,
             });
 
-            if (!response.ok) throw new Error('Щосі пішло не так :(');
+            if (!response.ok) throw new Error('Щось пішло не так :(');
 
             const data = await response.json();
             return data;
@@ -129,7 +113,7 @@ export const updateUserProfileData = createAsyncThunk(
                 body: { ...userProfileData },
             });
 
-            if (!response.ok) throw new Error('Щосі пішло не так :(');
+            if (!response.ok) throw new Error('Щось пішло не так :(');
 
             const data = await response.json();
             return data;
@@ -166,7 +150,7 @@ export const updatetUserProfilePassword = createAsyncThunk(
             if (response.status === 401) {
                 throw new Error('Схоже старий пароль введено невірно');
             }
-            if (!response.ok) throw new Error('Щосі пішло не так :(');
+            if (!response.ok) throw new Error('Щось пішло не так :(');
             return null;
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -177,12 +161,19 @@ export const updatetUserProfilePassword = createAsyncThunk(
     }
 );
 
+let controller1: any;
+let controller2: any;
+
 export const getUserFavorites = createAsyncThunk(
     'userActions/getUserFavorites',
     async function (
         { page, size }: { page: number; size: number },
         { rejectWithValue, getState }
     ) {
+        if (controller1) {
+            controller1.abort();
+        }
+        controller1 = new AbortController();
         const states = getState() as RootState;
         const { jwtToken } = states.auth;
         try {
@@ -194,17 +185,122 @@ export const getUserFavorites = createAsyncThunk(
                     Authorization: `Bearer ${jwtToken}`,
                 },
                 request: `${API_SECURE}user/favorites?page=${page}&size=${size}`,
+                signal: controller1.signal,
             });
 
-            if (!response.ok) throw new Error('Щосі пішло не так :(');
+            if (!response.ok) throw new Error('Щось пішло не так :(');
 
             const data = await response.json();
             return data;
-        } catch (error: unknown) {
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return rejectWithValue('');
+            }
             if (error instanceof Error) {
                 return rejectWithValue(error.message);
             }
             return null;
+        }
+    }
+);
+
+export const getUserFavoritCategories = createAsyncThunk(
+    'userActions/getUserFavoritCategories',
+    async function (_, { rejectWithValue, getState }) {
+        const states = getState() as RootState;
+        const { jwtToken } = states.auth;
+        try {
+            if (!jwtToken)
+                throw new Error('Потрібна авторизація для даного запиту');
+            const response = await fetchData({
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                request: `${API_SECURE}user/favorites/categories`,
+            });
+
+            if (!response.ok) throw new Error('Щось пішло не так :(');
+
+            const data = await response.json();
+            return data;
+        } catch (error: any) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
+export const getUserFavoritByCategory = createAsyncThunk(
+    'userActions/getUserFavoritCAtegories',
+    async function (
+        { id, size, page = 0 }: { id: string; size: number; page?: number },
+        { rejectWithValue, getState }
+    ) {
+        if (controller2) {
+            controller2.abort();
+        }
+        controller2 = new AbortController();
+        const states = getState() as RootState;
+        const { jwtToken } = states.auth;
+        try {
+            if (!jwtToken)
+                throw new Error('Потрібна авторизація для даного запиту');
+            const response = await fetchData({
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                request: `${API_SECURE}user/favorites/category-id?categoryId=${id}&page=${page}&size=${size}`,
+                signal: controller2.signal,
+            });
+
+            if (!response.ok) throw new Error('Щось пішло не так :(');
+
+            const data = await response.json();
+            return data;
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return rejectWithValue('');
+            }
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
+export const toggleFavoriteProduct = createAsyncThunk(
+    'userActions/toggleFavoriteProduct',
+    async function (productSkuCode: string, { rejectWithValue, getState }) {
+        const states = getState() as RootState;
+        const { jwtToken } = states.auth;
+        try {
+            if (!jwtToken) {
+                throw new Error('Потрібна авторизація для даного запиту');
+            }
+
+            const response = await fetchData({
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+                request: `${API_SECURE}user/favorites?productSkuCode=${productSkuCode}`,
+            });
+
+            if (!response.ok) throw new Error('Щось пішло не так :(');
+
+            return null;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.log(error.message);
+                return rejectWithValue(error.message);
+            }
+            return rejectWithValue(error);
         }
     }
 );
@@ -220,6 +316,10 @@ export const userActionsSlice = createSlice({
         resetUserProfileDataStatus: (state) => {
             state.errorUserPersonalInfo = null;
             state.loadingUserPersonalInfo = 'idle';
+        },
+        resetFavoriteStatus: (state) => {
+            state.errorAddToFavorite = null;
+            state.loadingAddToFavorite = 'idle';
         },
     },
     extraReducers: (builder) => {
@@ -282,7 +382,7 @@ export const userActionsSlice = createSlice({
         });
         builder.addCase(
             getUserFavorites.fulfilled,
-            (state, action: PayloadAction<ProductCardType[]>) => {
+            (state, action: PayloadAction<UserFavoritesType>) => {
                 state.loadingUserFavorites = 'succeeded';
                 state.userFavorites = action.payload;
             }
@@ -294,8 +394,63 @@ export const userActionsSlice = createSlice({
                 state.errorUserFavorites = action.payload;
             }
         );
+        builder.addCase(toggleFavoriteProduct.pending, (state) => {
+            state.loadingAddToFavorite = 'pending';
+            state.errorAddToFavorite = null;
+        });
+        builder.addCase(toggleFavoriteProduct.fulfilled, (state) => {
+            state.loadingAddToFavorite = 'succeeded';
+        });
+        builder.addCase(
+            toggleFavoriteProduct.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loadingAddToFavorite = 'failed';
+                state.errorAddToFavorite = action.payload;
+            }
+        );
+
+        builder.addCase(getUserFavoritCategories.pending, (state) => {
+            state.loadingUserFavoritesCategories = 'pending';
+            state.errorUserFavoritesCategories = null;
+        });
+        builder.addCase(
+            getUserFavoritCategories.fulfilled,
+            (state, action: PayloadAction<NavigationCategory[]>) => {
+                state.loadingUserFavoritesCategories = 'succeeded';
+                state.userFavoritsCategories = action.payload;
+            }
+        );
+        builder.addCase(
+            getUserFavoritCategories.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loadingUserFavoritesCategories = 'failed';
+                state.errorUserFavoritesCategories = action.payload;
+            }
+        );
+
+        builder.addCase(getUserFavoritByCategory.pending, (state) => {
+            state.loadingUserFavorites = 'pending';
+            state.errorUserFavorites = null;
+        });
+        builder.addCase(
+            getUserFavoritByCategory.fulfilled,
+            (state, action: PayloadAction<UserFavoritesType>) => {
+                state.loadingUserFavorites = 'succeeded';
+                state.userFavorites = action.payload;
+            }
+        );
+        builder.addCase(
+            getUserFavoritByCategory.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loadingUserFavorites = 'failed';
+                state.errorUserFavorites = action.payload;
+            }
+        );
     },
 });
-export const { resetUpdatePasswordStatus, resetUserProfileDataStatus } =
-    userActionsSlice.actions;
+export const {
+    resetUpdatePasswordStatus,
+    resetUserProfileDataStatus,
+    resetFavoriteStatus,
+} = userActionsSlice.actions;
 export default userActionsSlice.reducer;

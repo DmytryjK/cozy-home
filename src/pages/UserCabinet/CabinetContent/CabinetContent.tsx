@@ -5,6 +5,9 @@ import {
     useContext,
     createContext,
     useMemo,
+    useCallback,
+    SetStateAction,
+    Dispatch,
     memo,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -12,6 +15,9 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
     getUserProfileData,
     getUserFavorites,
+    getUserFavoritCategories,
+    getUserFavoritByCategory,
+    resetFavoriteStatus,
 } from '../../../store/reducers/userActionsSlice';
 import UserContacts from './UserContacts/UserContacts';
 import UserFavorites from './UserFavorites/UserFavorites';
@@ -20,9 +26,29 @@ import MobileContent from './MobileContent/MobileContent';
 import { LinkType, UserActiveLinkContext } from '../UserCabinet';
 import listOfRoutes from '../ListOfRoutes';
 import DesktopContent from './DesktopContent/DesktopContent';
-import useFetch from '../../../hooks/useFetch';
-import { Loading } from '../../../types/types';
+import type { NavigationCategory } from '../../../types/types';
 import './CabinetContent.scss';
+
+type FavoriteCurrentPage = {
+    currentPage: number;
+    setCurrentPage: Dispatch<SetStateAction<number>>;
+    activeCategory: NavigationCategory;
+    setActiveCategory: Dispatch<SetStateAction<NavigationCategory>>;
+    isPaginationInit: boolean;
+    setIsPaginationInit: Dispatch<SetStateAction<boolean>>;
+};
+
+export const FavoritesContext = createContext<FavoriteCurrentPage>({
+    currentPage: 0,
+    setCurrentPage: () => {},
+    activeCategory: {
+        name: 'Всі товари',
+        id: '',
+    },
+    setActiveCategory: () => {},
+    isPaginationInit: true,
+    setIsPaginationInit: () => {},
+});
 
 export const renderUserCabinetContent = (activeLink: LinkType | null) => {
     let res: '' | ReactNode = '';
@@ -42,46 +68,129 @@ export const renderUserCabinetContent = (activeLink: LinkType | null) => {
     return res;
 };
 
-export const FavoritesContext = createContext<{ loading: Loading; data: any }>({
-    loading: 'idle',
-    data: null,
-});
-
 const CabinetContent = () => {
+    const PAGE_PAGINATION_SIZE = 2;
     const [currentScreenSize, setCurrentScreenSize] = useState<
         'desktop' | 'mobile' | null
     >(null);
     const { activeLink, setActiveLink } = useContext(UserActiveLinkContext);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [isPaginationInit, setIsPaginationInit] = useState(true);
+    const [activeCategory, setActiveCategory] = useState<NavigationCategory>({
+        name: 'Всі товари',
+        id: '',
+    });
     const { jwtToken } = useAppSelector((state) => state.auth);
-    const dispatch = useAppDispatch();
-
-    const { loading, data } = useFetch(
-        `product/homepage/status?status=1&countOfProducts=12`
+    const userFavorites = useAppSelector(
+        (state) => state.userActions.userFavorites
     );
-
+    const loadingAddToFavorite = useAppSelector(
+        (state) => state.userActions.loadingAddToFavorite
+    );
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
     useEffect(() => {
         dispatch(getUserProfileData());
-        dispatch(
-            getUserFavorites({
-                page: 0,
-                size: 6,
-            })
-        );
+        dispatch(getUserFavoritCategories());
+        return () => {
+            dispatch(resetFavoriteStatus());
+        };
     }, []);
 
     useEffect(() => {
-        const checkSize = () => {
-            const screenWidth = window.screen.width;
-            if (screenWidth <= 961) {
-                setCurrentScreenSize('mobile');
-            } else {
-                setCurrentScreenSize('desktop');
-            }
-        };
+        if (isPaginationInit) return;
+        if (activeCategory.id) {
+            dispatch(
+                getUserFavoritByCategory({
+                    id: activeCategory.id,
+                    size: PAGE_PAGINATION_SIZE,
+                    page: currentPage,
+                })
+            );
+        } else {
+            dispatch(
+                getUserFavorites({
+                    page: currentPage,
+                    size: PAGE_PAGINATION_SIZE,
+                })
+            );
+        }
+    }, [currentPage, isPaginationInit]);
 
+    useEffect(() => {
+        if (!activeCategory.id) {
+            dispatch(
+                getUserFavorites({
+                    page: currentPage,
+                    size: PAGE_PAGINATION_SIZE,
+                })
+            );
+            return;
+        }
+        setCurrentPage(0);
+        dispatch(
+            getUserFavoritByCategory({
+                id: activeCategory.id,
+                size: PAGE_PAGINATION_SIZE,
+            })
+        );
+    }, [activeCategory.id]);
+
+    useEffect(() => {
+        if (!userFavorites) return;
+        if (loadingAddToFavorite !== 'succeeded') return;
+        dispatch(getUserFavoritCategories());
+
+        if (userFavorites.products.length === 1) {
+            if (currentPage !== 0) {
+                setCurrentPage(currentPage - 1);
+                return;
+            }
+            if (activeCategory.id) {
+                setActiveCategory({
+                    name: 'Всі товари',
+                    id: '',
+                });
+                return;
+            }
+            // dispatch(
+            //     getUserFavorites({
+            //         page: currentPage,
+            //         size: 6,
+            //     })
+            // );
+        }
+
+        if (activeCategory.id) {
+            dispatch(
+                getUserFavoritByCategory({
+                    id: activeCategory.id,
+                    size: PAGE_PAGINATION_SIZE,
+                    page: currentPage,
+                })
+            );
+        } else {
+            dispatch(
+                getUserFavorites({
+                    page: currentPage,
+                    size: PAGE_PAGINATION_SIZE,
+                })
+            );
+        }
+    }, [loadingAddToFavorite]);
+
+    const checkSize = useCallback(() => {
+        const screenWidth = window.screen.width;
+        if (screenWidth <= 961) {
+            setCurrentScreenSize('mobile');
+        } else {
+            setCurrentScreenSize('desktop');
+        }
+    }, []);
+
+    useEffect(() => {
         if (window.screen.width <= 961) {
             setCurrentScreenSize('mobile');
         } else {
@@ -132,10 +241,14 @@ const CabinetContent = () => {
             <FavoritesContext.Provider
                 value={useMemo(
                     () => ({
-                        loading,
-                        data,
+                        currentPage,
+                        setCurrentPage,
+                        activeCategory,
+                        setActiveCategory,
+                        setIsPaginationInit,
+                        isPaginationInit,
                     }),
-                    [loading, data]
+                    [currentPage, activeCategory, isPaginationInit]
                 )}
             >
                 {currentScreenSize === 'desktop' ? (

@@ -58,6 +58,16 @@ body {
         display: flex;
         align-items: center;
         gap: 12px;
+        &.unavailable .favorite-btn {
+            position: absolute;
+            right: 0;
+            opacity: 0;
+            height: 0;
+            width: 0;
+            visibility: hidden;
+            user-select: none;
+            pointer-events: none;
+        }
     }
 
     &__interested {

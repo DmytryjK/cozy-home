@@ -171,7 +171,10 @@ const BurgerMenu = (props: Props) => {
                 </div>
                 <div className="burger-menu__infoWrapper">
                     <div className="container">
-                        <a href="/">
+                        <NavLink
+                            to="/cabinet/favorites"
+                            onClick={() => setIsOpen(false)}
+                        >
                             <div className="burger-menu__infoWrapper_info bordered">
                                 <svg width="19" height="16">
                                     <use
@@ -180,7 +183,7 @@ const BurgerMenu = (props: Props) => {
                                 </svg>
                                 <div>Обране</div>
                             </div>
-                        </a>
+                        </NavLink>
                         {jwtToken ? (
                             <NavLink
                                 className="burger-menu__cabinet"

@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Loading, ProductInformationType } from '../../types/types';
+import {
+    Loading,
+    ProductInformationType,
+    ColorDtoList,
+} from '../../types/types';
 import { API_BASE } from '../../utils/API_BASE';
 import fetchData from '../../utils/fetchData';
+import { RootState } from '../store';
 
 type ProductParamsType = {
     productSkuCode: string;
@@ -13,7 +18,11 @@ interface ProductInformationState {
     loading: Loading;
     error: null | unknown;
     currentSku: string | null;
-    currentColor: { id: string; name: string; quantityStatus: string } | null;
+    currentColor: {
+        id: string;
+        name: string;
+        quantityStatus: string;
+    } | null;
 }
 
 const initialState: ProductInformationState = {
@@ -45,6 +54,7 @@ const initialState: ProductInformationState = {
         bedWidth: 0,
         maxLoad: 0,
         quantityStatus: '',
+        favorite: null,
     },
     loading: 'idle',
     error: null,
@@ -54,13 +64,21 @@ const initialState: ProductInformationState = {
 
 export const fetchProductInfoByScuWithColor = createAsyncThunk(
     'productInformation/fetchProductInfoByScuWithColor',
-    async function (params: ProductParamsType, { rejectWithValue }) {
+    async function (params: ProductParamsType, { rejectWithValue, getState }) {
         try {
+            const states = getState() as RootState;
+            const { jwtToken } = states.auth;
             const response = await fetchData({
                 method: 'POST',
                 request: `${API_BASE}product/skuCode`,
                 body: {
                     ...params,
+                },
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    ...(jwtToken
+                        ? { Authorization: `Bearer ${jwtToken}` }
+                        : {}),
                 },
             });
 
@@ -79,14 +97,7 @@ export const productInformationSlice = createSlice({
     name: 'productInformation',
     initialState,
     reducers: {
-        updateProductColor: (
-            state,
-            action: PayloadAction<{
-                id: string;
-                name: string;
-                quantityStatus: string;
-            }>
-        ) => {
+        updateProductColor: (state, action: PayloadAction<ColorDtoList>) => {
             state.currentColor = action.payload;
         },
         updateProductSku: (state, action: PayloadAction<string>) => {

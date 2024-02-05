@@ -10,7 +10,7 @@ export interface ColorDtoList {
     quantityStatus: string;
 }
 
-export interface ActiveCategory {
+export interface NavigationCategory {
     name: string;
     id: string;
 }
@@ -24,6 +24,7 @@ export interface ProductCardType {
     discount: number | null;
     imageDtoList: ImageDtoList[];
     colorDtoList: ColorDtoList[];
+    favorite: boolean | null;
     productQuantityStatus: string;
 }
 
@@ -36,17 +37,10 @@ export interface ProductInformationType {
     price: number;
     discount: string;
     priceWithDiscount: number | null;
-    colors:
-        | [
-              {
-                  id: string;
-                  name: string;
-                  quantityStatus: string;
-              }
-          ]
-        | [];
+    colors: ColorDtoList[] | [];
     averageRating: number;
     countOfReviews: number;
+    favorite: boolean | null;
     reviews:
         | [
               {

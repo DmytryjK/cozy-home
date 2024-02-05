@@ -10,10 +10,12 @@ import {
     updateCartBody,
 } from '../../store/reducers/cartSlice';
 import { userLogOut } from '../../store/reducers/authSlice';
+import { getUserFavorites } from '../../store/reducers/userActionsSlice';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';
 import CartIcon from './CartIcon/CartIcon';
+import FavoritesIcon from './FavoritesIcon/FavoritesIcon';
 import { DropdownAuth } from './Auth/Auth';
 import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
@@ -335,14 +337,7 @@ const Header = () => {
                     ) : (
                         ''
                     )} */}
-                    <a href="/" aria-label="Open favorite">
-                        <svg width="21" height="21">
-                            <use href={`${headerSprite}#favorite-icon`} />
-                        </svg>
-                        <span className="header__icons_favorite-counter">
-                            0
-                        </span>
-                    </a>
+                    <FavoritesIcon />
                     <CartIcon
                         setIsPreviewCartActive={setIsPreviewCartActive}
                         setIsBurgerOpen={setIsBurgerOpen}

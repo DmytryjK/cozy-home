@@ -12,11 +12,13 @@ const Pagination2 = ({
     currentPage,
     setCurrentPage,
     setIsPaginationInit,
+    setIsPageChosen,
 }: {
     countOfPages: number | undefined;
     currentPage: number;
     setCurrentPage: Dispatch<SetStateAction<number>>;
     setIsPaginationInit: Dispatch<SetStateAction<boolean>>;
+    setIsPageChosen?: Dispatch<SetStateAction<boolean>>;
 }) => {
     const [pages, setPages] = useState<number[]>([]);
 
