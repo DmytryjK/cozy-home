@@ -9,9 +9,10 @@ const PrivateRoutes = ({ children }: { children: ReactNode }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const localJwt = localStorage.getItem('token');
+    const sessionlJwt = sessionStorage.getItem('token');
 
     useEffect(() => {
-        if (!localJwt) {
+        if (!localJwt && !sessionlJwt) {
             navigate(-1);
         }
     }, []);
