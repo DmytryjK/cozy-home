@@ -313,7 +313,6 @@ const SliderImages = (props: Props) => {
                         <NavLink
                             className="product-card__title-link"
                             to={`/product/${skuCode}${currentColor.hex}`}
-                            // reloadDocument
                             onClick={handleLinkClick}
                         >
                             {name}

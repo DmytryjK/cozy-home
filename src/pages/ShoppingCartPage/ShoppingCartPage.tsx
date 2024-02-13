@@ -14,7 +14,9 @@ const ShoppingCartPage = () => {
             <Breadcrumbs />
             <div className="container">
                 <h1 className="cart__title">Кошик</h1>
-                {cartBody.length > 0 ? (
+                {cartBody.length === 0 && loading !== 'pending' ? (
+                    <EmptyCartMessage />
+                ) : (
                     <div className="cart-content">
                         <ProductsList />
                         {loading === 'succeeded' ? (
@@ -36,8 +38,6 @@ const ShoppingCartPage = () => {
                             ''
                         )}
                     </div>
-                ) : (
-                    <EmptyCartMessage />
                 )}
             </div>
         </section>

@@ -31,16 +31,16 @@ const AddToCartBtn = () => {
         );
     }, [cartBody, currentColor, skuCode]);
 
-    const handleAddProductToCart = () => {
-        if (isElementAddedToCart || !currentColor) return;
-        dispatch(
-            addProductToCartBody({
-                productSkuCode: skuCode,
-                colorHex: currentColor.id,
-            })
-        );
-        dispatch(openPopUpCart(true));
-    };
+    // const handleAddProductToCart = () => {
+    //     if (isElementAddedToCart || !currentColor) return;
+    //     dispatch(
+    //         addProductToCartBody({
+    //             productSkuCode: skuCode,
+    //             colorHex: currentColor.id,
+    //         })
+    //     );
+    //     dispatch(openPopUpCart(true));
+    // };
 
     const cartBtnRender = () => {
         if (isElementAddedToCart) {
@@ -69,7 +69,16 @@ const AddToCartBtn = () => {
             <button
                 className="cart-btn"
                 type="button"
-                onClick={handleAddProductToCart}
+                disabled={isElementAddedToCart}
+                onClick={() => {
+                    dispatch(
+                        addProductToCartBody({
+                            productSkuCode: skuCode,
+                            colorHex: currentColor ? currentColor.id : '',
+                        })
+                    );
+                    dispatch(openPopUpCart(true));
+                }}
             >
                 <span className="cart-btn__text">До кошика</span>
                 <svg

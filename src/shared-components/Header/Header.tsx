@@ -2,15 +2,6 @@ import { useState, MouseEvent, useEffect, useCallback, memo } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
-import {
-    addProductsInfoToCheckout,
-    fetchProductCartInfo,
-    resetCartData,
-    setStatusRemoveCartItemBtn,
-    updateCartBody,
-} from '../../store/reducers/cartSlice';
-import { userLogOut } from '../../store/reducers/authSlice';
-import { getUserFavorites } from '../../store/reducers/userActionsSlice';
 import DropdownMenu from './DropdownMenu';
 import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';
@@ -40,23 +31,12 @@ const Header = () => {
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
     const [isPreviewCartActive, setIsPreviewCartActive] =
         useState<boolean>(false);
 
     const [isAuthDropdownActive, setIsAuthDropdownActive] =
         useState<boolean>(false);
-
-    const isDeletedItemButtonActive = useAppSelector(
-        (state) => state.cart.isDeletedItemButtonActive
-    );
-    const cartBody = useAppSelector((state) => state.cart.cartBody);
-    const cartData = useAppSelector((state) => state.cart.cartData);
-    const productsInfoToCheckout = useAppSelector(
-        (state) => state.cart.productsInfoToCheckout
-    );
-    const cartBodyLocal = JSON.parse(
-        localStorage.getItem('cartBody') as string
-    );
 
     const isPopUpForgottenPAsswordOpen = useAppSelector(
         (state) => state.modals.isPasswordForgotten
@@ -112,6 +92,18 @@ const Header = () => {
     }, [isSearchOpen]);
 
     useEffect(() => {
+        const checkWindowSize = () => {
+            if (window.innerWidth > 960) {
+                setIsDesktop(true);
+            } else {
+                setIsDesktop(false);
+            }
+        };
+        checkWindowSize();
+        window.addEventListener('resize', checkWindowSize);
+    }, []);
+
+    useEffect(() => {
         const handleScroll = () => {
             const currentScrollPos =
                 window.pageYOffset || document.documentElement.scrollTop;
@@ -124,91 +116,6 @@ const Header = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem('cartBody', JSON.stringify(cartBody));
-        if (cartBody.length === 0) {
-            if (isDeletedItemButtonActive) {
-                localStorage.setItem('checkoutInfo', JSON.stringify([]));
-            }
-            dispatch(resetCartData());
-            dispatch(setStatusRemoveCartItemBtn(false));
-            setIsPreviewCartActive(false);
-        } else {
-            if (isDeletedItemButtonActive) {
-                dispatch(setStatusRemoveCartItemBtn(false));
-                return;
-            }
-            dispatch(fetchProductCartInfo(cartBody));
-        }
-    }, [cartBody]);
-
-    useEffect(() => {
-        if (productsInfoToCheckout.length > 0) {
-            localStorage.setItem(
-                'checkoutInfo',
-                JSON.stringify(productsInfoToCheckout)
-            );
-        }
-    }, [productsInfoToCheckout]);
-
-    useEffect(() => {
-        if (!cartBodyLocal) return;
-        if (cartBodyLocal.length > 0) {
-            dispatch(updateCartBody(cartBodyLocal));
-        }
-    }, []);
-
-    useEffect(() => {
-        const productsLocalCheckout = localStorage.getItem('checkoutInfo')
-            ? JSON.parse(localStorage.getItem('checkoutInfo') as string)
-            : [];
-        const checkoutProducts = cartData.map((item) => {
-            const {
-                name,
-                skuCode,
-                colorHex,
-                price,
-                priceWithDiscount,
-                colorName,
-                availableProductQuantity,
-            } = item;
-            let localItemQuantity = 1;
-            if (
-                productsLocalCheckout.some((localItem: any) => {
-                    if (
-                        localItem.skuCode === skuCode &&
-                        localItem.colorHex === colorHex &&
-                        localItem.quantityToCheckout > 1
-                    ) {
-                        localItemQuantity = localItem.quantityToCheckout;
-                        return true;
-                    }
-                    return undefined;
-                })
-            ) {
-                return {
-                    productName: name,
-                    skuCode,
-                    colorHex,
-                    colorName,
-                    price: (priceWithDiscount || price) * localItemQuantity,
-                    quantityToCheckout: localItemQuantity,
-                };
-            }
-            return {
-                productName: name,
-                skuCode,
-                colorHex,
-                colorName,
-                price: priceWithDiscount || price,
-                quantityToCheckout: availableProductQuantity
-                    ? 1
-                    : availableProductQuantity,
-            };
-        });
-        dispatch(addProductsInfoToCheckout(checkoutProducts));
-    }, [cartData]);
 
     const handleMouseOver = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
@@ -276,11 +183,11 @@ const Header = () => {
         >
             <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
             <header className={isScrolled ? 'header header-active' : 'header'}>
-                <a href="/" className="header__logo" aria-label="CozyHome">
+                <NavLink to="/" className="header__logo" aria-label="CozyHome">
                     <svg className="header__logo_img">
                         <use href={`${headerSprite}#logo-icon`} />
                     </svg>
-                </a>
+                </NavLink>
                 <div className="header__nav">
                     <nav>
                         <ul className="header__nav_list">
@@ -326,24 +233,7 @@ const Header = () => {
                             <use href={`${headerSprite}#profile-icon`} />
                         </svg>
                     </NavLink>
-                    {/* {jwtToken ? (
-                        <button
-                            className="temporaty-logout"
-                            type="button"
-                            onClick={() => dispatch(userLogOut(jwtToken))}
-                        >
-                            logout
-                        </button>
-                    ) : (
-                        ''
-                    )} */}
                     <FavoritesIcon />
-                    <CartIcon
-                        setIsPreviewCartActive={setIsPreviewCartActive}
-                        setIsBurgerOpen={setIsBurgerOpen}
-                    />
-                </div>
-                <div className="header__mobile_icons">
                     <button
                         type="button"
                         className="header__mobile_icons_search_button"
@@ -361,6 +251,7 @@ const Header = () => {
                     <CartIcon
                         setIsPreviewCartActive={setIsPreviewCartActive}
                         setIsBurgerOpen={setIsBurgerOpen}
+                        isDesktop
                     />
                     <BurgerMenu
                         isOpen={isBurgerOpen}
@@ -369,7 +260,6 @@ const Header = () => {
                     />
                 </div>
                 <DropdownShoppingCart isActive={isPreviewCartActive} />
-
                 <DropdownAuth
                     isActive={
                         isAuthDropdownActive && !isPopUpForgottenPAsswordOpen

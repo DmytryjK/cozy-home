@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
 import CartTrashBtn from '../../CartTrashBtn/CartTrashBtn';
@@ -160,12 +160,12 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                 maxWidth: cartData.length === 0 ? '380px' : '590px',
             }}
         >
-            {cartBody.length > 0 ? (
-                <div
-                    className={`cart-dropdown__list-container ${
-                        loading === 'succeeded' ? '' : 'loading'
-                    }`}
-                >
+            {cartBody.length === 0 && loading !== 'pending' ? (
+                <div className="cart-dropdown__empty">
+                    Ваш кошик поки порожній!
+                </div>
+            ) : (
+                <div className="cart-dropdown__list-container">
                     {renderServerData({
                         error,
                         loading,
@@ -173,10 +173,6 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                         showPrevState: true,
                         loaderClassName: 'cart-dropdown__loader',
                     })}
-                </div>
-            ) : (
-                <div className="cart-dropdown__empty">
-                    Ваш кошик поки порожній!
                 </div>
             )}
             {cartData.length > 0 ? (
