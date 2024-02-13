@@ -96,4 +96,7 @@ export type CartData = {
     colorHex: string;
     availableProductQuantity: number;
     quantityStatus: string;
+    quantity?: number;
+    favorite?: boolean;
+    productName?: string;
 };

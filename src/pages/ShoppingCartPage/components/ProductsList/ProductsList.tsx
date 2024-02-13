@@ -1,7 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import ProductItem from '../ProductItem/ProductItem';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
-import { updateCartBody } from '../../../../store/reducers/cartSlice';
+import {
+    resetCartData,
+    updateCartBody,
+} from '../../../../store/reducers/cartSlice';
 import renderServerData from '../../../../helpers/renderServerData';
 import './ProductsList.scss';
 
@@ -54,6 +57,7 @@ const ProductsList = () => {
                     disabled={loading !== 'succeeded'}
                     onClick={() => {
                         dispatch(updateCartBody([]));
+                        dispatch(resetCartData());
                     }}
                 >
                     Очистити кошик

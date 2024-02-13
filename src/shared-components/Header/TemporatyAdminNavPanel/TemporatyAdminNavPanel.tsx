@@ -4,6 +4,7 @@ import {
     userLogOut,
     temporaryDelUser,
 } from '../../../store/reducers/authSlice';
+import { updateCartInfoForAuthUser } from '../../../store/reducers/cartSlice';
 import './TemporatyAdminNavPanel.scss';
 
 const TemporatyAdminNavPanel = () => {
@@ -34,6 +35,16 @@ const TemporatyAdminNavPanel = () => {
                     delete user
                 </button>
             </form>
+            <button
+                className="admin-panel__btn"
+                type="button"
+                onClick={() => {
+                    dispatch(updateCartInfoForAuthUser({ customData: [] }));
+                    console.log('updating cart...');
+                }}
+            >
+                Clear cart
+            </button>
             <button
                 className="admin-panel__btn"
                 type="button"

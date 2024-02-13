@@ -53,7 +53,11 @@ const FavoritesIcon = () => {
     }, [jwtToken]);
 
     return (
-        <NavLink to="/cabinet/favorites" aria-label="Open favorite">
+        <NavLink
+            to="/cabinet/favorites"
+            aria-label="Open favorite"
+            className="header__icons-favorite"
+        >
             <svg width="21" height="21">
                 <use href={`${headerSprite}#favorite-icon`} />
             </svg>

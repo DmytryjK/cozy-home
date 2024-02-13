@@ -108,6 +108,7 @@
 
 	&__icons {
 		display: flex;
+		align-items: center;
 		gap: 27px;
 		position: relative;
 		user-select: none;
@@ -131,11 +132,13 @@
 		
 	}
 
-	&__mobile {
-		&_icons {
-			display: none;
-		}
+	.menu-btn {
+		display: none;
 	}
+}
+
+.header__icons-favorite {
+	position: relative;
 }
 
 .header__icons_favorite-counter{
@@ -154,7 +157,11 @@
 
 .header__icons_favorite-counter {
 	top: -5px;
-	right: 38px;
+	right: -8px;
+}
+
+.header__mobile_icons_search_button {
+	display: none;
 }
 
 @media (max-width: 1130px) {
@@ -197,26 +204,20 @@
 			display: none;
 		}
 
-		&__search_icon {
+		&__search_icon, &__icons-favorite, &__icons-profile {
 			display: none;
 		}
 
+		&__mobile_icons_search_button {
+			background: transparent;
+			border: none;
+			display: block;
+		}
 		&__icons {
-			display: none;
+			gap: 19px;
 		}
-
-		&__mobile {
-			&_icons {
-				display: flex;
-				align-items: center;
-				gap: 19px;
-				&_search {
-					&_button {
-						background: none;
-						border: none;
-					}
-				}
-			}
+		.menu-btn {
+			display: block;
 		}
 }
 

@@ -22,7 +22,8 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
         useState<boolean>(false);
 
     const cartBody = useAppSelector((state) => state.cart.cartBody);
-    const { price, priceWithDiscount, discount, skuCode, favorite } = product;
+    const { price, priceWithDiscount, discount, skuCode, favorite, name } =
+        product;
 
     const [currentColor, setCurrentColor] = useState<{
         name: string;
@@ -64,16 +65,16 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
         addSpaceToPrice(price, priceWithDiscount);
     }, [price, priceWithDiscount]);
 
-    const handleAddProductToCart = () => {
-        if (isElementAddedToCart) return;
-        dispatch(
-            addProductToCartBody({
-                productSkuCode: skuCode,
-                colorHex: currentColor.hex,
-            })
-        );
-        dispatch(openPopUpCart(true));
-    };
+    // const handleAddProductToCart = () => {
+    //     if (isElementAddedToCart) return;
+    //     dispatch(
+    //         addProductToCartBody({
+    //             productSkuCode: skuCode,
+    //             colorHex: currentColor.hex,
+    //         })
+    //     );
+    //     dispatch(openPopUpCart(true));
+    // };
 
     const renderProductStatus = () => {
         if (currentColor.quantityStatus === 'Немає в наявності') {
@@ -140,7 +141,16 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     }`}
                     type="button"
                     aria-label="додати в кошик"
-                    onClick={handleAddProductToCart}
+                    disabled={isElementAddedToCart}
+                    onClick={() => {
+                        dispatch(
+                            addProductToCartBody({
+                                productSkuCode: skuCode,
+                                colorHex: currentColor.hex,
+                            })
+                        );
+                        dispatch(openPopUpCart(true));
+                    }}
                 >
                     {isElementAddedToCart ? (
                         <img

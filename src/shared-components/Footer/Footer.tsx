@@ -1,4 +1,5 @@
 import './Footer.scss';
+import { NavLink } from 'react-router-dom';
 import visaIcon from '../../assets/icons/footer/visa-icon.svg';
 import mastercardIcon from '../../assets/icons/footer/mastercard-icon.svg';
 import footerSprites from '../../assets/icons/footer/footer-sprite.svg';
@@ -8,11 +9,11 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer__wrapper">
                 <div className="container">
-                    <a href="/" aria-label="CozyHome">
+                    <NavLink to="/" aria-label="CozyHome">
                         <svg className="footer__logo">
                             <use href={`${footerSprites}#footer-logo`} />
                         </svg>
-                    </a>
+                    </NavLink>
                     <div className="footer__nav_wrapper">
                         <div className="footer__list footer__list_order1">
                             <h2 className="footer__list_title">
@@ -20,19 +21,28 @@ const Footer = () => {
                             </h2>
                             <ul className="footer__list_category">
                                 <li className="footer__list_item">
-                                    <a href="/" className="footer__list_link">
+                                    <NavLink
+                                        to="/"
+                                        className="footer__list_link"
+                                    >
                                         Поширені питання
-                                    </a>
+                                    </NavLink>
                                 </li>
                                 <li className="footer__list_item">
-                                    <a href="/" className="footer__list_link">
+                                    <NavLink
+                                        to="/"
+                                        className="footer__list_link"
+                                    >
                                         Гарантії та повернення
-                                    </a>
+                                    </NavLink>
                                 </li>
                                 <li className="footer__list_item">
-                                    <a href="/" className="footer__list_link">
+                                    <NavLink
+                                        to="/"
+                                        className="footer__list_link"
+                                    >
                                         Умови співпраці
-                                    </a>
+                                    </NavLink>
                                 </li>
                             </ul>
                         </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction, memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../../hooks/hooks';
 import CartTrashBtn from '../../../../shared-components/CartTrashBtn/CartTrashBtn';
@@ -52,7 +52,6 @@ const ProductItem = (props: Props) => {
                 <NavLink
                     className="cart-product__link"
                     to={`/product/${skuCode}${colorHex}`}
-                    // reloadDocument
                     onMouseDown={handleOpenProductPage}
                 >
                     <img
@@ -65,7 +64,6 @@ const ProductItem = (props: Props) => {
                     <NavLink
                         className="cart-product__title-link"
                         to={`/product/${skuCode}${colorHex}`}
-                        // reloadDocument
                         onMouseDown={handleOpenProductPage}
                     >
                         {name}
@@ -100,4 +98,4 @@ ProductItem.defaultProps = {
     setAction: null,
 };
 
-export default ProductItem;
+export default memo(ProductItem);
