@@ -32,6 +32,7 @@ const Header = () => {
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+    const [isInputFocused, setIsInputFocused] = useState(false);
     const [isPreviewCartActive, setIsPreviewCartActive] =
         useState<boolean>(false);
 
@@ -178,7 +179,9 @@ const Header = () => {
             }}
             onMouseLeave={() => {
                 setIsPreviewCartActive(false);
-                setIsAuthDropdownActive(false);
+                if (!isInputFocused) {
+                    // setIsAuthDropdownActive(false);
+                }
             }}
         >
             <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
@@ -261,6 +264,9 @@ const Header = () => {
                 </div>
                 <DropdownShoppingCart isActive={isPreviewCartActive} />
                 <DropdownAuth
+                    setIsInputFocused={setIsInputFocused}
+                    isInputFocused={isInputFocused}
+                    setIsAuthDropdownActive={setIsAuthDropdownActive}
                     isActive={
                         isAuthDropdownActive && !isPopUpForgottenPAsswordOpen
                     }

@@ -10,20 +10,24 @@ type Props = {
 export interface PaymentMethodInterface {
     id: string;
     label: string;
+    value: string;
 }
 
 export const paymentMethodList: PaymentMethodInterface[] = [
     {
         id: 'cart',
         label: 'На карту',
+        value: 'CARD',
     },
     {
         id: 'iban',
         label: 'На розрахунковий рахунок',
+        value: 'IBAN',
     },
     {
         id: 'cash',
         label: 'Готівкою при отриманні',
+        value: 'CASH',
     },
 ];
 
@@ -49,9 +53,9 @@ const PaymentMethod = (props: Props) => {
                             type="radio"
                             name={inputName}
                             value={selectedPaymentOption}
-                            checked={selectedPaymentOption === option.label}
+                            checked={selectedPaymentOption === option.value}
                             onChange={() =>
-                                setSelectedPaymentOption(option.label)
+                                setSelectedPaymentOption(option.value)
                             }
                             className="delivery-payment-block__options_option_label_input"
                         />

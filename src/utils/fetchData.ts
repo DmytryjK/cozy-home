@@ -1,5 +1,5 @@
 interface FetchData {
-    method: 'GET' | 'POST' | 'PUT';
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     request: string;
     body?: any;
     headers?: { [key: string]: string };
@@ -14,7 +14,7 @@ const fetchData = async ({
     signal,
 }: FetchData) => {
     type RequestObj = {
-        method: 'GET' | 'POST' | 'PUT';
+        method: 'GET' | 'POST' | 'PUT' | 'DELETE';
         headers: { [key: string]: string };
         body?: any;
         signal?: AbortSignal | null | undefined;

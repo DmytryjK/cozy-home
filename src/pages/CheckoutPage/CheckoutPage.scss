@@ -62,7 +62,9 @@
 					color: $light-grey;
 					display: flex;
 					gap: 10px;
-					// cursor: pointer;
+					border: none;
+					background-color: transparent;
+					cursor: pointer;
 					
 					&_number {
 						font-family: Montserrat Alternates;

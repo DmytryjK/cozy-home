@@ -12,7 +12,6 @@ import {
 } from '../../../shared-components/FormComponents/Inputs';
 import { reverseBirthdayForServer } from '../../../utils/birthdateChanges/birthdateChanges';
 import { userSignInByEmail } from '../../../store/reducers/authSlice';
-import Loader from '../../../shared-components/Loader';
 import {
     ErrorMessageSmall,
     SuccessMessage,
@@ -136,17 +135,17 @@ const SignInForm = () => {
                     <span>Отримувати повідомлення про знижки та акції</span>
                 </label>
             </div>
-            {emailLinksLoading === 'pending' ? (
-                <Loader className="signin-form__loader" />
-            ) : (
-                ''
-            )}
             <button
                 className="signin-form__submit"
                 type="submit"
                 disabled={emailLinksLoading === 'pending'}
             >
                 Зареєструватися
+                <span className="submit-button__loading-dots">
+                    <span className="submit-button__loading-dot" />
+                    <span className="submit-button__loading-dot" />
+                    <span className="submit-button__loading-dot" />
+                </span>
             </button>
             {emailLinksLoading === 'succeeded' ? (
                 <SuccessMessage text="Для активації акаунту перейдіть по посиланню на вашій електронній пошті." />

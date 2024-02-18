@@ -27,7 +27,17 @@
         transform: translateY(-95%);
         fill: $filter-background;
     }
-
+    &__close {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        right: 15px;
+        top: 15px;
+        background: url('../../../../assets/icons/filters/close-filters.svg') center center/cover no-repeat;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
     &__title {
         margin: 0;
         text-align: center;

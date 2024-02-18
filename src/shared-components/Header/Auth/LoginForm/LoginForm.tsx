@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, SetStateAction, Dispatch } from 'react';
 import { useFormik, FormikErrors } from 'formik';
+import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import ErrorMessageValidation from '../ErrorMessageValidation/ErrorMessageValidation';
 import ShowHidePusswordBtn from '../../../FormComponents/ShowHidePusswordBtn/ShowHidePusswordBtn';
@@ -8,7 +9,6 @@ import formValidation from '../../../../utils/formValidation';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 import { userLogIn, setJwtToken } from '../../../../store/reducers/authSlice';
-import Loader from '../../../Loader';
 import './LoginForm.scss';
 
 interface FormValues {
@@ -18,7 +18,15 @@ interface FormValues {
     isUserRemember: boolean;
 }
 
-const LoginForm = () => {
+const LoginForm = ({
+    setIsInputFocused,
+    styleClass,
+    setIsLoginBtnClicked,
+}: {
+    setIsInputFocused?: Dispatch<SetStateAction<boolean>>;
+    styleClass?: string;
+    setIsLoginBtnClicked?: Dispatch<SetStateAction<boolean>>;
+}) => {
     const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
     const [isPasswordWrong, setIsPasswordWrong] = useState<boolean>(false);
     const [isPasswordHide, setIsPasswordHide] = useState<boolean>(true);
@@ -69,6 +77,7 @@ const LoginForm = () => {
                     resetForm,
                 })
             );
+            if (setIsLoginBtnClicked) setIsLoginBtnClicked(true);
         },
     });
 
@@ -100,7 +109,13 @@ const LoginForm = () => {
     }
 
     return (
-        <form onSubmit={formik.handleSubmit} className="form-login" noValidate>
+        <form
+            onSubmit={formik.handleSubmit}
+            className={`form-login ${
+                loginLoading === 'pending' ? 'loading' : ''
+            } ${styleClass || ''}`}
+            noValidate
+        >
             <label className="form-login__label-email">
                 <input
                     className={`form-login__input-email ${
@@ -111,17 +126,20 @@ const LoginForm = () => {
                     type="email"
                     placeholder="Email*"
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    onBlur={(e) => {
+                        if (setIsInputFocused) {
+                            setIsInputFocused(false);
+                        }
+                        formik.handleBlur(e);
+                    }}
+                    onFocus={() => setIsInputFocused && setIsInputFocused(true)}
                     value={formik.values.email}
-                    autoComplete="off"
+                    autoComplete="email"
                     required
                 />
             </label>
             {formik.touched.email && formik.errors.email ? (
                 <ErrorMessageValidation message={formik.errors.email} />
-            ) : null}
-            {loginLoading === 'pending' ? (
-                <Loader className="form-login__loader" />
             ) : null}
             <label className="form-login__label-password">
                 <input
@@ -133,9 +151,15 @@ const LoginForm = () => {
                     type={isPasswordHide ? 'password' : 'text'}
                     placeholder="Пароль*"
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    onBlur={(e) => {
+                        if (setIsInputFocused) {
+                            setIsInputFocused(false);
+                        }
+                        formik.handleBlur(e);
+                    }}
+                    onFocus={() => setIsInputFocused && setIsInputFocused(true)}
                     value={formik.values.password}
-                    autoComplete="off"
+                    autoComplete="current-password"
                     required
                 />
                 <ShowHidePusswordBtn
@@ -163,16 +187,21 @@ const LoginForm = () => {
                     type="button"
                     onClick={handleForgotPasswordClick}
                 >
-                    Забули пароль
+                    Забули пароль?
                 </button>
             </div>
             <div className="form-login__bottom-nav">
                 <button className="form-login__submit" type="submit">
                     Увійти
+                    <span className="submit-button__loading-dots">
+                        <span className="submit-button__loading-dot" />
+                        <span className="submit-button__loading-dot" />
+                        <span className="submit-button__loading-dot" />
+                    </span>
                 </button>
-                <a className="form-login__register-link" href="/signin">
+                <NavLink className="form-login__register-link" to="/signin">
                     Зареєструватись
-                </a>
+                </NavLink>
             </div>
         </form>
     );

@@ -109,6 +109,47 @@
         }
     }
 
+    &__loading-dots {
+		display: none
+	}
+	&__loading-dot {
+		animation-delay: .1s;
+		margin: 0 5px;
+		animation: {
+			direction: alternate;
+			duration: .5s;
+			iteration-count: infinite;
+			name: loading-animation;
+			play-state: running;
+			timing-function: ease-out;
+		}
+		border-radius: 100%;
+		display: block;
+		height: 10px;
+		margin: 0 5px;
+		width: 10px;
+		&:first-child {
+			animation-delay: 0s;
+			margin: 0;
+		}
+
+		&:last-child {
+			animation-delay: .2s;
+			margin: 0;
+		}
+	}
+	&.loading-data {
+        .signin-form__submit {
+            font-size: 0px;
+            pointer-events: none;
+            padding: 20px 10px;
+        }
+		.submit-button__loading-dots {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
     &__toggle-visible-password {
         position: absolute;
         display: flex;

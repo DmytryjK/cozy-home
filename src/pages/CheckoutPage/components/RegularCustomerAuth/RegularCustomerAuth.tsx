@@ -1,9 +1,6 @@
-import { useState } from 'react';
-import { useFormik, FormikErrors } from 'formik';
-import SubmitButton from '../../shared-components/SubmitButton/SubmitButton';
-import formValidation from '../../../../utils/formValidation';
-import PasswordInput from '../../../../shared-components/FormComponents/PasswordInput/PasswordInput';
-import EmailInput from '../../../../shared-components/FormComponents/EmailInput/EmailInput';
+import { useState, memo } from 'react';
+import LoginForm from '../../../../shared-components/Header/Auth/LoginForm/LoginForm';
+
 import './RegularCustomerAuth.scss';
 
 type Props = {
@@ -19,37 +16,12 @@ interface FormValues {
 
 const RegularCustomerAuth = (props: Props) => {
     const { setResetPasswordActive, setRegularLoggedIn } = props;
-    const [isPasswordHide, setIsPasswordHide] = useState<boolean>(true);
-
-    const formik6 = useFormik({
-        initialValues: {
-            password: '',
-            email: '',
-        },
-        validate: (values: FormValues) => {
-            const errors: FormikErrors<FormValues> = {};
-            const validationFields = ['password', 'email'];
-
-            validationFields.forEach((fieldName: string) => {
-                const error = formValidation(fieldName, values[fieldName]);
-                if (error) {
-                    errors[fieldName] = error;
-                }
-            });
-
-            return errors;
-        },
-        onSubmit: (values, { resetForm }) => {
-            alert(JSON.stringify(values, null, 2));
-            setRegularLoggedIn(true);
-            resetForm();
-        },
-    });
+    const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
 
     return (
         <div className="regular-customer">
             <div className="regular-customer__form">
-                <form
+                {/* <form
                     className="customer-form"
                     onSubmit={formik6.handleSubmit}
                     noValidate
@@ -66,7 +38,11 @@ const RegularCustomerAuth = (props: Props) => {
                         </button>
                         <SubmitButton title="Увійти" />
                     </div>
-                </form>
+                </form> */}
+                <LoginForm
+                    styleClass="customer-form"
+                    setIsLoginBtnClicked={setIsLoginBtnClicked}
+                />
             </div>
             <span className="custom-line" />
             <div className="regular-customer__login">
@@ -87,4 +63,4 @@ const RegularCustomerAuth = (props: Props) => {
     );
 };
 
-export default RegularCustomerAuth;
+export default memo(RegularCustomerAuth);
