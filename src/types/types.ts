@@ -100,3 +100,32 @@ export type CartData = {
     favorite?: boolean;
     productName?: string;
 };
+
+export type OrderDataOrderItems = {
+    productSkuCode: string;
+    colorHex: string;
+    quantity: number;
+    price: number;
+};
+
+export type OrderDataOrderDelivery = {
+    city?: string;
+    paymentMethod?: string;
+    street?: string;
+    house?: string;
+    apartment?: string;
+    comment?: string;
+    deliveryCompanyName?: string;
+    region?: string;
+    postOffice?: string;
+    deliveryType?: string;
+};
+
+export type OrderData = {
+    firstName?: string;
+    lastName?: string;
+    phoneNumber?: string;
+    email?: string;
+    delivery?: OrderDataOrderDelivery | Record<string, never>;
+    orderItems?: OrderDataOrderItems[] | [];
+};

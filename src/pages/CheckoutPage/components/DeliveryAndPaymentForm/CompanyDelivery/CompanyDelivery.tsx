@@ -1,25 +1,35 @@
+import { useCallback } from 'react';
 import { useFormik, FormikErrors } from 'formik';
-import { useNavigate } from 'react-router';
 import nextId from 'react-id-generator';
 import PaymentMethod from '../PaymentMethod/PaymentMethod';
 import SubmitButton from '../../../shared-components/SubmitButton/SubmitButton';
 import ErrorMessageValidation from '../../../../../shared-components/Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
 import CustomSelect from '../../../../../shared-components/FormComponents/CustomSelect/CustomSelect';
+import { useAppDispatch } from '../../../../../hooks/hooks';
+import { setDeliveryInfo } from '../../../../../store/reducers/orderSlice';
+import debounce from '../../../../../utils/debounce';
+import type { OrderData } from '../../../../../types/types';
+import Loader from '../../../../../shared-components/Loader';
 import './CompanyDelivery.scss';
 
 interface FormValues {
-    postalService: string;
+    deliveryCompanyName: string;
     region: string;
     city: string;
-    postalOfficeNumber: string;
+    postOffice: string;
     paymentMethod: string;
     comment: string;
     callNeeded: boolean;
 }
 
-const CompanyDelivery = () => {
-    const navigate = useNavigate();
-
+const CompanyDelivery = ({
+    handleSubmitOrderForm,
+    animationClass,
+}: {
+    handleSubmitOrderForm: () => void;
+    animationClass: string;
+}) => {
+    const dispatch = useAppDispatch();
     const deliveryOptions = [
         {
             title: 'Укрпошта',
@@ -42,46 +52,57 @@ const CompanyDelivery = () => {
             fieldName: 'delivery',
         },
     ];
-
     const postalOptions = [
         {
-            title: '1',
+            title: 'Відділення 1',
             fieldName: '1',
         },
         {
-            title: '2',
+            title: 'Відділення 2',
             fieldName: '2',
         },
         {
-            title: '3',
+            title: 'Відділення 3',
             fieldName: '3',
         },
         {
-            title: '4',
+            title: 'Відділення 4',
             fieldName: '4',
         },
         {
-            title: '5',
+            title: 'Відділення 5',
             fieldName: '5',
         },
     ];
 
+    const localOrderData: OrderData | null = JSON.parse(
+        localStorage.getItem('orderData') || JSON.stringify(null)
+    );
+
+    const debouncedUpdateOrderDelivery = useCallback(
+        debounce((values) => {
+            dispatch(setDeliveryInfo({ ...values }));
+        }, 800),
+        []
+    );
+
     const formik4 = useFormik({
         initialValues: {
-            postalService: '',
-            region: '',
-            city: '',
-            postalOfficeNumber: '',
-            paymentMethod: 'На карту',
-            comment: '',
+            deliveryCompanyName:
+                localOrderData?.delivery?.deliveryCompanyName || '',
+            region: localOrderData?.delivery?.region || '',
+            city: localOrderData?.delivery?.city || '',
+            postOffice: localOrderData?.delivery?.postOffice || '',
+            paymentMethod: localOrderData?.delivery?.paymentMethod || 'CARD',
+            comment: localOrderData?.delivery?.comment || '',
             callNeeded: true,
         },
         validate: (values: FormValues) => {
             const errors: FormikErrors<FormValues> = {};
             const requiredMessage = "Це поле обов'язкове для заповнення";
 
-            if (!values.postalService) {
-                errors.postalService = requiredMessage;
+            if (!values.deliveryCompanyName) {
+                errors.deliveryCompanyName = requiredMessage;
             }
 
             if (!values.region) {
@@ -92,16 +113,21 @@ const CompanyDelivery = () => {
                 errors.city = requiredMessage;
             }
 
-            if (!values.postalOfficeNumber) {
-                errors.postalOfficeNumber = requiredMessage;
+            if (!values.postOffice) {
+                errors.postOffice = requiredMessage;
             }
-
+            debouncedUpdateOrderDelivery(values);
             return errors;
         },
         onSubmit: (values, { resetForm }) => {
-            alert(JSON.stringify(values, null, 2));
-            navigate('/checkout/success');
-            resetForm();
+            dispatch(
+                setDeliveryInfo({
+                    ...values,
+                })
+            );
+            setTimeout(() => {
+                handleSubmitOrderForm();
+            }, 100);
         },
     });
 
@@ -116,16 +142,16 @@ const CompanyDelivery = () => {
                 <CustomSelect
                     selectFields={deliveryOptions}
                     defaulTitle="Оберіть"
-                    selectNameOptions="postalService"
-                    selectedValue={formik4.values.postalService}
+                    selectNameOptions="deliveryCompanyName"
+                    selectedValue={formik4.values.deliveryCompanyName}
                     onChange={(value) => {
-                        formik4.setFieldValue('postalService', value);
+                        formik4.setFieldValue('deliveryCompanyName', value);
                     }}
                 />
-                {formik4.touched.postalService &&
-                formik4.errors.postalService ? (
+                {formik4.touched.deliveryCompanyName &&
+                formik4.errors.deliveryCompanyName ? (
                     <ErrorMessageValidation
-                        message={formik4.errors.postalService}
+                        message={formik4.errors.deliveryCompanyName}
                     />
                 ) : null}
             </div>
@@ -168,16 +194,15 @@ const CompanyDelivery = () => {
                 <CustomSelect
                     selectFields={postalOptions}
                     defaulTitle="Оберіть"
-                    selectNameOptions="postalOfficeNumber"
-                    selectedValue={formik4.values.postalOfficeNumber}
+                    selectNameOptions="postOffice"
+                    selectedValue={formik4.values.postOffice}
                     onChange={(value) => {
-                        formik4.setFieldValue('postalOfficeNumber', value);
+                        formik4.setFieldValue('postOffice', value);
                     }}
                 />
-                {formik4.touched.postalOfficeNumber &&
-                formik4.errors.postalOfficeNumber ? (
+                {formik4.touched.postOffice && formik4.errors.postOffice ? (
                     <ErrorMessageValidation
-                        message={formik4.errors.postalOfficeNumber}
+                        message={formik4.errors.postOffice}
                     />
                 ) : null}
             </div>
@@ -197,6 +222,7 @@ const CompanyDelivery = () => {
                         placeholder="Ваш коментар"
                         className="payment-method__comment_label_text"
                         name="comment"
+                        value={formik4.values.comment}
                         rows={6}
                         onChange={formik4.handleChange}
                     />
@@ -227,7 +253,10 @@ const CompanyDelivery = () => {
                     </label>
                 </div>
                 <div className="button-wrapper">
-                    <SubmitButton title="Оформити замовлення" />
+                    <SubmitButton
+                        title="Оформити замовлення"
+                        className={animationClass}
+                    />
                 </div>
             </div>
         </form>

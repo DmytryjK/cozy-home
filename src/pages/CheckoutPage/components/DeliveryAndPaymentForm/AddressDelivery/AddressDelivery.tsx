@@ -1,32 +1,56 @@
+import { useEffect, useCallback } from 'react';
 import { useFormik, FormikErrors } from 'formik';
-import { useNavigate } from 'react-router';
 import nextId from 'react-id-generator';
 import PaymentMethod from '../PaymentMethod/PaymentMethod';
 import SubmitButton from '../../../shared-components/SubmitButton/SubmitButton';
 import ErrorMessageValidation from '../../../../../shared-components/Header/Auth/ErrorMessageValidation/ErrorMessageValidation';
+import { useAppDispatch } from '../../../../../hooks/hooks';
+import { setDeliveryInfo } from '../../../../../store/reducers/orderSlice';
+import type { OrderData } from '../../../../../types/types';
+import debounce from '../../../../../utils/debounce';
+import Loader from '../../../../../shared-components/Loader';
 import './AddressDelivery.scss';
 
 interface FormValues {
     city: string;
-    houseNumber: string;
+    house: string;
     street: string;
-    flat: string;
+    apartment: string;
     comment: string;
     paymentMethod: string;
     callNeeded: boolean;
 }
 
-const AddressDelivery = () => {
-    const navigate = useNavigate();
+const AddressDelivery = ({
+    isResetAddress,
+    handleSubmitOrderForm,
+    animationClass,
+}: {
+    isResetAddress?: boolean;
+    handleSubmitOrderForm: () => void;
+    animationClass: string;
+}) => {
+    const dispatch = useAppDispatch();
+
+    const localOrderData: OrderData | null = JSON.parse(
+        localStorage.getItem('orderData') || JSON.stringify(null)
+    );
+
+    const debouncedUpdateOrderDelivery = useCallback(
+        debounce((values) => {
+            dispatch(setDeliveryInfo({ ...values }));
+        }, 800),
+        []
+    );
 
     const formik5 = useFormik({
         initialValues: {
-            city: '',
-            houseNumber: '',
-            street: '',
-            flat: '',
-            comment: '',
-            paymentMethod: 'На карту',
+            city: localOrderData?.delivery?.city || '',
+            house: localOrderData?.delivery?.house || '',
+            street: localOrderData?.delivery?.street || '',
+            apartment: localOrderData?.delivery?.apartment || '',
+            comment: localOrderData?.delivery?.comment || '',
+            paymentMethod: localOrderData?.delivery?.paymentMethod || 'CARD',
             callNeeded: true,
         },
         validate: (values: FormValues) => {
@@ -37,26 +61,37 @@ const AddressDelivery = () => {
                 errors.city = requiredMessage;
             }
 
-            if (!values.houseNumber) {
-                errors.houseNumber = requiredMessage;
+            if (!values.house) {
+                errors.house = requiredMessage;
             }
 
             if (!values.street) {
                 errors.street = requiredMessage;
             }
 
-            if (!values.flat) {
-                errors.flat = requiredMessage;
+            if (!values.apartment) {
+                errors.apartment = requiredMessage;
             }
-
+            debouncedUpdateOrderDelivery(values);
             return errors;
         },
         onSubmit: (values, { resetForm }) => {
-            alert(JSON.stringify(values, null, 2));
-            navigate('/checkout/success');
-            resetForm();
+            dispatch(
+                setDeliveryInfo({
+                    ...values,
+                })
+            );
+            setTimeout(() => {
+                handleSubmitOrderForm();
+            }, 100);
         },
     });
+
+    useEffect(() => {
+        if (isResetAddress) {
+            formik5.resetForm();
+        }
+    }, [isResetAddress]);
 
     return (
         <form
@@ -85,19 +120,17 @@ const AddressDelivery = () => {
                 <p>Будинок*</p>
                 <input
                     className="customer-form__item_input"
-                    id={nextId('houseNumber')}
-                    name="houseNumber"
+                    id={nextId('house')}
+                    name="house"
                     type="text"
                     placeholder="Ваш будинок"
                     onChange={formik5.handleChange}
                     onBlur={formik5.handleBlur}
-                    value={formik5.values.houseNumber}
+                    value={formik5.values.house}
                     required
                 />
-                {formik5.touched.houseNumber && formik5.errors.houseNumber ? (
-                    <ErrorMessageValidation
-                        message={formik5.errors.houseNumber}
-                    />
+                {formik5.touched.house && formik5.errors.house ? (
+                    <ErrorMessageValidation message={formik5.errors.house} />
                 ) : null}
             </label>
             <label className="customer-form__item">
@@ -121,17 +154,19 @@ const AddressDelivery = () => {
                 <p>Квартира*</p>
                 <input
                     className="customer-form__item_input"
-                    id={nextId('flat')}
-                    name="flat"
+                    id={nextId('apartment')}
+                    name="apartment"
                     type="text"
                     placeholder="Ваша квартира"
                     onChange={formik5.handleChange}
                     onBlur={formik5.handleBlur}
-                    value={formik5.values.flat}
+                    value={formik5.values.apartment}
                     required
                 />
-                {formik5.touched.flat && formik5.errors.flat ? (
-                    <ErrorMessageValidation message={formik5.errors.flat} />
+                {formik5.touched.apartment && formik5.errors.apartment ? (
+                    <ErrorMessageValidation
+                        message={formik5.errors.apartment}
+                    />
                 ) : null}
             </label>
             <PaymentMethod
@@ -150,6 +185,7 @@ const AddressDelivery = () => {
                         placeholder="Ваш коментар"
                         className="payment-method__comment_label_text"
                         name="comment"
+                        value={formik5.values.comment}
                         rows={6}
                         onChange={formik5.handleChange}
                     />
@@ -180,11 +216,18 @@ const AddressDelivery = () => {
                     </label>
                 </div>
                 <div className="button-wrapper">
-                    <SubmitButton title="Оформити замовлення" />
+                    <SubmitButton
+                        title="Оформити замовлення"
+                        className={animationClass}
+                    />
                 </div>
             </div>
         </form>
     );
+};
+
+AddressDelivery.defaultProps = {
+    isResetAddress: false,
 };
 
 export default AddressDelivery;

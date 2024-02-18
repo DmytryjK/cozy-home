@@ -341,26 +341,23 @@ export const temporaryDelUser = createAsyncThunk(
     }
 );
 
-export const fetchUserProfileInfo = createAsyncThunk(
-    'auth/fetchUserProfileInfo',
-    async function (jwt: string, { rejectWithValue }) {
+export const temporaryClearOrders = createAsyncThunk(
+    'auth/temporaryClearOrders',
+    async function ({ email }: { email: string }, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_SECURE}user/profile`, {
-                method: 'GET',
+            const response = await fetchData({
+                method: 'DELETE',
+                request: `${API_BASE}order?email=${email}`,
                 headers: {
-                    Authorization: `Bearer ${jwt}`,
+                    'Content-type': 'application/json; charset=UTF-8',
                 },
             });
-
             if (!response.ok) {
                 throw new Error('Щось пішло не так');
             }
-            const data = await response.json();
-            console.log(data);
             return '';
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.log(error.message);
                 return rejectWithValue(error.message);
             }
             return null;
@@ -377,6 +374,12 @@ export const authSlice = createSlice({
         },
         resetUserLogoutStatus: (state, action: PayloadAction<Loading>) => {
             state.logoutLoading = action.payload;
+        },
+        resetUserLoginStatus: (state) => {
+            state.loginLoading = 'idle';
+        },
+        resetUserNewPasswordLoading: (state) => {
+            state.newPasswordLoading = 'idle';
         },
     },
     extraReducers: (builder) => {
@@ -492,5 +495,10 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setJwtToken, resetUserLogoutStatus } = authSlice.actions;
+export const {
+    setJwtToken,
+    resetUserLogoutStatus,
+    resetUserLoginStatus,
+    resetUserNewPasswordLoading,
+} = authSlice.actions;
 export default authSlice.reducer;

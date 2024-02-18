@@ -1,15 +1,16 @@
 /* eslint-disable no-nested-ternary */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import DeliveryAndPaymentForm from './components/DeliveryAndPaymentForm/DeliveryAndPaymentForm';
-import AddressDelivery from './components/DeliveryAndPaymentForm/AddressDelivery/AddressDelivery';
 import ProductsList from './components/ProductsList/ProductsList';
 import CustomerForm from './components/CustomerForm/CustomerForm';
 import RegularCustomerAuth from './components/RegularCustomerAuth/RegularCustomerAuth';
+import FormUpdater from './components/FormUpdater/FormUpdater';
+import { setOrderedProducts } from '../../store/reducers/orderSlice';
 import './CheckoutPage.scss';
 
 type ComponentsType = {
@@ -18,12 +19,12 @@ type ComponentsType = {
     RegularCustomer: JSX.Element;
     RegularCustomerLoggedIn: JSX.Element;
     DeliveryAndPaymentForm: JSX.Element;
-    AddressDelivery: JSX.Element;
 };
 
 const CheckoutPage = () => {
     const [newCustomerActive, setNewCustomerActive] = useState(true);
     const [regularCustomerActive, setRegularCustomerActive] = useState(false);
+    const [customerForm, setCustomerForm] = useState<any>(null);
     const [firstStepActive, setFirstStepActive] = useState(true);
     const [secondStepActive, setSecondStepActive] = useState(false);
     const [resetPasswordActive, setResetPasswordActive] = useState(false);
@@ -32,33 +33,64 @@ const CheckoutPage = () => {
         useState<string>('postal-delivery');
     const navigate = useNavigate();
     const cartTotal = useAppSelector((state) => state.cart.cartTotal);
+    const jwtToken = useAppSelector((state) => state.auth.jwtToken);
+    const productsInfoToCheckout = useAppSelector(
+        (state) => state.cart.productsInfoToCheckout
+    );
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (!cartTotal) return;
+        const orderedProducts = productsInfoToCheckout
+            .map((item) => {
+                const { skuCode, colorHex, quantityToCheckout, price } = item;
+                return {
+                    productSkuCode: skuCode,
+                    colorHex,
+                    quantity: quantityToCheckout,
+                    price,
+                };
+            })
+            .filter((item) => item.quantity > 0);
+        dispatch(setOrderedProducts(orderedProducts));
         if (cartTotal.totalQuantityToCheckout === 0) {
-            navigate(-1);
+            // navigate(-1);
         }
     }, [cartTotal]);
 
-    const handleCustomerClick = (isRegular: boolean) => {
+    useEffect(() => {
+        if (jwtToken) {
+            setNewCustomerActive(false);
+            setRegularCustomerActive(true);
+            setRegularLoggedIn(true);
+        } else {
+            setRegularLoggedIn(false);
+        }
+    }, [jwtToken]);
+
+    const handleCustomerClick = useCallback((isRegular: boolean) => {
         setFirstStepActive(true);
         setSecondStepActive(false);
         setNewCustomerActive(!isRegular);
         setRegularCustomerActive(isRegular);
         setResetPasswordActive(false);
-        setRegularLoggedIn(false);
-    };
+    }, []);
 
-    const handleStepClick = (isRegular: boolean) => {
+    const handleStepClick = useCallback((isRegular: boolean) => {
         setFirstStepActive(!isRegular);
         setSecondStepActive(isRegular);
-    };
+    }, []);
 
     const components: ComponentsType = {
         ResetPassword: (
             <ResetPassword setResetPasswordActive={setResetPasswordActive} />
         ),
-        NewCustomer: <CustomerForm handleSubmit={handleStepClick} />,
+        NewCustomer: (
+            <CustomerForm
+                handleSubmit={handleStepClick}
+                setCustomerForm={setCustomerForm}
+            />
+        ),
         RegularCustomer: (
             <RegularCustomerAuth
                 setResetPasswordActive={setResetPasswordActive}
@@ -67,11 +99,8 @@ const CheckoutPage = () => {
         ),
         RegularCustomerLoggedIn: (
             <CustomerForm
-                firstName="Анжеліка"
-                lastName="Бажан"
-                phoneNumber="+38 (099) 543 - 36 - 51"
-                email="cozyhome@gmail.com"
                 handleSubmit={handleStepClick}
+                setCustomerForm={setCustomerForm}
             />
         ),
         DeliveryAndPaymentForm: (
@@ -80,7 +109,6 @@ const CheckoutPage = () => {
                 setSelectedDeliveryOption={setSelectedDeliveryOption}
             />
         ),
-        AddressDelivery: <AddressDelivery />,
     };
 
     const activeComponent = secondStepActive
@@ -131,12 +159,17 @@ const CheckoutPage = () => {
                             </div>
                             {newCustomerActive || regularLoggedIn ? (
                                 <div className="customer-block__steps">
-                                    <p
+                                    <button
                                         className={
                                             firstStepActive
                                                 ? 'customer-block__steps_step active'
                                                 : 'customer-block__steps_step'
                                         }
+                                        type="button"
+                                        onClick={() => {
+                                            setFirstStepActive(true);
+                                            setSecondStepActive(false);
+                                        }}
                                     >
                                         <span
                                             className={
@@ -148,13 +181,19 @@ const CheckoutPage = () => {
                                             1
                                         </span>
                                         Особисті дані
-                                    </p>
-                                    <p
+                                    </button>
+                                    <button
                                         className={
                                             secondStepActive
                                                 ? 'customer-block__steps_step active'
                                                 : 'customer-block__steps_step'
                                         }
+                                        type="button"
+                                        onClick={() => {
+                                            if (customerForm) {
+                                                customerForm.submitForm();
+                                            }
+                                        }}
                                     >
                                         <span
                                             className={
@@ -166,7 +205,7 @@ const CheckoutPage = () => {
                                             2
                                         </span>
                                         Інформація про доставку та оплату
-                                    </p>
+                                    </button>
                                 </div>
                             ) : (
                                 ''
@@ -184,8 +223,9 @@ const CheckoutPage = () => {
                     </div>
                 </div>
             </div>
+            <FormUpdater />
         </>
     );
 };
 
-export default CheckoutPage;
+export default memo(CheckoutPage);

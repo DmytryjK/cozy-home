@@ -11,6 +11,7 @@ import modalsReducer from './reducers/modalsSlice';
 import authReducer from './reducers/authSlice';
 import cartReducer from './reducers/cartSlice';
 import userActionsReducer from './reducers/userActionsSlice';
+import orderReducer from './reducers/orderSlice';
 
 export const store = configureStore({
     reducer: {
@@ -26,6 +27,7 @@ export const store = configureStore({
         cart: cartReducer,
         auth: authReducer,
         userActions: userActionsReducer,
+        order: orderReducer,
     },
 });
 

@@ -1,9 +1,37 @@
-import { memo } from 'react';
+import { memo, SetStateAction, Dispatch, useEffect, useState } from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import googleIcon from '../../../../assets/icons/auth/google-icon.svg';
 import './DropdownAuth.scss';
 
-const DropdownAuth = ({ isActive }: { isActive: boolean }) => {
+const DropdownAuth = ({
+    isActive,
+    setIsInputFocused,
+    isInputFocused,
+    setIsAuthDropdownActive,
+}: {
+    isActive: boolean;
+    isInputFocused: boolean;
+    setIsAuthDropdownActive: Dispatch<SetStateAction<boolean>>;
+    setIsInputFocused?: Dispatch<SetStateAction<boolean>>;
+}) => {
+    useEffect(() => {
+        const closeDropdown = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (
+                !target.matches('.header') &&
+                !target.matches('.header__icons') &&
+                !target.closest('.header__icons-profile') &&
+                !target.closest('.auth-dropdown') &&
+                !isInputFocused
+            ) {
+                setIsAuthDropdownActive(false);
+            }
+        };
+        if (isActive) {
+            window.addEventListener('mousedown', closeDropdown);
+        }
+        return () => window.removeEventListener('mousedown', closeDropdown);
+    }, [isActive]);
     return (
         <div
             className={`auth-dropdown ${
@@ -22,7 +50,13 @@ const DropdownAuth = ({ isActive }: { isActive: boolean }) => {
             <h2 className="auth-dropdown__title">
                 Вхід до особистого кабінету
             </h2>
-            <LoginForm />
+            <button
+                className="auth-dropdown__close"
+                type="button"
+                aria-label="закрити вікно"
+                onClick={() => setIsAuthDropdownActive(false)}
+            />
+            <LoginForm setIsInputFocused={setIsInputFocused} />
             <div className="auth-dropdown__login-by-service login-by-service">
                 <h3 className="login-by-service__title">
                     Увійдіть як користувач

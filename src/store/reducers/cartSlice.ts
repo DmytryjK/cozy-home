@@ -218,7 +218,6 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
                 quantity: quantityToCheckout,
             };
         });
-
         if (!jwtToken) {
             throw new Error('Для цього запиту потрібно бути авторизованим');
         }
@@ -252,8 +251,7 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
                 return '';
             }
         }
-        const test = await request();
-        console.log(test);
+        const result = await request();
 
         // cartUpdatePromise = new Promise((resolve, reject) => {
         //     fetch(`${API_SECURE}basket/replace`, {

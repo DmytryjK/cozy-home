@@ -50,6 +50,8 @@ const CartIcon = (props: Props) => {
     const isDeletedItemButtonActive = useAppSelector(
         (state) => state.cart.isDeletedItemButtonActive
     );
+    const orderNumber = useAppSelector((state) => state.order.orderNumber);
+    const orderLoading = useAppSelector((state) => state.order.loading);
 
     const { setIsPreviewCartActive, setIsBurgerOpen, isDesktop } = props;
     const dispatch = useAppDispatch();
@@ -76,12 +78,15 @@ const CartIcon = (props: Props) => {
     }, [loginLoading, jwtToken]);
 
     useEffect(() => {
-        if (logoutLoading === 'succeeded') {
+        if (
+            logoutLoading === 'succeeded' ||
+            (orderNumber && orderLoading === 'succeeded')
+        ) {
             dispatch(updateCartBody([]));
             dispatch(resetCartData());
             localStorage.setItem('checkoutInfo', JSON.stringify([]));
         }
-    }, [logoutLoading]);
+    }, [logoutLoading, orderNumber, orderLoading]);
 
     useEffect(() => {
         if (!jwtToken)
@@ -106,9 +111,11 @@ const CartIcon = (props: Props) => {
 
     const debouncedUpdateCartInfoForAuthUser = useCallback(
         debounce(() => {
-            dispatch(updateCartInfoForAuthUser({ customData: null }));
+            if (jwtToken) {
+                dispatch(updateCartInfoForAuthUser({ customData: null }));
+            }
         }, 700),
-        []
+        [jwtToken]
     );
 
     useEffect(() => {

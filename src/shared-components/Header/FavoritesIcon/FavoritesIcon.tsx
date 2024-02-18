@@ -1,4 +1,10 @@
-import { useEffect, useState, memo } from 'react';
+import {
+    useEffect,
+    useState,
+    memo,
+    MouseEvent,
+    MouseEventHandler,
+} from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
 import { API_SECURE } from '../../../utils/API_BASE';
@@ -52,11 +58,18 @@ const FavoritesIcon = () => {
         }
     }, [jwtToken]);
 
+    const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        if (favoritesQuantity === 0 || !jwtToken) {
+            event.preventDefault();
+        }
+    };
+
     return (
         <NavLink
             to="/cabinet/favorites"
             aria-label="Open favorite"
             className="header__icons-favorite"
+            onClick={handleClick}
         >
             <svg width="21" height="21">
                 <use href={`${headerSprite}#favorite-icon`} />

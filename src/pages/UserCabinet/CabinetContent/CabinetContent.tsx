@@ -69,7 +69,7 @@ export const renderUserCabinetContent = (activeLink: LinkType | null) => {
 };
 
 const CabinetContent = () => {
-    const PAGE_PAGINATION_SIZE = 2;
+    const PAGE_PAGINATION_SIZE = 6;
     const [currentScreenSize, setCurrentScreenSize] = useState<
         'desktop' | 'mobile' | null
     >(null);

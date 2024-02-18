@@ -5,6 +5,7 @@ import { useAppSelector } from '../../../../hooks/hooks';
 
 const AddProductBlock = () => {
     const [isAvailable, setIsAvailable] = useState(true);
+    const jwtToken = useAppSelector((state) => state.auth.jwtToken);
     const quantityStatus = useAppSelector(
         (state) => state.productInformation.currentColor?.quantityStatus
     );
@@ -34,7 +35,7 @@ const AddProductBlock = () => {
             }`}
         >
             <AddToCartBtn />
-            {isFavorite !== null ? (
+            {isFavorite !== null && jwtToken ? (
                 <AddToFavoriteBtn
                     productSkuCode={skuCode}
                     isFavorite={isFavorite}
