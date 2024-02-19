@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MouseEvent } from 'react';
 import userScrollWidth from '../../../utils/userScrollWidth';
 import './BurgerMenu.scss';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
@@ -50,6 +50,12 @@ const BurgerMenu = (props: Props) => {
             : '0';
         document.body.style.overflow = isOpen ? 'hidden' : 'visible';
     }, [isOpen]);
+
+    const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        if (!jwtToken) {
+            event.preventDefault();
+        }
+    };
 
     const renderedCategories = () => {
         return data.map((category) => {
@@ -173,7 +179,10 @@ const BurgerMenu = (props: Props) => {
                     <div className="container">
                         <NavLink
                             to="/cabinet/favorites"
-                            onClick={() => setIsOpen(false)}
+                            onClick={(event) => {
+                                setIsOpen(false);
+                                handleClick(event);
+                            }}
                         >
                             <div className="burger-menu__infoWrapper_info bordered">
                                 <svg width="19" height="16">

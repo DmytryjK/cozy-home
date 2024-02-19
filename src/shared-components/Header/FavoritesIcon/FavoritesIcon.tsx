@@ -12,7 +12,13 @@ import fetchData from '../../../utils/fetchData';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 
 let controller: any;
-const FavoritesIcon = () => {
+const FavoritesIcon = ({
+    isMobile,
+    additionalText,
+}: {
+    isMobile?: boolean;
+    additionalText?: string;
+}) => {
     const [favoritesQuantity, setFavoritesQuantity] = useState(0);
     const loadingAddToFavoritesStatus = useAppSelector(
         (state) => state.userActions.loadingAddToFavorite
@@ -55,11 +61,13 @@ const FavoritesIcon = () => {
     useEffect(() => {
         if (jwtToken) {
             fetchFavorites();
+        } else {
+            setFavoritesQuantity(0);
         }
     }, [jwtToken]);
 
     const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-        if (favoritesQuantity === 0 || !jwtToken) {
+        if (!jwtToken) {
             event.preventDefault();
         }
     };
@@ -68,7 +76,9 @@ const FavoritesIcon = () => {
         <NavLink
             to="/cabinet/favorites"
             aria-label="Open favorite"
-            className="header__icons-favorite"
+            className={`header__icons-favorite ${
+                isMobile ? 'header__icons-favorite_mobile' : ''
+            }`}
             onClick={handleClick}
         >
             <svg width="21" height="21">
@@ -77,6 +87,7 @@ const FavoritesIcon = () => {
             <span className="header__icons_favorite-counter">
                 {favoritesQuantity}
             </span>
+            {additionalText ? <div>{additionalText}</div> : ''}
         </NavLink>
     );
 };
