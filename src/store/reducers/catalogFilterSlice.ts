@@ -56,11 +56,12 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
             controller.abort();
         }
         controller = new AbortController();
-
+        const state = thunkAPI.getState() as RootState;
+        const { currentPage } = state.catalogFilters;
         try {
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
+                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=${currentPage}`,
                 body: {
                     parentCategoryId: categoryId,
                     ...(subcategoryId

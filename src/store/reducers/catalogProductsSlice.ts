@@ -86,9 +86,10 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
         try {
             const state = thunkAPI.getState() as RootState;
             const { jwtToken } = state.auth;
+            const { currentPage } = state.catalogFilters;
             const response = await fetchData({
                 method: 'GET',
-                request: `${API_BASE}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}`,
+                request: `${API_BASE}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}&page=${currentPage}`,
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                     ...(jwtToken
