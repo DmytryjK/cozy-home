@@ -196,8 +196,7 @@ export const mergeCartOnAuth = createAsyncThunk(
         }
     }
 );
-let isRequestToCartHasBeenSent = false;
-let requestCounter = 0;
+
 export const updateCartInfoForAuthUser = createAsyncThunk(
     'cart/updateCartInfoForAuthUser',
     async function ({ customData }: { customData?: any }, thunkAPI) {
@@ -205,11 +204,6 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
         const { jwtToken } = state.auth;
         const { productsInfoToCheckout } = state.cart;
 
-        if (!isRequestToCartHasBeenSent && requestCounter > 1) {
-            return null;
-        }
-        isRequestToCartHasBeenSent = false;
-        requestCounter += 1;
         const cartDataForServer = productsInfoToCheckout.map((item) => {
             const { skuCode, colorHex, quantityToCheckout } = item;
             return {
@@ -233,11 +227,9 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
                     },
                 });
                 if (!response.ok) throw new Error('something went wrong');
-                isRequestToCartHasBeenSent = true;
                 console.log('cart has been updated');
                 return true;
             } catch (error: any) {
-                isRequestToCartHasBeenSent = true;
                 if (error.name === 'AbortError') {
                     console.log('cart hasn`t been updated, canceled');
                     return thunkAPI.rejectWithValue('');
