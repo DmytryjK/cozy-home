@@ -24,9 +24,13 @@
             &__sales-text, &__slider-link, &__title, &__description {
                 opacity: 40%;
             }
-            &__favorite {
+            &__favorite .favorite-btn {
                 display: none;
                 pointer-events: none;
+            }
+            &__favorite > .favorite-btn.active {
+                display: flex;
+                pointer-events: auto;
             }
         }
         .purchase-block{
