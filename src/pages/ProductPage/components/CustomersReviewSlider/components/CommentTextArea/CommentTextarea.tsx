@@ -35,7 +35,7 @@ const CommentTextarea: React.FC<CommentTextareaProps> = ({
                 rows={10}
                 maxLength={500}
                 className="customers-review__modal_inputs_input_comment"
-                placeholder="Ваш комментарий"
+                placeholder="Ваш коментар"
                 value={formik ? formik.values.comment : comment}
                 onChange={formik ? formik.handleChange : handleTextareaChange}
             />

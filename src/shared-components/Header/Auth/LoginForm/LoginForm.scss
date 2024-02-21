@@ -211,3 +211,17 @@
     //     }
     // }
 }
+
+@keyframes loading-animation {
+	0% {
+        transform: scale(.5);
+        background-color: white;
+    }
+    50% {
+        background-color: rgb(202, 202, 202);
+    }
+    100% {
+        transform: scale(1);
+        background-color: white;
+    }
+  }
