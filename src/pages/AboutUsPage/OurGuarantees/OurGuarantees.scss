@@ -1,0 +1,44 @@
+@use '../../../style/variables.scss' as *;
+.our-guarantees {
+    margin-top: 160px;
+    &__list {
+        margin: 0 auto;
+        margin-top: 50px;
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        max-width: 976px;
+    }
+
+    &__item {
+        width: 33%;
+        max-width: 304px;
+        padding: 35px;
+        border-radius: 10px;
+        background-color: $filter-background;
+        &-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &-icon {
+
+        }
+        &-title {
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            color: $dark-color;
+        }
+        &-text {
+            margin-top: 12px;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 17px;
+            color: $grey;
+        }
+    }
+}

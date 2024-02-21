@@ -9,6 +9,7 @@ import {
     ActivationPage,
     ResetPasswordPage,
     UserCabinet,
+    AboutUsPage,
 } from './pages';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
 import PrivateRoutes from './PrivateRoutes';
@@ -57,6 +58,10 @@ const routes = [
     {
         path: '/api/v1/auth/login/reset',
         element: <ResetPasswordPage />,
+    },
+    {
+        path: '/about',
+        element: <AboutUsPage />,
     },
     {
         path: '/cabinet',

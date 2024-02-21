@@ -1,0 +1,52 @@
+@use '../../../style/variables.scss' as *;
+.contact-us {
+    margin-top: 160px;
+    &__wrapper {
+        padding: 75px;
+        background: url('../../../assets/images/about-us/contact-us.png') center center/cover no-repeat;
+    }
+
+    &__title.about-title {
+        text-align: left;
+        color: $white;
+    }
+    &__descr.about-descr {
+        max-width: 570px;
+        margin-top: 10px;
+        text-align: left;
+        color: $white;
+    }
+
+    .contact-form {
+        margin-top: 30px;
+        max-width: 400px;
+        display: flex;
+        align-items:start;
+        justify-content: space-between;
+        gap: 6px;
+        &__btn {
+            height: 42px;
+            width: 42px;
+            background: $accent-color;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: 0.2s ease-out background;
+            flex: 1 0 auto;
+            &:hover {
+                background: $accent-color-hover;
+            }
+        }
+        .email {
+            width: 100%;
+            outline: none;
+            &__input:focus {
+                border-color: $accent-color;
+            }
+            .form-error {
+                color: white;
+                font-size: 11px;
+            }
+        }
+    }
+}
