@@ -7,12 +7,18 @@ import Modal from '../../../../shared-components/Modal/Modal';
 import ratingSprite from '../../../../assets/icons/rating/sprite-rating.svg';
 import CustomerReview from './components/CustomerReview/CustomerReview';
 import CommentTextarea from './components/CommentTextArea/CommentTextarea';
-import { useAppSelector } from '../../../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import formValidation from '../../../../utils/formValidation';
 import {
-    FirstNameInput,
+    addReviewForProduct,
+    resetAddReviewForProduct,
+    fetchProductInfoByScuWithColor,
+} from '../../../../store/reducers/productInformationSlice';
+import {
     EmailInput,
+    FirstNameInput,
 } from '../../../../shared-components/FormComponents/Inputs';
+import { ErrorMessageSmall } from '../../../../shared-components/UserMessages/UserMessages';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './CustomersReviewSlider.scss';
@@ -27,19 +33,54 @@ const CustomersReviewSlider = () => {
     const [modalActive, setModalActive] = useState<boolean>(false);
     const [ratingError, setRatingError] = useState(false);
     const [rating, setRating] = useState(0);
+    const [hoverIndex, setHoverIndex] = useState<number | null>(null);
     const [reviewSubmit, setReviewSubmit] = useState<boolean>(false);
+    const [timeoutHover, setTimeoutHover] = useState<any>(null);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
 
-    const { reviews } = useAppSelector(
+    const { reviews, skuCode } = useAppSelector(
         (state) => state.productInformation.productInfo
     );
+
+    const { loadingReview, errorReview, currentColor } = useAppSelector(
+        (state) => state.productInformation
+    );
+
+    // const loadingReview = useAppSelector(
+    //     (state) => state.productInformation.loadingReview
+    // );
+    // const errorReview = useAppSelector(
+    //     (state) => state.productInformation.errorReview
+    // );
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (loadingReview === 'succeeded') {
+            setRating(0);
+            setReviewSubmit(true);
+        }
+    }, [loadingReview, errorReview]);
 
     useEffect(() => {
         if (rating !== 0) {
             setRatingError(false);
         }
     }, [rating]);
+
+    useEffect(() => {
+        if (!modalActive) {
+            if (loadingReview === 'succeeded') {
+                dispatch(
+                    fetchProductInfoByScuWithColor({
+                        productSkuCode: skuCode,
+                        colorHex: currentColor?.id || '#000',
+                    })
+                );
+            }
+            dispatch(resetAddReviewForProduct());
+        }
+    }, [modalActive]);
 
     const additionalValidation = () => {
         if (rating === 0) {
@@ -51,6 +92,10 @@ const CustomersReviewSlider = () => {
 
     const handleStarClick = (selectedRating: number) => {
         setRating(selectedRating);
+    };
+
+    const handleStarHover = (currentIndexStar: number) => {
+        setHoverIndex(currentIndexStar);
     };
 
     const formik7 = useFormik({
@@ -74,10 +119,17 @@ const CustomersReviewSlider = () => {
         },
         onSubmit: (values, { resetForm }) => {
             if (ratingError) return;
-            alert(JSON.stringify({ rating, ...values }, null, 2));
-            resetForm();
-            setRating(0);
-            setReviewSubmit(true);
+            dispatch(
+                addReviewForProduct({
+                    productRatingInfo: {
+                        productSkuCode: skuCode,
+                        userName: values.firstName,
+                        rating,
+                        ...values,
+                    },
+                    resetForm,
+                })
+            );
         },
     });
 
@@ -85,18 +137,35 @@ const CustomersReviewSlider = () => {
         return (
             <div className="stars-rating">
                 {[1, 2, 3, 4, 5].map((starIndex) => (
-                    <svg
+                    <button
+                        className="stars-rating__button"
                         key={starIndex}
-                        width="20"
-                        height="20"
+                        type="button"
+                        aria-label="star"
                         onClick={() => handleStarClick(starIndex)}
+                        onMouseEnter={() => {
+                            if (timeoutHover) {
+                                clearTimeout(timeoutHover);
+                            }
+                            handleStarHover(starIndex);
+                        }}
+                        onMouseLeave={() =>
+                            setTimeoutHover(
+                                setTimeout(() => setHoverIndex(null), 250)
+                            )
+                        }
                     >
-                        <use
-                            href={`${ratingSprite}#${
-                                starIndex <= rating ? 'active' : 'inactive'
-                            }`}
-                        />
-                    </svg>
+                        <svg width="20" height="20">
+                            <use
+                                href={`${ratingSprite}#${
+                                    starIndex <= rating ||
+                                    (hoverIndex && hoverIndex >= starIndex)
+                                        ? 'active'
+                                        : 'inactive'
+                                }`}
+                            />
+                        </svg>
+                    </button>
                 ))}
             </div>
         );
@@ -105,7 +174,7 @@ const CustomersReviewSlider = () => {
     return (
         <>
             <div className="container">
-                <div className="customers-review">
+                <div className="customers-review" id="customer-review">
                     <div className="customers-review__slider-top">
                         <h1 className="customers-review__slider-top_title">
                             Відгуки покупців
@@ -234,7 +303,7 @@ const CustomersReviewSlider = () => {
                         {stars()}
                         {ratingError && (
                             <p className="rating-error">
-                                Необхідно поставити оцінку
+                                Необхідно обрати рейтинг
                             </p>
                         )}
                     </div>
@@ -265,12 +334,26 @@ const CustomersReviewSlider = () => {
                         </div>
                         <CommentTextarea formik={formik7} />
                         <button
-                            className="customers-review__modal_button"
+                            className={`customers-review__modal_button ${
+                                loadingReview === 'pending' ? 'loading' : ''
+                            }`}
                             type="submit"
                             onClick={additionalValidation}
                         >
                             Додати відгук
+                            <span className="customers-review__loading-dots">
+                                <span className="customers-review__loading-dot" />
+                                <span className="customers-review__loading-dot" />
+                                <span className="customers-review__loading-dot" />
+                            </span>
                         </button>
+                        {errorReview ? (
+                            <div className="customers-review__error">
+                                <ErrorMessageSmall text="Виникла помилка, спробуйте ще раз." />
+                            </div>
+                        ) : (
+                            ''
+                        )}
                     </form>
                 </div>
             </Modal>

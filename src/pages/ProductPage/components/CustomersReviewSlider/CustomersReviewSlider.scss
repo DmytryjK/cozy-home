@@ -162,11 +162,60 @@
 		&:disabled:hover{
 			background: $dark-color;
 		}
+		&.loading {
+			font-size: 0px;
+			pointer-events: none;
+			padding: 19px 10px;
+			.customers-review__loading-dots {
+				display: flex;
+				justify-content: center;
+			}
+		}
 	}
+
+.customers-review {
+	&__error {
+		margin-top: 8px;
+	}
+	&__loading-dots {
+		display: none
+	}
+	&__loading-dot {
+		animation-delay: .1s;
+		margin: 0 5px;
+		animation: {
+			direction: alternate;
+			duration: .5s;
+			iteration-count: infinite;
+			name: loading-animation;
+			play-state: running;
+			timing-function: ease-out;
+		}
+		border-radius: 100%;
+		display: block;
+		height: 10px;
+		margin: 0 5px;
+		width: 10px;
+		&:first-child {
+			animation-delay: 0s;
+			margin: 0;
+		}
+
+		&:last-child {
+			animation-delay: .2s;
+			margin: 0;
+		}
+	}
+}
 
 	.stars-rating {
 		display: flex;
 		gap: 8px;
+		&__button {
+			background: transparent;
+			border: none;
+			cursor: pointer;
+		}
 	}
 
 	@media (max-width: 1150px) {
@@ -188,4 +237,18 @@
 				max-width: initial;
 			}
 		}
+}
+
+@keyframes loading-animation {
+	0% {
+        transform: scale(.5);
+        background-color: white;
+    }
+    50% {
+        background-color: rgb(202, 202, 202);
+    }
+    100% {
+        transform: scale(1);
+        background-color: white;
+    }
 }
