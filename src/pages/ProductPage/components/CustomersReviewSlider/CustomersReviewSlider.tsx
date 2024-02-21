@@ -69,18 +69,16 @@ const CustomersReviewSlider = () => {
     }, [rating]);
 
     useEffect(() => {
-        if (!modalActive) {
-            if (loadingReview === 'succeeded') {
-                dispatch(
-                    fetchProductInfoByScuWithColor({
-                        productSkuCode: skuCode,
-                        colorHex: currentColor?.id || '#000',
-                    })
-                );
-            }
+        if (loadingReview === 'succeeded') {
+            dispatch(
+                fetchProductInfoByScuWithColor({
+                    productSkuCode: skuCode,
+                    colorHex: currentColor?.id || '#000',
+                })
+            );
             dispatch(resetAddReviewForProduct());
         }
-    }, [modalActive]);
+    }, [loadingReview]);
 
     const additionalValidation = () => {
         if (rating === 0) {
