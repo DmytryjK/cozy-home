@@ -8,6 +8,7 @@ import SignInPage from './SignInPage/SignInPage';
 import ActivationPage from './ActivationPage/ActivationPage';
 import ResetPasswordPage from './ResetPasswordPage/ResetPasswordPage';
 import UserCabinet from './UserCabinet/UserCabinet';
+import AboutUsPage from './AboutUsPage/AboutUsPage';
 
 export {
     MainPage,
@@ -20,4 +21,5 @@ export {
     ActivationPage,
     ResetPasswordPage,
     UserCabinet,
+    AboutUsPage,
 };

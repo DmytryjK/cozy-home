@@ -64,9 +64,10 @@ const formValidation = (
     }
 
     if (fieldName === 'email') {
-        if (!fieldValue) {
+        if (!fieldValue && isRequired) {
             error = requiredMessage;
         } else if (
+            fieldValue &&
             !/^(?=.{0,64}@(\S))[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]{1,})$/i.test(
                 fieldValue
             )
