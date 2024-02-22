@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ReactLenis } from '@studio-freight/react-lenis';
+
 import Layout from './shared-components/Layout/Layout';
 import routes from './routes';
 import ScrollToTop from './shared-components/ScrollToTop/ScrollToTop';

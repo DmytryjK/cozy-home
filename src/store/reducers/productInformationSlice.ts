@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { FormikState } from 'formik';
 import {
     Loading,
     ProductInformationType,
     ColorDtoList,
+    ErrorType,
 } from '../../types/types';
 import { API_BASE } from '../../utils/API_BASE';
 import fetchData from '../../utils/fetchData';
@@ -13,10 +15,20 @@ type ProductParamsType = {
     colorHex: string;
 };
 
+export type ProductRating = {
+    rating: number;
+    comment: string;
+    productSkuCode: string;
+    userName: string;
+    email: string;
+};
+
 interface ProductInformationState {
     productInfo: ProductInformationType;
     loading: Loading;
-    error: null | unknown;
+    error: ErrorType;
+    loadingReview: Loading;
+    errorReview: ErrorType;
     currentSku: string | null;
     currentColor: {
         id: string;
@@ -58,6 +70,8 @@ const initialState: ProductInformationState = {
     },
     loading: 'idle',
     error: null,
+    loadingReview: 'idle',
+    errorReview: null,
     currentSku: null,
     currentColor: null,
 };
@@ -93,6 +107,51 @@ export const fetchProductInfoByScuWithColor = createAsyncThunk(
     }
 );
 
+export const addReviewForProduct = createAsyncThunk(
+    'productInformation/addReviewForProduct',
+    async function (
+        {
+            productRatingInfo,
+            resetForm,
+        }: {
+            productRatingInfo: ProductRating;
+            resetForm: (
+                nextState?:
+                    | Partial<
+                          FormikState<{
+                              firstName: string;
+                              email: string;
+                              comment: string;
+                          }>
+                      >
+                    | undefined
+            ) => void;
+        },
+        { rejectWithValue }
+    ) {
+        try {
+            const response = await fetchData({
+                method: 'POST',
+                request: `${API_BASE}review/new`,
+                body: {
+                    ...productRatingInfo,
+                },
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) throw new Error('something went wrong');
+            resetForm();
+            return result;
+        } catch (error: unknown) {
+            return rejectWithValue(error);
+        }
+    }
+);
+
 export const productInformationSlice = createSlice({
     name: 'productInformation',
     initialState,
@@ -105,6 +164,10 @@ export const productInformationSlice = createSlice({
         },
         updateProductImages: (state, action) => {
             state.productInfo.images = action.payload;
+        },
+        resetAddReviewForProduct: (state) => {
+            state.loadingReview = 'idle';
+            state.errorReview = null;
         },
     },
     extraReducers: (builder) => {
@@ -127,8 +190,27 @@ export const productInformationSlice = createSlice({
                 state.error = action.payload;
             }
         );
+
+        builder.addCase(addReviewForProduct.pending, (state) => {
+            state.loadingReview = 'pending';
+            state.errorReview = null;
+        });
+        builder.addCase(addReviewForProduct.fulfilled, (state) => {
+            state.loadingReview = 'succeeded';
+        });
+        builder.addCase(
+            addReviewForProduct.rejected,
+            (state, action: PayloadAction<unknown>) => {
+                state.loadingReview = 'failed';
+                state.errorReview = action.payload;
+            }
+        );
     },
 });
-export const { updateProductColor, updateProductSku, updateProductImages } =
-    productInformationSlice.actions;
+export const {
+    updateProductColor,
+    updateProductSku,
+    updateProductImages,
+    resetAddReviewForProduct,
+} = productInformationSlice.actions;
 export default productInformationSlice.reducer;
