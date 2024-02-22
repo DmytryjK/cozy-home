@@ -3,7 +3,9 @@
     margin-top: 160px;
     &__wrapper {
         padding: 75px;
-        background: url('../../../assets/images/about-us/contact-us.png') center center/cover no-repeat;
+        background-image: url('../../../assets/images/about-us/contact-us.png');
+        background-position: 50% 60%;
+        background-repeat: no-repeat;
     }
 
     &__title.about-title {
@@ -47,6 +49,25 @@
                 color: white;
                 font-size: 11px;
             }
+        }
+    }
+}
+
+
+@media screen and (max-width: 767px) {
+    .contact-us {
+        margin-top: 100px;
+        .container {
+            padding: 0;
+        }
+        &__wrapper {
+            padding: 75px 16px;
+            background-position: 50% 100%;
+            background-size: cover;
+        }
+
+        .contact-form {
+            margin-top: 20px;
         }
     }
 }

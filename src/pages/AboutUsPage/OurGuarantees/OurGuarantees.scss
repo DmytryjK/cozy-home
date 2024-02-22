@@ -23,9 +23,6 @@
             justify-content: center;
             align-items: center;
         }
-        &-icon {
-
-        }
         &-title {
             margin-top: 10px;
             font-weight: 600;
@@ -39,6 +36,33 @@
             font-size: 14px;
             line-height: 17px;
             color: $grey;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .our-guarantees {
+        margin-top: 100px;
+        &__list {
+            margin-top: 34px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        &__item {
+            width: calc(50% - 9px);
+            max-width: 100%;
+            &:last-child {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .our-guarantees {
+        &__item {
+            width: 100%;
         }
     }
 }

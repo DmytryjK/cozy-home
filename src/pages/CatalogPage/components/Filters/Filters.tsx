@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import nextId from 'react-id-generator';
 import { useParams, useNavigate } from 'react-router';
+import { useLenis, ReactLenis } from '@studio-freight/react-lenis';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     resetFilters,
@@ -40,6 +41,7 @@ const Filters = () => {
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
+    const filterRef = useRef<HTMLDivElement>(null);
 
     const filterLocalMap = filtersData();
 
@@ -194,7 +196,12 @@ const Filters = () => {
 
     return (
         <div className={`filters-wrapper ${isFiltersShowed ? 'active' : ''}`}>
-            <div className="filters">
+            <div
+                className="filters"
+                data-lenis-prevent
+                data-lenis-prevent-wheel
+                data-lenis-prevent-touch
+            >
                 <div className="filters__navigation">
                     <h2 className="filters__title-mobile">Фільтри</h2>
                     <button
@@ -208,6 +215,7 @@ const Filters = () => {
                 </div>
                 {renderedFilters()}
             </div>
+
             {filterOptions ? (
                 <div className="buttons">
                     <button

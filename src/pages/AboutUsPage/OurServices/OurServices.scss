@@ -52,3 +52,45 @@
         }
     }
 }
+
+@media screen and (max-width: 767px) {
+    .our-services {
+        margin-top: 100px;
+        &__descr {
+            margin-top: 12px;
+        }
+
+        &__list {
+            margin-top: 40px;
+            column-gap: 12px;
+            row-gap: 32px;
+        }
+        &__item {
+            &-top {
+                height: 45.5vw;
+                max-height: 320px;
+                min-height: 165px;
+            }
+            &-bottom {
+                margin-top: 16px;
+            }
+            &-title {
+                font-size: 18px;
+                line-height: 22px;
+            }
+            &-descr {
+                margin-top: 6px;
+                font-size: 12px;
+                line-height: 14.5px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .our-services {
+        &__list {
+            grid-template-columns: repeat(1, auto);
+        }
+    }
+}

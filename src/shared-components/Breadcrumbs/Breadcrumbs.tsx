@@ -13,6 +13,7 @@ const Breadcrumbs = () => {
         checkout: 'Оформлення замовлення',
         success: 'Успішно',
         cabinet: 'Особистий кабінет',
+        about: 'Про нас',
     };
 
     const pathSegments = location.pathname

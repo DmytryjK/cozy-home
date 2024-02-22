@@ -62,3 +62,37 @@
         }
     }
 }
+
+@media screen and (max-width: 767px) {
+    .our-values {
+        margin-top: 100px;
+        &__descr {
+            margin-top: 12px;
+        }
+        &__photo-wrapper {
+            margin-top: 32px;
+        }
+        &__photo-wrapper {
+            height: 40vw;
+            min-height: 144px;
+        }
+
+        &__list {
+            margin-top: 30px;
+            gap: 28px;
+            grid-template-columns: repeat(1, auto);
+        }
+        &__item {
+            max-width: 100%;
+            gap: 10px;
+            &-icon-wrapper {
+                width: 70px;
+                height: 70px;;
+            }
+            &-text {
+                font-size: 12px;
+                line-height: 14.6px;
+            }
+        }
+    }
+}

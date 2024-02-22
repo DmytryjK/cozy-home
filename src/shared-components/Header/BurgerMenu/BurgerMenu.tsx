@@ -149,7 +149,12 @@ const BurgerMenu = (props: Props) => {
                     isScrolled ? 'burger-menu-scrolled' : ''
                 }`}
             >
-                <div className="container">
+                <div
+                    className="container"
+                    data-lenis-prevent
+                    data-lenis-prevent-wheel
+                    data-lenis-prevent-touch
+                >
                     <NavLink
                         to="/catalog"
                         className="burger-menu__all-items"
@@ -163,17 +168,22 @@ const BurgerMenu = (props: Props) => {
                         loading,
                         content: renderedCategories,
                     })}
-                    <a
-                        href="/"
+                    <NavLink
+                        to=""
                         className="burger-menu__list_item burger-menu__list"
+                        onClick={() => setIsOpen(false)}
                     >
                         <p className="burger-menu__list_item_title">
                             Доставка і оплата
                         </p>
-                    </a>
-                    <a href="/" className="burger-menu__list_item">
+                    </NavLink>
+                    <NavLink
+                        to="/about"
+                        className="burger-menu__list_item"
+                        onClick={() => setIsOpen(false)}
+                    >
                         <p className="burger-menu__list_item_title">Про нас</p>
-                    </a>
+                    </NavLink>
                 </div>
                 <div className="burger-menu__infoWrapper">
                     <div className="container">
