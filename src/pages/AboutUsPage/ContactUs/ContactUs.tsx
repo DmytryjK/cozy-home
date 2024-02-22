@@ -11,7 +11,7 @@ type FormValues = {
     email: string;
 };
 
-const ContactUs = () => {
+const ContactUs = ({ offset }: { offset: string }) => {
     const controls1 = useAnimation();
 
     const variants1 = {
@@ -24,8 +24,7 @@ const ContactUs = () => {
     };
 
     const inViewOptions = {
-        threshold: 0.25,
-        rootMargin: '-180px 0px',
+        rootMargin: `-${offset} 0px`,
         triggerOnce: true,
     };
 

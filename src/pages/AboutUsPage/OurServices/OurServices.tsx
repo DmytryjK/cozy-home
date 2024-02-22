@@ -7,7 +7,7 @@ import service3 from '../../../assets/images/about-us/service3.png';
 import service4 from '../../../assets/images/about-us/service4.png';
 import './OurServices.scss';
 
-const OurServices = () => {
+const OurServices = ({ offset }: { offset: string }) => {
     const controls1 = useAnimation();
     const controls2 = useAnimation();
     const controls3 = useAnimation();
@@ -22,8 +22,7 @@ const OurServices = () => {
     };
 
     const inViewOptions = {
-        threshold: 0.25,
-        rootMargin: '-180px 0px',
+        rootMargin: `-${offset} 0px`,
         triggerOnce: true,
     };
 

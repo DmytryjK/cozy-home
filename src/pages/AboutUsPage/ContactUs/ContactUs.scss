@@ -23,10 +23,14 @@
         margin-top: 30px;
         max-width: 400px;
         display: flex;
-        align-items:start;
+        align-items: flex-start;
         justify-content: space-between;
         gap: 6px;
         &__btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1 0 auto;
             height: 42px;
             width: 42px;
             background: $accent-color;
@@ -34,7 +38,6 @@
             border-radius: 3px;
             cursor: pointer;
             transition: 0.2s ease-out background;
-            flex: 1 0 auto;
             &:hover {
                 background: $accent-color-hover;
             }

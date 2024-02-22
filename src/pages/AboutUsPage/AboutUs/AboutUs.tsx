@@ -4,7 +4,7 @@ import Odometer from 'react-odometerjs';
 import { useInView } from 'react-intersection-observer';
 import './AboutUs.scss';
 
-const AboutUs = () => {
+const AboutUs = ({ offset }: { offset: string }) => {
     const controls1 = useAnimation();
     const controls2 = useAnimation();
 
@@ -18,8 +18,7 @@ const AboutUs = () => {
     };
 
     const inViewOptions = {
-        threshold: 0.1,
-        rootMargin: '-120px 0px',
+        rootMargin: `-${offset} 0px`,
         triggerOnce: true,
     };
 

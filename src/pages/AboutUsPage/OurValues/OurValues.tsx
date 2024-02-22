@@ -9,7 +9,7 @@ import designIcon from '../../../assets/icons/about-us/design.svg';
 import innovationsIcon from '../../../assets/icons/about-us/innovations.svg';
 import './OurValues.scss';
 
-const OurValues = () => {
+const OurValues = ({ offset }: { offset: string }) => {
     const controls1 = useAnimation();
     const controls2 = useAnimation();
     const controls3 = useAnimation();
@@ -25,8 +25,7 @@ const OurValues = () => {
     };
 
     const inViewOptions = {
-        threshold: 0.25,
-        rootMargin: '-180px 0px',
+        rootMargin: `-${offset} 0px`,
         triggerOnce: true,
     };
 

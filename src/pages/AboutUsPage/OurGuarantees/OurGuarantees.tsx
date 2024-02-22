@@ -6,7 +6,7 @@ import guarentee2 from '../../../assets/icons/about-us/guarentee2.svg';
 import guarentee3 from '../../../assets/icons/about-us/guarentee3.svg';
 import './OurGuarantees.scss';
 
-const OurGuarantees = () => {
+const OurGuarantees = ({ offset }: { offset: string }) => {
     const controls1 = useAnimation();
     const controls2 = useAnimation();
     const controls3 = useAnimation();
@@ -22,8 +22,7 @@ const OurGuarantees = () => {
     };
 
     const inViewOptions = {
-        threshold: 0.25,
-        rootMargin: '-180px 0px',
+        rootMargin: `-${offset} 0px`,
         triggerOnce: true,
     };
 
