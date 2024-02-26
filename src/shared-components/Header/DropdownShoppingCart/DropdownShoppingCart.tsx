@@ -160,9 +160,7 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
 
     return (
         <div
-            className={`cart-dropdown dropdown-active ${
-                isActive ? 'dropdown-active' : ''
-            }`}
+            className={`cart-dropdown ${isActive ? 'dropdown-active' : ''}`}
             style={{
                 maxWidth: cartData.length === 0 ? '380px' : '590px',
             }}
