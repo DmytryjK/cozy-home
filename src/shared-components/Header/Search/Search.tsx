@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useAppDispatch } from '../../../hooks/hooks';
 import {
@@ -20,6 +20,7 @@ type Props = {
 const Search = (props: Props) => {
     const { setIsOpen, isOpen, isMobileSearchOpen, setIsMobileSearchOpen } =
         props;
+    const desktopSearchInput = useRef<HTMLInputElement>(null);
     const [searchValue, setSearchValue] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [isSearchFocus, setIsSearchFocus] = useState(false);
@@ -50,6 +51,7 @@ const Search = (props: Props) => {
             }, 300);
             setSearchValue('');
             setIsSearchFocus(false);
+            desktopSearchInput.current?.blur();
         }
     }, [isOpen]);
 
@@ -81,6 +83,7 @@ const Search = (props: Props) => {
                     </svg>
                     <label>
                         <input
+                            ref={desktopSearchInput}
                             type="text"
                             placeholder="Пошук"
                             className="header__search_input"
