@@ -50,12 +50,13 @@ const SearchBlock = (props: Props) => {
     const splitPhrase = (productName: string) => {
         const regex = new RegExp(searchValue, 'i');
         const parts = productName.split(regex);
-        const result: string[] = [];
+        let result: string[] = [];
         for (let i = 0; i < parts.length - 1; i += 1) {
             result.push(parts[i].replace(' ', '\u00A0'));
             result.push(searchValue.replace(' ', '\u00A0'));
         }
         result.push(parts[parts.length - 1].replace(' ', '\u00A0'));
+        result = result.map((item) => item.toLowerCase());
         return result;
     };
 
@@ -102,7 +103,7 @@ const SearchBlock = (props: Props) => {
                         const splittedTitleBySearchWord = () => {
                             return splittedPhrase.map((item) => {
                                 return item.replace('\u00A0', ' ') ===
-                                    searchValue ? (
+                                    searchValue.toLowerCase() ? (
                                     <span
                                         key={nextId('splitted-text_search')}
                                         className="searchBlock__product-title_search"
