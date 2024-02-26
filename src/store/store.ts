@@ -12,6 +12,7 @@ import authReducer from './reducers/authSlice';
 import cartReducer from './reducers/cartSlice';
 import userActionsReducer from './reducers/userActionsSlice';
 import orderReducer from './reducers/orderSlice';
+import searchReducer from './reducers/searchSlice';
 
 export const store = configureStore({
     reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
         auth: authReducer,
         userActions: userActionsReducer,
         order: orderReducer,
+        search: searchReducer,
     },
 });
 

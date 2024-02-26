@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { FormikErrors, useFormik } from 'formik';
 import Modal from '../../../Modal/Modal';
 import { openPopUpCreateNewPassword } from '../../../../store/reducers/modalsSlice';
@@ -19,6 +19,7 @@ const PopUpCreateNewPassword = () => {
     const dispatch = useAppDispatch();
     const { search } = useLocation();
     const resetToken = search.replace('?resetPasswordToken=', '');
+    const navigate = useNavigate();
 
     const { isCreateNewPasswordOpen } = useAppSelector((state) => state.modals);
 
@@ -59,6 +60,11 @@ const PopUpCreateNewPassword = () => {
                         password: values.password,
                         resetForm,
                     })
+                );
+                navigate(
+                    localStorage.getItem('resetPassLocation')
+                        ? `${localStorage.getItem('resetPassLocation')}`
+                        : '/'
                 );
             }
         },

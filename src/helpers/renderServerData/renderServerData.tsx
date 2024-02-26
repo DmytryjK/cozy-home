@@ -14,7 +14,6 @@ const renderServerData = (props: Props) => {
     let render: JSX.Element | JSX.Element[] = (
         <Loader className={loaderClassName} />
     );
-
     if (error) {
         render = <ErrorMessage />;
     } else if (loading === 'succeeded') {

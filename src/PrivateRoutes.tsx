@@ -13,7 +13,7 @@ const PrivateRoutes = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         if (!localJwt && !sessionlJwt) {
-            navigate(-1);
+            navigate('/');
         }
     }, []);
 

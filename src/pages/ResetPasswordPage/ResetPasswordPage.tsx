@@ -7,8 +7,9 @@ import './ResetPasswordPage.scss';
 const ResetPasswordPage = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { search } = useLocation();
+    const { search, key } = useLocation();
     const { newPasswordLoading } = useAppSelector((state) => state.auth);
+    const isFirstPage = key === 'default';
 
     useEffect(() => {
         if (search) {
@@ -19,7 +20,11 @@ const ResetPasswordPage = () => {
     useEffect(() => {
         if (newPasswordLoading === 'succeeded') {
             setTimeout(() => {
-                navigate('/');
+                if (isFirstPage) {
+                    navigate(0);
+                } else {
+                    navigate(-1);
+                }
             }, 2200);
         }
     }, [newPasswordLoading]);

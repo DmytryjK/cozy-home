@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FormikErrors, useFormik } from 'formik';
+import { useLocation } from 'react-router';
 import Modal from '../../../Modal/Modal';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 import { userForgotPasswordRequest } from '../../../../store/reducers/authSlice';
@@ -19,6 +20,7 @@ const PopUpForgottenPassword = () => {
     const isPopUpForgottenPAsswordOpen = useAppSelector(
         (state) => state.modals.isPasswordForgotten
     );
+    const { pathname } = useLocation();
 
     const { emailLinksError, emailLinksLoading } = useAppSelector(
         (state) => state.auth
@@ -28,6 +30,12 @@ const PopUpForgottenPassword = () => {
 
     const [isSubmitedFormNotification, setIsSubmitedFormNotification] =
         useState<boolean>(true);
+
+    useEffect(() => {
+        if (emailLinksLoading === 'succeeded') {
+            localStorage.setItem('resetPassLocation', pathname);
+        }
+    }, [emailLinksLoading]);
 
     const formik8 = useFormik({
         initialValues: {
