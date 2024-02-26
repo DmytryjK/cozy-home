@@ -130,9 +130,20 @@ const CustomerForm = (props: Props) => {
     }, [loginLoading]);
 
     useEffect(() => {
-        if (loginLoading !== 'succeeded' && newPasswordLoading !== 'succeeded')
-            return;
-        dispatch(getUserProfileData());
+        if (
+            !formik3.values.firstName &&
+            !formik3.values.lastName &&
+            !formik3.values.phoneNumber &&
+            !formik3.values.email
+        ) {
+            dispatch(getUserProfileData());
+        }
+        if (
+            loginLoading === 'succeeded' ||
+            newPasswordLoading === 'succeeded'
+        ) {
+            dispatch(getUserProfileData());
+        }
     }, [loginLoading, newPasswordLoading]);
 
     useEffect(() => {

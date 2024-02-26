@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
 import DropdownMenu from './DropdownMenu';
-import SearchBlock from './SearchBlock';
 import BurgerMenu from './BurgerMenu';
 import CartIcon from './CartIcon/CartIcon';
 import FavoritesIcon from './FavoritesIcon/FavoritesIcon';
@@ -13,6 +12,7 @@ import userScrollWidth from '../../utils/userScrollWidth';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import TemporatyAdminNavPanel from './TemporatyAdminNavPanel/TemporatyAdminNavPanel';
 import './Header.scss';
+import Search from './Search/Search';
 
 export type SubCategoryType = {
     id: string;
@@ -29,6 +29,7 @@ interface Tab {
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
@@ -118,6 +119,22 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        if (
+            isDropdownOpen ||
+            isBurgerOpen ||
+            isPreviewCartActive ||
+            isAuthDropdownActive
+        ) {
+            setIsSearchOpen(false);
+        }
+    }, [
+        isDropdownOpen,
+        isBurgerOpen,
+        isPreviewCartActive,
+        isAuthDropdownActive,
+    ]);
+
     const handleMouseOver = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (
@@ -165,6 +182,16 @@ const Header = () => {
         }
     }, []);
 
+    const handleCloseSearch = useCallback((event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (
+            !target.closest('.header__search') &&
+            !target.closest('.searchBlock ')
+        ) {
+            setIsSearchOpen(false);
+        }
+    }, []);
+
     return (
         <div
             className="wrapper"
@@ -183,8 +210,8 @@ const Header = () => {
                     // setIsAuthDropdownActive(false);
                 }
             }}
+            onClick={handleCloseSearch}
         >
-            <SearchBlock setIsOpen={setIsSearchOpen} isOpen={isSearchOpen} />
             <header className={isScrolled ? 'header header-active' : 'header'}>
                 <NavLink to="/" className="header__logo" aria-label="CozyHome">
                     <svg className="header__logo_img">
@@ -202,22 +229,12 @@ const Header = () => {
                         </ul>
                     </nav>
                 </div>
-                <div className="header__search">
-                    <label>
-                        <svg
-                            className="header__search_icon"
-                            width="27"
-                            height="27"
-                        >
-                            <use href={`${headerSprite}#search-icon-header`} />
-                        </svg>
-                        <input
-                            type="text"
-                            placeholder="Пошук"
-                            className="header__search_input"
-                        />
-                    </label>
-                </div>
+                <Search
+                    setIsOpen={setIsSearchOpen}
+                    isOpen={isSearchOpen}
+                    setIsMobileSearchOpen={setIsMobileSearchOpen}
+                    isMobileSearchOpen={isMobileSearchOpen}
+                />
                 {jwtToken ? <TemporatyAdminNavPanel /> : ''}
                 <div className="header__icons">
                     <NavLink
@@ -241,7 +258,9 @@ const Header = () => {
                         type="button"
                         className="header__mobile_icons_search_button"
                         aria-label="Open search"
-                        onClick={() => setIsSearchOpen(true)}
+                        onClick={() => {
+                            setIsMobileSearchOpen(true);
+                        }}
                     >
                         <svg
                             className="header__mobile_icons_search_icon"
