@@ -4,6 +4,7 @@ import nextId from 'react-id-generator';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import headerSprite from '../../../../../assets/icons/header/header-sprite.svg';
 import renderServerData from '../../../../../helpers/renderServerData';
+import addSpaceToPrice from '../../../../../utils/addSpaceToPrice';
 import './SearchBlock.scss';
 
 type Props = {
@@ -134,11 +135,14 @@ const SearchBlock = (props: Props) => {
                                     </h4>
                                     <div className="searchBlock__product-price-wrapper">
                                         <span className="searchBlock__product-price">
-                                            {price} UAH
+                                            {addSpaceToPrice(price)} UAH
                                         </span>
                                         {priceWithDiscount ? (
                                             <span className="searchBlock__product-price_discount">
-                                                {priceWithDiscount} UAH
+                                                {addSpaceToPrice(
+                                                    priceWithDiscount
+                                                )}{' '}
+                                                UAH
                                             </span>
                                         ) : (
                                             ''

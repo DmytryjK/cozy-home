@@ -131,6 +131,7 @@
         }
         &__current-price {
             display: flex;
+            align-items: center;
             gap: 4px;
             flex-shrink: 0;
             &_discount {
@@ -154,6 +155,8 @@
             
         }
         &__price-divider,&__current-quantity {
+            font-weight: 500;
+            font-size: 14px;
             color: $light-grey;
         }
 

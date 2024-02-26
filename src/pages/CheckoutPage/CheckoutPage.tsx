@@ -131,27 +131,31 @@ const CheckoutPage = () => {
                         <div className="customer-block">
                             <div className="customer-handler">
                                 <ul className="customer-handler__list">
-                                    <li
-                                        onClick={() =>
-                                            handleCustomerClick(false)
-                                        }
-                                        className={
-                                            newCustomerActive
-                                                ? 'customer-handler__list_item active'
-                                                : 'customer-handler__list_item'
-                                        }
-                                    >
-                                        Новий покупець
-                                    </li>
+                                    {!jwtToken ? (
+                                        <li
+                                            onClick={() =>
+                                                handleCustomerClick(false)
+                                            }
+                                            className={
+                                                newCustomerActive
+                                                    ? 'customer-handler__list_item active'
+                                                    : 'customer-handler__list_item'
+                                            }
+                                        >
+                                            Новий покупець
+                                        </li>
+                                    ) : (
+                                        ''
+                                    )}
                                     <li
                                         onClick={() =>
                                             handleCustomerClick(true)
                                         }
-                                        className={
+                                        className={`customer-handler__list_item regular-cutomer ${
                                             regularCustomerActive
-                                                ? 'customer-handler__list_item regular-cutomer active'
-                                                : 'customer-handler__list_item regular-cutomer'
-                                        }
+                                                ? 'active'
+                                                : ''
+                                        } ${jwtToken ? 'center' : ''}`}
                                     >
                                         Постійний клієнт
                                     </li>

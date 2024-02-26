@@ -28,7 +28,12 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
 
     const renderCartItems = () => {
         return (
-            <div className="cart-dropdown__list-wrapper">
+            <div
+                className="cart-dropdown__list-wrapper"
+                data-lenis-prevent
+                data-lenis-prevent-wheel
+                data-lenis-prevent-touch
+            >
                 <ul className="cart-dropdown__list">
                     {cartData.map((product) => {
                         const {
@@ -155,7 +160,9 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
 
     return (
         <div
-            className={`cart-dropdown ${isActive ? 'dropdown-active' : ''}`}
+            className={`cart-dropdown dropdown-active ${
+                isActive ? 'dropdown-active' : ''
+            }`}
             style={{
                 maxWidth: cartData.length === 0 ? '380px' : '590px',
             }}
