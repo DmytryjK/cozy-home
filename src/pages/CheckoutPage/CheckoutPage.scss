@@ -39,9 +39,12 @@
 					
 					.regular-cutomer {
 						text-align: right;
+						&.center {
+							text-align: center;
+						}
 					}
 	
-					 .active {
+					.active {
 						padding-bottom: 10px;
 						border-bottom: 2px solid $dark-color;
 					}
