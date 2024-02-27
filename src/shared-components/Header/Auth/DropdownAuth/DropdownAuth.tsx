@@ -2,6 +2,7 @@ import { memo, SetStateAction, Dispatch, useEffect, useState } from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import googleIcon from '../../../../assets/icons/auth/google-icon.svg';
 import './DropdownAuth.scss';
+import GoogleAuth from '../GoogleAuth/GoogleAuth';
 
 const DropdownAuth = ({
     isActive,
@@ -57,14 +58,15 @@ const DropdownAuth = ({
                 onClick={() => setIsAuthDropdownActive(false)}
             />
             <LoginForm setIsInputFocused={setIsInputFocused} />
-            <div className="auth-dropdown__login-by-service login-by-service">
+            <GoogleAuth />
+            {/* <div className="auth-dropdown__login-by-service login-by-service">
                 <h3 className="login-by-service__title">
                     Увійдіть як користувач
                 </h3>
                 <a className="login-by-service__link" href="/">
                     <img src={googleIcon} alt="увійти через гугл аккаунт" />
                 </a>
-            </div>
+            </div> */}
         </div>
     );
 };

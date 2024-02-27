@@ -62,25 +62,24 @@
 			color: $dark-color;
 			margin-bottom: 14px;
 		}
-		
 		&_button {
 			position: relative;
 			width: 100%;
 			min-width: 280px;
-			padding: 12px 20px 12px 50px;
+			padding: 12px 20px 12px 20px;
 			background-color: transparent;
 			border-radius: 3px;
 			border: 1px solid $grey;
 			cursor: pointer;
-			&-img {
-				display: block;
-				position: absolute;
-				width: 24px;
-				height: 24px;
-				background: url('../../../../assets/icons/auth/google-icon.svg') center center no-repeat;
-				top: 50%;
-				transform: translateY(-50%);
-				left: 26px;
+			.login-by-service__link {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.text-btn {
+				font-size: 13px;
+				width: 100%;
+    			text-align: center;
 			}
 		}
 	}
@@ -137,7 +136,13 @@
 				padding: 0;
 				width: 40px;
 				height: 40px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				min-width: auto;
+				.text-btn {
+					display: none;
+				}
 				&-img {
 					left: 50%;
 					transform: translateY(-50%) translateX(-50%);

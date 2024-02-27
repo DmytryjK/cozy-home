@@ -29,6 +29,8 @@ interface AuthType {
     jwtToken: string;
     loginLoading: Loading;
     loginError: ErrorType;
+    googleAuthLoading: Loading;
+    googleAuthError: ErrorType;
     logoutLoading: Loading;
     logoutError: ErrorType;
     signinLoading: Loading;
@@ -44,6 +46,8 @@ const initialState: AuthType = {
     jwtToken: '',
     loginLoading: 'idle',
     loginError: null,
+    googleAuthLoading: 'idle',
+    googleAuthError: null,
     logoutLoading: 'idle',
     logoutError: null,
     signinLoading: 'idle',
@@ -128,6 +132,29 @@ export const userLogIn = createAsyncThunk(
                 throw new Error('Щось пішло не так');
             }
             resetForm();
+            return result;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return null;
+        }
+    }
+);
+
+export const googleAuth = createAsyncThunk(
+    'auth/googleAuth',
+    async function (code: string, { rejectWithValue }) {
+        try {
+            const response = await fetchData({
+                method: 'POST',
+                request: `${API_BASE}auth/google-login?code=${code}`,
+            });
+
+            if (!response.ok) {
+                throw new Error('Щось пішло не так');
+            }
+            const result = await response.json();
             return result;
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -384,6 +411,7 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builderPending(builder, userLogIn, 'loginLoading', 'loginError');
+        builderRejected(builder, userLogIn, 'loginLoading', 'loginError');
         builder.addCase(
             userLogIn.fulfilled,
             (state, action: PayloadAction<JwtPayload | null>) => {
@@ -400,7 +428,6 @@ export const authSlice = createSlice({
                 }
             }
         );
-        builderRejected(builder, userLogIn, 'loginLoading', 'loginError');
 
         builderPending(builder, userLogOut, 'logoutLoading', 'logoutError');
         builder.addCase(userLogOut.fulfilled, (state) => {
@@ -492,6 +519,29 @@ export const authSlice = createSlice({
             localStorage.setItem('token', '');
         });
         builder.addCase(temporaryDelUser.rejected, (state) => {});
+
+        builder.addCase(
+            googleAuth.fulfilled,
+            (state, action: PayloadAction<{ token: string }>) => {
+                state.loginLoading = 'succeeded';
+                state.googleAuthLoading = 'succeeded';
+                state.jwtToken = action.payload.token;
+                localStorage.setItem('token', action.payload.token);
+            }
+        );
+        builderRejected(
+            builder,
+            googleAuth,
+            'googleAuthLoading',
+            'googleAuthError'
+        );
+
+        builderPending(
+            builder,
+            googleAuth,
+            'googleAuthLoading',
+            'googleAuthError'
+        );
     },
 });
 
