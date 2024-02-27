@@ -1,4 +1,5 @@
-import { useState, useContext, useEffect, memo } from 'react';
+import { useContext, memo } from 'react';
+import { NavLink } from 'react-router-dom';
 import NavigationListOfCategories from '../../../../shared-components/NavigationListOfCategories/NavigationListOfCategories';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import Pagination2 from '../../../../shared-components/Pagination2/Pagination2';
@@ -31,27 +32,44 @@ const UserFavorites = () => {
     return (
         <div className="user-favorites">
             <h1 className="user-favorites__title">Список бажань</h1>
-            <NavigationListOfCategories
-                categories={categories}
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-            />
-            <ul className="user-favorites__products">
-                {loadingUserFavorites !== 'succeeded' ? (
-                    <Loader />
-                ) : (
-                    userFavorites?.products.map((product: ProductCardType) => {
-                        return (
-                            <li
-                                className="user-favorites__item"
-                                key={product.skuCode}
-                            >
-                                <ProductCard product={product} />
-                            </li>
-                        );
-                    })
-                )}
-            </ul>
+            {userFavorites?.products.length === 0 &&
+            loadingUserFavorites === 'succeeded' ? (
+                <div className="user-favorites__empty-block">
+                    <h2>Ви ще нічого не додали.</h2>
+                    <p>
+                        Ознайомтеся з нашим{' '}
+                        <NavLink to="/catalog">каталогом</NavLink> і додайте
+                        товар, який сподобався.
+                    </p>
+                </div>
+            ) : (
+                <>
+                    {' '}
+                    <NavigationListOfCategories
+                        categories={categories}
+                        activeCategory={activeCategory}
+                        setActiveCategory={setActiveCategory}
+                    />
+                    <ul className="user-favorites__products">
+                        {loadingUserFavorites !== 'succeeded' ? (
+                            <Loader />
+                        ) : (
+                            userFavorites?.products.map(
+                                (product: ProductCardType) => {
+                                    return (
+                                        <li
+                                            className="user-favorites__item"
+                                            key={product.skuCode}
+                                        >
+                                            <ProductCard product={product} />
+                                        </li>
+                                    );
+                                }
+                            )
+                        )}
+                    </ul>
+                </>
+            )}
             <div className="user-favorites__pagination-wrapper">
                 <Pagination2
                     countOfPages={userFavorites?.countOfPages}
