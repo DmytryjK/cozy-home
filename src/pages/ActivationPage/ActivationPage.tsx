@@ -39,11 +39,7 @@ const ActivationPage = () => {
                 </h1>
                 {signinLoading === 'pending' ? <Loader /> : ''}
                 {jwtToken ? (
-                    <SuccessMessage
-                        text="Реєстрація пройшла успішно!"
-                        additionalText="Повідомлення з введеними даними відправленe Вам
-                            електронною поштою!"
-                    />
+                    <SuccessMessage text="Реєстрація пройшла успішно!" />
                 ) : (
                     ''
                 )}
