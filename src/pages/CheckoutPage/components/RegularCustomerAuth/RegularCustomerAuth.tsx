@@ -2,6 +2,7 @@ import { useState, memo } from 'react';
 import LoginForm from '../../../../shared-components/Header/Auth/LoginForm/LoginForm';
 
 import './RegularCustomerAuth.scss';
+import GoogleAuth from '../../../../shared-components/Header/Auth/GoogleAuth/GoogleAuth';
 
 type Props = {
     setResetPasswordActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,24 +22,6 @@ const RegularCustomerAuth = (props: Props) => {
     return (
         <div className="regular-customer">
             <div className="regular-customer__form">
-                {/* <form
-                    className="customer-form"
-                    onSubmit={formik6.handleSubmit}
-                    noValidate
-                >
-                    <EmailInput formik={formik6} />
-                    <PasswordInput formik={formik6} />
-                    <div className="regular-customer__form_footer">
-                        <button
-                            type="button"
-                            className="regular-customer__form_footer_password-reset"
-                            onClick={() => setResetPasswordActive(true)}
-                        >
-                            Забули пароль?
-                        </button>
-                        <SubmitButton title="Увійти" />
-                    </div>
-                </form> */}
                 <LoginForm
                     styleClass="customer-form"
                     setIsLoginBtnClicked={setIsLoginBtnClicked}
@@ -49,15 +32,11 @@ const RegularCustomerAuth = (props: Props) => {
                 <p className="regular-customer__login_title">
                     Увійдіть як користувач
                 </p>
-                <button
-                    type="button"
-                    className="regular-customer__login_button"
-                >
-                    <span className="regular-customer__login_button-img" />
-                    <span className="regular-customer__login_button-text">
-                        Ввійти за допомогою Google
-                    </span>
-                </button>
+                <GoogleAuth
+                    additionalClass="regular-customer__login_button"
+                    textBtn="Увійти за допомогою Google"
+                    isTitleShow={false}
+                />
             </div>
         </div>
     );
