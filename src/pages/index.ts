@@ -10,6 +10,7 @@ import ResetPasswordPage from './ResetPasswordPage/ResetPasswordPage';
 import UserCabinet from './UserCabinet/UserCabinet';
 import AboutUsPage from './AboutUsPage/AboutUsPage';
 import GoogleAuthPage from './GoogleAuthPage/GoogleAuthPage';
+import DeliveryPage from './DeliveryPage/DeliveryPage';
 
 export {
     MainPage,
@@ -24,4 +25,5 @@ export {
     UserCabinet,
     AboutUsPage,
     GoogleAuthPage,
+    DeliveryPage,
 };

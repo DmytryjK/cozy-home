@@ -65,7 +65,7 @@ const Header = () => {
             id: 3,
             title: 'Доставка і оплата',
             style: 'header__nav_list_link',
-            url: '/payment',
+            url: '/delivery',
         },
         {
             id: 4,

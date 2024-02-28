@@ -13,6 +13,7 @@ const Breadcrumbs = () => {
         checkout: 'Оформлення замовлення',
         success: 'Успішно',
         cabinet: 'Особистий кабінет',
+        delivery: 'Доставка і оплата',
         about: 'Про нас',
     };
 
