@@ -11,6 +11,7 @@ import {
     UserCabinet,
     AboutUsPage,
     GoogleAuthPage,
+    DeliveryPage,
 } from './pages';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
 import PrivateRoutes from './PrivateRoutes';
@@ -67,6 +68,10 @@ const routes = [
     {
         path: '/about',
         element: <AboutUsPage />,
+    },
+    {
+        path: '/delivery',
+        element: <DeliveryPage />,
     },
     {
         path: '/cabinet',
