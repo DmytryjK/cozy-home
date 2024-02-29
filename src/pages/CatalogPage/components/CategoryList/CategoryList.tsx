@@ -9,6 +9,7 @@ import {
     updateFilterSortParam,
     updateGlobalFiltersQuery,
     updateCurrentCategory,
+    updateCurrentPage,
 } from '../../../../store/reducers/catalogFilterSlice';
 import { fetchCatalogProductsByCategories } from '../../../../store/reducers/catalogProductsSlice';
 import useFetch from '../../../../hooks/useFetch';
@@ -47,7 +48,7 @@ const CategoryList = () => {
         );
         const { id } = loadedCategory as CategoriesType;
         dispatch(updateCurrentCategory(id));
-
+        dispatch(updateCurrentPage(0));
         if (!subCategoryName) {
             dispatch(fetchFiltersOptionsByCategory({ categoryId: id }));
             dispatch(fetchCatalogProductsByCategories(id));
