@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Navigation } from 'swiper';
 import nextId from 'react-id-generator';
 import ProductCard from '../ProductCard/ProductCard';
+import Skeleton from '../ProductCard/Skeleton/Skeleton';
 import renderServerData from '../../helpers/renderServerData';
 import { Loading, ProductCardType } from '../../types/types';
 import 'swiper/css/navigation';
@@ -17,6 +18,9 @@ type Props = {
 
 const ProductsSlider = (props: Props) => {
     const { products, loading, error, title } = props;
+    const skeletonKeys = [...Array(8)].map((_, index) =>
+        nextId(`skeleton-card`)
+    );
     const [isSliderRendered, setisSliderRendered] = useState<boolean>(false);
     const swiper = useSwiper();
     const prevRef = useRef(null);
@@ -25,7 +29,7 @@ const ProductsSlider = (props: Props) => {
     const items = () => {
         return products.map((product) => {
             return (
-                <SwiperSlide key={nextId('card-of-newItems')}>
+                <SwiperSlide key={`card-of-newItems${product.skuCode}`}>
                     <div className="products-slider__card">
                         <ProductCard product={product} />
                     </div>
@@ -143,6 +147,13 @@ const ProductsSlider = (props: Props) => {
                             error,
                             loading,
                             content: items,
+                            customLoader: skeletonKeys.map((key) => {
+                                return (
+                                    <SwiperSlide key={key}>
+                                        <Skeleton />
+                                    </SwiperSlide>
+                                );
+                            }),
                         })}
                     </Swiper>
                 </div>

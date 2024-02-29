@@ -42,7 +42,12 @@ const PopUpCart = () => {
         return (
             <div className="cart-table__wrapper">
                 <div className="cart-table">
-                    <ul className="cart-table__items">
+                    <ul
+                        className="cart-table__items"
+                        data-lenis-prevent
+                        data-lenis-prevent-wheel
+                        data-lenis-prevent-touch
+                    >
                         {cartData.map((cartItem) => {
                             return (
                                 <li

@@ -1,7 +1,8 @@
 @use '../../style/variables.scss' as *;
 
 .footer {
-	margin-top: 130px;
+	margin-top: auto;
+	padding-top: 130px;
 	&__logo {
 		width: 79px;
 		height: 37px;
@@ -200,7 +201,7 @@
 
 @media screen and (max-width: 450px) {
 	.footer{
-		margin-top: 64px;
+		padding-top: 64px;
 		&__list {
 			flex-basis: 100%;
 			&_order1 {

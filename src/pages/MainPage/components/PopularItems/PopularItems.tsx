@@ -2,6 +2,7 @@ import { useEffect, useState, FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid } from 'swiper';
 import nextId from 'react-id-generator';
+import { JsxElement } from 'typescript';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     fetchPopularItemsAllProducts,
@@ -11,16 +12,21 @@ import {
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import renderServerData from '../../../../helpers/renderServerData';
 import NavigationListOfCategories from '../../../../shared-components/NavigationListOfCategories/NavigationListOfCategories';
+import Skeleton from '../../../../shared-components/ProductCard/Skeleton/Skeleton';
 import { NavigationCategory } from '../../../../types/types';
 import './PopularItems.scss';
 import 'swiper/css';
 import 'swiper/css/grid';
 
 const PopularItems: FC = () => {
+    const skeletonKeys = [...Array(8)].map((_, index) =>
+        nextId(`skeleton-card-popular`)
+    );
     const [activeCategory, setActiveCategory] = useState<NavigationCategory>({
         name: 'Всі товари',
         id: '',
     });
+    const [isCategoryClicked, setIsCategoryClicked] = useState(false);
     const dispatch = useAppDispatch();
     const { products, categories, loading, error } = useAppSelector(
         (state) => state.popularItems
@@ -29,33 +35,37 @@ const PopularItems: FC = () => {
     const status = '1'; // popular
 
     useEffect(() => {
-        dispatch(fetchPopularItemsAllСategories());
+        if (products.length === 0 && categories.length === 0) {
+            dispatch(fetchPopularItemsAllСategories());
+        }
     }, [dispatch]);
 
     useEffect(() => {
-        let promise: any;
-        if (activeCategory.id === '') {
-            promise = dispatch(fetchPopularItemsAllProducts());
-        } else {
-            promise = dispatch(
-                fetchPopularItemsProductsByСategories({
-                    status,
-                    categoryId: activeCategory.id,
-                    countOfProducts,
-                })
-            );
+        if (activeCategory.id === '' && products.length === 0) {
+            dispatch(fetchPopularItemsAllProducts());
+        } else if (isCategoryClicked) {
+            if (activeCategory.id) {
+                dispatch(
+                    fetchPopularItemsProductsByСategories({
+                        status,
+                        categoryId: activeCategory.id,
+                        countOfProducts,
+                    })
+                );
+            } else {
+                dispatch(fetchPopularItemsAllProducts());
+            }
+            setIsCategoryClicked(false);
         }
-
-        return () => {
-            promise.abort();
-        };
     }, [activeCategory]);
 
     const items = () => {
         const content = [];
         for (let i = 0; i < Math.min(products.length, 8); i += 1) {
             content.push(
-                <SwiperSlide key={nextId('card-all-categories')}>
+                <SwiperSlide
+                    key={`popular-items-slider-${products[i].skuCode}`}
+                >
                     <div className="popular-items__products-item">
                         <ProductCard product={products[i]} />
                     </div>
@@ -73,6 +83,7 @@ const PopularItems: FC = () => {
                     categories={categories}
                     activeCategory={activeCategory}
                     setActiveCategory={setActiveCategory}
+                    setIsCategoryClicked={setIsCategoryClicked}
                 />
             </div>
             <div className="container container_pd-right-off">
@@ -157,6 +168,13 @@ const PopularItems: FC = () => {
                             error,
                             loading,
                             content: items,
+                            customLoader: skeletonKeys.map((key) => {
+                                return (
+                                    <SwiperSlide key={key}>
+                                        <Skeleton />
+                                    </SwiperSlide>
+                                );
+                            }),
                         })}
                     </Swiper>
                 </div>

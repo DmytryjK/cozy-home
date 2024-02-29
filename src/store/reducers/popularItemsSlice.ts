@@ -26,12 +26,17 @@ const initialState: PopularItemsInitialState = {
     loadingCategory: 'idle',
     error: null,
 };
+let controller1: any;
 
 export const fetchPopularItemsAllProducts = createAsyncThunk(
     'popularItems/fetchPopularItemsAllProducts',
-    async function (_, { rejectWithValue, getState }) {
+    async function (_, thunkAPI) {
+        if (controller1) {
+            controller1.abort();
+        }
+        controller1 = new AbortController();
         try {
-            const states = getState() as RootState;
+            const states = thunkAPI.getState() as RootState;
             const { jwtToken } = states.auth;
             const response = await fetchData({
                 method: 'GET',
@@ -42,14 +47,18 @@ export const fetchPopularItemsAllProducts = createAsyncThunk(
                         ? { Authorization: `Bearer ${jwtToken}` }
                         : {}),
                 },
+                signal: controller1.signal,
             });
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
 
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
@@ -72,13 +81,14 @@ export const fetchPopularItemsAllСategories = createAsyncThunk(
 
 export const fetchPopularItemsProductsByСategories = createAsyncThunk(
     'popularItems/fetchPopularItemsProductsByСategories',
-    async function (
-        currentData: GetProductsByCategoryType,
-        { rejectWithValue, getState }
-    ) {
+    async function (currentData: GetProductsByCategoryType, thunkAPI) {
+        if (controller1) {
+            controller1.abort();
+        }
+        controller1 = new AbortController();
         try {
             const queryParams = new URLSearchParams({ ...currentData });
-            const states = getState() as RootState;
+            const states = thunkAPI.getState() as RootState;
             const { jwtToken } = states.auth;
             const response = await fetchData({
                 method: 'GET',
@@ -89,6 +99,7 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
                         ? { Authorization: `Bearer ${jwtToken}` }
                         : {}),
                 },
+                signal: controller1.signal,
             });
 
             const result = await response.json();
@@ -96,8 +107,11 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
             if (!response.ok) throw new Error('something went wrong');
 
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );

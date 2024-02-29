@@ -8,7 +8,6 @@ import { useAppDispatch } from '../../../../../hooks/hooks';
 import { setDeliveryInfo } from '../../../../../store/reducers/orderSlice';
 import type { OrderData } from '../../../../../types/types';
 import debounce from '../../../../../utils/debounce';
-import Loader from '../../../../../shared-components/Loader';
 import './AddressDelivery.scss';
 
 interface FormValues {
@@ -75,7 +74,7 @@ const AddressDelivery = ({
             debouncedUpdateOrderDelivery(values);
             return errors;
         },
-        onSubmit: (values, { resetForm }) => {
+        onSubmit: (values) => {
             dispatch(
                 setDeliveryInfo({
                     ...values,

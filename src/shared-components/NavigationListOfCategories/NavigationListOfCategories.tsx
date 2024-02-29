@@ -8,17 +8,22 @@ const NavigationListOfCategories = ({
     categories,
     activeCategory,
     setActiveCategory,
+    setIsCategoryClicked,
 }: {
     categories: ProductCategory[];
     activeCategory: NavigationCategory;
     setActiveCategory: Dispatch<SetStateAction<NavigationCategory>>;
+    setIsCategoryClicked?: Dispatch<SetStateAction<boolean>> | null;
 }) => {
     const handleChangeTab = (
         e: React.MouseEvent<HTMLButtonElement>,
         id: string
     ) => {
         const currentCategory = e.currentTarget.getAttribute('data-value');
-        if (!currentCategory) return;
+        if (!currentCategory || id === activeCategory.id) return;
+        if (setIsCategoryClicked) {
+            setIsCategoryClicked(true);
+        }
         setActiveCategory({
             name: currentCategory,
             id,
@@ -62,6 +67,10 @@ const NavigationListOfCategories = ({
             </ul>
         </nav>
     );
+};
+
+NavigationListOfCategories.defaultProps = {
+    setIsCategoryClicked: null,
 };
 
 export default NavigationListOfCategories;

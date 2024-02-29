@@ -1,12 +1,44 @@
-import './InformationBlock.scss';
+import { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import sevenIcon from '../../../../assets/icons/information/seven-icon.svg';
 import fourteenIcon from '../../../../assets/icons/information/fourteen-icon.svg';
 import zeroIcon from '../../../../assets/icons/information/zero-icon.svg';
 import fiveIcon from '../../../../assets/icons/information/five-icon.svg';
+import './InformationBlock.scss';
 
 const InformationBlock = () => {
+    const variants = {
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                ease: 'easeOut',
+                duration: 0.6,
+                delay: 0,
+            },
+        },
+    };
+    const controls = useAnimation();
+    const [ref2, inView2] = useInView({
+        triggerOnce: true,
+        rootMargin: '-80px',
+    });
+
+    useEffect(() => {
+        if (inView2) {
+            controls.start('visible');
+        }
+    }, [inView2]);
     return (
-        <section className="information">
+        <motion.section
+            ref={ref2}
+            initial="hidden"
+            animate={controls}
+            variants={variants}
+            className="information"
+        >
             <div className="container">
                 <div className="information__content">
                     <h2 className="information__content_title">Чому саме ми</h2>
@@ -82,7 +114,7 @@ const InformationBlock = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 

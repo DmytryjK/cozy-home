@@ -20,7 +20,9 @@ const CatalogueBlock = () => {
     );
 
     useEffect(() => {
-        dispatch(fetchSixCategoriesWithPhoto());
+        if (data.length === 0) {
+            dispatch(fetchSixCategoriesWithPhoto());
+        }
     }, [dispatch]);
 
     const renderCategories = () => {

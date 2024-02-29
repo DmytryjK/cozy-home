@@ -1,6 +1,7 @@
 import { useEffect, useRef, Dispatch, SetStateAction, memo } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import nextId from 'react-id-generator';
+import LazyLoad from 'react-lazy-load';
 import delivery1 from '../../../assets/images/delivery/delivery1.png';
 import delivery2 from '../../../assets/images/delivery/delivery2.png';
 import delivery3 from '../../../assets/images/delivery/delivery3.png';
@@ -221,7 +222,9 @@ const DeliveryContent = (props: Props) => {
                         </p>
                     </li>
                     <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
-                        <img src={delivery1} alt="delivery process" />
+                        <LazyLoad>
+                            <img src={delivery1} alt="delivery process" />
+                        </LazyLoad>
                     </li>
                 </ul>
             </motion.section>
@@ -252,7 +255,9 @@ const DeliveryContent = (props: Props) => {
                         );
                     })}
                     <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
-                        <img src={delivery2} alt="delivery process" />
+                        <LazyLoad>
+                            <img src={delivery2} alt="delivery process" />
+                        </LazyLoad>
                     </li>
                 </ul>
             </motion.section>
@@ -355,7 +360,9 @@ const DeliveryContent = (props: Props) => {
                         );
                     })}
                     <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
-                        <img src={delivery3} alt="delivery process" />
+                        <LazyLoad>
+                            <img src={delivery3} alt="delivery process" />
+                        </LazyLoad>
                     </li>
                 </ul>
             </motion.section>

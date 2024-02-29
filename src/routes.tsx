@@ -1,20 +1,43 @@
-import {
-    MainPage,
-    CatalogPage,
-    CategoryPage,
-    ProductPage,
-    ShoppingCartPage,
-    CheckoutPage,
-    SignInPage,
-    ActivationPage,
-    ResetPasswordPage,
-    UserCabinet,
-    AboutUsPage,
-    GoogleAuthPage,
-    DeliveryPage,
-} from './pages';
+import { lazy } from 'react';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage';
 import PrivateRoutes from './PrivateRoutes';
+// import {
+//     MainPage,
+//     CatalogPage,
+//     CategoryPage,
+//     ProductPage,
+//     ShoppingCartPage,
+//     CheckoutPage,
+//     SignInPage,
+//     ActivationPage,
+//     ResetPasswordPage,
+//     UserCabinet,
+//     AboutUsPage,
+//     GoogleAuthPage,
+//     DeliveryPage,
+// } from './pages';
+
+const MainPage = lazy(() => import('./pages/MainPage/MainPage'));
+const CatalogPage = lazy(() => import('./pages/CatalogPage/CatalogPage'));
+const CategoryPage = lazy(() => import('./pages/CategoryPage/CategoryPage'));
+const ProductPage = lazy(() => import('./pages/ProductPage/ProductPage'));
+const ShoppingCartPage = lazy(
+    () => import('./pages/ShoppingCartPage/ShoppingCartPage')
+);
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage/CheckoutPage'));
+const SignInPage = lazy(() => import('./pages/SignInPage/SignInPage'));
+const ActivationPage = lazy(
+    () => import('./pages/ActivationPage/ActivationPage')
+);
+const ResetPasswordPage = lazy(
+    () => import('./pages/ResetPasswordPage/ResetPasswordPage')
+);
+const UserCabinet = lazy(() => import('./pages/UserCabinet/UserCabinet'));
+const AboutUsPage = lazy(() => import('./pages/AboutUsPage/AboutUsPage'));
+const GoogleAuthPage = lazy(
+    () => import('./pages/GoogleAuthPage/GoogleAuthPage')
+);
+const DeliveryPage = lazy(() => import('./pages/DeliveryPage/DeliveryPage'));
 
 const routes = [
     {

@@ -1,4 +1,4 @@
-import nextId from 'react-id-generator';
+import { memo } from 'react';
 import Category from '../Category/Category';
 import renderServerData from '../../../../helpers/renderServerData';
 import { useAppSelector } from '../../../../hooks/hooks';
@@ -12,10 +12,7 @@ const CategoriesList = () => {
     const renderedCategories = () => {
         return data.map((category) => {
             return (
-                <li
-                    className="categories-page__item"
-                    key={nextId('categories-page-item')}
-                >
+                <li className="categories-page__item" key={category.id}>
                     <Category category={category} />
                 </li>
             );
@@ -40,4 +37,4 @@ const CategoriesList = () => {
     );
 };
 
-export default CategoriesList;
+export default memo(CategoriesList);

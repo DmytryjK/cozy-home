@@ -47,6 +47,16 @@
 			}
 		}
 
+		.link-dropdown {
+			padding: 0;
+			min-width: auto;
+			a {
+				padding: 5px;
+				min-width: 78px;
+				text-align: center;
+			}
+		}
+
 		a {
 			text-decoration: none;
 		}

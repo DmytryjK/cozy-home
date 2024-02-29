@@ -10,9 +10,9 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
-body {
-  padding-top: 70px;
-}
+// body {
+//   padding-top: 70px;
+// }
 
 html.lenis {
   height: auto;
@@ -36,6 +36,7 @@ html.lenis {
 
 .container {
   max-width: 1352px;
+  width: 100%;
   padding: 0 20px;
   margin: 0 auto;
 }
@@ -77,14 +78,39 @@ input[type="password"]::-ms-clear {
   background-clip: padding-box;
 }
 
-@media screen and (max-width: 1130px) {
-  body {
-    padding-top: 60px;
+// @media screen and (max-width: 1130px) {
+//   body {
+//     padding-top: 60px;
+//   }
+// }
+
+.LazyLoad {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: load-animation;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  transition: opacity 0.5s ease-in-out;
+  &.is-visible {
+      opacity: 1;
   }
 }
 
 @media screen and (max-width: 767px) {
   .container {
     padding: 0 16px;
+  }
+}
+
+@keyframes load-animation {
+  0% {
+      background-color: rgb(192, 192, 192);
+  }
+  50% {
+      background-color: rgb(202, 202, 202);
+  }   
+  100% {
+      background-color: rgb(192, 192, 192);
   }
 }

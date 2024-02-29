@@ -3,6 +3,7 @@ import { SwiperSlide, Swiper } from 'swiper/react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import type swiper from 'swiper';
+import LazyLoad from 'react-lazy-load';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
     updateProductColor,
@@ -11,7 +12,6 @@ import {
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Loader from '../../Loader';
-import AddToFavoriteBtn from '../../AddToFavoriteBtn/AddToFavoriteBtn';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
 import {
     Loading,
@@ -221,13 +221,18 @@ const SliderImages = (props: Props) => {
 
     const renderedImage = (name: string, index: number) => {
         let result: JSX.Element = <Loader />;
-        if (error || loading === 'succeeded') {
+        if ((error || loading === 'succeeded') && imagesData[index]) {
             result = (
-                <img
-                    className="product-card__image"
-                    src={imagesData[index] ? imagesData[index].imageSrc : ''}
-                    alt={name}
-                />
+                <LazyLoad height={350}>
+                    <img
+                        className="product-card__image"
+                        src={imagesData[index].imageSrc || ''}
+                        loading="lazy"
+                        width={304}
+                        height={350}
+                        alt={name}
+                    />
+                </LazyLoad>
             );
         }
         return result;

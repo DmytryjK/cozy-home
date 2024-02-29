@@ -1,12 +1,13 @@
-import './Footer.scss';
+import { forwardRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import visaIcon from '../../assets/icons/footer/visa-icon.svg';
 import mastercardIcon from '../../assets/icons/footer/mastercard-icon.svg';
 import footerSprites from '../../assets/icons/footer/footer-sprite.svg';
+import './Footer.scss';
 
-const Footer = () => {
+const Footer = forwardRef<HTMLDivElement>(function Footer(props, ref) {
     return (
-        <footer className="footer">
+        <footer className="footer" ref={ref}>
             <div className="footer__wrapper">
                 <div className="container">
                     <NavLink to="/" aria-label="CozyHome">
@@ -228,6 +229,6 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
+});
 
 export default Footer;

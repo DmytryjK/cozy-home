@@ -25,7 +25,9 @@ export const fetchCategoriesWithSubcategories = createAsyncThunk(
     'categories/fetchCategoriesWithSubcategories',
     async function (_, { rejectWithValue }) {
         try {
-            const response = await fetch(`${API_BASE}category/categories`);
+            const response = await fetch(`${API_BASE}category/categories`, {
+                method: 'GET',
+            });
             const result = await response.json();
 
             if (!response.ok) throw new Error('something went wrong');
