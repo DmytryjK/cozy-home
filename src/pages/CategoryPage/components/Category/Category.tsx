@@ -1,6 +1,8 @@
-import nextId from 'react-id-generator';
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import LazyLoad from 'react-lazy-load';
+import { cacheImage, getCachedImage } from '../../../../utils/cacheImage';
+import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
 import './Category.scss';
 
 type CategoryType = {
@@ -13,6 +15,14 @@ type CategoryType = {
 const Category = ({ category }: { category: CategoryType }) => {
     const [isSubCategoriesHide, setIsSubCategoriesHide] = useState<boolean>();
     const { id, name, categoryImagePath, categoryDtos } = category;
+    const [cachedImageUrl, setCachedImageUrl] = useState('');
+
+    useEffect(() => {
+        cacheImage(categoryImagePath);
+        getCachedImage(categoryImagePath).then((cachedImageUrl) => {
+            setCachedImageUrl(cachedImageUrl);
+        });
+    }, []);
 
     useEffect(() => {
         if (categoryDtos.length > 3) {
@@ -49,13 +59,16 @@ const Category = ({ category }: { category: CategoryType }) => {
                 to={`/catalog/${name}`}
                 reloadDocument
             >
-                <img
-                    className="category-card__img"
-                    width={304}
-                    height={200}
-                    src={categoryImagePath}
-                    alt={name}
-                />
+                <LazyLoad>
+                    <img
+                        className="category-card__img"
+                        width={304}
+                        height={200}
+                        src={cachedImageUrl || categoryImagePath}
+                        loading="lazy"
+                        alt={name}
+                    />
+                </LazyLoad>
             </NavLink>
             <div className="category-card__content">
                 <NavLink
@@ -76,7 +89,7 @@ const Category = ({ category }: { category: CategoryType }) => {
                         return (
                             <li
                                 className="category-card__subcategories-item"
-                                key={nextId('subcategory-link')}
+                                key={subcategory.id}
                             >
                                 <NavLink
                                     className="category-card__subcategories-link"

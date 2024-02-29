@@ -31,6 +31,7 @@ const ProductLoader = () => {
     }, [isFiltersCleared, clearedFilters]);
 
     const renderItems = () => {
+        if (catalogProducts.length === 0 && loading === 'pending') return '';
         if (error) {
             return <ErrorMessage />;
         }

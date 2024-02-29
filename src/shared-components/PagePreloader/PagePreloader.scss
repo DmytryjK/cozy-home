@@ -1,0 +1,5 @@
+.page-preloader {
+    height: calc(100dvh - var(--layout-height) - 6px);
+    display: flex;
+    align-items: center;
+}

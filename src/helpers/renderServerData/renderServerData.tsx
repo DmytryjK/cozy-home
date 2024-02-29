@@ -7,13 +7,23 @@ type Props = {
     content: () => JSX.Element | JSX.Element[];
     showPrevState?: boolean;
     loaderClassName?: string;
+    customLoader?: JSX.Element[];
 };
 
 const renderServerData = (props: Props) => {
-    const { error, loading, content, showPrevState, loaderClassName } = props;
-    let render: JSX.Element | JSX.Element[] = (
+    const {
+        error,
+        loading,
+        content,
+        showPrevState,
+        loaderClassName,
+        customLoader,
+    } = props;
+
+    let render: JSX.Element | JSX.Element[] = customLoader || (
         <Loader className={loaderClassName} />
     );
+
     if (error) {
         render = <ErrorMessage />;
     } else if (loading === 'succeeded') {
@@ -28,13 +38,14 @@ const renderServerData = (props: Props) => {
             </>
         );
     }
-
     return render;
 };
 
 renderServerData.defultProps = {
     showPrevState: false,
     loaderClassName: '',
+    customLoader: '',
+    quantityLoaderItems: 0,
 };
 
 export default renderServerData;

@@ -11,9 +11,9 @@ const App = () => {
             <ScrollToTop />
             <ReactLenis
                 options={{
-                    duration: 1,
+                    duration: 0.7,
                     easing: (t) => Math.min(1, 1.001 - 2 ** (-13 * t)),
-                    lerp: 0.08,
+                    lerp: 0.1,
                 }}
                 root
             >

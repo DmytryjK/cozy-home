@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import nextId from 'react-id-generator';
+import LazyLoad from 'react-lazy-load';
 import ourValues from '../../../assets/images/about-us/our-values.png';
 import qualityIcon from '../../../assets/icons/about-us/quality.svg';
 import comfortIcon from '../../../assets/icons/about-us/comfort.svg';
@@ -124,11 +125,16 @@ const OurValues = ({ offset }: { offset: string }) => {
                         animate={controls3}
                         className="our-values__photo-wrapper"
                     >
-                        <img
-                            className="our-values__photo"
-                            src={ourValues}
-                            alt="two people show their hands on different colors textile"
-                        />
+                        <LazyLoad height={400}>
+                            <img
+                                className="our-values__photo"
+                                src={ourValues}
+                                alt="two people show their hands on different colors textile"
+                                loading="lazy"
+                                width="1000px"
+                                height="400px"
+                            />
+                        </LazyLoad>
                     </motion.div>
                     <motion.ul
                         ref={ref4}
@@ -139,11 +145,9 @@ const OurValues = ({ offset }: { offset: string }) => {
                     >
                         {listItems()}
                     </motion.ul>
-                    {/* <ul className="our-values__list" /> */}
                 </div>
             </div>
         </section>
-        // </motion.section>
     );
 };
 

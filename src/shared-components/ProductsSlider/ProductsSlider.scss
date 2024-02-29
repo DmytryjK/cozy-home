@@ -1,5 +1,8 @@
 @use '../../style/variables.scss' as *;
 .products-slider {
+    .content-loader  {
+        height: 483px !important;
+    }
     &__top {
         display: flex;
         justify-content: space-between;

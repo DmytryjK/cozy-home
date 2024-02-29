@@ -9,7 +9,9 @@ const NewItems = () => {
     );
     const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(fetchNewItemsAllProducts());
+        if (newProducts.length === 0) {
+            dispatch(fetchNewItemsAllProducts());
+        }
     }, [dispatch]);
     return (
         <section className="main-page__new-items">

@@ -1,19 +1,33 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense, useEffect, useRef } from 'react';
 import { Header } from '../Header';
-import AllModals from '../AllModals/AllModals';
 import Footer from '../Footer/Footer';
+import PagePreloader from '../PagePreloader/PagePreloader';
+import AllModals from '../AllModals/AllModals';
+import './Layout.scss';
 
 type LayoutProps = {
     children: ReactNode;
 };
 
 const Layout = ({ children }: LayoutProps) => {
+    const headerRef = useRef<HTMLDivElement | null>(null);
+    const footerRef = useRef<HTMLDivElement | null>(null);
+
     return (
-        <div>
-            <Header />
-            {children}
+        <div className="layout">
+            <Header ref={headerRef} />
+            <Suspense
+                fallback={
+                    <PagePreloader
+                        headerRef={headerRef}
+                        footerRef={footerRef}
+                    />
+                }
+            >
+                {children}
+            </Suspense>
             <AllModals />
-            <Footer />
+            <Footer ref={footerRef} />
         </div>
     );
 };

@@ -140,6 +140,8 @@
         column-gap: 4px;
         border: none;
         padding: 5px 0;
+        position: relative;
+        z-index: 1;
     }
     &__checkbox-label {
         position: relative;
@@ -289,7 +291,6 @@
 @media screen and (max-width: 991px) {
     .product-card {
         &__favorite {
-            background-color: red;
             transform: translateX(0);
         }
         &:hover {

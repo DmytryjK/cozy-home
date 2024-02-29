@@ -1,4 +1,12 @@
-import { useState, MouseEvent, useEffect, useCallback, memo } from 'react';
+import {
+    useState,
+    MouseEvent,
+    useEffect,
+    useCallback,
+    memo,
+    forwardRef,
+    LegacyRef,
+} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
@@ -26,7 +34,7 @@ interface Tab {
     url: string;
 }
 
-const Header = () => {
+const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -52,7 +60,12 @@ const Header = () => {
     const navigate = useNavigate();
 
     const navTabs: Tab[] = [
-        { id: 1, title: 'Головна', style: 'header__nav_list_link', url: '/' },
+        {
+            id: 1,
+            title: 'Головна',
+            style: 'header__nav_list_link',
+            url: '/',
+        },
         {
             id: 2,
             title: 'Каталог',
@@ -128,12 +141,7 @@ const Header = () => {
         ) {
             setIsSearchOpen(false);
         }
-    }, [
-        isDropdownOpen,
-        isBurgerOpen,
-        isPreviewCartActive,
-        isAuthDropdownActive,
-    ]);
+    }, [isDropdownOpen, isBurgerOpen, isPreviewCartActive, isAuthDropdownActive]);
 
     const handleMouseOver = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
@@ -212,8 +220,16 @@ const Header = () => {
             }}
             onClick={handleCloseSearch}
         >
-            <header className={isScrolled ? 'header header-active' : 'header'}>
-                <NavLink to="/" className="header__logo" aria-label="CozyHome">
+            <header
+                ref={ref}
+                className={isScrolled ? 'header header-active' : 'header'}
+            >
+                <NavLink
+                    to="/"
+                    className="header__logo"
+                    reloadDocument
+                    aria-label="CozyHome"
+                >
                     <svg className="header__logo_img">
                         <use href={`${headerSprite}#logo-icon`} />
                     </svg>
@@ -223,7 +239,16 @@ const Header = () => {
                         <ul className="header__nav_list">
                             {navTabs.map((tab) => (
                                 <li key={tab.id} className={tab.style}>
-                                    <NavLink to={tab.url}>{tab.title}</NavLink>
+                                    <NavLink
+                                        to={tab.url}
+                                        onClick={() => {
+                                            if (tab.id === 2) {
+                                                setIsDropdownOpen(false);
+                                            }
+                                        }}
+                                    >
+                                        {tab.title}
+                                    </NavLink>
                                 </li>
                             ))}
                         </ul>
@@ -299,6 +324,6 @@ const Header = () => {
             </div>
         </div>
     );
-};
+});
 
 export default memo(Header);

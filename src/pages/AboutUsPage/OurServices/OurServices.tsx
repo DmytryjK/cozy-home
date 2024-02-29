@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAnimation, motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import LazyLoad from 'react-lazy-load';
 import service1 from '../../../assets/images/about-us/service1.png';
 import service2 from '../../../assets/images/about-us/service2.png';
 import service3 from '../../../assets/images/about-us/service3.png';
@@ -74,14 +75,16 @@ const OurServices = ({ offset }: { offset: string }) => {
                     >
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <img
-                                    className="our-services__item-photo"
-                                    src={service1}
-                                    width={640}
-                                    height={320}
-                                    loading="lazy"
-                                    alt=""
-                                />
+                                <LazyLoad height={320}>
+                                    <img
+                                        className="our-services__item-photo"
+                                        src={service1}
+                                        width="640px"
+                                        height="320px"
+                                        loading="lazy"
+                                        alt=""
+                                    />
+                                </LazyLoad>
                             </div>
                             <div className="our-services__item-bottom">
                                 <h3 className="our-services__item-title">
@@ -95,14 +98,16 @@ const OurServices = ({ offset }: { offset: string }) => {
                         </li>
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <img
-                                    className="our-services__item-photo"
-                                    src={service2}
-                                    width={640}
-                                    height={320}
-                                    loading="lazy"
-                                    alt=""
-                                />
+                                <LazyLoad height={320}>
+                                    <img
+                                        className="our-services__item-photo"
+                                        src={service2}
+                                        width="640px"
+                                        height="320px"
+                                        loading="lazy"
+                                        alt=""
+                                    />
+                                </LazyLoad>
                             </div>
                             <div className="our-services__item-bottom">
                                 <h3 className="our-services__item-title">
@@ -116,14 +121,16 @@ const OurServices = ({ offset }: { offset: string }) => {
                         </li>
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <img
-                                    className="our-services__item-photo"
-                                    src={service3}
-                                    width={640}
-                                    height={320}
-                                    loading="lazy"
-                                    alt=""
-                                />
+                                <LazyLoad height={320}>
+                                    <img
+                                        className="our-services__item-photo"
+                                        src={service3}
+                                        width="640px"
+                                        height="320px"
+                                        loading="lazy"
+                                        alt=""
+                                    />
+                                </LazyLoad>
                             </div>
                             <div className="our-services__item-bottom">
                                 <h3 className="our-services__item-title">
@@ -137,14 +144,16 @@ const OurServices = ({ offset }: { offset: string }) => {
                         </li>
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <img
-                                    className="our-services__item-photo"
-                                    src={service4}
-                                    width={640}
-                                    height={320}
-                                    loading="lazy"
-                                    alt=""
-                                />
+                                <LazyLoad height={320}>
+                                    <img
+                                        className="our-services__item-photo"
+                                        src={service4}
+                                        width="640px"
+                                        height="320px"
+                                        loading="lazy"
+                                        alt=""
+                                    />
+                                </LazyLoad>
                             </div>
                             <div className="our-services__item-bottom">
                                 <h3 className="our-services__item-title">
