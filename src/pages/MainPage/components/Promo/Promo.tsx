@@ -75,20 +75,18 @@ const Promo = () => {
                 >
                     <SwiperSlide key={nextId('promo-item')}>
                         <a className="promo__add-link add-link" href="/">
-                            <LazyLoad>
-                                <picture>
-                                    <source
-                                        className="add-link__bg-img"
-                                        type="image/webp"
-                                        srcSet={promoImg1_webp}
-                                    />
-                                    <img
-                                        className="add-link__bg-img"
-                                        src={promoImg1}
-                                        alt="Vintage Loft Heritage Collection"
-                                    />
-                                </picture>
-                            </LazyLoad>
+                            <picture>
+                                <source
+                                    className="add-link__bg-img"
+                                    type="image/webp"
+                                    srcSet={promoImg1_webp}
+                                />
+                                <img
+                                    className="add-link__bg-img"
+                                    src={promoImg1}
+                                    alt="Vintage Loft Heritage Collection"
+                                />
+                            </picture>
                             <h2 className="add-link__title">
                                 Vintage Loft Heritage Collection
                             </h2>
@@ -101,20 +99,18 @@ const Promo = () => {
                     </SwiperSlide>
                     <SwiperSlide key={nextId('card-of-newItems')}>
                         <a className="promo__add-link add-link" href="/">
-                            <LazyLoad>
-                                <picture>
-                                    <source
-                                        className="add-link__bg-img"
-                                        type="image/webp"
-                                        srcSet={promoImg2_webp}
-                                    />
-                                    <img
-                                        className="add-link__bg-img"
-                                        src={promoImg2}
-                                        alt="Vintage Loft Heritage Collection"
-                                    />
-                                </picture>
-                            </LazyLoad>
+                            <picture>
+                                <source
+                                    className="add-link__bg-img"
+                                    type="image/webp"
+                                    srcSet={promoImg2_webp}
+                                />
+                                <img
+                                    className="add-link__bg-img"
+                                    src={promoImg2}
+                                    alt="Vintage Loft Heritage Collection"
+                                />
+                            </picture>
                             <h2 className="add-link__title">
                                 Urban Industrial Living
                             </h2>

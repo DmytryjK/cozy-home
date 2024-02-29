@@ -125,7 +125,7 @@ const OurValues = ({ offset }: { offset: string }) => {
                         animate={controls3}
                         className="our-values__photo-wrapper"
                     >
-                        <LazyLoad height={400}>
+                        <LazyLoad>
                             <img
                                 className="our-values__photo"
                                 src={ourValues}
