@@ -21,7 +21,9 @@ const MainBanner = () => {
         },
     };
     const controls = useAnimation();
-    const [ref1, inView1] = useInView({ triggerOnce: true });
+    const [ref1, inView1] = useInView({
+        triggerOnce: true,
+    });
 
     useEffect(() => {
         if (inView1) {
@@ -57,32 +59,30 @@ const MainBanner = () => {
                     </a>
                 </div>
             </div>
-            <LazyLoad>
-                <picture>
-                    <source
-                        className="mainBanner__background-img"
-                        media="(max-width: 768px)"
-                        type="image/webp"
-                        srcSet={mainMannerImageWebpPhone}
-                    />
-                    <source
-                        className="mainBanner__background-img"
-                        media="(max-width: 768px)"
-                        type="image/png"
-                        srcSet={mainMannerImagePhone}
-                    />
-                    <source
-                        className="mainBanner__background-img"
-                        type="image/webp"
-                        srcSet={mainMannerImageWebp}
-                    />
-                    <img
-                        className="mainBanner__background-img"
-                        src={mainMannerImage}
-                        alt="Vintage Loft Heritage Collection"
-                    />
-                </picture>
-            </LazyLoad>
+            <picture>
+                <source
+                    className="mainBanner__background-img"
+                    media="(max-width: 768px)"
+                    type="image/webp"
+                    srcSet={mainMannerImageWebpPhone}
+                />
+                <source
+                    className="mainBanner__background-img"
+                    media="(max-width: 768px)"
+                    type="image/png"
+                    srcSet={mainMannerImagePhone}
+                />
+                <source
+                    className="mainBanner__background-img"
+                    type="image/webp"
+                    srcSet={mainMannerImageWebp}
+                />
+                <img
+                    className="mainBanner__background-img"
+                    src={mainMannerImage}
+                    alt="Vintage Loft Heritage Collection"
+                />
+            </picture>
         </motion.div>
     );
 };
