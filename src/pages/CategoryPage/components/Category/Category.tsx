@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
 import { cacheImage, getCachedImage } from '../../../../utils/cacheImage';
 import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
+import { useAppDispatch } from '../../../../hooks/hooks';
 import './Category.scss';
 
 type CategoryType = {
@@ -16,6 +17,7 @@ const Category = ({ category }: { category: CategoryType }) => {
     const [isSubCategoriesHide, setIsSubCategoriesHide] = useState<boolean>();
     const { id, name, categoryImagePath, categoryDtos } = category;
     const [cachedImageUrl, setCachedImageUrl] = useState('');
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         cacheImage(categoryImagePath);
@@ -57,7 +59,10 @@ const Category = ({ category }: { category: CategoryType }) => {
             <NavLink
                 className="category-card__img-link"
                 to={`/catalog/${name}`}
-                reloadDocument
+                onClick={() => {
+                    dispatch(updateCurrentPage(0));
+                }}
+                // reloadDocument
             >
                 <LazyLoad>
                     <img
@@ -74,7 +79,10 @@ const Category = ({ category }: { category: CategoryType }) => {
                 <NavLink
                     className="category-card__main-link"
                     to={`/catalog/${name}`}
-                    reloadDocument
+                    onClick={() => {
+                        dispatch(updateCurrentPage(0));
+                    }}
+                    // reloadDocument
                 >
                     {name}
                 </NavLink>
@@ -94,7 +102,10 @@ const Category = ({ category }: { category: CategoryType }) => {
                                 <NavLink
                                     className="category-card__subcategories-link"
                                     to={`/catalog/${name}/${subName}`}
-                                    reloadDocument
+                                    onClick={() => {
+                                        dispatch(updateCurrentPage(0));
+                                    }}
+                                    // reloadDocument
                                 >
                                     {subcategory.name}
                                 </NavLink>
