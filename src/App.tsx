@@ -14,6 +14,8 @@ const App = () => {
                     duration: 0.7,
                     easing: (t) => Math.min(1, 1.001 - 2 ** (-13 * t)),
                     lerp: 0.1,
+                    syncTouch: false,
+                    syncTouchLerp: 1,
                 }}
                 root
             >

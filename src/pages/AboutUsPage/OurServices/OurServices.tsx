@@ -75,7 +75,7 @@ const OurServices = ({ offset }: { offset: string }) => {
                     >
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <LazyLoad height={320}>
+                                <LazyLoad>
                                     <img
                                         className="our-services__item-photo"
                                         src={service1}
@@ -98,7 +98,7 @@ const OurServices = ({ offset }: { offset: string }) => {
                         </li>
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <LazyLoad height={320}>
+                                <LazyLoad>
                                     <img
                                         className="our-services__item-photo"
                                         src={service2}
@@ -121,7 +121,7 @@ const OurServices = ({ offset }: { offset: string }) => {
                         </li>
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <LazyLoad height={320}>
+                                <LazyLoad>
                                     <img
                                         className="our-services__item-photo"
                                         src={service3}
@@ -144,7 +144,7 @@ const OurServices = ({ offset }: { offset: string }) => {
                         </li>
                         <li className="our-services__item">
                             <div className="our-services__item-top">
-                                <LazyLoad height={320}>
+                                <LazyLoad>
                                     <img
                                         className="our-services__item-photo"
                                         src={service4}
