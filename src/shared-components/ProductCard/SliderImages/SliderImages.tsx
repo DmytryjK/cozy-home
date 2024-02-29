@@ -180,11 +180,11 @@ const SliderImages = (props: Props) => {
         if (cardSliderRef?.current) {
             cardSliderRef.current.slideTo(index);
         }
-
+        setLoading('idle');
         async function fetchData() {
             try {
                 setImageSrc('');
-                setLoading('idle');
+                setLoading('pending');
 
                 const response = await fetch(`${API_BASE}image/product-color`, {
                     method: 'POST',
@@ -197,7 +197,6 @@ const SliderImages = (props: Props) => {
                     },
                 });
 
-                setLoading('pending');
                 const result: ImageSrc = await response.json();
 
                 if (!response.ok) throw new Error('something went wrong');
@@ -220,20 +219,20 @@ const SliderImages = (props: Props) => {
     };
 
     const renderedImage = (name: string, index: number) => {
-        let result: JSX.Element = <Loader />;
-        if ((error || loading === 'succeeded') && imagesData[index]) {
-            result = (
-                <LazyLoad height={350}>
-                    <img
-                        className="product-card__image"
-                        src={imagesData[index].imageSrc || ''}
-                        loading="lazy"
-                        width={304}
-                        height={350}
-                        alt={name}
-                    />
-                </LazyLoad>
-            );
+        let result: JSX.Element = (
+            <LazyLoad height={350}>
+                <img
+                    className="product-card__image"
+                    src={imagesData[index]?.imageSrc || ''}
+                    loading="lazy"
+                    width={304}
+                    height={350}
+                    alt={name}
+                />
+            </LazyLoad>
+        );
+        if (loading === 'pending') {
+            result = <Loader />;
         }
         return result;
     };
@@ -288,6 +287,15 @@ const SliderImages = (props: Props) => {
                         setIsColorChosen(true);
                     }}
                 >
+                    {loading === 'pending' ? (
+                        <SwiperSlide>
+                            <div className="product-card__image-wrapper">
+                                <Loader />
+                            </div>
+                        </SwiperSlide>
+                    ) : (
+                        ''
+                    )}
                     {colorDtoSort.length === 0 && (
                         <SwiperSlide>
                             <div className="product-card__image-wrapper">
