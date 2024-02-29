@@ -38,6 +38,9 @@ const Filters = () => {
     const filterOptionsDuplicate = useAppSelector(
         (state) => state.catalogFilters.filterOptionsDuplicate
     );
+    const filterLoading = useAppSelector(
+        (state) => state.catalogFilters.loading
+    );
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
@@ -196,26 +199,29 @@ const Filters = () => {
 
     return (
         <div className={`filters-wrapper ${isFiltersShowed ? 'active' : ''}`}>
-            <div
-                className="filters"
-                data-lenis-prevent
-                data-lenis-prevent-wheel
-                data-lenis-prevent-touch
-            >
-                <div className="filters__navigation">
-                    <h2 className="filters__title-mobile">Фільтри</h2>
-                    <button
-                        className="filters__close-filter"
-                        type="button"
-                        aria-label="закрити фільтри"
-                        onClick={() =>
-                            dispatch(showHideFilters(!isFiltersShowed))
-                        }
-                    />
+            {filterOptions ? (
+                <div
+                    className="filters"
+                    data-lenis-prevent
+                    data-lenis-prevent-wheel
+                    data-lenis-prevent-touch
+                >
+                    <div className="filters__navigation">
+                        <h2 className="filters__title-mobile">Фільтри</h2>
+                        <button
+                            className="filters__close-filter"
+                            type="button"
+                            aria-label="закрити фільтри"
+                            onClick={() =>
+                                dispatch(showHideFilters(!isFiltersShowed))
+                            }
+                        />
+                    </div>
+                    {renderedFilters()}
                 </div>
-                {renderedFilters()}
-            </div>
-
+            ) : (
+                ''
+            )}
             {filterOptions ? (
                 <div className="buttons">
                     <button

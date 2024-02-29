@@ -35,7 +35,7 @@ const ProductLoader = () => {
         if (error) {
             return <ErrorMessage />;
         }
-        if (loading !== 'succeeded') {
+        if (loading !== 'succeeded' && loading !== 'idle') {
             return (
                 <div className="catalog-products__loading-wrapper">
                     <Loader maxHeight="80dvh" />

@@ -1,9 +1,10 @@
 @use '../../../../style/variables.scss' as *;
 
 .filters-wrapper {
-	position: relative;
+    position: sticky;
+    top: 100px;
 	padding-bottom: 80px;
-	height: calc(100vh - 280px);
+	height: calc(100dvh - 280px);
     background-color: white;
 }
 
@@ -185,7 +186,7 @@
 	.filters-wrapper {
         position: fixed;
         z-index: 10;
-        max-height: 100vh;
+        max-height: 100dvh;
         height: 100%;
         top: 0;
         left: -100%;

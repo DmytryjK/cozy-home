@@ -33,7 +33,12 @@ const SortProducts = () => {
     }, [isActive]);
 
     useEffect(() => {
-        if (!isActive) return;
+        if (!isActive) {
+            if (filtersSortParam) {
+                dispatch(updateFilterSortParam(null));
+            }
+            return;
+        }
         dispatch(fetchCatalogProductsByFilters({ page: 0 }));
         dispatch(updateCurrentPage(0));
     }, [filtersSortParam]);
