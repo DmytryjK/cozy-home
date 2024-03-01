@@ -6,6 +6,7 @@ import {
     memo,
     forwardRef,
 } from 'react';
+import { useLenis } from '@studio-freight/react-lenis';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
@@ -92,6 +93,10 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
             url: '/about',
         },
     ];
+
+    const lenis = useLenis(({ scroll }) => {
+        //
+    });
 
     useEffect(() => {
         dispatch(fetchCategoriesWithSubcategories());
@@ -232,7 +237,14 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
                 ref={ref}
                 className={isScrolled ? 'header header-active' : 'header'}
             >
-                <NavLink to="/" className="header__logo" aria-label="CozyHome">
+                <NavLink
+                    to="/"
+                    onClick={() => {
+                        lenis?.scrollTo(0, { duration: 1.5 });
+                    }}
+                    className="header__logo"
+                    aria-label="CozyHome"
+                >
                     <svg className="header__logo_img">
                         <use href={`${headerSprite}#logo-icon`} />
                     </svg>

@@ -1,4 +1,5 @@
-import { useState, useEffect, SetStateAction, Dispatch } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { useLenis } from '@studio-freight/react-lenis';
 import './Aside.scss';
 
@@ -7,11 +8,10 @@ type Props = {
 };
 
 const Aside = (props: Props) => {
-    const lenis = useLenis(({ scroll }) => {
-        // scroll
-    });
+    const lenis = useLenis(({ scroll }) => {});
     const [screenWidth, setScreenWidth] = useState(window.screen.width);
     const { activeLinkIndex } = props;
+    const { hash } = useLocation();
     const navigationLinks = [
         {
             name: 'Умови доставки',
@@ -30,6 +30,13 @@ const Aside = (props: Props) => {
             id: 'refund-orders',
         },
     ];
+
+    useEffect(() => {
+        lenis?.scrollTo(`${hash}`, {
+            offset: screenWidth > 960 ? -130 : -110,
+            duration: 1.4,
+        });
+    }, []);
 
     useEffect(() => {
         localStorage.setItem('currentDeliveryTab', `${activeLinkIndex}`);
