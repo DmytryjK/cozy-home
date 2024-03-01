@@ -32,10 +32,12 @@ const Aside = (props: Props) => {
     ];
 
     useEffect(() => {
-        lenis?.scrollTo(`${hash}`, {
-            offset: screenWidth > 960 ? -130 : -110,
-            duration: 1.4,
-        });
+        if (hash) {
+            lenis?.scrollTo(`${hash}`, {
+                offset: screenWidth > 960 ? -130 : -110,
+                duration: 1.4,
+            });
+        }
     }, []);
 
     useEffect(() => {

@@ -40,9 +40,7 @@ const PagePreloader = (props: Props) => {
                     '--layout-height': `${totalHeight}px`,
                 } as React.CSSProperties
             }
-        >
-            <Loader />
-        </div>
+        />
     );
 };
 
