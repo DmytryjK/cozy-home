@@ -1,5 +1,7 @@
 import { useState, MouseEvent } from 'react';
+import { motion } from 'framer-motion';
 import { useLenis } from '@studio-freight/react-lenis';
+import { once } from 'events';
 import { useAppSelector } from '../../../../hooks/hooks';
 import ProductImagesSlider from '../ProductImagesSlider/ProductImagesSlider';
 import ProductRating from '../ProductRating/ProductRating';
@@ -26,7 +28,18 @@ const ProductInfoContainer = () => {
     const lenis = useLenis(({ scroll }) => {
         // called every scroll
     });
-
+    const variant = {
+        hidden: {
+            opacity: 0,
+        },
+        visible: {
+            opacity: 1,
+            transition: {
+                duration: 0.7,
+                easing: 'easy-out',
+            },
+        },
+    };
     const handleClick = (
         event: MouseEvent<HTMLAnchorElement>,
         anchor: string
@@ -54,31 +67,43 @@ const ProductInfoContainer = () => {
             ) : (
                 ''
             )}
-            <ProductImagesSlider colorChange={colorChange} />
-            <div className="product-page-right-content-wrapper">
-                <h1 className="product-page__title">{name}</h1>
-                <div className="product-page__extra-info">
-                    <p className="product-page__sku">{skuCode}</p>
-                    <ProductRating />
-                    <a
-                        className="product-page__feedbacks-link"
-                        href="#customer-review"
-                        onClick={(event) =>
-                            handleClick(event, '#customer-review')
-                        }
-                    >
-                        {pluralizeUkrainian(countOfReviews, [
-                            'відгуг',
-                            'відгука',
-                            'відгуків',
-                        ])}
-                    </a>
-                </div>
-                <ColorSelection setColorChange={setColorChange} />
-                <ProductPrice />
-                <AddProductBlock />
-                <Accordeon />
-            </div>
+            {loading !== 'pending' ? (
+                <motion.div
+                    className="product-page__wrapper container"
+                    variants={variant}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                >
+                    <ProductImagesSlider colorChange={colorChange} />
+                    <div className="product-page-right-content-wrapper">
+                        <h1 className="product-page__title">{name}</h1>
+                        <div className="product-page__extra-info">
+                            <p className="product-page__sku">{skuCode}</p>
+                            <ProductRating />
+                            <a
+                                className="product-page__feedbacks-link"
+                                href="#customer-review"
+                                onClick={(event) =>
+                                    handleClick(event, '#customer-review')
+                                }
+                            >
+                                {pluralizeUkrainian(countOfReviews, [
+                                    'відгуг',
+                                    'відгука',
+                                    'відгуків',
+                                ])}
+                            </a>
+                        </div>
+                        <ColorSelection setColorChange={setColorChange} />
+                        <ProductPrice />
+                        <AddProductBlock />
+                        <Accordeon />
+                    </div>
+                </motion.div>
+            ) : (
+                ''
+            )}
         </div>
     );
 };

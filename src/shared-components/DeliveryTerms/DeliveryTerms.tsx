@@ -12,9 +12,9 @@ const DeliveryTerms = ({ extraClass }: { extraClass?: string }) => {
             <br />
             <b className="delivery-terms__main">Доставка:</b>
             <br />
-            Безкоштовна доставка всіма поштовами службами: <b>
+            Безкоштовна доставка всіма поштовими службами: <b>
                 Нова Пошта
-            </b>, <b>Автолюкс</b>, <b>Делівері</b>
+            </b>, <b>Укрпошта</b>, <b>Meest</b>
         </div>
     );
 };
