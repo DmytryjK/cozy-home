@@ -1,5 +1,15 @@
 .page-preloader {
-    height: calc(100dvh - var(--layout-height) - 6px);
+    position: fixed;
+    height: 100dvh;
+    left: 0;
+    right: 0;
     display: flex;
     align-items: center;
+    z-index: 9999;
+    background-color: #FFFFFE;
+}
+@media screen and (max-width: 767px) {
+    .page-preloader {
+        height: calc(100dvh - 60px);
+    }
 }
