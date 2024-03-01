@@ -97,6 +97,8 @@ const PopularItems: FC = () => {
                             rows: 2,
                         }}
                         spaceBetween={0}
+                        speed={400}
+                        touchRatio={1}
                         breakpoints={{
                             0: {
                                 slidesPerView: 'auto',

@@ -129,6 +129,7 @@ const Pagination2 = ({
                     <button
                         className="pagination__prev-btn"
                         type="button"
+                        aria-label="попередня сторінка"
                         onClick={() => {
                             setCurrentPage(currentPage - 1);
                             setIsPaginationInit(false);
@@ -142,6 +143,7 @@ const Pagination2 = ({
                     <button
                         className="pagination__next-btn"
                         type="button"
+                        aria-label="наступна сторінка"
                         onClick={() => {
                             setCurrentPage(currentPage + 1);
                             setIsPaginationInit(false);
