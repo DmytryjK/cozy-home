@@ -8,35 +8,35 @@ import fiveIcon from '../../../../assets/icons/information/five-icon.svg';
 import './InformationBlock.scss';
 
 const InformationBlock = () => {
-    const variants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                ease: 'easeOut',
-                duration: 0.6,
-                delay: 0,
-            },
-        },
-    };
-    const controls = useAnimation();
-    const [ref2, inView2] = useInView({
-        triggerOnce: true,
-        rootMargin: '-80px',
-    });
+    // const variants = {
+    //     hidden: { opacity: 0, y: 50 },
+    //     visible: {
+    //         opacity: 1,
+    //         y: 0,
+    //         transition: {
+    //             ease: 'easeOut',
+    //             duration: 0.6,
+    //             delay: 0,
+    //         },
+    //     },
+    // };
+    // const controls = useAnimation();
+    // const [ref2, inView2] = useInView({
+    //     triggerOnce: true,
+    //     rootMargin: '-80px',
+    // });
 
-    useEffect(() => {
-        if (inView2) {
-            controls.start('visible');
-        }
-    }, [inView2]);
+    // useEffect(() => {
+    //     if (inView2) {
+    //         controls.start('visible');
+    //     }
+    // }, [inView2]);
+
     return (
-        <motion.section
-            ref={ref2}
-            initial="hidden"
-            animate={controls}
-            variants={variants}
+        <section // ref={ref2}
+            // initial="hidden"
+            // animate={controls}
+            // variants={variants}
             className="information"
         >
             <div className="container">
@@ -114,7 +114,7 @@ const InformationBlock = () => {
                     </div>
                 </div>
             </div>
-        </motion.section>
+        </section>
     );
 };
 

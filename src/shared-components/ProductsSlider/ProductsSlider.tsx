@@ -143,7 +143,7 @@ const ProductsSlider = (props: Props) => {
                             },
                         }}
                     >
-                        {/* {renderServerData({
+                        {renderServerData({
                             error,
                             loading,
                             content: items,
@@ -154,8 +154,7 @@ const ProductsSlider = (props: Props) => {
                                     </SwiperSlide>
                                 );
                             }),
-                        })} */}
-                        {items()}
+                        })}
                     </Swiper>
                 </div>
             </div>

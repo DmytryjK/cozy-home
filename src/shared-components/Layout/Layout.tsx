@@ -1,4 +1,4 @@
-import { ReactNode, Suspense, useEffect, useRef } from 'react';
+import { ReactNode, Suspense, useRef } from 'react';
 import { Header } from '../Header';
 import Footer from '../Footer/Footer';
 import PagePreloader from '../PagePreloader/PagePreloader';
@@ -15,7 +15,7 @@ const Layout = ({ children }: LayoutProps) => {
 
     return (
         <div className="layout">
-            {/* <Header ref={headerRef} /> */}
+            <Header ref={headerRef} />
             <Suspense
                 fallback={
                     <PagePreloader
