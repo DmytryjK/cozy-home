@@ -6,6 +6,7 @@ import {
     memo,
     forwardRef,
 } from 'react';
+import { useLenis } from '@studio-freight/react-lenis';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
@@ -92,6 +93,10 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
             url: '/about',
         },
     ];
+
+    const lenis = useLenis(({ scroll }) => {
+        //
+    });
 
     useEffect(() => {
         dispatch(fetchCategoriesWithSubcategories());
@@ -217,7 +222,16 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
                     // setIsAuthDropdownActive(false);
                 }
             }}
-            onClick={handleCloseSearch}
+            onClick={(event) => {
+                handleCloseSearch(event);
+                const target = event.target as HTMLElement;
+                if (
+                    !target.closest('.cart-dropdown-active') &&
+                    !target.closest('.header__icons')
+                ) {
+                    setIsPreviewCartActive(false);
+                }
+            }}
         >
             <header
                 ref={ref}
@@ -225,8 +239,10 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
             >
                 <NavLink
                     to="/"
+                    onClick={() => {
+                        lenis?.scrollTo(0, { duration: 1.5 });
+                    }}
                     className="header__logo"
-                    reloadDocument
                     aria-label="CozyHome"
                 >
                     <svg className="header__logo_img">
@@ -297,7 +313,7 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
                     <CartIcon
                         setIsPreviewCartActive={setIsPreviewCartActive}
                         setIsBurgerOpen={setIsBurgerOpen}
-                        isDesktop
+                        isDesktop={isDesktop}
                     />
                     <BurgerMenu
                         isOpen={isBurgerOpen}

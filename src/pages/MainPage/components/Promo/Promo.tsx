@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import nextId from 'react-id-generator';
@@ -24,22 +22,11 @@ const Promo = () => {
             },
         },
     };
-    const controls = useAnimation();
-    const [ref2, inView2] = useInView({
-        triggerOnce: true,
-        rootMargin: '-80px',
-    });
-
-    useEffect(() => {
-        if (inView2) {
-            controls.start('visible');
-        }
-    }, [inView2]);
     return (
         <motion.section
-            ref={ref2}
             initial="hidden"
-            animate={controls}
+            whileInView="visible"
+            viewport={{ once: true, margin: `-80px 0px` }}
             variants={variants}
             className="promo"
         >
@@ -48,6 +35,7 @@ const Promo = () => {
                     className="promo__slider"
                     spaceBetween={32}
                     modules={[Pagination]}
+                    speed={400}
                     pagination={{ clickable: false }}
                     breakpoints={{
                         0: {

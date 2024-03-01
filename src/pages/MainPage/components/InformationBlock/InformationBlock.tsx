@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 import sevenIcon from '../../../../assets/icons/information/seven-icon.svg';
 import fourteenIcon from '../../../../assets/icons/information/fourteen-icon.svg';
 import zeroIcon from '../../../../assets/icons/information/zero-icon.svg';
@@ -16,27 +14,16 @@ const InformationBlock = () => {
             transition: {
                 ease: 'easeOut',
                 duration: 0.6,
-                delay: 0,
+                delay: 0.1,
             },
         },
     };
-    const controls = useAnimation();
-    const [ref2, inView2] = useInView({
-        triggerOnce: true,
-        rootMargin: '-80px',
-    });
-
-    useEffect(() => {
-        if (inView2) {
-            controls.start('visible');
-        }
-    }, [inView2]);
 
     return (
         <motion.section
-            ref={ref2}
             initial="hidden"
-            animate={controls}
+            whileInView="visible"
+            viewport={{ once: true, margin: `-80px 0px` }}
             variants={variants}
             className="information"
         >

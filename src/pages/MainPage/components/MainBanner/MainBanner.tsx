@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import mainMannerImage from '../../../../assets/images/main-banner/main-banner_opt.png';
 import mainMannerImageWebp from '../../../../assets/images/main-banner/main-banner.webp';
 import mainMannerImagePhone from '../../../../assets/images/main-banner/main-banner_phone_opt.png';
@@ -15,26 +13,16 @@ const MainBanner = () => {
             transition: {
                 ease: 'easeOut',
                 duration: 0.35,
-                delay: 0,
+                delay: 0.1,
             },
         },
     };
-    const controls = useAnimation();
-    const [ref1, inView1] = useInView({
-        triggerOnce: true,
-    });
-
-    useEffect(() => {
-        if (inView1) {
-            controls.start('visible');
-        }
-    }, [inView1]);
 
     return (
         <motion.div
-            ref={ref1}
             initial="hidden"
-            animate={controls}
+            whileInView="visible"
+            viewport={{ once: true, margin: `0px 0px` }}
             variants={variants}
             className="mainBanner"
         >

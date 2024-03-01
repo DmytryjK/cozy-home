@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router';
+import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart';
@@ -38,6 +39,20 @@ const CheckoutPage = () => {
         (state) => state.cart.productsInfoToCheckout
     );
     const dispatch = useAppDispatch();
+
+    const variant = {
+        hidden: {
+            opacity: 0,
+        },
+        visible: {
+            opacity: 1,
+            transition: {
+                duration: 0.4,
+                delay: 0.1,
+                easing: 'easy-out',
+            },
+        },
+    };
 
     useEffect(() => {
         if (!cartTotal) return;
@@ -125,7 +140,13 @@ const CheckoutPage = () => {
         <>
             <Breadcrumbs />
             <div className="container">
-                <div className="checkout">
+                <motion.div
+                    initial="hidden"
+                    variants={variant}
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="checkout"
+                >
                     <h1 className="checkout__title">Оформлення замовлення</h1>
                     <div className="checkout__content">
                         <div className="customer-block">
@@ -225,7 +246,7 @@ const CheckoutPage = () => {
                             </SummaryCart>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
             <FormUpdater />
         </>

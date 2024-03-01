@@ -158,25 +158,26 @@
             background-color: $grey;
         }
     }
-    &__loading-dots {
-		display: none
+    .submit-button__loading-dots {
+		display: none;
+        height: 10px;
 	}
-	&__loading-dot {
+	.submit-button__loading-dot {
 		animation-delay: .1s;
 		margin: 0 5px;
 		animation: {
 			direction: alternate;
 			duration: .5s;
 			iteration-count: infinite;
-			name: loading-animation;
+			name: loadingAnimation;
 			play-state: running;
 			timing-function: ease-out;
 		}
 		border-radius: 100%;
 		display: block;
 		height: 10px;
+        width: 10px;
 		margin: 0 5px;
-		width: 10px;
 		&:first-child {
 			animation-delay: 0s;
 			margin: 0;
@@ -212,7 +213,7 @@
     // }
 }
 
-@keyframes loading-animation {
+@keyframes loadingAnimation {
 	0% {
         transform: scale(.5);
         background-color: white;
@@ -224,4 +225,4 @@
         transform: scale(1);
         background-color: white;
     }
-  }
+}

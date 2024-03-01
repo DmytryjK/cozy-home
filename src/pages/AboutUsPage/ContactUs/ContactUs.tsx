@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useFormik, FormikErrors } from 'formik';
-import { useInView } from 'react-intersection-observer';
 import { EmailInput } from '../../../shared-components/FormComponents/Inputs';
 import formValidation from '../../../utils/formValidation';
 import './ContactUs.scss';
@@ -12,8 +10,6 @@ type FormValues = {
 };
 
 const ContactUs = ({ offset }: { offset: string }) => {
-    const controls1 = useAnimation();
-
     const variants1 = {
         visible: {
             opacity: 1,
@@ -22,20 +18,6 @@ const ContactUs = ({ offset }: { offset: string }) => {
         },
         hidden: { opacity: 0, y: 50 },
     };
-
-    const inViewOptions = {
-        rootMargin: `-${offset} 0px`,
-        triggerOnce: true,
-    };
-
-    const [ref1, inView1] = useInView(inViewOptions);
-
-    useEffect(() => {
-        if (inView1) {
-            controls1.start('visible');
-        }
-    }, [controls1, inView1]);
-
     const formikContactUs = useFormik({
         initialValues: {
             email: '',
@@ -68,10 +50,10 @@ const ContactUs = ({ offset }: { offset: string }) => {
         <section className="contact-us">
             <div className="container">
                 <motion.div
-                    ref={ref1}
                     initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: `-${offset} 0px` }}
                     variants={variants1}
-                    animate={controls1}
                     className="contact-us__wrapper"
                 >
                     <h2 className="contact-us__title about-title">

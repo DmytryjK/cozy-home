@@ -1,5 +1,5 @@
 import { useEffect, useRef, Dispatch, SetStateAction, memo } from 'react';
-import { motion, useInView, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import nextId from 'react-id-generator';
 import LazyLoad from 'react-lazy-load';
 import delivery1 from '../../../assets/images/delivery/delivery1.png';
@@ -22,31 +22,6 @@ const DeliveryContent = (props: Props) => {
     const section3 = useRef<HTMLTableSectionElement>(null);
     const section4 = useRef<HTMLTableSectionElement>(null);
     const refs = [section1, section2, section3, section4];
-
-    const controls1 = useAnimation();
-    const controls2 = useAnimation();
-    const controls3 = useAnimation();
-    const controls4 = useAnimation();
-
-    const inView1 = useInView(section1, { margin: `-${offset}`, once: true });
-    const inView2 = useInView(section2, { margin: `-${offset}`, once: true });
-    const inView3 = useInView(section3, { margin: `-${offset}`, once: true });
-    const inView4 = useInView(section4, { margin: `-${offset}`, once: true });
-
-    useEffect(() => {
-        if (inView1) {
-            controls1.start('visible');
-        }
-        if (inView2) {
-            controls2.start('visible');
-        }
-        if (inView3) {
-            controls3.start('visible');
-        }
-        if (inView4) {
-            controls4.start('visible');
-        }
-    }, [inView1, inView2, inView3, inView4]);
 
     const variants = {
         hidden: { opacity: 0, y: 50 },
@@ -191,8 +166,9 @@ const DeliveryContent = (props: Props) => {
                 id="delivery-conditions"
                 ref={section1}
                 initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: `-${offset} 0px` }}
                 variants={variants}
-                animate={controls1}
                 custom={1}
             >
                 <h2 className="delivery-content__title">Умови доставки</h2>
@@ -233,7 +209,8 @@ const DeliveryContent = (props: Props) => {
                 id="payment"
                 ref={section2}
                 initial="hidden"
-                animate={controls2}
+                whileInView="visible"
+                viewport={{ once: true, margin: `-${offset} 0px` }}
                 variants={variants}
                 custom={1}
             >
@@ -266,7 +243,8 @@ const DeliveryContent = (props: Props) => {
                 id="delivery-status"
                 ref={section3}
                 initial="hidden"
-                animate={controls3}
+                whileInView="visible"
+                viewport={{ once: true, margin: `-${offset} 0px` }}
                 variants={variants}
                 custom={1}
             >

@@ -27,7 +27,7 @@ import './CartIcon.scss';
 type Props = {
     setIsPreviewCartActive: Dispatch<SetStateAction<boolean>>;
     setIsBurgerOpen: Dispatch<SetStateAction<boolean>>;
-    isDesktop: boolean;
+    isDesktop: boolean | null;
 };
 
 const CartIcon = (props: Props) => {
@@ -188,6 +188,7 @@ const CartIcon = (props: Props) => {
 
     const openProductCart = (e: MouseEvent) => {
         if (cartBody.length === 0) {
+            setIsPreviewCartActive(true);
             e.preventDefault();
         } else {
             setIsBurgerOpen(false);

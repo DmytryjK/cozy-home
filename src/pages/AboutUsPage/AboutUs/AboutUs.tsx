@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Odometer from 'react-odometerjs';
 import { useInView } from 'react-intersection-observer';
 import './AboutUs.scss';
 
 const AboutUs = ({ offset }: { offset: string }) => {
-    const controls1 = useAnimation();
-    const controls2 = useAnimation();
-
     const variants1 = {
         visible: {
             opacity: 1,
@@ -42,14 +39,6 @@ const AboutUs = ({ offset }: { offset: string }) => {
         };
     }, [inView1, inView2]);
 
-    useEffect(() => {
-        if (inView1) {
-            controls1.start('visible');
-        }
-        if (inView2) {
-            controls2.start('visible');
-        }
-    }, [controls1, inView1, inView2]);
     return (
         <section className="about-us">
             <div className="container">
@@ -57,8 +46,9 @@ const AboutUs = ({ offset }: { offset: string }) => {
                     <motion.h1
                         ref={ref1}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls1}
                         className="about-us__title"
                     >
                         Ласкаво просимо до нашої компанії! Ми - команда
@@ -70,8 +60,9 @@ const AboutUs = ({ offset }: { offset: string }) => {
                     <motion.ul
                         ref={ref2}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls2}
                         className="about-us__statistics"
                     >
                         <li className="about-us__statistics-item">

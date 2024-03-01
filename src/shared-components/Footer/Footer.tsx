@@ -1,16 +1,24 @@
 import { forwardRef } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useLenis } from '@studio-freight/react-lenis';
 import visaIcon from '../../assets/icons/footer/visa-icon.svg';
 import mastercardIcon from '../../assets/icons/footer/mastercard-icon.svg';
 import footerSprites from '../../assets/icons/footer/footer-sprite.svg';
 import './Footer.scss';
 
 const Footer = forwardRef<HTMLDivElement>(function Footer(props, ref) {
+    const lenis = useLenis(({ scroll }) => {});
     return (
         <footer className="footer" ref={ref}>
             <div className="footer__wrapper">
                 <div className="container">
-                    <NavLink to="/" aria-label="CozyHome">
+                    <NavLink
+                        to="/"
+                        onClick={() => {
+                            lenis?.scrollTo(0, { duration: 1.5 });
+                        }}
+                        aria-label="CozyHome"
+                    >
                         <svg className="footer__logo">
                             <use href={`${footerSprites}#footer-logo`} />
                         </svg>
@@ -23,7 +31,7 @@ const Footer = forwardRef<HTMLDivElement>(function Footer(props, ref) {
                             <ul className="footer__list_category">
                                 <li className="footer__list_item">
                                     <NavLink
-                                        to="/"
+                                        to="/delivery"
                                         className="footer__list_link"
                                     >
                                         Поширені питання
@@ -31,7 +39,7 @@ const Footer = forwardRef<HTMLDivElement>(function Footer(props, ref) {
                                 </li>
                                 <li className="footer__list_item">
                                     <NavLink
-                                        to="/"
+                                        to="/delivery#refund-orders"
                                         className="footer__list_link"
                                     >
                                         Гарантії та повернення

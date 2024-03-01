@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { useAnimation, motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 import LazyLoad from 'react-lazy-load';
 import service1 from '../../../assets/images/about-us/service1.png';
 import service2 from '../../../assets/images/about-us/service2.png';
@@ -9,10 +7,6 @@ import service4 from '../../../assets/images/about-us/service4.png';
 import './OurServices.scss';
 
 const OurServices = ({ offset }: { offset: string }) => {
-    const controls1 = useAnimation();
-    const controls2 = useAnimation();
-    const controls3 = useAnimation();
-
     const variants1 = {
         visible: {
             opacity: 1,
@@ -22,44 +16,24 @@ const OurServices = ({ offset }: { offset: string }) => {
         hidden: { opacity: 0, y: 50 },
     };
 
-    const inViewOptions = {
-        rootMargin: `-${offset} 0px`,
-        triggerOnce: true,
-    };
-
-    const [ref1, inView1] = useInView(inViewOptions);
-    const [ref2, inView2] = useInView(inViewOptions);
-    const [ref3, inView3] = useInView(inViewOptions);
-
-    useEffect(() => {
-        if (inView1) {
-            controls1.start('visible');
-        }
-        if (inView2) {
-            controls2.start('visible');
-        }
-        if (inView3) {
-            controls3.start('visible');
-        }
-    }, [controls1, inView1, inView2, inView3]);
     return (
         <section className="our-services">
             <div className="container">
                 <div className="our-services__content">
                     <motion.h2
-                        ref={ref1}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls1}
                         className="our-services__title about-title"
                     >
                         Наші послуги
                     </motion.h2>
                     <motion.p
-                        ref={ref2}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls2}
                         className="our-services__descr about-descr"
                     >
                         Ми пропонуємо широкий вибір меблів для кожного смаку і
@@ -67,10 +41,10 @@ const OurServices = ({ offset }: { offset: string }) => {
                         виготовляємо:
                     </motion.p>
                     <motion.ul
-                        ref={ref3}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls3}
                         className="our-services__list"
                     >
                         <li className="our-services__item">
