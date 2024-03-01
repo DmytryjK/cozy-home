@@ -42,14 +42,6 @@ const CompanyDelivery = ({
             title: 'Meest',
             fieldName: 'meest',
         },
-        {
-            title: 'Автолюкс',
-            fieldName: 'autolux',
-        },
-        {
-            title: 'Делівері',
-            fieldName: 'delivery',
-        },
     ];
     const postalOptions = [
         {
