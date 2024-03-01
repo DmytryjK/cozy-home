@@ -4,7 +4,6 @@ import { useInView } from 'react-intersection-observer';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import nextId from 'react-id-generator';
-import LazyLoad from 'react-lazy-load';
 import promoImg1_webp from '../../../../assets/images/promo/promo-1.webp';
 import promoImg2_webp from '../../../../assets/images/promo/promo-2.webp';
 import promoImg1 from '../../../../assets/images/promo/promo-1_opt.png';
@@ -13,35 +12,35 @@ import 'swiper/css/pagination';
 import './Promo.scss';
 
 const Promo = () => {
-    const variants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                ease: 'easeOut',
-                duration: 0.5,
-                delay: 0,
-            },
-        },
-    };
-    const controls = useAnimation();
-    const [ref2, inView2] = useInView({
-        triggerOnce: true,
-        rootMargin: '-80px',
-    });
+    // const variants = {
+    //     hidden: { opacity: 0, y: 50 },
+    //     visible: {
+    //         opacity: 1,
+    //         y: 0,
+    //         transition: {
+    //             ease: 'easeOut',
+    //             duration: 0.5,
+    //             delay: 0,
+    //         },
+    //     },
+    // };
+    // const controls = useAnimation();
+    // const [ref2, inView2] = useInView({
+    //     triggerOnce: true,
+    //     rootMargin: '-80px',
+    // });
 
-    useEffect(() => {
-        if (inView2) {
-            controls.start('visible');
-        }
-    }, [inView2]);
+    // useEffect(() => {
+    //     if (inView2) {
+    //         controls.start('visible');
+    //     }
+    // }, [inView2]);
     return (
-        <motion.section
-            ref={ref2}
-            initial="hidden"
-            animate={controls}
-            variants={variants}
+        <section
+            // ref={ref2}
+            // initial="hidden"
+            // animate={controls}
+            // variants={variants}
             className="promo"
         >
             <div className="container container_pd-off">
@@ -123,7 +122,7 @@ const Promo = () => {
                     </SwiperSlide>
                 </Swiper>
             </div>
-        </motion.section>
+        </section>
     );
 };
 
