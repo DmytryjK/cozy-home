@@ -41,7 +41,8 @@ const PagePreloader = (props: Props) => {
                 } as React.CSSProperties
             }
         >
-            <Loader />
+            Loading...
+            {/* <Loader /> */}
         </div>
     );
 };

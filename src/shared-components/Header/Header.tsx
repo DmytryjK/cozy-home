@@ -5,7 +5,6 @@ import {
     useCallback,
     memo,
     forwardRef,
-    LegacyRef,
 } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';

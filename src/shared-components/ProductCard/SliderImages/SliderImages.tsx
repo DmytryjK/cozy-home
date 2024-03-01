@@ -456,6 +456,7 @@ const SliderImages = (props: Props) => {
         id: string,
         quantityStatus: string
     ) => {
+        console.log('change');
         setCurrentColor({ name: color, hex: id, quantityStatus });
         setIsColorChosen(true);
         setCurrentIndexColor(index);
