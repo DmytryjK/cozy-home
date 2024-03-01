@@ -15,7 +15,7 @@ const Layout = ({ children }: LayoutProps) => {
 
     return (
         <div className="layout">
-            <Header ref={headerRef} />
+            {/* <Header ref={headerRef} /> */}
             <Suspense
                 fallback={
                     <PagePreloader
