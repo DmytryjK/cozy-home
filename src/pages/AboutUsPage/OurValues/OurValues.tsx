@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import nextId from 'react-id-generator';
 import LazyLoad from 'react-lazy-load';
 import ourValues from '../../../assets/images/about-us/our-values.png';
@@ -11,11 +10,7 @@ import innovationsIcon from '../../../assets/icons/about-us/innovations.svg';
 import './OurValues.scss';
 
 const OurValues = ({ offset }: { offset: string }) => {
-    const controls1 = useAnimation();
-    const controls2 = useAnimation();
-    const controls3 = useAnimation();
-    const controls4 = useAnimation();
-
+    const ulRef = useRef(null);
     const variants1 = {
         visible: {
             opacity: 1,
@@ -24,31 +19,6 @@ const OurValues = ({ offset }: { offset: string }) => {
         },
         hidden: { opacity: 0, y: 50 },
     };
-
-    const inViewOptions = {
-        rootMargin: `-${offset} 0px`,
-        triggerOnce: true,
-    };
-
-    const [ref1, inView1] = useInView(inViewOptions);
-    const [ref2, inView2] = useInView(inViewOptions);
-    const [ref3, inView3] = useInView(inViewOptions);
-    const [ref4, inView4] = useInView(inViewOptions);
-
-    useEffect(() => {
-        if (inView1) {
-            controls1.start('visible');
-        }
-        if (inView2) {
-            controls2.start('visible');
-        }
-        if (inView3) {
-            controls3.start('visible');
-        }
-        if (inView4) {
-            controls4.start('visible');
-        }
-    }, [controls1, inView1, inView2, inView3, inView4]);
 
     const textForListItems = [
         {
@@ -99,19 +69,19 @@ const OurValues = ({ offset }: { offset: string }) => {
             <div className="container">
                 <div className="our-values__content">
                     <motion.h2
-                        ref={ref1}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls1}
                         className="our-values__title about-title"
                     >
                         Наші цінності
                     </motion.h2>
                     <motion.p
-                        ref={ref2}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls2}
                         className="our-values__descr about-descr"
                     >
                         Наші цінності визначають те, як ми працюємо та які
@@ -119,10 +89,10 @@ const OurValues = ({ offset }: { offset: string }) => {
                         надаючи нашим клієнтам унікальну якість і досвід.
                     </motion.p>
                     <motion.div
-                        ref={ref3}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: `-${offset} 0px` }}
                         variants={variants1}
-                        animate={controls3}
                         className="our-values__photo-wrapper"
                     >
                         <LazyLoad>
@@ -137,10 +107,14 @@ const OurValues = ({ offset }: { offset: string }) => {
                         </LazyLoad>
                     </motion.div>
                     <motion.ul
-                        ref={ref4}
                         initial="hidden"
+                        whileInView="visible"
+                        viewport={{
+                            once: true,
+                            margin: `-${offset} 0px`,
+                            root: ulRef,
+                        }}
                         variants={variants1}
-                        animate={controls4}
                         className="our-values__list"
                     >
                         {listItems()}

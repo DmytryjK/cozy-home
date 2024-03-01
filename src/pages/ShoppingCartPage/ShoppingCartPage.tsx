@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import ProductsList from './components/ProductsList/ProductsList';
 import DeliveryTerms from '../../shared-components/DeliveryTerms/DeliveryTerms';
@@ -9,8 +10,27 @@ import './ShoppingCartPage.scss';
 const ShoppingCartPage = () => {
     const cartBody = useAppSelector((state) => state.cart.cartBody);
     const loading = useAppSelector((state) => state.cart.loading);
+    const variant = {
+        hidden: {
+            opacity: 0,
+        },
+        visible: {
+            opacity: 1,
+            transition: {
+                duration: 0.4,
+                delay: 0.1,
+                easing: 'easy-out',
+            },
+        },
+    };
     return (
-        <section className="cart">
+        <motion.section
+            initial="hidden"
+            variants={variant}
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="cart"
+        >
             <Breadcrumbs />
             <div className="container">
                 <h1 className="cart__title">Кошик</h1>
@@ -40,7 +60,7 @@ const ShoppingCartPage = () => {
                     </div>
                 )}
             </div>
-        </section>
+        </motion.section>
     );
 };
 

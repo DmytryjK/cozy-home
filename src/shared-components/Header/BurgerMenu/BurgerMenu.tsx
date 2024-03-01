@@ -169,7 +169,7 @@ const BurgerMenu = (props: Props) => {
                         content: renderedCategories,
                     })}
                     <NavLink
-                        to=""
+                        to="/delivery"
                         className="burger-menu__list_item burger-menu__list"
                         onClick={() => setIsOpen(false)}
                     >
@@ -187,22 +187,26 @@ const BurgerMenu = (props: Props) => {
                 </div>
                 <div className="burger-menu__infoWrapper">
                     <div className="container">
-                        <NavLink
-                            to="/cabinet/favorites"
-                            onClick={(event) => {
-                                setIsOpen(false);
-                                handleClick(event);
-                            }}
-                        >
-                            <div className="burger-menu__infoWrapper_info bordered">
-                                <svg width="19" height="16">
-                                    <use
-                                        href={`${headerSprite}#favorite-icon`}
-                                    />
-                                </svg>
-                                <div>Обране</div>
-                            </div>
-                        </NavLink>
+                        {jwtToken ? (
+                            <NavLink
+                                to="/cabinet/favorites"
+                                onClick={(event) => {
+                                    setIsOpen(false);
+                                    handleClick(event);
+                                }}
+                            >
+                                <div className="burger-menu__infoWrapper_info bordered">
+                                    <svg width="19" height="16">
+                                        <use
+                                            href={`${headerSprite}#favorite-icon`}
+                                        />
+                                    </svg>
+                                    <div>Обране</div>
+                                </div>
+                            </NavLink>
+                        ) : (
+                            ''
+                        )}
                         {jwtToken ? (
                             <NavLink
                                 className="burger-menu__cabinet"
