@@ -1,4 +1,5 @@
 import { ReactNode, Suspense, useRef } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Header } from '../Header';
 import Footer from '../Footer/Footer';
 import PagePreloader from '../PagePreloader/PagePreloader';
@@ -25,6 +26,7 @@ const Layout = ({ children }: LayoutProps) => {
                 }
             >
                 {children}
+                <SpeedInsights />
             </Suspense>
             <AllModals />
             <Footer ref={footerRef} />
