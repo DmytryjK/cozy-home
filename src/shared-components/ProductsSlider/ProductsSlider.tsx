@@ -100,6 +100,7 @@ const ProductsSlider = (props: Props) => {
                         modules={[Navigation]}
                         spaceBetween={32}
                         slidesPerView={4}
+                        speed={400}
                         navigation={{
                             prevEl: prevRef.current,
                             nextEl: nextRef.current,

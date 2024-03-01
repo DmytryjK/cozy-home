@@ -115,6 +115,7 @@ const EnlargedPhoto = (props: Props) => {
                     <button
                         type="button"
                         className="enlarged-block__content_header_close"
+                        aria-label="закрити"
                         onClick={() => setLargePhotoActive(false)}
                     >
                         <svg width="40" height="40">

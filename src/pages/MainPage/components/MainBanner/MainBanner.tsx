@@ -8,34 +8,34 @@ import mainMannerImageWebpPhone from '../../../../assets/images/main-banner/main
 import './MainBanner.scss';
 
 const MainBanner = () => {
-    // const variants = {
-    //     hidden: { opacity: 0 },
-    //     visible: {
-    //         opacity: 1,
-    //         transition: {
-    //             ease: 'easeOut',
-    //             duration: 0.35,
-    //             delay: 0,
-    //         },
-    //     },
-    // };
-    // const controls = useAnimation();
-    // const [ref1, inView1] = useInView({
-    //     triggerOnce: true,
-    // });
+    const variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                ease: 'easeOut',
+                duration: 0.35,
+                delay: 0,
+            },
+        },
+    };
+    const controls = useAnimation();
+    const [ref1, inView1] = useInView({
+        triggerOnce: true,
+    });
 
-    // useEffect(() => {
-    //     if (inView1) {
-    //         controls.start('visible');
-    //     }
-    // }, [inView1]);
+    useEffect(() => {
+        if (inView1) {
+            controls.start('visible');
+        }
+    }, [inView1]);
 
     return (
-        <div
-            // ref={ref1}
-            // initial="hidden"
-            // animate={controls}
-            // variants={variants}
+        <motion.div
+            ref={ref1}
+            initial="hidden"
+            animate={controls}
+            variants={variants}
             className="mainBanner"
         >
             <div className="container">
@@ -82,7 +82,7 @@ const MainBanner = () => {
                     alt="Vintage Loft Heritage Collection"
                 />
             </picture>
-        </div>
+        </motion.div>
     );
 };
 

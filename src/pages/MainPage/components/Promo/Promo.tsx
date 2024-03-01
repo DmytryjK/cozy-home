@@ -12,35 +12,35 @@ import 'swiper/css/pagination';
 import './Promo.scss';
 
 const Promo = () => {
-    // const variants = {
-    //     hidden: { opacity: 0, y: 50 },
-    //     visible: {
-    //         opacity: 1,
-    //         y: 0,
-    //         transition: {
-    //             ease: 'easeOut',
-    //             duration: 0.5,
-    //             delay: 0,
-    //         },
-    //     },
-    // };
-    // const controls = useAnimation();
-    // const [ref2, inView2] = useInView({
-    //     triggerOnce: true,
-    //     rootMargin: '-80px',
-    // });
+    const variants = {
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                ease: 'easeOut',
+                duration: 0.5,
+                delay: 0,
+            },
+        },
+    };
+    const controls = useAnimation();
+    const [ref2, inView2] = useInView({
+        triggerOnce: true,
+        rootMargin: '-80px',
+    });
 
-    // useEffect(() => {
-    //     if (inView2) {
-    //         controls.start('visible');
-    //     }
-    // }, [inView2]);
+    useEffect(() => {
+        if (inView2) {
+            controls.start('visible');
+        }
+    }, [inView2]);
     return (
-        <section
-            // ref={ref2}
-            // initial="hidden"
-            // animate={controls}
-            // variants={variants}
+        <motion.section
+            ref={ref2}
+            initial="hidden"
+            animate={controls}
+            variants={variants}
             className="promo"
         >
             <div className="container container_pd-off">
@@ -122,7 +122,7 @@ const Promo = () => {
                     </SwiperSlide>
                 </Swiper>
             </div>
-        </section>
+        </motion.section>
     );
 };
 
