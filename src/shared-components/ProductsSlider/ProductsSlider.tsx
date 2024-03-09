@@ -1,5 +1,5 @@
 import { useRef, useState, memo } from 'react';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import nextId from 'react-id-generator';
 import ProductCard from '../ProductCard/ProductCard';
@@ -22,7 +22,6 @@ const ProductsSlider = (props: Props) => {
         nextId(`skeleton-card`)
     );
     const [isSliderRendered, setisSliderRendered] = useState<boolean>(false);
-    const swiper = useSwiper();
     const prevRef = useRef(null);
     const nextRef = useRef(null);
 

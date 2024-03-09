@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
-import { cacheImage, getCachedImage } from '../../../../../utils/cacheImage';
 import catalogueSprite from '../../../../../assets/icons/catalogue/catalogue-sprite.svg';
 
 type Props = {
@@ -14,20 +12,12 @@ type Props = {
 
 const CatalogueItem = (props: Props) => {
     const { srcImg, alt, title, className, href } = props;
-    const [cachedImageUrl, setCachedImageUrl] = useState('');
-
-    useEffect(() => {
-        cacheImage(srcImg);
-        getCachedImage(srcImg).then((srcImg) => {
-            setCachedImageUrl(srcImg);
-        });
-    }, []);
     return (
         <NavLink to={href} className={className}>
-            <LazyLoad>
+            <LazyLoad height={250}>
                 <img
                     className="catalogue__item_img"
-                    src={cachedImageUrl || srcImg}
+                    src={srcImg}
                     width={304}
                     height={250}
                     loading="lazy"

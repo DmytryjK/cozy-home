@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo, MouseEvent } from 'react';
+import { useState, useEffect, memo, MouseEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import LazyLoad from 'react-lazy-load';
@@ -8,8 +8,6 @@ import {
     updateProductSku,
     fetchProductInfoByScuWithColor,
 } from '../../../store/reducers/productInformationSlice';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import Loader from '../../Loader';
 import transliterate from '../../../utils/transliterate';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
@@ -108,6 +106,7 @@ const SliderImages = (props: Props) => {
     } = productData;
 
     const [currentIndexColor, setCurrentIndexColor] = useState<number>(0);
+    const [sortedColorDto, setSortedColorDto] = useState(colorDtoList);
     const [isColorChosen, setIsColorChosen] = useState(false);
     const uniqIdForInputName = nextId('color-');
 
@@ -141,15 +140,22 @@ const SliderImages = (props: Props) => {
     );
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const colorDtoSort = sortColorByFirstImg(colorDtoList, imageDtoList);
 
     useEffect(() => {
+        setSortedColorDto(sortColorByFirstImg(colorDtoList, imageDtoList));
+    }, [colorDtoList, imageDtoList]);
+
+    useEffect(() => {
+        let timeout: ReturnType<typeof setTimeout> | null = null;
         if (!isColorChosen && imageDtoList.length > 0) {
-            const { name, id, quantityStatus } = colorDtoSort[0];
-            setCurrentColor({ name, hex: id, quantityStatus });
-            setCurrentIndexColor(0);
+            timeout = setTimeout(() => {
+                const { name, id, quantityStatus } = sortedColorDto[0];
+                setCurrentColor({ name, hex: id, quantityStatus });
+                setCurrentIndexColor(0);
+            });
         }
-    }, [isColorChosen, imageDtoList]);
+        return () => clearTimeout(timeout || '');
+    }, [isColorChosen, imageDtoList, sortedColorDto]);
 
     useEffect(() => {
         setImagesData({
@@ -161,7 +167,7 @@ const SliderImages = (props: Props) => {
 
     useEffect(() => {
         if (imageSrc) {
-            if (Object.keys(imagesData).length < colorDtoSort.length) {
+            if (Object.keys(imagesData).length < sortedColorDto.length) {
                 setImagesData((prev) => ({
                     ...prev,
                     [currentIndexColor]: {
@@ -170,7 +176,7 @@ const SliderImages = (props: Props) => {
                 }));
             }
         }
-    }, [imageSrc, imageDtoList]);
+    }, [imageSrc, imageDtoList, sortedColorDto]);
 
     useEffect(() => {
         if (productPageLoading === 'failed') {
@@ -230,27 +236,28 @@ const SliderImages = (props: Props) => {
         if (
             error === null &&
             imagesData &&
-            Object.keys(imagesData).length < colorDtoSort.length
+            Object.keys(imagesData).length < sortedColorDto.length
         )
             fetchData();
     };
 
     const renderedImage = (name: string, index: number) => {
-        let result: JSX.Element = (
-            <LazyLoad height={350}>
-                <img
-                    className="product-card__image"
-                    src={imagesData[index]?.imageSrc || ''}
-                    loading="lazy"
-                    width={304}
-                    height={350}
-                    alt={name}
-                />
-            </LazyLoad>
-        );
-
+        let result: JSX.Element | null = null;
         if (loading === 'pending') {
             result = <Loader />;
+        } else {
+            result = (
+                <LazyLoad height={350}>
+                    <img
+                        className="product-card__image"
+                        src={imagesData[index]?.imageSrc || ''}
+                        loading="lazy"
+                        width={304}
+                        height={350}
+                        alt={name}
+                    />
+                </LazyLoad>
+            );
         }
         return result;
     };
@@ -353,7 +360,7 @@ const SliderImages = (props: Props) => {
                         ) : (
                             ''
                         )}
-                        {colorDtoSort.length === 0 && (
+                        {sortedColorDto.length === 0 && (
                             <div className="product-card__image-wrapper">
                                 <img
                                     className="product-card__image"
@@ -362,7 +369,7 @@ const SliderImages = (props: Props) => {
                                 />
                             </div>
                         )}
-                        {colorDtoSort.map((color, index) => {
+                        {sortedColorDto.map((color, index) => {
                             return (
                                 <div
                                     className={`product-card__image-wrapper ${
@@ -396,7 +403,7 @@ const SliderImages = (props: Props) => {
                         </NavLink>
                     </h2>
                     <fieldset className="product-card__color-checkboxes">
-                        {colorDtoSort.map((color, index) => {
+                        {sortedColorDto.map((color, index) => {
                             const { name, id, quantityStatus } = color;
                             return (
                                 <label

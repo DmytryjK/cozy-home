@@ -87,8 +87,8 @@ const PopularItems: FC = () => {
             </div>
             <div className="container container_pd-right-off">
                 <div
-                    key={nextId('category-block')}
-                    className="popular-items__products active"
+                    key={`category-block-${activeCategory.id}`}
+                    className="popular-items__products"
                 >
                     <Swiper
                         className="popular-items__slider"

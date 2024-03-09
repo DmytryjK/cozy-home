@@ -2,21 +2,10 @@
 .promo {
     margin-top: 130px;
     &__slider {
-        margin-left: auto;
-        margin-right: auto;
-        height: 100%;
         width: 100%;
-        .swiper-wrapper {
-            flex-direction: row !important;
-            height: 100%;
-        }
+        height: 100%;
         .swiper-slide {
-            margin-top: 0 !important;
-            width: 100%;
-            max-width: 640px;
             height: auto;
-            display: flex;
-            align-items: center;
         }
         .swiper-pagination {
             display: none;
@@ -118,8 +107,8 @@
         }
         &__slider {
             padding-bottom: 16px;
-            .swiper-slide {
-                width: 100% !important;
+            .swiper-pagination {
+                display: block;
             }
         }
         .add-link {
@@ -146,11 +135,6 @@
             }
             &__decorative-text {
                 font-size: 12px;
-            }
-        }
-        &__slider {
-            .swiper-pagination {
-                display: block;
             }
         }
     }

@@ -11,15 +11,8 @@
     &__products {
         height: 100%;
         margin-top: 30px;
-        visibility: hidden;
         display: flex;
         flex-wrap: wrap;
-        opacity: 0;
-        transition: 0.2s ease-out opacity, 0.2s ease-out visibility;
-        &.active {
-            visibility: visible;
-            opacity: 1;
-        }
         &-item {
             display: flex;
             height: 100%;

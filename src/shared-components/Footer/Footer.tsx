@@ -6,10 +6,10 @@ import mastercardIcon from '../../assets/icons/footer/mastercard-icon.svg';
 import footerSprites from '../../assets/icons/footer/footer-sprite.svg';
 import './Footer.scss';
 
-const Footer = forwardRef<HTMLDivElement>(function Footer(props, ref) {
+const Footer = () => {
     const lenis = useLenis(({ scroll }) => {});
     return (
-        <footer className="footer" ref={ref}>
+        <footer className="footer">
             <div className="footer__wrapper">
                 <div className="container">
                     <NavLink
@@ -237,6 +237,6 @@ const Footer = forwardRef<HTMLDivElement>(function Footer(props, ref) {
             </div>
         </footer>
     );
-});
+};
 
 export default Footer;
