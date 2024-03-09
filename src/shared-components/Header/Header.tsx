@@ -1,11 +1,4 @@
-import {
-    useState,
-    MouseEvent,
-    useEffect,
-    useCallback,
-    memo,
-    forwardRef,
-} from 'react';
+import { useState, MouseEvent, useEffect, useCallback, memo } from 'react';
 import { useLenis } from '@studio-freight/react-lenis';
 import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -20,8 +13,8 @@ import userScrollWidth from '../../utils/userScrollWidth';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import TemporatyAdminNavPanel from './TemporatyAdminNavPanel/TemporatyAdminNavPanel';
 import throttle from '../../utils/throttle';
-import './Header.scss';
 import Search from './Search/Search';
+import './Header.scss';
 
 export type SubCategoryType = {
     id: string;
@@ -35,7 +28,7 @@ interface Tab {
     url: string;
 }
 
-const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
+const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -116,7 +109,7 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
             }
         };
         checkWindowSize();
-        const throttleCheckWindowSize = throttle(checkWindowSize, 300);
+        const throttleCheckWindowSize = throttle(checkWindowSize, 400);
         window.addEventListener('resize', throttleCheckWindowSize);
     }, []);
 
@@ -130,7 +123,7 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
                 setIsScrolled(true);
             }
         };
-        const throttleScroll = throttle(handleScroll, 500);
+        const throttleScroll = throttle(handleScroll, 300);
         window.addEventListener('scroll', throttleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -144,7 +137,12 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
         ) {
             setIsSearchOpen(false);
         }
-    }, [isDropdownOpen, isBurgerOpen, isPreviewCartActive, isAuthDropdownActive]);
+    }, [
+        isDropdownOpen,
+        isBurgerOpen,
+        isPreviewCartActive,
+        isAuthDropdownActive,
+    ]);
 
     const handleMouseOver = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;
@@ -238,10 +236,7 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
                 }
             }}
         >
-            <header
-                ref={ref}
-                className={isScrolled ? 'header header-active' : 'header'}
-            >
+            <header className={isScrolled ? 'header header-active' : 'header'}>
                 <NavLink
                     to="/"
                     onClick={() => {
@@ -344,6 +339,6 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
             </div>
         </div>
     );
-});
+};
 
 export default memo(Header);

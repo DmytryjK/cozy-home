@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useRef, lazy } from 'react';
+import { useState, useEffect, memo, useRef } from 'react';
 import { ProductCardType } from '../../types/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
@@ -8,13 +8,9 @@ import {
 import { addProductToCartBody } from '../../store/reducers/cartSlice';
 import AddToFavoriteBtn from '../AddToFavoriteBtn/AddToFavoriteBtn';
 import headerSprites from '../../assets/icons/header/header-sprite.svg';
-import { ImagesData } from './SliderImages/SliderImages';
+import SliderImages, { ImagesData } from './SliderImages/SliderImages';
 import cartAdded from '../../assets/icons/cart/cart-added.svg';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import './ProductCard.scss';
-
-const SliderImages = lazy(() => import('./SliderImages/SliderImages'));
 
 const ProductCard = ({ product }: { product: ProductCardType }) => {
     const [priceSpaced, setPriceSpaced] = useState<string>('');

@@ -65,7 +65,6 @@ const Filters = () => {
 
     useEffect(() => {
         const header = document.querySelector('.header') as HTMLElement;
-
         if (isFiltersShowed) {
             header.style.paddingRight = `${userScrollWidth() + 16}px`;
             document.body.style.paddingRight = `${userScrollWidth()}px`;

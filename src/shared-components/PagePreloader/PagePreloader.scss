@@ -8,8 +8,4 @@
     z-index: 9999;
     background-color: #FFFFFE;
 }
-@media screen and (max-width: 767px) {
-    .page-preloader {
-        height: calc(100dvh - 60px);
-    }
-}
+

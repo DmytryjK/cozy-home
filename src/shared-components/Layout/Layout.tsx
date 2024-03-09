@@ -1,4 +1,4 @@
-import { Suspense, useRef } from 'react';
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ReactLenis } from '@studio-freight/react-lenis';
 import { Header } from '../Header';
@@ -9,19 +9,10 @@ import './Layout.scss';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
 const Layout = () => {
-    const headerRef = useRef<HTMLDivElement | null>(null);
-    const footerRef = useRef<HTMLDivElement | null>(null);
     return (
         <div className="layout">
-            <Header ref={headerRef} />
-            <Suspense
-                fallback={
-                    <PagePreloader
-                        headerRef={headerRef}
-                        footerRef={footerRef}
-                    />
-                }
-            >
+            <Header />
+            <Suspense fallback={<PagePreloader />}>
                 <ReactLenis
                     options={{
                         duration: 0.7,
@@ -37,7 +28,7 @@ const Layout = () => {
             </Suspense>
             <AllModals />
             <ScrollToTop />
-            <Footer ref={footerRef} />
+            <Footer />
         </div>
     );
 };

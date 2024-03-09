@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
-import nextId from 'react-id-generator';
 import promoImg1_webp from '../../../../assets/images/promo/promo-1.webp';
 import promoImg2_webp from '../../../../assets/images/promo/promo-2.webp';
 import promoImg1 from '../../../../assets/images/promo/promo-1_opt.png';
 import promoImg2 from '../../../../assets/images/promo/promo-2_opt.png';
 import 'swiper/css/pagination';
+import 'swiper/css';
 import './Promo.scss';
 
 const Promo = () => {
@@ -39,19 +39,19 @@ const Promo = () => {
                     pagination={{ clickable: false }}
                     breakpoints={{
                         0: {
-                            slidesPerView: 'auto',
+                            slidesPerView: 1,
                             spaceBetween: '16px',
                         },
-                        360: {
+                        440: {
                             slidesPerView: 1,
                             spaceBetween: '16px',
                         },
                         550: {
-                            slidesPerView: 'auto',
+                            slidesPerView: 1.3,
                             spaceBetween: '16px',
                         },
                         768: {
-                            slidesPerView: 'auto',
+                            slidesPerView: 1.5,
                             spaceBetween: '24px',
                         },
                         1101: {
@@ -60,7 +60,7 @@ const Promo = () => {
                         },
                     }}
                 >
-                    <SwiperSlide key={nextId('promo-item')}>
+                    <SwiperSlide key="promo-item-1">
                         <a className="promo__add-link add-link" href="/">
                             <picture>
                                 <source
@@ -84,7 +84,7 @@ const Promo = () => {
                             </span>
                         </a>
                     </SwiperSlide>
-                    <SwiperSlide key={nextId('card-of-newItems')}>
+                    <SwiperSlide key="promo-item-2">
                         <a className="promo__add-link add-link" href="/">
                             <picture>
                                 <source
