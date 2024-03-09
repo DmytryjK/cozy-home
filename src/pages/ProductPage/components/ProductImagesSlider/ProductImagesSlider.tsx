@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
 import { Navigation, Thumbs, Controller } from 'swiper';
+import LazyLoad from 'react-lazy-load';
 import { useAppSelector } from '../../../../hooks/hooks';
 import EnlargedPhoto from './EnlargedPhoto/EnlargedPhoto';
 import FullScreenLoader from '../../../../shared-components/FullScreenLoader/FullScreenLoader';
@@ -66,7 +67,6 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
 
             const data: ResponseData[] = await response.json();
             setPopUpImages(data);
-
             setActiveIndex(index);
             setLargePhotoActive(true);
         } catch (error) {
@@ -123,6 +123,7 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                         {colorChange && (
                             <Loader className="slider-image__loader" />
                         )}
+
                         <Swiper
                             ref={swiperRef}
                             spaceBetween={10}
@@ -131,7 +132,9 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                             thumbs={{ swiper: thumbsSwiper }}
                             modules={[Navigation, Thumbs, Controller]}
                             onSwiper={handleFirstSwiper}
-                            controller={{ control: secondSwiper }}
+                            controller={{
+                                control: secondSwiper,
+                            }}
                             onSlideChange={() => {
                                 if (firstSwiper) {
                                     const swiper = swiperRef.current?.swiper;
@@ -153,10 +156,12 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                                         key={image.id}
                                         onClick={() => handleSliderClick(index)}
                                     >
-                                        <img
-                                            src={image.desktopImagePath}
-                                            alt="Slider images"
-                                        />
+                                        <LazyLoad>
+                                            <img
+                                                src={image.desktopImagePath}
+                                                alt="Slider images"
+                                            />
+                                        </LazyLoad>
                                     </SwiperSlide>
                                 ))}
                         </Swiper>
@@ -210,7 +215,6 @@ const ProductImagesSlider = ({ colorChange }: Props) => {
                         </Swiper>
                     </div>
                 </div>
-
                 {largePhotoActive && (
                     <EnlargedPhoto
                         setLargePhotoActive={setLargePhotoActive}

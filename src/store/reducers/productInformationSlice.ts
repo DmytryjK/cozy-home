@@ -40,6 +40,7 @@ interface ProductInformationState {
 const initialState: ProductInformationState = {
     productInfo: {
         categoryName: '',
+        parentCategoryId: '',
         subCategoryName: '',
         skuCode: '',
         name: '',
@@ -75,12 +76,16 @@ const initialState: ProductInformationState = {
     currentSku: null,
     currentColor: null,
 };
-
+let controller: any;
 export const fetchProductInfoByScuWithColor = createAsyncThunk(
     'productInformation/fetchProductInfoByScuWithColor',
-    async function (params: ProductParamsType, { rejectWithValue, getState }) {
+    async function (params: ProductParamsType, thunkAPI) {
+        if (controller) {
+            controller.abort();
+        }
+        controller = new AbortController();
         try {
-            const states = getState() as RootState;
+            const states = thunkAPI.getState() as RootState;
             const { jwtToken } = states.auth;
             const response = await fetchData({
                 method: 'POST',
@@ -94,15 +99,23 @@ export const fetchProductInfoByScuWithColor = createAsyncThunk(
                         ? { Authorization: `Bearer ${jwtToken}` }
                         : {}),
                 },
+                signal: controller.signal,
             });
 
-            const result = await response.json();
-
-            if (!response.ok) throw new Error('something went wrong');
-
+            const result: ProductInformationType = await response.json();
+            if (response.status === 422) {
+                throw new Error('Товар не знайдено');
+            }
+            if (!response.ok) throw new Error('Помилка завантаження з серверу');
+            if (!result.skuCode) {
+                throw new Error('Жодного товару не знайдено');
+            }
             return result;
-        } catch (error: unknown) {
-            return rejectWithValue(error);
+        } catch (error: any) {
+            if (error.name === 'AbortError') {
+                return thunkAPI.rejectWithValue('');
+            }
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
@@ -186,7 +199,8 @@ export const productInformationSlice = createSlice({
         builder.addCase(
             fetchProductInfoByScuWithColor.rejected,
             (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
+                // state.loading = 'failed';
+                console.log('rejected');
                 state.error = action.payload;
             }
         );

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import nextId from 'react-id-generator';
 import CatalogueItem from './CatalogueItem/CatalogueItem';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { fetchSixCategoriesWithPhoto } from '../../../../store/reducers/homepageCategoriesSlice';
 import renderServerData from '../../../../helpers/renderServerData';
 import './CatalogueBlock.scss';
+import transliterate from '../../../../utils/transliterate';
 
 type CategoryType = {
     categoryId: string;
@@ -37,13 +37,15 @@ const CatalogueBlock = () => {
         });
         const render = sortedData
             .map((category: CategoryType, index) => {
-                const { categoryName, imagePath } = category;
+                const { categoryName, imagePath, categoryId } = category;
                 if (index === 1) return null;
                 return (
                     <CatalogueItem
                         className="catalogue__item item1"
-                        key={nextId('category-home-page')}
-                        href={`/catalog/${categoryName}`}
+                        key={`catalogue-category-${categoryId}-${categoryName}`}
+                        href={`/catalog/${transliterate(
+                            categoryName
+                        )}&categoryId=${categoryId}`}
                         title={categoryName}
                         alt={categoryName}
                         srcImg={imagePath}
@@ -54,8 +56,10 @@ const CatalogueBlock = () => {
         render.push(
             <CatalogueItem
                 className="catalogue__item item1"
-                key={nextId('category-home-page')}
-                href={`/catalog/${sortedData[1].categoryName}`}
+                key={`catalogue-category-${sortedData[1].categoryId}-${sortedData[1].categoryName}`}
+                href={`/catalog/${transliterate(
+                    sortedData[1].categoryName
+                )}&categoryId=${sortedData[1].categoryId}`}
                 title={sortedData[1].categoryName}
                 alt={sortedData[1].categoryName}
                 srcImg={sortedData[1].imagePath}

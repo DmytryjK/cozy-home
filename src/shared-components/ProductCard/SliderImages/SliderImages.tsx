@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo, MouseEvent, useMemo } from 'react';
+import { useState, useEffect, useRef, memo, MouseEvent } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import nextId from 'react-id-generator';
@@ -8,12 +8,15 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
     updateProductColor,
     updateProductSku,
+    fetchProductInfoByScuWithColor,
 } from '../../../store/reducers/productInformationSlice';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Loader from '../../Loader';
+import transliterate from '../../../utils/transliterate';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
-import {
+import type {
+    ProductInformationType,
     Loading,
     ProductCardType,
     ColorDtoList,
@@ -120,12 +123,29 @@ const SliderImages = (props: Props) => {
     const [loading, setLoading] = useState<Loading>('succeeded');
     const [error, setError] = useState<unknown | null>(null);
 
-    const [isLinkClicked, setIsLinkClicked] = useState(false);
-    const currentSkuStore = useAppSelector(
+    const [isLinkClicked, setIsLinkClicked] = useState<{
+        sku: string;
+        color: string;
+        isClicked: boolean;
+    }>({ sku: '', color: '', isClicked: false });
+
+    const productPageLoading = useAppSelector(
+        (state) => state.productInformation.loading
+    );
+    const productPageSku = useAppSelector(
         (state) => state.productInformation.currentSku
     );
-    const currentColorStore = useAppSelector(
+    const productPageHex = useAppSelector(
         (state) => state.productInformation.currentColor
+    );
+    const productPageName = useAppSelector(
+        (state) => state.productInformation.productInfo.name
+    );
+    const productPageCategoryName = useAppSelector(
+        (state) => state.productInformation.productInfo.categoryName
+    );
+    const productCategoryId = useAppSelector(
+        (state) => state.productInformation.productInfo.parentCategoryId
     );
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -161,11 +181,20 @@ const SliderImages = (props: Props) => {
     }, [imageSrc, imageDtoList]);
 
     useEffect(() => {
-        if (!isLinkClicked) return;
-        if (currentSkuStore && currentColorStore) {
-            navigate(`/product/${currentSkuStore}${currentColorStore.id}`);
+        if (productPageLoading === 'failed') {
+            if (
+                isLinkClicked.isClicked === true &&
+                isLinkClicked.sku === skuCode
+            ) {
+                setIsLinkClicked((props) => {
+                    return {
+                        ...props,
+                        isLinkClicked: false,
+                    };
+                });
+            }
         }
-    }, [isLinkClicked, currentSkuStore, currentColorStore]);
+    }, [productPageLoading]);
 
     const handleSlideChange = (
         color: string,
@@ -237,35 +266,95 @@ const SliderImages = (props: Props) => {
         return result;
     };
 
-    const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    const handleLinkClick = async (
+        e: MouseEvent<HTMLAnchorElement>,
+        sku: string,
+        hex: string
+    ) => {
         e.preventDefault();
-        localStorage.setItem('productSkuCode', skuCode);
-        localStorage.setItem(
-            'currentColor',
-            JSON.stringify({
-                hex: currentColor.hex,
-                colorName: currentColor.name,
-                colorStatus: '',
-            })
-        );
-        dispatch(updateProductSku(skuCode));
-        dispatch(
-            updateProductColor({
-                name: currentColor.name,
-                id: currentColor.hex,
-                quantityStatus: '',
-            })
-        );
-        setIsLinkClicked(true);
-    };
+        setIsLinkClicked({ sku, color: hex, isClicked: true });
 
+        if (
+            productPageLoading === 'pending' &&
+            isLinkClicked.isClicked &&
+            isLinkClicked.sku === skuCode
+        ) {
+            return;
+        }
+
+        try {
+            if (
+                !productPageSku ||
+                productPageSku !== sku ||
+                productPageHex?.id !== hex
+            ) {
+                const response = await dispatch(
+                    fetchProductInfoByScuWithColor({
+                        productSkuCode: sku || '',
+                        colorHex: `${hex}`,
+                    })
+                );
+
+                if (!response.payload) {
+                    throw new Error('some error');
+                }
+                const { categoryName, parentCategoryId, colors, name } =
+                    response.payload as ProductInformationType;
+                const colorName = colors.filter((color) => {
+                    return color.id === currentColor.hex;
+                });
+                const translitCategName = transliterate(categoryName);
+                const translitProdName = transliterate(name);
+                const translitColorName = transliterate(colorName[0].name);
+                dispatch(updateProductSku(skuCode));
+                dispatch(
+                    updateProductColor({
+                        name: colorName[0].name,
+                        id: colorName[0].id,
+                        quantityStatus: colorName[0].quantityStatus,
+                    })
+                );
+
+                const redirectUrl = `/catalog/${translitCategName}&categoryId=${parentCategoryId}/product?name=${translitProdName}&color=${translitColorName}&sku=${sku}&hex=${hex.replace(
+                    '#',
+                    ''
+                )}`;
+                setIsLinkClicked({ sku, color: hex, isClicked: false });
+                navigate(redirectUrl);
+            } else if (productPageHex) {
+                const redirectUrl = `/catalog/${transliterate(
+                    productPageCategoryName
+                )}&categoryId=${productCategoryId}/product?name=${transliterate(
+                    productPageName
+                )}&color=${transliterate(
+                    productPageHex.name
+                )}&sku=${sku}&hex=${hex.replace('#', '')}`;
+                navigate(redirectUrl);
+            }
+        } catch (error: any) {
+            setIsLinkClicked({ sku, color: hex, isClicked: false });
+        }
+    };
     return (
         <>
             <NavLink
                 className="product-card__slider-link"
-                to={`/product/${skuCode}${currentColor.hex}`}
-                onClick={handleLinkClick}
+                to={`/prefetch/${skuCode}/${currentColor.hex.replace('#', '')}`}
+                onClick={(e) => handleLinkClick(e, skuCode, currentColor.hex)}
             >
+                {productPageLoading === 'pending' &&
+                isLinkClicked.isClicked &&
+                isLinkClicked.sku === skuCode ? (
+                    <div className="product-card__preload-page">
+                        <span className="product-card-preload__loading-dots">
+                            <span className="product-card-preload__loading-dot" />
+                            <span className="product-card-preload__loading-dot" />
+                            <span className="product-card-preload__loading-dot" />
+                        </span>
+                    </div>
+                ) : (
+                    ''
+                )}
                 <Swiper
                     className="product-card__slider"
                     slidesPerView={1}
@@ -325,8 +414,13 @@ const SliderImages = (props: Props) => {
                     <h2 className="product-card__title">
                         <NavLink
                             className="product-card__title-link"
-                            to={`/product/${skuCode}${currentColor.hex}`}
-                            onClick={handleLinkClick}
+                            to={`/prefetch/${skuCode}/${currentColor.hex.replace(
+                                '#',
+                                ''
+                            )}`}
+                            onClick={(e) =>
+                                handleLinkClick(e, skuCode, currentColor.hex)
+                            }
                         >
                             {name}
                         </NavLink>

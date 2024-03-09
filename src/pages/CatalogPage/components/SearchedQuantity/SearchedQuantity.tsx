@@ -1,4 +1,5 @@
 import { useAppSelector } from '../../../../hooks/hooks';
+import SearchByKeyword from './SearchByKeyword/SearchByKeyword';
 import pluralizeUkrainian from '../../../../helpers/pluralizeUkrainian';
 import './SearchedQuantity.scss';
 
@@ -17,6 +18,7 @@ const SearchedQuantity = () => {
                     'товарів',
                 ])}
             </span>
+            <SearchByKeyword />
         </div>
     );
 };

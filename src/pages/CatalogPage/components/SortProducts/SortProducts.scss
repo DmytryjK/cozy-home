@@ -77,7 +77,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1012px) {
 	.sort {
         &__open-btn {
             min-width: auto;
@@ -85,6 +85,7 @@
         }
 	}
 }
+
 @media (max-width: 520px) {
     .btn__current-option {
         display: none;

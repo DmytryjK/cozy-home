@@ -12,11 +12,6 @@
 		&_item {
 			color: $light-grey;
 			position: relative;
-
-			&:last-child .active {
-				color: $dark-color;
-				pointer-events: none;
-			}
 			
 			&_link {
 				font-size: 14px;
@@ -36,10 +31,16 @@
 			&:last-child::after {
 				display: none;
 			}
+			&:last-child {
+				color: $dark-color;
+				pointer-events: none;
+			}
 		}
+	}
+}
 
-		&_item:last-child {
-			color: $dark-color;
-		}
+@media screen and (max-width: 767px) {
+	.breadcrumbs {
+		display: none;
 	}
 }

@@ -7,7 +7,7 @@ import {
     forwardRef,
 } from 'react';
 import { useLenis } from '@studio-freight/react-lenis';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
 import DropdownMenu from './DropdownMenu';
@@ -19,6 +19,7 @@ import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import TemporatyAdminNavPanel from './TemporatyAdminNavPanel/TemporatyAdminNavPanel';
+import throttle from '../../utils/throttle';
 import './Header.scss';
 import Search from './Search/Search';
 
@@ -57,8 +58,6 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
     const dropdownMenu = document.getElementsByClassName('dropdown-menu');
     const dispatch = useAppDispatch();
 
-    const navigate = useNavigate();
-
     const navTabs: Tab[] = [
         {
             id: 1,
@@ -94,9 +93,7 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
         },
     ];
 
-    const lenis = useLenis(({ scroll }) => {
-        //
-    });
+    const lenis = useLenis(({ scroll }) => {});
 
     useEffect(() => {
         dispatch(fetchCategoriesWithSubcategories());
@@ -119,7 +116,8 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
             }
         };
         checkWindowSize();
-        window.addEventListener('resize', checkWindowSize);
+        const throttleCheckWindowSize = throttle(checkWindowSize, 300);
+        window.addEventListener('resize', throttleCheckWindowSize);
     }, []);
 
     useEffect(() => {
@@ -132,7 +130,8 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
                 setIsScrolled(true);
             }
         };
-        window.addEventListener('scroll', handleScroll);
+        const throttleScroll = throttle(handleScroll, 500);
+        window.addEventListener('scroll', throttleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -170,29 +169,35 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
         }
     }, []);
 
-    const handleCloseCartPreview = useCallback((event: MouseEvent) => {
-        const target = event.target as HTMLElement;
-        if (
-            !target.matches('.header') &&
-            !target.matches('.header__icons') &&
-            !target.closest('.header-icons__cart') &&
-            !target.closest('.cart-dropdown')
-        ) {
-            setIsPreviewCartActive(false);
-        }
-    }, []);
+    const handleCloseCartPreview = useCallback(
+        throttle((event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (
+                !target.matches('.header') &&
+                !target.matches('.header__icons') &&
+                !target.closest('.header-icons__cart') &&
+                !target.closest('.cart-dropdown')
+            ) {
+                setIsPreviewCartActive(false);
+            }
+        }, 100),
+        []
+    );
 
-    const handleCloseAuthDropdown = useCallback((event: MouseEvent) => {
-        const target = event.target as HTMLElement;
-        if (
-            !target.matches('.header') &&
-            !target.matches('.header__icons') &&
-            !target.closest('.header__icons-profile') &&
-            !target.closest('.auth-dropdown')
-        ) {
-            setIsAuthDropdownActive(false);
-        }
-    }, []);
+    const handleCloseAuthDropdown = useCallback(
+        throttle((event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (
+                !target.matches('.header') &&
+                !target.matches('.header__icons') &&
+                !target.closest('.header__icons-profile') &&
+                !target.closest('.auth-dropdown')
+            ) {
+                setIsAuthDropdownActive(false);
+            }
+        }, 100),
+        []
+    );
 
     const handleCloseSearch = useCallback((event: MouseEvent) => {
         const target = event.target as HTMLElement;

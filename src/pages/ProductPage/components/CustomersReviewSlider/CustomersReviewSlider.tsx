@@ -30,29 +30,22 @@ type FormValues = {
 };
 
 const CustomersReviewSlider = () => {
+    const [isSliderRendered, setisSliderRendered] = useState(false);
     const [modalActive, setModalActive] = useState<boolean>(false);
     const [ratingError, setRatingError] = useState(false);
     const [rating, setRating] = useState(0);
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
     const [reviewSubmit, setReviewSubmit] = useState<boolean>(false);
     const [timeoutHover, setTimeoutHover] = useState<any>(null);
-    const prevRef = useRef(null);
-    const nextRef = useRef(null);
-
+    const prevRef = useRef<HTMLButtonElement>(null);
+    const nextRef = useRef<HTMLButtonElement>(null);
     const { reviews, skuCode } = useAppSelector(
         (state) => state.productInformation.productInfo
     );
 
-    const { loadingReview, errorReview, currentColor } = useAppSelector(
-        (state) => state.productInformation
-    );
+    const { loadingReview, errorReview, currentColor, loading } =
+        useAppSelector((state) => state.productInformation);
 
-    // const loadingReview = useAppSelector(
-    //     (state) => state.productInformation.loadingReview
-    // );
-    // const errorReview = useAppSelector(
-    //     (state) => state.productInformation.errorReview
-    // );
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -229,10 +222,14 @@ const CustomersReviewSlider = () => {
                     <Swiper
                         spaceBetween={32}
                         slidesPerView={4}
+                        speed={400}
                         modules={[Navigation]}
                         navigation={{
                             prevEl: prevRef.current,
                             nextEl: nextRef.current,
+                        }}
+                        onInit={() => {
+                            setisSliderRendered(true);
                         }}
                         breakpoints={{
                             0: {

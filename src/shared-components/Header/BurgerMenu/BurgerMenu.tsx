@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom';
-import nextId from 'react-id-generator';
 import { useState, useEffect, MouseEvent } from 'react';
 import userScrollWidth from '../../../utils/userScrollWidth';
-import './BurgerMenu.scss';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 import renderServerData from '../../../helpers/renderServerData';
 import { useAppSelector } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
 import { PopUpAuth } from '../Auth/Auth';
+import transliterate from '../../../utils/transliterate';
+import './BurgerMenu.scss';
 
 type Props = {
     isScrolled: boolean;
@@ -60,9 +60,10 @@ const BurgerMenu = (props: Props) => {
     const renderedCategories = () => {
         return data.map((category) => {
             const { name, id } = category;
+            const transliteratedCategoryName = transliterate(name);
             return (
                 <ul
-                    key={nextId('burger-menu-category')}
+                    key={`burger-menu-category-${id}-${name}`}
                     className="burger-menu__list"
                 >
                     <li>
@@ -76,10 +77,9 @@ const BurgerMenu = (props: Props) => {
                             className="burger-menu__list_item"
                         >
                             <NavLink
-                                to={`/catalog/${name}`}
+                                to={`/catalog/${transliteratedCategoryName}&categoryId=${id}`}
                                 className="burger-menu__list_item_title"
                                 onClick={() => setIsOpen(false)}
-                                reloadDocument
                             >
                                 {name}
                             </NavLink>
@@ -112,13 +112,10 @@ const BurgerMenu = (props: Props) => {
                                     const subId = subCategory.id;
                                     return (
                                         <NavLink
-                                            to={`/catalog/${name}/${subName}`}
-                                            key={nextId(
-                                                'burger-menu-subCategory'
-                                            )}
+                                            to={`/catalog/${transliteratedCategoryName}&categoryId=${id}&subId=${subId}`}
+                                            key={`burger-menu-subcategory-${subId}-${subName}`}
                                             className="burger-menu__list_subItems_subItem"
                                             onClick={() => setIsOpen(false)}
-                                            reloadDocument
                                         >
                                             {subName}
                                         </NavLink>
@@ -178,8 +175,15 @@ const BurgerMenu = (props: Props) => {
                         </p>
                     </NavLink>
                     <NavLink
+                        to="/contacts"
+                        className="burger-menu__list_item burger-menu__list"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <p className="burger-menu__list_item_title">Контакти</p>
+                    </NavLink>
+                    <NavLink
                         to="/about"
-                        className="burger-menu__list_item"
+                        className="burger-menu__list_item burger-menu__list"
                         onClick={() => setIsOpen(false)}
                     >
                         <p className="burger-menu__list_item_title">Про нас</p>

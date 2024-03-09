@@ -45,7 +45,9 @@ export interface FilterOptions {
         | string[]
         | number
         | boolean
-        | { id: string; name: string; countOfProducts: number }[];
+        | { id: string; name: string; countOfProducts: number }[]
+        | null;
+    keyWord: string | null;
     countOfPages: number;
     countOfProducts: number;
     parentCategoryId: string;

@@ -12,7 +12,10 @@ const CategoriesList = () => {
     const renderedCategories = () => {
         return data.map((category) => {
             return (
-                <li className="categories-page__item" key={category.id}>
+                <li
+                    className="categories-page__item"
+                    key={`catalog-subcategory-${category.id}-${category.name}`}
+                >
                     <Category category={category} />
                 </li>
             );

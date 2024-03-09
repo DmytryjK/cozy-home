@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useLocation } from 'react-router';
 import { motion } from 'framer-motion';
 import CategoryList from './components/CategoryList/CategoryList';
 import ArrowUp from '../../shared-components/ArrowUp';
@@ -10,7 +12,24 @@ import ProductsList from './components/ProductsList/ProductsList';
 import OpenFiltersButton from './components/OpenFiltersButton/OpenFiltersButton';
 import './CatalogPage.scss';
 
+type ActiveCategory = {
+    name: string;
+    id: string;
+};
+
 const CatalogPage = () => {
+    const [activeCategory, setActiveCategory] = useState<ActiveCategory | null>(
+        null
+    );
+
+    const { pathname } = useLocation();
+    const pathWithoutSubCategory = `/${pathname.substring(
+        0,
+        pathname.indexOf('&subId') !== -1
+            ? pathname.indexOf('&subId')
+            : pathname.length
+    )}`;
+
     const variant = {
         hidden: {
             opacity: 0,
@@ -24,7 +43,6 @@ const CatalogPage = () => {
             },
         },
     };
-
     return (
         <motion.section
             initial="hidden"
@@ -33,8 +51,15 @@ const CatalogPage = () => {
             viewport={{ once: true }}
             className="catalog"
         >
-            <Breadcrumbs />
-            <CategoryList />
+            <Breadcrumbs
+                dynamicParams={[
+                    {
+                        path: `/${pathWithoutSubCategory.split('/')[3]}`,
+                        name: activeCategory?.name || '',
+                    },
+                ]}
+            />
+            <CategoryList setActiveCategory={setActiveCategory} />
             <div className="catalog-content" id="catalog-content">
                 <div className="container container_content-wrapper">
                     <Filters />
@@ -48,7 +73,6 @@ const CatalogPage = () => {
                             <ProductsList />
                         </div>
                         <div className="main-content__bottom">
-                            {/* <Pagination /> */}
                             <Navigation />
                         </div>
                     </div>
