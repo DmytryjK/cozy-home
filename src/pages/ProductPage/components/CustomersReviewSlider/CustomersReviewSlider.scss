@@ -2,7 +2,6 @@
 @import '../../../../style/variables.scss';
 
 .customers-review {
-
 	&__slider-top {
 		display: flex;
 		align-items: center;
@@ -37,18 +36,18 @@
 }
 
 &__prev-btn, &__next-btn {
-		background-color: transparent;
-		padding: 10px;
-		border: none;
-		cursor: pointer;
+	background-color: transparent;
+	padding: 10px;
+	border: none;
+	cursor: pointer;
 }
 
 &__prev-icon, &__next-icon {
-		fill: $grey;
+	fill: $grey;
 }
 
 .swiper-button-disabled svg {
-		fill: $dark-white;
+	fill: $dark-white;
 }
 
 	&__button {

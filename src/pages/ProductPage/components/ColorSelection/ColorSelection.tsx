@@ -1,22 +1,24 @@
 import { useEffect, memo } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import nextId from 'react-id-generator';
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom';
+import { useLenis } from '@studio-freight/react-lenis';
 import {
     updateProductColor,
-    fetchProductInfoByScuWithColor,
     updateProductImages,
 } from '../../../../store/reducers/productInformationSlice';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import { ResponseData } from '../ProductImagesSlider/ProductImagesSlider';
 import { sortColors } from '../../../../shared-components/ProductCard/SliderImages/SliderImages';
-import moveUserToPageUp from '../../../../utils/moveUserToPageUp';
 import './ColorSelection.scss';
+import transliterate from '../../../../utils/transliterate';
 
 type Props = {
     setColorChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ColorSelection = ({ setColorChange }: Props) => {
+    const [search, setSearch] = useSearchParams();
+    const lenis = useLenis(({ scroll }) => {});
+
     const skuCode = useAppSelector(
         (state) => state.productInformation.productInfo.skuCode
     );
@@ -25,9 +27,6 @@ const ColorSelection = ({ setColorChange }: Props) => {
     );
     const currentColor = useAppSelector(
         (state) => state.productInformation.currentColor
-    );
-    const currentSkuCode = useAppSelector(
-        (state) => state.productInformation.currentSku
     );
     const colorDtoSort = sortColors(colorDtoList);
     const localColorCurrent = JSON.parse(
@@ -38,52 +37,24 @@ const ColorSelection = ({ setColorChange }: Props) => {
                 quantityStatus: '',
             })
     );
-    const { hex, colorName } = localColorCurrent;
-    const localProductSku = localStorage.getItem('productSkuCode');
-    const { pathname, hash } = useLocation();
+    const localHex = localColorCurrent.hex;
 
     const dispatch = useAppDispatch();
-    const currentPath = useLocation().pathname;
+    const { pathname } = useLocation();
 
     useEffect(() => {
-        const regex = /\D/g;
-        const skuFromLink = pathname.replace(regex, ''); // Удаляем все, кроме цифр
-        if (skuFromLink === skuCode) return;
-        moveUserToPageUp('productPage');
-        dispatch(
-            fetchProductInfoByScuWithColor({
-                productSkuCode: skuFromLink,
-                colorHex: hash,
-            })
-        );
-        localStorage.setItem('productSkuCode', skuFromLink);
-        localStorage.setItem(
-            'currentColor',
-            JSON.stringify({
-                hex: hash,
-            })
-        );
-    }, [pathname, hash, skuCode]);
-
-    useEffect(() => {
-        if (!hex || colorDtoSort.length === 0) return;
-        if (!colorDtoSort.some((color) => color.id === hex)) return;
-        const colorName = colorDtoSort.filter((color) => color.id === hex)[0]
-            .name;
-        const colorStatus = colorDtoSort.filter((color) => color.id === hex)[0]
-            .quantityStatus;
-
-        localStorage.setItem(
-            'currentColor',
-            JSON.stringify({
-                hex,
-                colorName,
-                colorStatus,
-            })
-        );
+        if (!localHex || colorDtoSort.length === 0) return;
+        if (!colorDtoSort.some((color) => color.id === localHex)) return;
+        if (currentColor) return;
+        const colorName = colorDtoSort.filter(
+            (color) => color.id === localHex
+        )[0].name;
+        const colorStatus = colorDtoSort.filter(
+            (color) => color.id === localHex
+        )[0].quantityStatus;
         dispatch(
             updateProductColor({
-                id: hex,
+                id: localHex,
                 name: colorName,
                 quantityStatus: colorStatus,
             })
@@ -152,15 +123,28 @@ const ColorSelection = ({ setColorChange }: Props) => {
                                     ? 'out-of-stock'
                                     : ''
                             }`}
-                            key={nextId('product-color')}
+                            key={`product-color-${skuCode}-${color.id}`}
                         >
                             <NavLink
                                 className={`color-selection__link ${
                                     currentColor?.id === id ? 'active-link' : ''
                                 }`}
-                                to={`${currentPath}${id}`}
+                                to={`${pathname}`}
                                 style={{ backgroundColor: `${id}` }}
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    lenis?.scrollTo('top', {
+                                        offset: 0,
+                                        lerp: 0.1,
+                                        duration: 0.5,
+                                        easing: (rawValue: number) => rawValue, // Example easing function
+                                        immediate: false,
+                                        lock: false,
+                                        force: false,
+                                    });
+                                    search.set('hex', id.replace('#', ''));
+                                    search.set('color', transliterate(name));
+                                    setSearch(search);
                                     handleColorChange(id);
                                     dispatch(
                                         updateProductColor({

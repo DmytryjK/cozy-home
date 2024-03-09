@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import throttle from '../../utils/throttle';
 import './ArrowUp.scss';
 
 const ArrowUp = () => {
@@ -13,16 +14,16 @@ const ArrowUp = () => {
         setUserScrollBottom(scrollBottom);
     };
     useEffect(() => {
-        document.addEventListener('scroll', scrollPosition);
+        document.addEventListener('scroll', throttle(scrollPosition, 300));
         return () => document.removeEventListener('scroll', scrollPosition);
     }, []);
 
     useEffect(() => {
         if (
             userScrollTop &&
-            userScrollTop >= 0 &&
+            userScrollTop >= 300 &&
             userScrollBottom &&
-            userScrollBottom > 250
+            userScrollBottom > 300
         ) {
             setIsActive(true);
             return;

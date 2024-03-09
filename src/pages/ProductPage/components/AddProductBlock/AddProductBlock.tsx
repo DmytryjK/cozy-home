@@ -9,6 +9,9 @@ const AddProductBlock = () => {
     const quantityStatus = useAppSelector(
         (state) => state.productInformation.currentColor?.quantityStatus
     );
+    const currentColor = useAppSelector(
+        (state) => state.productInformation.currentColor
+    );
     const isFavorite = useAppSelector(
         (state) => state.productInformation.productInfo.favorite
     );

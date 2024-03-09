@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import './PagePreloader.scss';
-import Loader from '../Loader';
 
 type Props = {
     headerRef: React.MutableRefObject<HTMLDivElement | null>;

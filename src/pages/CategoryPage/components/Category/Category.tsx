@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
 import { cacheImage, getCachedImage } from '../../../../utils/cacheImage';
-import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
-import { useAppDispatch } from '../../../../hooks/hooks';
+import transliterate from '../../../../utils/transliterate';
 import './Category.scss';
 
 type CategoryType = {
@@ -17,7 +16,7 @@ const Category = ({ category }: { category: CategoryType }) => {
     const [isSubCategoriesHide, setIsSubCategoriesHide] = useState<boolean>();
     const { id, name, categoryImagePath, categoryDtos } = category;
     const [cachedImageUrl, setCachedImageUrl] = useState('');
-    const dispatch = useAppDispatch();
+    const transliteratedCategoryName = transliterate(name);
 
     useEffect(() => {
         cacheImage(categoryImagePath);
@@ -57,12 +56,10 @@ const Category = ({ category }: { category: CategoryType }) => {
     return (
         <div className="categories-page__card category-card">
             <NavLink
-                className="category-card__img-link"
-                to={`/catalog/${name}`}
-                onClick={() => {
-                    dispatch(updateCurrentPage(0));
-                }}
-                // reloadDocument
+                className={({ isPending }) =>
+                    `category-card__img-link ${isPending ? 'pending' : ''}`
+                }
+                to={`/catalog/${transliteratedCategoryName}&categoryId=${id}`}
             >
                 <LazyLoad>
                     <img
@@ -78,11 +75,7 @@ const Category = ({ category }: { category: CategoryType }) => {
             <div className="category-card__content">
                 <NavLink
                     className="category-card__main-link"
-                    to={`/catalog/${name}`}
-                    onClick={() => {
-                        dispatch(updateCurrentPage(0));
-                    }}
-                    // reloadDocument
+                    to={`/catalog/${transliteratedCategoryName}&categoryId=${id}`}
                 >
                     {name}
                 </NavLink>
@@ -92,22 +85,18 @@ const Category = ({ category }: { category: CategoryType }) => {
                     }`}
                 >
                     {categoryDtos.map((subcategory) => {
-                        const subName = subcategory.name;
                         const subId = subcategory.id;
+                        const subName = subcategory.name;
                         return (
                             <li
                                 className="category-card__subcategories-item"
-                                key={subcategory.id}
+                                key={`catalog-subcategory-${subId}-${subName}`}
                             >
                                 <NavLink
                                     className="category-card__subcategories-link"
-                                    to={`/catalog/${name}/${subName}`}
-                                    onClick={() => {
-                                        dispatch(updateCurrentPage(0));
-                                    }}
-                                    // reloadDocument
+                                    to={`/catalog/${transliteratedCategoryName}&categoryId=${id}&subId=${subId}`}
                                 >
-                                    {subcategory.name}
+                                    {subName}
                                 </NavLink>
                             </li>
                         );

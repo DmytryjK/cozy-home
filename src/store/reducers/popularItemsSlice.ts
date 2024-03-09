@@ -49,9 +49,8 @@ export const fetchPopularItemsAllProducts = createAsyncThunk(
                 },
                 signal: controller1.signal,
             });
+            if (!response.ok) throw new Error('Помилка завантаження з серверу');
             const result = await response.json();
-
-            if (!response.ok) throw new Error('something went wrong');
 
             return result;
         } catch (error: any) {
@@ -70,7 +69,7 @@ export const fetchPopularItemsAllСategories = createAsyncThunk(
             const response = await fetch(`${API_BASE}category`);
             const result = await response.json();
 
-            if (!response.ok) throw new Error('something went wrong');
+            if (!response.ok) throw new Error('Помилка завантаження з серверу');
 
             return result;
         } catch (error: unknown) {
@@ -104,7 +103,7 @@ export const fetchPopularItemsProductsByСategories = createAsyncThunk(
 
             const result = await response.json();
 
-            if (!response.ok) throw new Error('something went wrong');
+            if (!response.ok) throw new Error('Помилка завантаження з серверу');
 
             return result;
         } catch (error: any) {

@@ -1,5 +1,6 @@
 import { useState, useEffect, FormEvent } from 'react';
 import nextId from 'react-id-generator';
+import { useSearchParams } from 'react-router-dom';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import {
     updateCurrentPage,
@@ -9,6 +10,8 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import './SortProducts.scss';
 
 const SortProducts = () => {
+    const [searchQuery, setSearchQuery] = useSearchParams();
+    const searchKeyword = searchQuery.get('search');
     const [currentSortOption, setCurrentSortOption] = useState<string>('');
     const [isActive, setIsActive] = useState<boolean>(false);
     const filtersSortParam = useAppSelector(
@@ -39,7 +42,12 @@ const SortProducts = () => {
             }
             return;
         }
-        dispatch(fetchCatalogProductsByFilters({ page: 0 }));
+        dispatch(
+            fetchCatalogProductsByFilters({
+                page: 0,
+                search: searchKeyword || null,
+            })
+        );
         dispatch(updateCurrentPage(0));
     }, [filtersSortParam]);
 

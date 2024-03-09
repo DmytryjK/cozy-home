@@ -30,6 +30,7 @@ export interface ProductCardType {
 
 export interface ProductInformationType {
     categoryName: string;
+    parentCategoryId: string;
     subCategoryName: string;
     skuCode: string;
     name: string;

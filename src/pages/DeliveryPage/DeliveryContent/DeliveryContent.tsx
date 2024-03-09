@@ -8,6 +8,7 @@ import delivery3 from '../../../assets/images/delivery/delivery3.png';
 import np from '../../../assets/images/delivery/np_icon.png';
 import up from '../../../assets/images/delivery/up_icon.png';
 import me from '../../../assets/images/delivery/me_icon.png';
+import throttle from '../../../utils/throttle';
 import './DeliveryContent.scss';
 
 type Props = {
@@ -154,7 +155,7 @@ const DeliveryContent = (props: Props) => {
                 }
             });
         };
-        window.addEventListener('scroll', scrolledContent);
+        window.addEventListener('scroll', throttle(scrolledContent, 300));
 
         return () => window.removeEventListener('scroll', scrolledContent);
     }, []);

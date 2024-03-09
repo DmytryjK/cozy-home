@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import nextId from 'react-id-generator';
 import { useParams, useNavigate } from 'react-router';
-import { useLenis, ReactLenis } from '@studio-freight/react-lenis';
+import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
     resetFilters,
@@ -10,6 +10,8 @@ import {
     updateFiltersBodyWithLocalFiltersState,
     updateCurrentPage,
     duplicateFilterOptions,
+    setIsFiltersActive,
+    updateCurrentCategory,
 } from '../../../../store/reducers/catalogFilterSlice';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
 import userScrollWidth from '../../../../utils/userScrollWidth';
@@ -23,7 +25,19 @@ import './Filters.scss';
 import { FilterOptions } from '../../../../types/catalogFiltersTypes';
 
 const Filters = () => {
-    const { categoryName, subCategoryName } = useParams();
+    const { categoryName, subCategoryName, categoryParams } = useParams();
+    const [searchQuery, setSearchQuery] = useSearchParams();
+    const searchKeyword = searchQuery.get('search');
+
+    const categoryId: string | undefined = categoryParams
+        ?.substring(
+            categoryParams.indexOf('categoryId='),
+            categoryParams.indexOf('&subId') !== -1
+                ? categoryParams.indexOf('&subId')
+                : categoryParams.length
+        )
+        .replace('categoryId=', '');
+    // console.log(searchQuery.size);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const isFiltersShowed = useAppSelector(
@@ -44,8 +58,9 @@ const Filters = () => {
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
-    const filterRef = useRef<HTMLDivElement>(null);
-
+    const productsLoading = useAppSelector(
+        (state) => state.catalogProducts.loading
+    );
     const filterLocalMap = filtersData();
 
     useEffect(() => {
@@ -67,24 +82,53 @@ const Filters = () => {
             fetchCatalogProductsByFilters({
                 page: 0,
                 isFiltersActive: false,
+                search: searchKeyword,
             })
         );
         dispatch(
             fetchFiltersOptionsForFilteredProducts({
                 isFiltersActive: false,
+                search: searchKeyword,
             })
         );
     }, [isFiltersCleared]);
 
     useEffect(() => {
+        if (searchKeyword) {
+            dispatch(updateCurrentCategory(categoryId || ''));
+            if (id === categoryId) {
+                dispatch(
+                    fetchCatalogProductsByFilters({
+                        page: 0,
+                        isFiltersActive: false,
+                        search: searchKeyword,
+                    })
+                );
+                dispatch(
+                    fetchFiltersOptionsForFilteredProducts({
+                        isFiltersActive: false,
+                        search: searchKeyword,
+                    })
+                );
+            }
+        }
+    }, [searchKeyword, id, categoryId]);
+
+    useEffect(() => {
         if (!filterOptions) return;
         if (filterOptions.countOfProducts === 0) return;
-        dispatch(duplicateFilterOptions(filterOptions));
-    }, [filterOptions]);
+        if (productsLoading === 'succeeded') {
+            dispatch(duplicateFilterOptions(filterOptions));
+        }
+    }, [filterOptions, productsLoading]);
 
     const renderedFilters = (): JSX.Element | JSX.Element[] | any => {
         if (!filterOptions || !filterOptionsDuplicate) return null;
         if (filterOptions.countOfProducts === 0) {
+            filterOptions = { ...filterOptionsDuplicate } as FilterOptions;
+        }
+
+        if (productsLoading === 'pending' || filterLoading === 'pending') {
             filterOptions = { ...filterOptionsDuplicate } as FilterOptions;
         }
         const render = Object.keys(filterOptions)
@@ -198,7 +242,13 @@ const Filters = () => {
     };
 
     return (
-        <div className={`filters-wrapper ${isFiltersShowed ? 'active' : ''}`}>
+        <div
+            className={`filters-wrapper ${isFiltersShowed ? 'active' : ''} ${
+                filterLoading === 'pending' || productsLoading === 'pending'
+                    ? 'pending-content'
+                    : ''
+            }`}
+        >
             {filterOptions ? (
                 <div
                     className="filters"
@@ -237,6 +287,7 @@ const Filters = () => {
                             dispatch(showHideFilters(false)); // close window on mobile
                             moveUserToPageUp();
                             dispatch(updateCurrentPage(0));
+                            dispatch(setIsFiltersActive(false));
                         }}
                     >
                         <span className="buttons__reject_text">скасувати</span>
@@ -249,13 +300,16 @@ const Filters = () => {
                                 fetchCatalogProductsByFilters({
                                     page: 0,
                                     isFiltersActive: true,
+                                    search: searchKeyword,
                                 })
                             );
                             dispatch(
                                 fetchFiltersOptionsForFilteredProducts({
                                     isFiltersActive: true,
+                                    search: searchKeyword,
                                 })
                             );
+                            dispatch(setIsFiltersActive(true));
                             dispatch(updateFiltersBodyWithLocalFiltersState());
                             dispatch(updateCurrentPage(0));
                             moveUserToPageUp();

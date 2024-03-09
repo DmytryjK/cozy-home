@@ -5,7 +5,7 @@ import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import { API_BASE } from '../../utils/API_BASE';
 import fetchData from '../../utils/fetchData';
 
-const PRODUCTS_SIZE = 6;
+const PRODUCTS_SIZE = 9;
 interface CatalogProductsState {
     catalogProducts: ProductCardType[];
     loading: Loading;
@@ -26,7 +26,12 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
         {
             page = null,
             isFiltersActive = false,
-        }: { page?: number | null; isFiltersActive?: boolean },
+            search = null,
+        }: {
+            page?: number | null;
+            isFiltersActive?: boolean;
+            search?: string | null;
+        },
         thunkAPI
     ) {
         if (controller) {
@@ -41,12 +46,12 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
             const activeSortParams = filtersSort
                 ? `&fieldName=${filtersSort.fieldName}&direction=${filtersSort.direction}`
                 : '';
-
+            const searchQuery = search ? `&keyWord=${encodeURI(search)}` : '';
             const response = await fetchData({
                 method: 'POST',
                 request: `${API_BASE}product/filter?page=${
                     page !== null ? page : currentPage
-                }&size=${PRODUCTS_SIZE}${activeSortParams}`,
+                }&size=${PRODUCTS_SIZE}${activeSortParams}${searchQuery}`,
                 body: {
                     ...filterInvalidBodyParams(
                         isFiltersActive ? localFiltersState : filtersBody
@@ -77,7 +82,10 @@ export const fetchCatalogProductsByFilters = createAsyncThunk(
 
 export const fetchCatalogProductsByCategories = createAsyncThunk(
     'catalogProducts/fetchCatalogProductsByCategories',
-    async function (id: string, thunkAPI) {
+    async function (
+        { id, page = null }: { id: string; page?: null | number },
+        thunkAPI
+    ) {
         if (controller) {
             controller.abort();
         }
@@ -89,7 +97,9 @@ export const fetchCatalogProductsByCategories = createAsyncThunk(
             const { currentPage } = state.catalogFilters;
             const response = await fetchData({
                 method: 'GET',
-                request: `${API_BASE}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}&page=${currentPage}`,
+                request: `${API_BASE}product/catalog/category?categoryId=${id}&size=${PRODUCTS_SIZE}&page=${
+                    page ?? currentPage
+                }`,
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                     ...(jwtToken

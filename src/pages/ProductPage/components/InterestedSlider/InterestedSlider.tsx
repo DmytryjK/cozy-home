@@ -12,11 +12,12 @@ const InterestedSlider = () => {
     const collection = useAppSelector(
         (state) => state.productInformation.productInfo.collection
     );
-    const storageCurrentSku = localStorage.getItem('productSkuCode');
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (!collection.id || skuCode !== storageCurrentSku) return;
+        const storageCurrentSku = localStorage.getItem('productSkuCode');
+        if (!collection || !collection.id || skuCode !== storageCurrentSku)
+            return;
         dispatch(
             fetchMightBeInterestProducts({
                 collectionId: collection.id,

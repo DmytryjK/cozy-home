@@ -6,7 +6,7 @@ import './ProductsList.scss';
 import Skeleton from '../../../../shared-components/ProductCard/Skeleton/Skeleton';
 
 const ProductsList = () => {
-    const skeletonKeys = [...Array(6)].map((_, index) =>
+    const skeletonKeys = [...Array(9)].map((_, index) =>
         nextId(`skeleton-card`)
     );
     const catalogProducts = useAppSelector(

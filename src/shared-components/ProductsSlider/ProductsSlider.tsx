@@ -105,7 +105,9 @@ const ProductsSlider = (props: Props) => {
                             prevEl: prevRef.current,
                             nextEl: nextRef.current,
                         }}
-                        onInit={() => setisSliderRendered(true)}
+                        onInit={() => {
+                            setisSliderRendered(true);
+                        }}
                         breakpoints={{
                             0: {
                                 slidesPerView: 'auto',

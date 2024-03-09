@@ -11,6 +11,7 @@ const moveUserToPageUp = (selectorId = 'catalog-content', offset = -80) => {
         catalogProductsHtml.getBoundingClientRect().top +
         window.pageYOffset +
         yOffset;
+
     window.scrollTo({ top: y, behavior: 'smooth' });
 };
 

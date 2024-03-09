@@ -25,7 +25,11 @@ const renderServerData = (props: Props) => {
     );
 
     if (error) {
-        render = <ErrorMessage />;
+        render = (
+            <ErrorMessage
+                message={(error as { message: string }).message || undefined}
+            />
+        );
     } else if (loading === 'succeeded') {
         render = content();
     }

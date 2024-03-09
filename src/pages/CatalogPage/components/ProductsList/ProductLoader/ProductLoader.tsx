@@ -10,7 +10,16 @@ import { useAppSelector, useAppDispatch } from '../../../../../hooks/hooks';
 import './ProductLoader.scss';
 
 const ProductLoader = () => {
-    const { categoryName, subCategoryName } = useParams();
+    const { categoryParams } = useParams();
+    // const categoryParams = params.categoryName;
+
+    const categoryName = categoryParams?.substring(
+        0,
+        categoryParams.indexOf('&')
+    );
+    const categoryId: string | undefined = categoryParams
+        ?.substring(categoryParams.indexOf('Id='), categoryParams.length)
+        .replace('Id=', '');
     const [clearedFilters, setClearedFilters] = useState<boolean>(false);
     const { loading, error, catalogProducts } = useAppSelector(
         (state) => state.catalogProducts
@@ -54,10 +63,10 @@ const ProductLoader = () => {
                         type="button"
                         onClick={() => {
                             if (!id) return;
-                            if (subCategoryName) {
-                                navigate(`/catalog/${categoryName}`);
-                                return;
-                            }
+                            // if (subCategoryName) {
+                            //     navigate(`/catalog/${categoryName}`);
+                            //     return;
+                            // }
                             dispatch(resetFilters(id));
                             setClearedFilters(true);
                         }}

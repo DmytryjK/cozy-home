@@ -5,13 +5,19 @@ import { showHideFilters } from '../../../../store/reducers/catalogFilterSlice';
 const OpenFiltersButton = () => {
     const dispatch = useAppDispatch();
     const { isFiltersShowed } = useAppSelector((state) => state.catalogFilters);
+    const filtersLoading = useAppSelector(
+        (state) => state.catalogFilters.loading
+    );
+    const productsLoading = useAppSelector(
+        (state) => state.catalogProducts.loading
+    );
 
     const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         dispatch(showHideFilters(!isFiltersShowed));
     };
 
-    return (
+    return productsLoading === 'succeeded' && filtersLoading === 'succeeded' ? (
         <button
             className="main-content__filters-btn"
             type="button"
@@ -19,6 +25,8 @@ const OpenFiltersButton = () => {
         >
             Фільтри
         </button>
+    ) : (
+        <span />
     );
 };
 

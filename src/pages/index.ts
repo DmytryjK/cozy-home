@@ -21,6 +21,9 @@ const AboutUsPage = lazy(() => import('./AboutUsPage/AboutUsPage'));
 const GoogleAuthPage = lazy(() => import('./GoogleAuthPage/GoogleAuthPage'));
 const DeliveryPage = lazy(() => import('./DeliveryPage/DeliveryPage'));
 const NotFoundPage = lazy(() => import('./NotFoundPage/NotFoundPage'));
+const PrefetchProductPage = lazy(
+    () => import('./PrefetchProductPage/PrefetchProductPage')
+);
 
 export {
     MainPage,
@@ -38,4 +41,5 @@ export {
     DeliveryPage,
     NotFoundPage,
     CheckoutSuccessPage,
+    PrefetchProductPage,
 };

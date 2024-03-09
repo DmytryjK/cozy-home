@@ -1,11 +1,11 @@
 import { MouseEvent, memo } from 'react';
 import './DropdownMenu.scss';
 import '../Header.scss';
-import nextId from 'react-id-generator';
 import { NavLink } from 'react-router-dom';
 import renderServerData from '../../../helpers/renderServerData';
 import { useAppSelector } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
+import transliterate from '../../../utils/transliterate';
 
 type Props = {
     handleMouseOut: (event: MouseEvent) => void;
@@ -17,17 +17,19 @@ const DropdownMenu = (props: Props) => {
     const { error, loading, data } = useAppSelector(
         (state) => state.categories
     );
-
     const renderedCategories = () => {
         return data.map((category) => {
             const { name, id } = category;
+            const transliteratedCategoryName = transliterate(name);
             return (
                 <ul
-                    key={nextId('main-page-item')}
+                    key={`dropdown-category-${id}-${name}`}
                     className="dropdown-menu__list"
                 >
                     <li className="dropdown-menu__list_title">
-                        <NavLink to={`/catalog/${name}`} reloadDocument>
+                        <NavLink
+                            to={`/catalog/${transliteratedCategoryName}&categoryId=${id}`}
+                        >
                             {name}
                         </NavLink>
                     </li>
@@ -38,12 +40,11 @@ const DropdownMenu = (props: Props) => {
                                 const subName = subCategory.name;
                                 return (
                                     <li
-                                        key={nextId('main-page-item')}
+                                        key={`dropdown-subcategory-${subId}-${subName}`}
                                         className="dropdown-menu__list_items_item"
                                     >
                                         <NavLink
-                                            to={`/catalog/${name}/${subName}`}
-                                            reloadDocument
+                                            to={`/catalog/${transliteratedCategoryName}&categoryId=${id}&subId=${subId}`}
                                         >
                                             {subName}
                                         </NavLink>

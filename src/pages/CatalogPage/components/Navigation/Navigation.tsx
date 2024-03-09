@@ -36,7 +36,11 @@ const Navigation = () => {
     useEffect(() => {
         dispatch(updateCurrentPage(currentPage));
         if (isPaginationInit) return;
-        dispatch(fetchCatalogProductsByFilters({ page: currentPage }));
+        dispatch(
+            fetchCatalogProductsByFilters({
+                page: currentPage,
+            })
+        );
         setIsPaginationInit(true);
     }, [currentPage]);
 

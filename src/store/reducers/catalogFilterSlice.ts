@@ -6,7 +6,7 @@ import filterInvalidBodyParams from '../../helpers/filterInvalidBodyParams';
 import { RootState } from '../store';
 import fetchData from '../../utils/fetchData';
 
-const PRODUCTS_SIZE = 6;
+const PRODUCTS_SIZE = 9;
 
 type FilterSort = {
     title: string;
@@ -49,7 +49,12 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
         {
             categoryId,
             subcategoryId = null,
-        }: { categoryId: string; subcategoryId?: string | null },
+            page = null,
+        }: {
+            categoryId: string;
+            subcategoryId?: string | null;
+            page?: number | null;
+        },
         thunkAPI
     ) {
         if (controller) {
@@ -61,7 +66,9 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
         try {
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=${currentPage}`,
+                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=${
+                    page ?? currentPage
+                }`,
                 body: {
                     parentCategoryId: categoryId,
                     ...(subcategoryId
@@ -88,7 +95,10 @@ export const fetchFiltersOptionsByCategory = createAsyncThunk(
 export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
     'catalogFilter/fetchFiltersOptionsForFilteredProducts',
     async function (
-        { isFiltersActive = false }: { isFiltersActive?: boolean },
+        {
+            isFiltersActive = false,
+            search = null,
+        }: { isFiltersActive?: boolean; search?: string | null },
         thunkAPI
     ) {
         if (controller) {
@@ -99,10 +109,10 @@ export const fetchFiltersOptionsForFilteredProducts = createAsyncThunk(
         try {
             const state = thunkAPI.getState() as RootState;
             const { filtersBody, localFiltersState } = state.catalogFilters;
-
+            const searchQuery = search ? `&keyWord=${encodeURI(search)}` : '';
             const response = await fetchData({
                 method: 'POST',
-                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0`,
+                request: `${API_BASE}product/filter/parameters?size=${PRODUCTS_SIZE}&page=0${searchQuery}`,
                 body: {
                     ...filterInvalidBodyParams(
                         isFiltersActive ? localFiltersState : filtersBody
@@ -176,6 +186,9 @@ export const catalogFilterSlice = createSlice({
             state.filtersBody = { parentCategoryId: action.payload };
             state.localFiltersState = { parentCategoryId: action.payload };
         },
+        setIsFiltersActive(state, action: PayloadAction<boolean>) {
+            state.isFiltersActive = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchFiltersOptionsByCategory.pending, (state) => {
@@ -230,5 +243,6 @@ export const {
     updateFiltersBodyWithLocalFiltersState,
     updateCurrentCategory,
     duplicateFilterOptions,
+    setIsFiltersActive,
 } = catalogFilterSlice.actions;
 export default catalogFilterSlice.reducer;

@@ -6,6 +6,11 @@
 	padding-bottom: 80px;
 	height: calc(100dvh - 280px);
     background-color: white;
+    &.pending-content {
+        user-select: none;
+        pointer-events: none;
+        filter: blur(1px);
+    }
 }
 
 .buttons {
