@@ -31,7 +31,7 @@
 		&_img {
 			width: 80px;
 			height: 40px;
-			transition: width .1s ease-out, height .1s ease-out;
+			transition: width .2s ease-out, height .2s ease-out;
 		}
 	}
 
@@ -163,7 +163,7 @@
 
 @media (max-width: 960px) {
 	.header {
-		transition: height .1s ease-out;
+		transition: height .2s ease-out;
 		&-active {
 			transition: height .3s ease-in-out;
 		}

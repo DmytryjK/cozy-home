@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, memo, MouseEvent } from 'react';
-import { SwiperSlide, Swiper } from 'swiper/react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import nextId from 'react-id-generator';
-import type swiper from 'swiper';
 import LazyLoad from 'react-lazy-load';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
@@ -23,12 +21,7 @@ import type {
     ImageDtoList,
 } from '../../../types/types';
 import { API_BASE } from '../../../utils/API_BASE';
-
-type TSwiper = swiper & {
-    slides: {
-        swiperSlideSize: number;
-    }[];
-};
+import './SliderImages.scss';
 
 export type ImageType = {
     imageSrc: string;
@@ -98,7 +91,6 @@ const sortColorByFirstImg = (
 };
 
 const SliderImages = (props: Props) => {
-    const cardSliderRef = useRef<TSwiper>();
     const {
         productData,
         imagesData,
@@ -205,10 +197,6 @@ const SliderImages = (props: Props) => {
         setCurrentColor({ name: color, hex: id, quantityStatus });
         setIsColorChosen(true);
         setCurrentIndexColor(index);
-
-        if (cardSliderRef?.current) {
-            cardSliderRef.current.slideTo(index);
-        }
         setLoading('idle');
         async function fetchData() {
             try {
@@ -260,6 +248,7 @@ const SliderImages = (props: Props) => {
                 />
             </LazyLoad>
         );
+
         if (loading === 'pending') {
             result = <Loader />;
         }
@@ -355,38 +344,16 @@ const SliderImages = (props: Props) => {
                 ) : (
                     ''
                 )}
-                <Swiper
-                    className="product-card__slider"
-                    slidesPerView={1}
-                    allowTouchMove={false}
-                    onSwiper={(swiper) => {
-                        cardSliderRef.current = swiper as TSwiper;
-                    }}
-                    onSlideChange={(swiper) => {
-                        colorDtoSort.forEach((item, index) => {
-                            if (swiper.activeIndex === index) {
-                                const { name, id, quantityStatus } = item;
-                                setCurrentColor({
-                                    name,
-                                    hex: id,
-                                    quantityStatus,
-                                });
-                            }
-                        });
-                        setIsColorChosen(true);
-                    }}
-                >
-                    {loading === 'pending' ? (
-                        <SwiperSlide>
+                <div className="product-card__slider">
+                    <div className="product-card__image-overflow">
+                        {loading === 'pending' ? (
                             <div className="product-card__image-wrapper">
                                 <Loader />
                             </div>
-                        </SwiperSlide>
-                    ) : (
-                        ''
-                    )}
-                    {colorDtoSort.length === 0 && (
-                        <SwiperSlide>
+                        ) : (
+                            ''
+                        )}
+                        {colorDtoSort.length === 0 && (
                             <div className="product-card__image-wrapper">
                                 <img
                                     className="product-card__image"
@@ -394,20 +361,23 @@ const SliderImages = (props: Props) => {
                                     alt={name}
                                 />
                             </div>
-                        </SwiperSlide>
-                    )}
-                    {colorDtoSort.map((color, index) => {
-                        return (
-                            <SwiperSlide
-                                key={`slider-image-${skuCode}${color.id}`}
-                            >
-                                <div className="product-card__image-wrapper">
+                        )}
+                        {colorDtoSort.map((color, index) => {
+                            return (
+                                <div
+                                    className={`product-card__image-wrapper ${
+                                        currentColor.hex === color.id
+                                            ? 'active'
+                                            : ''
+                                    }`}
+                                    key={`slider-image-${skuCode}${color.id}`}
+                                >
                                     {renderedImage(name, index)}
                                 </div>
-                            </SwiperSlide>
-                        );
-                    })}
-                </Swiper>
+                            );
+                        })}
+                    </div>
+                </div>
             </NavLink>
             <div className="product-card__content swiper-no-swiping">
                 <div className="product-card__content-top">
@@ -451,6 +421,14 @@ const SliderImages = (props: Props) => {
                                                 quantityStatus
                                             )
                                         }
+                                        onClick={() => {
+                                            setCurrentColor({
+                                                name,
+                                                hex: id,
+                                                quantityStatus,
+                                            });
+                                            setIsColorChosen(true);
+                                        }}
                                     />
                                     <span
                                         className={`product-card__checked-checkbox ${

@@ -124,9 +124,9 @@ const Header = forwardRef<HTMLDivElement>(function Header(props, ref) {
         const handleScroll = () => {
             const currentScrollPos =
                 window.pageYOffset || document.documentElement.scrollTop;
-            if (currentScrollPos < 60) {
+            if (currentScrollPos <= 150) {
                 setIsScrolled(false);
-            } else if (currentScrollPos > 60) {
+            } else if (currentScrollPos > 150) {
                 setIsScrolled(true);
             }
         };

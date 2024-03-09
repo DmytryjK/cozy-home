@@ -15,7 +15,7 @@ import AddProductBlock from '../AddProductBlock/AddProductBlock';
 import Accordeon from '../Accordeon/Accordeon';
 import pluralizeUkrainian from '../../../../helpers/pluralizeUkrainian';
 import renderServerData from '../../../../helpers/renderServerData';
-import type { ProductInformationType } from '../../../../types/types';
+import './ProductInfoContainer.scss';
 
 const ProductInfoContainer = () => {
     const [search, setSearch] = useSearchParams();
@@ -101,7 +101,7 @@ const ProductInfoContainer = () => {
     const renderData = () => {
         return (
             <motion.div
-                className="product-page__wrapper container"
+                className="product-page__wrapper container container_no-padding"
                 variants={variant}
                 initial="hidden"
                 whileInView="visible"
