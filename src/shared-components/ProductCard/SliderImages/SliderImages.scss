@@ -57,4 +57,22 @@
         object-fit: cover;
         user-select: none;
     }
+
+    .error-message_small {
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        background-color: $accent-color;
+    }
+    .error-message__text {
+        color: white;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .error-message__icon {
+        display: none;
+    }
 }

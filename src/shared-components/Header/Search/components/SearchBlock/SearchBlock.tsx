@@ -1,23 +1,20 @@
-import { useEffect, useRef, useState, memo, MouseEvent } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { motion } from 'framer-motion';
 import nextId from 'react-id-generator';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../../../../hooks/hooks';
+import { NavLink } from 'react-router-dom';
+import { useAppSelector } from '../../../../../hooks/hooks';
 import headerSprite from '../../../../../assets/icons/header/header-sprite.svg';
 import renderServerData from '../../../../../helpers/renderServerData';
 import addSpaceToPrice from '../../../../../utils/addSpaceToPrice';
 import transliterate from '../../../../../utils/transliterate';
-import {
-    fetchProductInfoByScuWithColor,
-    updateProductSku,
-    updateProductColor,
-} from '../../../../../store/reducers/productInformationSlice';
-import type { ProductInformationType } from '../../../../../types/types';
-
+import usePrefetchProduct from '../../../../../hooks/usePrefetchProduct';
+import { PrefetchProductPageLoader } from '../../../../Loaders';
 import './SearchBlock.scss';
+import { ErrorMessageSmall } from '../../../../UserMessages/UserMessages';
 
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
     searchValue: string;
     inputValue: string;
     setInputValue: React.Dispatch<React.SetStateAction<string>>;
@@ -30,6 +27,7 @@ const SearchBlock = (props: Props) => {
     const MAX_SHOW_CATEGORIES = 2;
     const {
         setIsOpen,
+        isOpen,
         searchValue,
         inputValue,
         setInputValue,
@@ -38,34 +36,17 @@ const SearchBlock = (props: Props) => {
         setIsSearchFocus,
     } = props;
     const [isCategoriesListOpened, setIsCategoriesListOpened] = useState(false);
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-
-    const [isLinkClicked, setIsLinkClicked] = useState<{
-        sku: string;
-        color: string;
-        isClicked: boolean;
-    }>({ sku: '', color: '', isClicked: false });
-
+    const [isSubscribedPrefetch, setIsSubscribedPrefetch] = useState(
+        isOpen || isMobileSearchOpen
+    );
+    const {
+        handleProductClick,
+        loadingPrefetch,
+        errorPrefetch,
+        isLinkClicked,
+        setErrorPrefetch,
+    } = usePrefetchProduct(isSubscribedPrefetch);
     const { loading, error, data } = useAppSelector((state) => state.search);
-    const productPageLoading = useAppSelector(
-        (state) => state.productInformation.loading
-    );
-    const productPageSku = useAppSelector(
-        (state) => state.productInformation.currentSku
-    );
-    const productPageHex = useAppSelector(
-        (state) => state.productInformation.currentColor
-    );
-    const productPageCategoryName = useAppSelector(
-        (state) => state.productInformation.productInfo.categoryName
-    );
-    const productCategoryId = useAppSelector(
-        (state) => state.productInformation.productInfo.parentCategoryId
-    );
-    const productPageName = useAppSelector(
-        (state) => state.productInformation.productInfo.name
-    );
     const toggleList = useRef<HTMLUListElement>(null);
     const searchedItems = useRef<HTMLDivElement>(null);
 
@@ -82,79 +63,21 @@ const SearchBlock = (props: Props) => {
         autoCalculateHeightOfItem(toggleList);
     }, []);
 
-    const handleProductClick = async (
-        e: MouseEvent<HTMLAnchorElement>,
-        sku: string,
-        hex: string
-    ) => {
-        e.preventDefault();
-        setIsLinkClicked({ sku, color: hex, isClicked: true });
-
-        if (
-            productPageLoading === 'pending' &&
-            isLinkClicked.isClicked &&
-            isLinkClicked.sku === productPageSku
-        ) {
-            return;
+    useEffect(() => {
+        if (loadingPrefetch === 'succeeded' && !isLinkClicked.isClicked) {
+            setIsOpen(false);
+            setIsMobileSearchOpen(false);
         }
+    }, [loadingPrefetch, isLinkClicked]);
 
-        try {
-            if (
-                !productPageSku ||
-                productPageSku !== sku ||
-                productPageHex?.id !== hex
-            ) {
-                const response = await dispatch(
-                    fetchProductInfoByScuWithColor({
-                        productSkuCode: sku || '',
-                        colorHex: `${hex}`,
-                    })
-                );
-                if (!response.payload) {
-                    throw new Error('some error');
-                }
-
-                const { categoryName, parentCategoryId, colors, name } =
-                    response.payload as ProductInformationType;
-                const colorName = colors.filter((color) => {
-                    return color.id === hex;
-                });
-                const translitCategName = transliterate(categoryName);
-                const translitProdName = transliterate(name);
-                const translitColorName = transliterate(colorName[0].name);
-
-                dispatch(updateProductSku(sku));
-                dispatch(
-                    updateProductColor({
-                        name: colorName[0].name,
-                        id: colorName[0].id,
-                        quantityStatus: colorName[0].quantityStatus,
-                    })
-                );
-                const redirectUrl = `/catalog/${translitCategName}&categoryId=${parentCategoryId}/product?name=${translitProdName}&color=${translitColorName}&sku=${sku}&hex=${hex.replace(
-                    '#',
-                    ''
-                )}`;
-                setIsLinkClicked({ sku, color: hex, isClicked: false });
-                setIsOpen(false);
-                setIsMobileSearchOpen(false);
-                navigate(redirectUrl);
-            } else if (productPageHex) {
-                const redirectUrl = `/catalog/${transliterate(
-                    productPageCategoryName
-                )}&categoryId=${productCategoryId}/product?name=${transliterate(
-                    productPageName
-                )}&color=${transliterate(
-                    productPageHex.name
-                )}&sku=${sku}&hex=${hex.replace('#', '')}`;
-                setIsOpen(false);
-                setIsMobileSearchOpen(false);
-                navigate(redirectUrl);
-            }
-        } catch (error: any) {
-            setIsLinkClicked({ sku, color: hex, isClicked: false });
+    useEffect(() => {
+        if (!isMobileSearchOpen || !isOpen) {
+            setIsSubscribedPrefetch(false);
+        } else {
+            setIsSubscribedPrefetch(true);
+            setErrorPrefetch(null);
         }
-    };
+    }, [isMobileSearchOpen, isOpen]);
 
     const splitPhrase = (productName: string) => {
         const regex = new RegExp(searchValue, 'i');
@@ -226,21 +149,22 @@ const SearchBlock = (props: Props) => {
                                 );
                             });
                         };
+
                         return (
                             <li
                                 className="searchBlock__product-item"
                                 key={`searched-product-${skuCode}-${colorHex}`}
                             >
-                                {productPageLoading === 'pending' &&
+                                {loadingPrefetch === 'pending' &&
                                 isLinkClicked.isClicked &&
                                 isLinkClicked.sku === skuCode ? (
-                                    <div className="preload-page">
-                                        <span className="loading-dots">
-                                            <span className="loading-dot" />
-                                            <span className="loading-dot" />
-                                            <span className="loading-dot" />
-                                        </span>
-                                    </div>
+                                    <PrefetchProductPageLoader />
+                                ) : (
+                                    ''
+                                )}
+                                {errorPrefetch &&
+                                isLinkClicked.sku === skuCode ? (
+                                    <ErrorMessageSmall text="Помилка завантаження" />
                                 ) : (
                                     ''
                                 )}
@@ -299,7 +223,7 @@ const SearchBlock = (props: Props) => {
                                 <NavLink
                                     className="searchBlock__category-link"
                                     to={`/catalog/${transliteratedName}&categoryId=${id}?search=${searchValue}`}
-                                    onClick={(e) => {
+                                    onClick={() => {
                                         setIsOpen(false);
                                         setIsMobileSearchOpen(false);
                                     }}

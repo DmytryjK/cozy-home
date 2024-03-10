@@ -7,7 +7,7 @@ import { userForgotPasswordRequest } from '../../../../store/reducers/authSlice'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import formValidation from '../../../../utils/formValidation';
 import { EmailInput } from '../../../FormComponents/Inputs';
-import Loader from '../../../Loader';
+import Loader from '../../../Loaders/components/Loader';
 import './PopUpForgottenPassword.scss';
 
 interface FormValues {

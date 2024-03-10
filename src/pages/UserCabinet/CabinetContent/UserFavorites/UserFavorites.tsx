@@ -4,7 +4,7 @@ import NavigationListOfCategories from '../../../../shared-components/Navigation
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
 import Pagination2 from '../../../../shared-components/Pagination2/Pagination2';
 import { useAppSelector } from '../../../../hooks/hooks';
-import Loader from '../../../../shared-components/Loader';
+import Loader from '../../../../shared-components/Loaders/components/Loader';
 import type { ProductCardType } from '../../../../types/types';
 import { FavoritesContext } from '../CabinetContent';
 

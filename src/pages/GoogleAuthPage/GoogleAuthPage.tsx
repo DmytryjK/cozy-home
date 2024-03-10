@@ -8,7 +8,7 @@ import {
 } from '../../shared-components/UserMessages/UserMessages';
 import ErrorMessage from '../../shared-components/UserMessages/ErrorMessage';
 import './GoogleAuthPage.scss';
-import Loader from '../../shared-components/Loader';
+import Loader from '../../shared-components/Loaders/components/Loader';
 
 const GoogleAuthPage = () => {
     const dispatch = useAppDispatch();

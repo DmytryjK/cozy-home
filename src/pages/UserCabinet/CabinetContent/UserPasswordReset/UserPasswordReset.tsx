@@ -7,7 +7,7 @@ import {
 } from '../../../../store/reducers/userActionsSlice';
 import formValidation from '../../../../utils/formValidation';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import Loader from '../../../../shared-components/Loader';
+import Loader from '../../../../shared-components/Loaders/components/Loader';
 import {
     ErrorMessageSmall,
     SuccessMessage,

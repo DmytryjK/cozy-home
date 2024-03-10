@@ -1,24 +1,19 @@
-import { useState, useEffect, memo, MouseEvent } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import nextId from 'react-id-generator';
 import LazyLoad from 'react-lazy-load';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import {
-    updateProductColor,
-    updateProductSku,
-    fetchProductInfoByScuWithColor,
-} from '../../../store/reducers/productInformationSlice';
-import Loader from '../../Loader';
-import transliterate from '../../../utils/transliterate';
+import Loader from '../../Loaders/components/Loader';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
 import type {
-    ProductInformationType,
     Loading,
     ProductCardType,
     ColorDtoList,
     ImageDtoList,
 } from '../../../types/types';
 import { API_BASE } from '../../../utils/API_BASE';
+import usePrefetchProduct from '../../../hooks/usePrefetchProduct';
+import { PrefetchProductPageLoader } from '../../Loaders';
+import { ErrorMessageSmall } from '../../UserMessages/UserMessages';
 import './SliderImages.scss';
 
 export type ImageType = {
@@ -96,14 +91,8 @@ const SliderImages = (props: Props) => {
         currentColor,
         setCurrentColor,
     } = props;
-    const {
-        skuCode,
-        name,
-        shortDescription,
-        colorDtoList,
-        imageDtoList,
-        favorite,
-    } = productData;
+    const { skuCode, name, shortDescription, colorDtoList, imageDtoList } =
+        productData;
 
     const [currentIndexColor, setCurrentIndexColor] = useState<number>(0);
     const [sortedColorDto, setSortedColorDto] = useState(colorDtoList);
@@ -114,32 +103,13 @@ const SliderImages = (props: Props) => {
     const [loading, setLoading] = useState<Loading>('succeeded');
     const [error, setError] = useState<unknown | null>(null);
 
-    const [isLinkClicked, setIsLinkClicked] = useState<{
-        sku: string;
-        color: string;
-        isClicked: boolean;
-    }>({ sku: '', color: '', isClicked: false });
-
-    const productPageLoading = useAppSelector(
-        (state) => state.productInformation.loading
-    );
-    const productPageSku = useAppSelector(
-        (state) => state.productInformation.currentSku
-    );
-    const productPageHex = useAppSelector(
-        (state) => state.productInformation.currentColor
-    );
-    const productPageName = useAppSelector(
-        (state) => state.productInformation.productInfo.name
-    );
-    const productPageCategoryName = useAppSelector(
-        (state) => state.productInformation.productInfo.categoryName
-    );
-    const productCategoryId = useAppSelector(
-        (state) => state.productInformation.productInfo.parentCategoryId
-    );
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    const {
+        loadingPrefetch,
+        handleProductClick,
+        errorPrefetch,
+        isLinkClicked,
+        isCanceledByUser,
+    } = usePrefetchProduct();
 
     useEffect(() => {
         setSortedColorDto(sortColorByFirstImg(colorDtoList, imageDtoList));
@@ -177,22 +147,6 @@ const SliderImages = (props: Props) => {
             }
         }
     }, [imageSrc, imageDtoList, sortedColorDto]);
-
-    useEffect(() => {
-        if (productPageLoading === 'failed') {
-            if (
-                isLinkClicked.isClicked === true &&
-                isLinkClicked.sku === skuCode
-            ) {
-                setIsLinkClicked((props) => {
-                    return {
-                        ...props,
-                        isLinkClicked: false,
-                    };
-                });
-            }
-        }
-    }, [productPageLoading]);
 
     const handleSlideChange = (
         color: string,
@@ -262,92 +216,26 @@ const SliderImages = (props: Props) => {
         return result;
     };
 
-    const handleLinkClick = async (
-        e: MouseEvent<HTMLAnchorElement>,
-        sku: string,
-        hex: string
-    ) => {
-        e.preventDefault();
-        setIsLinkClicked({ sku, color: hex, isClicked: true });
-
-        if (
-            productPageLoading === 'pending' &&
-            isLinkClicked.isClicked &&
-            isLinkClicked.sku === skuCode
-        ) {
-            return;
-        }
-
-        try {
-            if (
-                !productPageSku ||
-                productPageSku !== sku ||
-                productPageHex?.id !== hex
-            ) {
-                const response = await dispatch(
-                    fetchProductInfoByScuWithColor({
-                        productSkuCode: sku || '',
-                        colorHex: `${hex}`,
-                    })
-                );
-
-                if (!response.payload) {
-                    throw new Error('some error');
-                }
-                const { categoryName, parentCategoryId, colors, name } =
-                    response.payload as ProductInformationType;
-                const colorName = colors.filter((color) => {
-                    return color.id === currentColor.hex;
-                });
-                const translitCategName = transliterate(categoryName);
-                const translitProdName = transliterate(name);
-                const translitColorName = transliterate(colorName[0].name);
-                dispatch(updateProductSku(skuCode));
-                dispatch(
-                    updateProductColor({
-                        name: colorName[0].name,
-                        id: colorName[0].id,
-                        quantityStatus: colorName[0].quantityStatus,
-                    })
-                );
-
-                const redirectUrl = `/catalog/${translitCategName}&categoryId=${parentCategoryId}/product?name=${translitProdName}&color=${translitColorName}&sku=${sku}&hex=${hex.replace(
-                    '#',
-                    ''
-                )}`;
-                setIsLinkClicked({ sku, color: hex, isClicked: false });
-                navigate(redirectUrl);
-            } else if (productPageHex) {
-                const redirectUrl = `/catalog/${transliterate(
-                    productPageCategoryName
-                )}&categoryId=${productCategoryId}/product?name=${transliterate(
-                    productPageName
-                )}&color=${transliterate(
-                    productPageHex.name
-                )}&sku=${sku}&hex=${hex.replace('#', '')}`;
-                navigate(redirectUrl);
-            }
-        } catch (error: any) {
-            setIsLinkClicked({ sku, color: hex, isClicked: false });
-        }
-    };
     return (
         <>
             <NavLink
                 className="product-card__slider-link"
                 to={`/prefetch/${skuCode}/${currentColor.hex.replace('#', '')}`}
-                onClick={(e) => handleLinkClick(e, skuCode, currentColor.hex)}
+                onClick={(e) => {
+                    e.preventDefault();
+                    handleProductClick(e, skuCode, currentColor.hex);
+                }}
             >
-                {productPageLoading === 'pending' &&
+                {loadingPrefetch === 'pending' &&
                 isLinkClicked.isClicked &&
-                isLinkClicked.sku === skuCode ? (
-                    <div className="product-card__preload-page">
-                        <span className="product-card-preload__loading-dots">
-                            <span className="product-card-preload__loading-dot" />
-                            <span className="product-card-preload__loading-dot" />
-                            <span className="product-card-preload__loading-dot" />
-                        </span>
-                    </div>
+                isLinkClicked.sku === skuCode &&
+                !isCanceledByUser ? (
+                    <PrefetchProductPageLoader className="product-card-preloader" />
+                ) : (
+                    ''
+                )}
+                {errorPrefetch ? (
+                    <ErrorMessageSmall text="Помилка завантаження" />
                 ) : (
                     ''
                 )}
@@ -395,9 +283,14 @@ const SliderImages = (props: Props) => {
                                 '#',
                                 ''
                             )}`}
-                            onClick={(e) =>
-                                handleLinkClick(e, skuCode, currentColor.hex)
-                            }
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleProductClick(
+                                    e,
+                                    skuCode,
+                                    currentColor.hex
+                                );
+                            }}
                         >
                             {name}
                         </NavLink>
@@ -457,4 +350,4 @@ const SliderImages = (props: Props) => {
     );
 };
 
-export default memo(SliderImages);
+export default SliderImages;
