@@ -1,10 +1,13 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
 import CartTrashBtn from '../../CartTrashBtn/CartTrashBtn';
 import renderServerData from '../../../helpers/renderServerData';
 import SummaryCart from '../../../pages/ShoppingCartPage/components/SummaryCart/SummaryCart';
 import addSpaceToPrice from '../../../utils/addSpaceToPrice';
+import usePrefetchProduct from '../../../hooks/usePrefetchProduct';
+import { PrefetchProductPageLoader } from '../../Loaders';
+import { ErrorMessageSmall } from '../../UserMessages/UserMessages';
 import './DropdownShoppingCart.scss';
 
 const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
@@ -16,15 +19,13 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
         (state) => state.cart.productsInfoToCheckout
     );
 
-    const handleOpenProductPage = (
-        skuCode: string,
-        colorHex: string,
-        colorName: string
-    ) => {
-        localStorage.setItem('productSkuCode', `${skuCode}`);
-        localStorage.setItem('hex', `${colorHex}`);
-        localStorage.setItem('colorName', `${colorName}`);
-    };
+    const {
+        handleProductClick,
+        loadingPrefetch,
+        errorPrefetch,
+        isLinkClicked,
+        setErrorPrefetch,
+    } = usePrefetchProduct();
 
     const renderCartItems = () => {
         return (
@@ -66,6 +67,12 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                 className="cart-dropdown__item product-item"
                                 key={`dropdown-cart${skuCode}-${colorHex}`}
                             >
+                                {errorPrefetch &&
+                                isLinkClicked.sku === skuCode ? (
+                                    <ErrorMessageSmall text="Помилка завантаження" />
+                                ) : (
+                                    ''
+                                )}
                                 <CartTrashBtn
                                     skuCode={skuCode}
                                     colorHex={colorHex}
@@ -73,13 +80,15 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                 <div className="product-item__info">
                                     <NavLink
                                         className="produt-item__link"
-                                        to={`/product/${skuCode}${colorHex}`}
-                                        // reloadDocument
-                                        onMouseDown={() => {
-                                            handleOpenProductPage(
+                                        to={`/prefetch/${skuCode}/${colorHex.replace(
+                                            '#',
+                                            ''
+                                        )}`}
+                                        onClick={(e) => {
+                                            handleProductClick(
+                                                e,
                                                 skuCode,
-                                                colorHex,
-                                                colorName
+                                                colorHex
                                             );
                                         }}
                                     >
@@ -92,13 +101,15 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                     <div className="product-item__text">
                                         <NavLink
                                             className="product-item__title-link"
-                                            to={`/product/${skuCode}${colorHex}`}
-                                            // reloadDocument
-                                            onMouseDown={() => {
-                                                handleOpenProductPage(
+                                            to={`/prefetch/${skuCode}/${colorHex.replace(
+                                                '#',
+                                                ''
+                                            )}`}
+                                            onClick={(e) => {
+                                                handleProductClick(
+                                                    e,
                                                     skuCode,
-                                                    colorHex,
-                                                    colorName
+                                                    colorHex
                                                 );
                                             }}
                                         >
@@ -159,49 +170,59 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
     };
 
     return (
-        <div
-            className={`cart-dropdown ${isActive ? 'dropdown-active' : ''}`}
-            style={{
-                maxWidth: cartData.length === 0 ? '380px' : '590px',
-            }}
-        >
-            {cartBody.length === 0 && loading !== 'pending' ? (
-                <div className="cart-dropdown__empty">
-                    Ваш кошик поки порожній!
-                </div>
-            ) : (
-                <div className="cart-dropdown__list-container">
-                    {renderServerData({
-                        error,
-                        loading,
-                        content: renderCartItems,
-                        showPrevState: true,
-                        loaderClassName: 'cart-dropdown__loader',
-                    })}
-                </div>
-            )}
-            {cartData.length > 0 ? (
-                <div className="cart-dropdown__summary summary-info">
-                    <div className="summary-info__links">
-                        <NavLink className="summary-info__view-cart" to="/cart">
-                            Переглянути кошик
-                        </NavLink>
-                    </div>
-                    <SummaryCart />
-                </div>
+        <>
+            {loadingPrefetch === 'pending' && isLinkClicked.isClicked ? (
+                <PrefetchProductPageLoader isLine />
             ) : (
                 ''
             )}
-            <svg
-                className="cart-dropdown__decorative-icon"
-                width="22"
-                height="15"
-                viewBox="0 0 22 15"
-                xmlns="http://www.w3.org/2000/svg"
+            <div
+                className={`cart-dropdown ${isActive ? 'dropdown-active' : ''}`}
+                style={{
+                    maxWidth: cartData.length === 0 ? '380px' : '590px',
+                }}
             >
-                <path d="M11 0L21.3923 15H0.607696L11 0Z" />
-            </svg>
-        </div>
+                {cartBody.length === 0 && loading !== 'pending' ? (
+                    <div className="cart-dropdown__empty">
+                        Ваш кошик поки порожній!
+                    </div>
+                ) : (
+                    <div className="cart-dropdown__list-container">
+                        {renderServerData({
+                            error,
+                            loading,
+                            content: renderCartItems,
+                            showPrevState: true,
+                            loaderClassName: 'cart-dropdown__loader',
+                        })}
+                    </div>
+                )}
+                {cartData.length > 0 ? (
+                    <div className="cart-dropdown__summary summary-info">
+                        <div className="summary-info__links">
+                            <NavLink
+                                className="summary-info__view-cart"
+                                to="/cart"
+                            >
+                                Переглянути кошик
+                            </NavLink>
+                        </div>
+                        <SummaryCart />
+                    </div>
+                ) : (
+                    ''
+                )}
+                <svg
+                    className="cart-dropdown__decorative-icon"
+                    width="22"
+                    height="15"
+                    viewBox="0 0 22 15"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M11 0L21.3923 15H0.607696L11 0Z" />
+                </svg>
+            </div>
+        </>
     );
 };
 

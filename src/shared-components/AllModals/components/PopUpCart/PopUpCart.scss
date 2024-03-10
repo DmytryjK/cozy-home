@@ -1,7 +1,6 @@
 @use '../../../../style/variables.scss' as *;
 .cart-window {
     max-height: 100%;
-
     &__title {
         color: $dark-color;
         font-family: Montserrat Alternates;
@@ -58,6 +57,9 @@
                 pointer-events: none;
                 user-select: none;
             }
+        }
+        &__item {
+            position: relative;
         }
         &__items {
             margin-top: 24px;

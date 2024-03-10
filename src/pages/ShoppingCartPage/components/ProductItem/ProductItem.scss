@@ -1,6 +1,7 @@
 @use '../../../../style/variables.scss' as *;
 
 .cart-product {
+    position: relative;
     display: grid;
     grid-template-columns: 50px minmax(300px, 364px) minmax(345px, 438px);
     grid-template-rows: auto 0px;
@@ -9,7 +10,7 @@
     border-bottom: 1px solid $dark-white;
     overflow: hidden;
     transition: 0.3s ease-out grid-template-rows;
-    
+
     &__info {
         display: flex;
         gap: 16px;

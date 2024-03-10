@@ -3,16 +3,30 @@ import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../../hooks/hooks';
 import CartTrashBtn from '../../../../shared-components/CartTrashBtn/CartTrashBtn';
 import ProductItemRight from './ProductItemRight/ProductItemRight';
-import type { CartData } from '../../../../types/types';
+import type { CartData, Loading } from '../../../../types/types';
+import type { LinkState } from '../../../../hooks/usePrefetchProduct';
 import './ProductItem.scss';
 
 type Props = {
     cartData: CartData;
     setAction?: Dispatch<SetStateAction<any>>;
+    handleProductClick?: (
+        e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+        sku: string,
+        hex: string
+    ) => Promise<void>;
+    loadingPrefetch?: Loading;
+    isLinkClicked?: LinkState;
 };
 
 const ProductItem = (props: Props) => {
-    const { cartData, setAction } = props;
+    const {
+        cartData,
+        setAction,
+        handleProductClick,
+        loadingPrefetch,
+        isLinkClicked,
+    } = props;
     const cartBody = useAppSelector((state) => state.cart.cartBody);
     const [isEnoughProductToBuy, setIsEnoughProductToBuy] =
         useState<boolean>(true);
@@ -31,14 +45,6 @@ const ProductItem = (props: Props) => {
         }
     }, [cartBody]);
 
-    const handleOpenProductPage = () => {
-        localStorage.setItem('productSkuCode', `${skuCode}`);
-        localStorage.setItem('hex', `${colorHex}`);
-        localStorage.setItem('colorName', `${colorName}`);
-        if (!setAction) return;
-        setAction(false);
-    };
-
     return (
         <ul
             className={`cart-product ${
@@ -51,8 +57,13 @@ const ProductItem = (props: Props) => {
             <li className="cart-product__item cart-product__info">
                 <NavLink
                     className="cart-product__link"
-                    to={`/product/${skuCode}${colorHex}`}
-                    onMouseDown={handleOpenProductPage}
+                    to={`/prefetch/${skuCode}/${colorHex.replace('#', '')}`}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (handleProductClick) {
+                            handleProductClick(e, skuCode, colorHex);
+                        }
+                    }}
                 >
                     <img
                         className="cart-product__photo"
@@ -63,8 +74,13 @@ const ProductItem = (props: Props) => {
                 <div className="cart-product__text">
                     <NavLink
                         className="cart-product__title-link"
-                        to={`/product/${skuCode}${colorHex}`}
-                        onMouseDown={handleOpenProductPage}
+                        to={`/prefetch/${skuCode}/${colorHex.replace('#', '')}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (handleProductClick) {
+                                handleProductClick(e, skuCode, colorHex);
+                            }
+                        }}
                     >
                         {name}
                     </NavLink>

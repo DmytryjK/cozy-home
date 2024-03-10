@@ -7,6 +7,9 @@ import ProductItem from '../../../../pages/ShoppingCartPage/components/ProductIt
 import ProductsInfoCart from '../../../../pages/ShoppingCartPage/components/SummaryCart/ProductsInfoCart/ProductsInfoCart';
 import CheckoutBtn from '../../../../pages/ShoppingCartPage/components/SummaryCart/CheckoutBtn/CheckoutBtn';
 import renderServerData from '../../../../helpers/renderServerData';
+import usePrefetchProduct from '../../../../hooks/usePrefetchProduct';
+import { PrefetchProductPageLoader } from '../../../Loaders';
+import { ErrorMessageSmall } from '../../../UserMessages/UserMessages';
 import './PopUpCart.scss';
 
 const PopUpCart = () => {
@@ -21,6 +24,13 @@ const PopUpCart = () => {
     );
     const [isCartPopUpShow, setIsCartPopUpShow] =
         useState<boolean>(isCartShowStore);
+    const {
+        isLinkClicked,
+        loadingPrefetch,
+        errorPrefetch,
+        setErrorPrefetch,
+        handleProductClick,
+    } = usePrefetchProduct();
 
     useEffect(() => {
         if (isCartPopUpShow === isCartShowStore) return;
@@ -30,6 +40,9 @@ const PopUpCart = () => {
     useEffect(() => {
         if (isCartPopUpShow === isCartShowStore) return;
         dispatch(openPopUpCart(isCartPopUpShow));
+        if (!isCartPopUpShow) {
+            setErrorPrefetch(null);
+        }
     }, [isCartPopUpShow]);
 
     useEffect(() => {
@@ -37,6 +50,13 @@ const PopUpCart = () => {
             setIsCartPopUpShow(false);
         }
     }, [cartBody]);
+
+    useEffect(() => {
+        if (!loadingPrefetch) return;
+        if (loadingPrefetch === 'succeeded' && !isLinkClicked.isClicked) {
+            setIsCartPopUpShow(false);
+        }
+    }, [loadingPrefetch, isLinkClicked]);
 
     const renderCartItems = () => {
         return (
@@ -51,13 +71,34 @@ const PopUpCart = () => {
                         {cartData.map((cartItem) => {
                             return (
                                 <li
-                                    className="cart-table__item"
+                                    className={`cart-table__item ${
+                                        errorPrefetch &&
+                                        isLinkClicked.sku === cartItem.skuCode
+                                            ? 'loading-error'
+                                            : ''
+                                    }`}
                                     key={`popUp-cart${cartItem.skuCode}${cartItem.colorHex}`}
                                 >
                                     <ProductItem
                                         cartData={cartItem}
                                         setAction={setIsCartPopUpShow}
+                                        handleProductClick={handleProductClick}
+                                        loadingPrefetch={loadingPrefetch}
+                                        isLinkClicked={isLinkClicked}
                                     />
+                                    {loadingPrefetch === 'pending' &&
+                                    isLinkClicked.isClicked &&
+                                    isLinkClicked.sku === cartItem.skuCode ? (
+                                        <PrefetchProductPageLoader />
+                                    ) : (
+                                        ''
+                                    )}
+                                    {errorPrefetch &&
+                                    isLinkClicked.sku === cartItem.skuCode ? (
+                                        <ErrorMessageSmall text="Помилка завантаження" />
+                                    ) : (
+                                        ''
+                                    )}
                                 </li>
                             );
                         })}

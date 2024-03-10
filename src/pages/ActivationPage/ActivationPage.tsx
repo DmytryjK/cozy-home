@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { userActivateEmail } from '../../store/reducers/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import Loader from '../../shared-components/Loader';
+import Loader from '../../shared-components/Loaders/components/Loader';
 import {
     SuccessMessage,
     ErrorMessageSmall,

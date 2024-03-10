@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import Loader from '../../shared-components/Loader';
+import Loader from '../../shared-components/Loaders/components/Loader';
 import ErrorMessage from '../../shared-components/UserMessages/ErrorMessage';
 import transliterate from '../../utils/transliterate';
 import {

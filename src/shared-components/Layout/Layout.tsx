@@ -1,10 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-// import { ReactLenis } from '@studio-freight/react-lenis';
 import { Header } from '../Header';
 import Footer from '../Footer/Footer';
-import PagePreloader from '../PagePreloader/PagePreloader';
-// import AllModals from '../AllModals/AllModals';
+import { PagePreloader } from '../Loaders';
 import './Layout.scss';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
 

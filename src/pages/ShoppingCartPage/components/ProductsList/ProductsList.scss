@@ -63,9 +63,22 @@
         margin-top: 30px;
     }
     &__item {
+        position: relative;
         &:not(:first-child) {
             margin-top: 20px;
         }
+        &.loading-error {
+            padding-bottom: 20px;
+            .cart-product {
+                padding-bottom: 30px;
+            }
+        }
+    }
+    .error-message_small {
+        position: absolute;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
     }
 }
 
