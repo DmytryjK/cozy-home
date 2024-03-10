@@ -1,11 +1,11 @@
 import { MouseEvent, memo } from 'react';
-import './DropdownMenu.scss';
-import '../Header.scss';
 import { NavLink } from 'react-router-dom';
 import renderServerData from '../../../helpers/renderServerData';
 import { useAppSelector } from '../../../hooks/hooks';
 import { SubCategoryType } from '../Header';
 import transliterate from '../../../utils/transliterate';
+import './DropdownMenu.scss';
+import '../Header.scss';
 
 type Props = {
     handleMouseOut: (event: MouseEvent) => void;

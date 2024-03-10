@@ -1,20 +1,31 @@
-import { useState, MouseEvent, useEffect, useCallback, memo } from 'react';
+import {
+    useState,
+    MouseEvent,
+    useEffect,
+    useCallback,
+    memo,
+    lazy,
+    Suspense,
+} from 'react';
 import { useLenis } from '@studio-freight/react-lenis';
 import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchCategoriesWithSubcategories } from '../../store/reducers/categoriesSlice';
-import DropdownMenu from './DropdownMenu';
 import BurgerMenu from './BurgerMenu';
 import CartIcon from './CartIcon/CartIcon';
 import FavoritesIcon from './FavoritesIcon/FavoritesIcon';
 import { DropdownAuth } from './Auth/Auth';
-import DropdownShoppingCart from './DropdownShoppingCart/DropdownShoppingCart';
 import userScrollWidth from '../../utils/userScrollWidth';
 import headerSprite from '../../assets/icons/header/header-sprite.svg';
 import TemporatyAdminNavPanel from './TemporatyAdminNavPanel/TemporatyAdminNavPanel';
 import throttle from '../../utils/throttle';
 import Search from './Search/Search';
 import './Header.scss';
+
+const DropdownShoppingCart = lazy(
+    () => import('./DropdownShoppingCart/DropdownShoppingCart')
+);
+const DropdownMenu = lazy(() => import('./DropdownMenu'));
 
 export type SubCategoryType = {
     id: string;
@@ -275,6 +286,7 @@ const Header = () => {
                     setIsMobileSearchOpen={setIsMobileSearchOpen}
                     isMobileSearchOpen={isMobileSearchOpen}
                 />
+
                 {jwtToken ? <TemporatyAdminNavPanel /> : ''}
                 <div className="header__icons">
                     <NavLink
@@ -332,10 +344,12 @@ const Header = () => {
                 />
             </header>
             <div>
-                <DropdownMenu
-                    handleMouseOut={handleMouseOut}
-                    isOpen={isDropdownOpen}
-                />
+                <Suspense fallback="Завантаження...">
+                    <DropdownMenu
+                        handleMouseOut={handleMouseOut}
+                        isOpen={isDropdownOpen}
+                    />
+                </Suspense>
             </div>
         </div>
     );

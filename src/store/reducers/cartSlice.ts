@@ -244,62 +244,7 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
             }
         }
         const result = await request();
-
-        // cartUpdatePromise = new Promise((resolve, reject) => {
-        //     fetch(`${API_SECURE}basket/replace`, {
-        //         method: 'POST',
-        //         body: JSON.stringify(customData || cartDataForServer),
-        //         headers: {
-        //             Authorization: `Bearer ${jwtToken}`,
-        //             'Content-type': 'application/json; charset=UTF-8',
-        //         },
-        //     })
-        //         .then((result) => {
-        //             resolve(result);
-        //             console.log('cart has been updated');
-        //         })
-        //         .catch((error) => {
-        //             reject(error);
-        //             if (error.name === 'AbortError') {
-        //                 console.log('cart hasn`t been updated, canceled');
-        //                 return thunkAPI.rejectWithValue('');
-        //             }
-        //             if (error instanceof Error) {
-        //                 console.log(
-        //                     'cart hasn`t been updated, something went wrong'
-        //                 );
-        //                 return thunkAPI.rejectWithValue(error.message);
-        //             }
-        //             return '';
-        //         });
-        // });
-
         return null;
-
-        // try {
-        //     const response = await fetch(`${API_SECURE}basket/replace`, {
-        //         method: 'POST',
-        //         body: JSON.stringify(customData || cartDataForServer),
-        //         headers: {
-        //             Authorization: `Bearer ${jwtToken}`,
-        //             'Content-type': 'application/json; charset=UTF-8',
-        //         },
-        //     });
-        //     if (!response.ok) throw new Error('something went wrong');
-        //     isUpdateCartResolved = true;
-        //     console.log('cart has been updated');
-        //     return null;
-        // } catch (error: any) {
-        //     if (error.name === 'AbortError') {
-        //         console.log('cart hasn`t been updated, canceled');
-        //         return thunkAPI.rejectWithValue('');
-        //     }
-        //     if (error instanceof Error) {
-        //         console.log('cart hasn`t been updated, something went wrong');
-        //         return thunkAPI.rejectWithValue(error.message);
-        //     }
-        //     return '';
-        // }
     }
 );
 

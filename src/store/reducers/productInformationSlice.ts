@@ -200,7 +200,6 @@ export const productInformationSlice = createSlice({
             fetchProductInfoByScuWithColor.rejected,
             (state, action: PayloadAction<unknown>) => {
                 // state.loading = 'failed';
-                console.log('rejected');
                 state.error = action.payload;
             }
         );

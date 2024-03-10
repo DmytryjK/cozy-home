@@ -7,6 +7,7 @@ import Skeleton from '../ProductCard/Skeleton/Skeleton';
 import renderServerData from '../../helpers/renderServerData';
 import { Loading, ProductCardType } from '../../types/types';
 import 'swiper/css/navigation';
+import 'swiper/css';
 import './ProductsSlider.scss';
 
 type Props = {

@@ -1,13 +1,15 @@
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ReactLenis } from '@studio-freight/react-lenis';
+// import { ReactLenis } from '@studio-freight/react-lenis';
 import { Header } from '../Header';
 import Footer from '../Footer/Footer';
 import PagePreloader from '../PagePreloader/PagePreloader';
-import AllModals from '../AllModals/AllModals';
+// import AllModals from '../AllModals/AllModals';
 import './Layout.scss';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
+const AllModals = lazy(() => import('../AllModals/AllModals'));
+const ReactLenis = lazy(() => import('@studio-freight/react-lenis'));
 const Layout = () => {
     return (
         <div className="layout">
