@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useAnimationFrame } from 'framer-motion';
 import mainMannerImage from '../../../../assets/images/main-banner/main-banner_opt.png';
 import mainMannerImageWebp from '../../../../assets/images/main-banner/main-banner.webp';
 import mainMannerImagePhone from '../../../../assets/images/main-banner/main-banner_phone_opt.png';

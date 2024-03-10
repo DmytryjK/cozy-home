@@ -37,7 +37,6 @@ const Filters = () => {
                 : categoryParams.length
         )
         .replace('categoryId=', '');
-    // console.log(searchQuery.size);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const isFiltersShowed = useAppSelector(

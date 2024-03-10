@@ -1,4 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import {
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+    Suspense,
+    lazy,
+} from 'react';
 import { motion } from 'framer-motion';
 import { useAppDispatch } from '../../../hooks/hooks';
 import {
@@ -119,34 +126,41 @@ const Search = (props: Props) => {
                     </button>
                 </div>
             </div>
-            <SearchBlock
-                setIsOpen={setIsOpen}
-                searchValue={searchValue}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                setIsMobileSearchOpen={setIsMobileSearchOpen}
-                isMobileSearchOpen={isMobileSearchOpen}
-                setIsSearchFocus={setIsSearchFocus}
-            />
-            <motion.div
-                initial={{ opacity: 0, display: 'none' }}
-                animate={{
-                    opacity: isOpen ? 1 : 0,
-                    display: 'block',
-                    transitionEnd: {
-                        display: !isOpen ? 'none' : 'block',
-                    },
-                    transition: {
-                        duration: 0.3,
-                        ease: 'easeOut',
-                    },
-                }}
-                className="header__search-shadow"
-                onClick={() => {
-                    setIsOpen(false);
-                    setIsMobileSearchOpen(false);
-                }}
-            />
+            <Suspense fallback="Завантаження...">
+                {isOpen ||
+                    (isMobileSearchOpen && (
+                        <>
+                            <SearchBlock
+                                setIsOpen={setIsOpen}
+                                searchValue={searchValue}
+                                inputValue={inputValue}
+                                setInputValue={setInputValue}
+                                setIsMobileSearchOpen={setIsMobileSearchOpen}
+                                isMobileSearchOpen={isMobileSearchOpen}
+                                setIsSearchFocus={setIsSearchFocus}
+                            />
+                            <motion.div
+                                initial={{ opacity: 0, display: 'none' }}
+                                animate={{
+                                    opacity: isOpen ? 1 : 0,
+                                    display: 'block',
+                                    transitionEnd: {
+                                        display: !isOpen ? 'none' : 'block',
+                                    },
+                                    transition: {
+                                        duration: 0.3,
+                                        ease: 'easeOut',
+                                    },
+                                }}
+                                className="header__search-shadow"
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    setIsMobileSearchOpen(false);
+                                }}
+                            />
+                        </>
+                    ))}
+            </Suspense>
         </>
     );
 };
