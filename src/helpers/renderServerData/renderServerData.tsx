@@ -19,7 +19,7 @@ const renderServerData = (props: Props) => {
         showPrevState,
         loaderClassName,
         customLoader,
-        isComponentActive,
+        isComponentActive = true,
     } = props;
 
     let render: JSX.Element | JSX.Element[] =
@@ -29,7 +29,6 @@ const renderServerData = (props: Props) => {
         ) : (
             <span />
         ));
-
     if (error) {
         render = (
             <ErrorMessage
@@ -60,7 +59,6 @@ renderServerData.defultProps = {
     loaderClassName: '',
     customLoader: '',
     quantityLoaderItems: 0,
-    isComponentActive: true,
 };
 
 export default renderServerData;

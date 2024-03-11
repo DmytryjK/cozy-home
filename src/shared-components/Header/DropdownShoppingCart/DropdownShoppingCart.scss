@@ -24,7 +24,7 @@
     }
 
     &__list-container {
-        position: relative;
+        // position: relative;
         padding-left: 18px;
         padding-right: 18px;
         &.loading {
@@ -40,6 +40,15 @@
         transform: translateY(-95%);
         fill: $filter-background;
 
+    }
+    &__loader {
+        position: absolute;
+        top: 0;
+        height: 229px !important;
+        width: 100%;
+        background-color: rgba(white, 0.2);
+        backdrop-filter: blur(0.5px);
+        z-index: 1;
     }
     &__list-wrapper {
         max-height: 209px;

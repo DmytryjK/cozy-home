@@ -6,7 +6,7 @@ import renderServerData from '../../../helpers/renderServerData';
 import SummaryCart from '../../../pages/ShoppingCartPage/components/SummaryCart/SummaryCart';
 import addSpaceToPrice from '../../../utils/addSpaceToPrice';
 import usePrefetchProduct from '../../../hooks/usePrefetchProduct';
-import { PrefetchProductPageLoader } from '../../Loaders';
+import { Loader, PrefetchProductPageLoader } from '../../Loaders';
 import { ErrorMessageSmall } from '../../UserMessages/UserMessages';
 import './DropdownShoppingCart.scss';
 
