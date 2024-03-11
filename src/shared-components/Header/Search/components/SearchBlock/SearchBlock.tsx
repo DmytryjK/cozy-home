@@ -130,6 +130,7 @@ const SearchBlock = (props: Props) => {
                             name,
                             price,
                             priceWithDiscount,
+                            quantityStatus,
                         } = product;
                         const splittedPhrase = splitPhrase(name);
                         const splittedTitleBySearchWord = () => {
@@ -152,7 +153,12 @@ const SearchBlock = (props: Props) => {
 
                         return (
                             <li
-                                className="searchBlock__product-item"
+                                className={`searchBlock__product-item ${
+                                    quantityStatus &&
+                                    quantityStatus === 'Немає в наявності'
+                                        ? 'not-available'
+                                        : ''
+                                }`}
                                 key={`searched-product-${skuCode}-${colorHex}`}
                             >
                                 {loadingPrefetch === 'pending' &&
@@ -189,6 +195,15 @@ const SearchBlock = (props: Props) => {
                                     />
                                     <h4 className="searchBlock__product-title">
                                         {splittedTitleBySearchWord()}
+                                        {quantityStatus &&
+                                        quantityStatus ===
+                                            'Немає в наявності' ? (
+                                            <span className="searchBlock__not-available">
+                                                Немає в наявності
+                                            </span>
+                                        ) : (
+                                            ''
+                                        )}
                                     </h4>
                                     <div className="searchBlock__product-price-wrapper">
                                         <span className="searchBlock__product-price">
@@ -204,11 +219,6 @@ const SearchBlock = (props: Props) => {
                                         ) : (
                                             ''
                                         )}
-                                        {/* <span className="cart-product__status-mobile">
-                                            {availableProductQuantity === 0
-                                                ? 'Немає в наявності'
-                                                : 'В наявності'}
-                                        </span> */}
                                     </div>
                                 </NavLink>
                             </li>
