@@ -83,8 +83,6 @@ const PopUpCart = () => {
                                         cartData={cartItem}
                                         setAction={setIsCartPopUpShow}
                                         handleProductClick={handleProductClick}
-                                        loadingPrefetch={loadingPrefetch}
-                                        isLinkClicked={isLinkClicked}
                                     />
                                     {loadingPrefetch === 'pending' &&
                                     isLinkClicked.isClicked &&

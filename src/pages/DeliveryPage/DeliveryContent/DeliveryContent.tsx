@@ -319,7 +319,7 @@ const DeliveryContent = (props: Props) => {
                 viewport={{ amount: 0.3, once: true }}
             >
                 <h2 className="delivery-content__title">
-                    Обмін на повернення товарів
+                    Обмін та повернення товарів
                 </h2>
                 <ul className="delivery-content__conditions-list delivery-content__conditions-list_counter3">
                     {refundOrdersConditions.map((item) => {

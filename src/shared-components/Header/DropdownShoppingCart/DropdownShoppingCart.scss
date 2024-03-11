@@ -94,12 +94,16 @@
             display: block;
         }
         &__text {
+            position: relative;
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
             max-width: 186px;
             width: 100%;
             color: $dark-color;
+            &.not-available {
+                padding-bottom: 15px;
+            }
         }
         &__title-link {
             flex-shrink: 0;
@@ -159,6 +163,18 @@
             font-size: 14px;
             font-weight: 600;
         }
+        &.out-of-stock {
+            opacity: 0.5;
+        }
+    }
+
+    &__status {
+        position: absolute;
+        bottom: -5px;
+        max-width: 100% !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: $warning !important;
     }
     
     .summary-info {

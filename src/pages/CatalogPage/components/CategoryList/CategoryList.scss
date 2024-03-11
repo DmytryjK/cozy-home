@@ -1,6 +1,6 @@
 @use '../../../../style/variables.scss' as *;
 .category {
-    // margin-top: 40px;
+    min-height: 90px;
     &-list {
         display: flex;
         justify-content: center;

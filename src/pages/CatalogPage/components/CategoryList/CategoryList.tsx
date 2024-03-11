@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import {
     useParams,
     NavLink,
     useLocation,
     useSearchParams,
 } from 'react-router-dom';
-import nextId from 'react-id-generator';
 import renderServerData from '../../../../helpers/renderServerData';
 import categoriesSprite from '../../../../assets/icons/categories/categories-sprite.svg';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
@@ -135,7 +134,7 @@ const CategoryList = (props: Props) => {
             return (
                 <li
                     className="category-list__item"
-                    key={nextId('catalog-category')}
+                    key={`catalog-category-nav${id}`}
                 >
                     <NavLink
                         to={`/catalog/${transliterate(name)}&categoryId=${id}`}

@@ -42,7 +42,7 @@ const CheckoutSuccessPage = () => {
             >
                 <div className="container">
                     <h1 className="checkout-success__title">
-                        Ваш заказ № {orderNumber} успішно оформлено!
+                        Ваше замовлення № {orderNumber} успішно оформлене!
                     </h1>
                     <div className="checkout-success__content">
                         <div className="flex">
@@ -58,8 +58,8 @@ const CheckoutSuccessPage = () => {
                             </p>
                         </div>
                         <p className="checkout-success__content_text">
-                            З Вами у найближчі робочі години зв'яжеться
-                            менеджер.
+                            Емейл надіслано на Вашу електронну пошту. <br /> З
+                            Вами у найближчі робочі години зв'яжеться менеджер.
                         </p>
                     </div>
                     <NavLink to="/catalog">
