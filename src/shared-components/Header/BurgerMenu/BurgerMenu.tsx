@@ -10,13 +10,12 @@ import transliterate from '../../../utils/transliterate';
 import './BurgerMenu.scss';
 
 type Props = {
-    isScrolled: boolean;
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const BurgerMenu = (props: Props) => {
-    const { isScrolled, isOpen, setIsOpen } = props;
+    const { isOpen, setIsOpen } = props;
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
@@ -142,9 +141,7 @@ const BurgerMenu = (props: Props) => {
                 <span />
             </button>
             <div
-                className={`burger-menu ${isOpen ? 'burger-menu-active' : ''} ${
-                    isScrolled ? 'burger-menu-scrolled' : ''
-                }`}
+                className={`burger-menu ${isOpen ? 'burger-menu-active' : ''}`}
             >
                 <div
                     className="container"

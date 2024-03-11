@@ -172,3 +172,10 @@
 .burger-menu__list_subItems-active {
 	display: flex;
 }
+
+@media screen and (max-width: 600px) {
+	.burger-menu {
+		top: 50px;
+		max-height: calc(100dvh - 50px);
+	}
+}

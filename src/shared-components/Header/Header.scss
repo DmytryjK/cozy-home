@@ -180,19 +180,14 @@
 			display: block;
 			cursor: pointer;
 		}
-}
-
-.display-none {
-	display: none;
-}
-
-.header-active {
-	height: 40px;
-	
-	.header__logo_img {
-		width: 55px;
-		height: 26px;
-		transition: width .3s ease-in-out, height .3s ease-in-out;
 	}
 }
+
+@media (max-width: 600px) {
+	.header {
+		height: 50px;
+		&__logo_img {
+			transform: scale(0.8);
+		}
+	}
 }
