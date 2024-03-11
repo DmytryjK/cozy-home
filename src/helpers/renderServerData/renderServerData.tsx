@@ -8,6 +8,7 @@ type Props = {
     showPrevState?: boolean;
     loaderClassName?: string;
     customLoader?: JSX.Element[];
+    isComponentActive?: boolean;
 };
 
 const renderServerData = (props: Props) => {
@@ -18,11 +19,16 @@ const renderServerData = (props: Props) => {
         showPrevState,
         loaderClassName,
         customLoader,
+        isComponentActive,
     } = props;
 
-    let render: JSX.Element | JSX.Element[] = customLoader || (
-        <Loader className={loaderClassName} />
-    );
+    let render: JSX.Element | JSX.Element[] =
+        customLoader ||
+        (isComponentActive === true ? (
+            <Loader className={loaderClassName} />
+        ) : (
+            <span />
+        ));
 
     if (error) {
         render = (
@@ -37,7 +43,11 @@ const renderServerData = (props: Props) => {
     if (showPrevState && loading !== 'succeeded') {
         render = (
             <>
-                <Loader className={loaderClassName} />
+                {isComponentActive === true ? (
+                    <Loader className={loaderClassName} />
+                ) : (
+                    <span />
+                )}
                 {content()}
             </>
         );
@@ -50,6 +60,7 @@ renderServerData.defultProps = {
     loaderClassName: '',
     customLoader: '',
     quantityLoaderItems: 0,
+    isComponentActive: true,
 };
 
 export default renderServerData;

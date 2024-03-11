@@ -164,6 +164,7 @@ const BurgerMenu = (props: Props) => {
                         error,
                         loading,
                         content: renderedCategories,
+                        isComponentActive: isOpen,
                     })}
                     <NavLink
                         to="/delivery"

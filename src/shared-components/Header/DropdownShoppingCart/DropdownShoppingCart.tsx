@@ -209,6 +209,7 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                             content: renderCartItems,
                             showPrevState: true,
                             loaderClassName: 'cart-dropdown__loader',
+                            isComponentActive: isActive,
                         })}
                     </div>
                 )}
