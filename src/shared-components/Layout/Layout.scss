@@ -10,3 +10,9 @@
       padding-top: 60px;
     }
   }
+
+@media screen and (max-width: 600px) {
+  .layout {
+      padding-top: 50px;
+  }
+}

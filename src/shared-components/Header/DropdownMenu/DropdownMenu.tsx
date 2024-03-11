@@ -68,6 +68,7 @@ const DropdownMenu = (props: Props) => {
                     error,
                     loading,
                     content: renderedCategories,
+                    isComponentActive: isOpen,
                 })}
             </div>
         </div>
