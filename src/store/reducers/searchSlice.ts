@@ -12,6 +12,7 @@ interface DataType {
             colorHex: string;
             price: number;
             priceWithDiscount: number;
+            quantityStatus?: string;
         }
     ];
     categories: [

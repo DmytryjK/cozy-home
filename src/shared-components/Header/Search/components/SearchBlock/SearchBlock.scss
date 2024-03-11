@@ -27,6 +27,15 @@
 	&__list {
 		margin-top: 8px;
 	}
+	&__product-item {
+		&.not-available {
+			opacity: 0.5;
+			.searchBlock__product-title {
+				padding-bottom: 15px;
+				padding-top: 15px;
+			}
+		}
+	}
 	&__product-link {
 		padding: 8px 10px;
 		display: flex;
@@ -46,6 +55,7 @@
 		
 	}
 	&__product-title {
+		position: relative;
 		width: 100%;
 		text-align: left;
 		font-weight: 400;
@@ -56,6 +66,16 @@
 		&_search {
 			font-weight: 600;
 		}
+	}
+	&__not-available {
+		position: absolute;
+		left: 0;
+		bottom: 0px;
+		max-width: 100% !important;
+		font-size: 12px !important;
+		font-weight: 600 !important;
+		color: $warning !important;
+		text-wrap: nowrap;
 	}
 	&__product-price-wrapper {
 		flex-shrink: 0;
