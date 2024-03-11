@@ -26,19 +26,21 @@ const Aside = (props: Props) => {
             id: 'delivery-status',
         },
         {
-            name: 'Обмін на повернення товарів ',
+            name: 'Обмін та повернення товарів ',
             id: 'refund-orders',
         },
     ];
 
     useEffect(() => {
-        if (hash) {
-            lenis?.scrollTo(`${hash}`, {
-                offset: screenWidth > 960 ? -130 : -110,
-                duration: 1.4,
-            });
+        if (hash && lenis) {
+            setTimeout(() => {
+                lenis?.scrollTo(`${hash}`, {
+                    offset: screenWidth > 960 ? -130 : -110,
+                    duration: 1.4,
+                });
+            }, 100);
         }
-    }, []);
+    }, [lenis, hash]);
 
     useEffect(() => {
         localStorage.setItem('currentDeliveryTab', `${activeLinkIndex}`);

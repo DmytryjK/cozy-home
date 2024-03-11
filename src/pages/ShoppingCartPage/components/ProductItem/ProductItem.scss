@@ -173,6 +173,7 @@
         display: none;
     }
     &.out-of-stock {
+        opacity: 0.5;
         .cart-product__status, .cart-product__status-mobile {
             color: red;
         }

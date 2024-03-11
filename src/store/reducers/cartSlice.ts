@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { Loading, ErrorType, CartData } from '../../types/types';
 import { RootState } from '../store';
@@ -127,45 +128,6 @@ export const mergeCartOnAuth = createAsyncThunk(
             throw new Error('Для цього запиту потрібно бути авторизованим');
         }
 
-        // let result: any = null;
-
-        // async function secondRequest() {
-        //     const response2 = await fetch(`${API_SECURE}basket`, {
-        //         method: 'GET',
-        //         headers: {
-        //             Authorization: `Bearer ${jwtToken}`,
-        //             'Content-type': 'application/json; charset=UTF-8',
-        //         },
-        //     });
-        //     return response2.json();
-        // }
-
-        // async function firstRequest() {
-        //     const promise1 = new Promise((resolve, reject) => {
-        //         fetch(`${API_SECURE}basket`, {
-        //             method: 'POST',
-        //             body: JSON.stringify(cartDataForServer),
-        //             headers: {
-        //                 Authorization: `Bearer ${jwtToken}`,
-        //                 'Content-type': 'application/json; charset=UTF-8',
-        //             },
-        //         }).then(() =>
-        //             setTimeout(async () => {
-        //                 try {
-        //                     const result = await secondRequest();
-        //                     resolve(result); // Возвращаем результат внешнему промису
-        //                 } catch (error) {
-        //                     reject(error); // В случае ошибки возвращаем ошибку
-        //                 }
-        //             }, 0)
-        //         );
-        //     });
-        //     return promise1;
-        // }
-
-        // result = await firstRequest();
-        // return result;
-
         try {
             const response = await fetch(`${API_SECURE}basket`, {
                 method: 'POST',
@@ -227,17 +189,12 @@ export const updateCartInfoForAuthUser = createAsyncThunk(
                     },
                 });
                 if (!response.ok) throw new Error('something went wrong');
-                console.log('cart has been updated');
                 return true;
             } catch (error: any) {
                 if (error.name === 'AbortError') {
-                    console.log('cart hasn`t been updated, canceled');
                     return thunkAPI.rejectWithValue('');
                 }
                 if (error instanceof Error) {
-                    console.log(
-                        'cart hasn`t been updated, something went wrong'
-                    );
                     return thunkAPI.rejectWithValue(error.message);
                 }
                 return '';
@@ -334,7 +291,21 @@ export const cartSlice = createSlice({
             fetchProductCartInfo.fulfilled,
             (state, action: PayloadAction<CartData[]>) => {
                 state.loading = 'succeeded';
-                state.cartData = action.payload;
+                const sortedData: CartData[] = JSON.parse(
+                    JSON.stringify(
+                        action.payload.sort((a, b) => {
+                            if (
+                                a.availableProductQuantity <
+                                    b.availableProductQuantity &&
+                                a.availableProductQuantity === 0
+                            ) {
+                                return 1;
+                            }
+                            return -1;
+                        })
+                    )
+                );
+                state.cartData = sortedData;
             }
         );
         builder.addCase(
@@ -352,7 +323,21 @@ export const cartSlice = createSlice({
             fetchCartDataForAuthUser.fulfilled,
             (state, action: PayloadAction<CartData[]>) => {
                 state.loading = 'succeeded';
-                state.cartData = action.payload.map((item, index) => {
+                const sortedData: CartData[] = JSON.parse(
+                    JSON.stringify(
+                        action.payload.sort((a, b) => {
+                            if (
+                                a.availableProductQuantity <
+                                    b.availableProductQuantity &&
+                                a.availableProductQuantity === 0
+                            ) {
+                                return 1;
+                            }
+                            return -1;
+                        })
+                    )
+                );
+                state.cartData = sortedData.map((item) => {
                     const { productName } = item;
                     return {
                         ...item,
@@ -399,7 +384,7 @@ export const cartSlice = createSlice({
             mergeCartOnAuth.fulfilled,
             (state, action: PayloadAction<CartData[]>) => {
                 state.loading = 'succeeded';
-                state.cartData = action.payload.map((item, index) => {
+                state.cartData = action.payload.map((item) => {
                     const { productName } = item;
                     return {
                         ...item,

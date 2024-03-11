@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
 import CartTrashBtn from '../../CartTrashBtn/CartTrashBtn';
@@ -24,7 +24,6 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
         loadingPrefetch,
         errorPrefetch,
         isLinkClicked,
-        setErrorPrefetch,
     } = usePrefetchProduct();
 
     const renderCartItems = () => {
@@ -45,6 +44,7 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                             imagePath,
                             price,
                             priceWithDiscount,
+                            availableProductQuantity,
                         } = product;
                         const currentProductIndex =
                             productsInfoToCheckout.findIndex(
@@ -64,7 +64,11 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                 : null;
                         return (
                             <li
-                                className="cart-dropdown__item product-item"
+                                className={`cart-dropdown__item product-item ${
+                                    availableProductQuantity === 0
+                                        ? 'out-of-stock'
+                                        : ''
+                                }`}
                                 key={`dropdown-cart${skuCode}-${colorHex}`}
                             >
                                 {errorPrefetch &&
@@ -98,7 +102,13 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                             alt={name}
                                         />
                                     </NavLink>
-                                    <div className="product-item__text">
+                                    <div
+                                        className={`product-item__text ${
+                                            availableProductQuantity === 0
+                                                ? 'not-available'
+                                                : ''
+                                        }`}
+                                    >
                                         <NavLink
                                             className="product-item__title-link"
                                             to={`/prefetch/${skuCode}/${colorHex.replace(
@@ -118,6 +128,11 @@ const DropdownShoppingCart = ({ isActive }: { isActive: boolean }) => {
                                         <span className="product-item__color">
                                             <span>Колір: </span>
                                             {colorName}
+                                        </span>
+                                        <span className="cart-product__status cart-dropdown__status">
+                                            {availableProductQuantity === 0
+                                                ? 'Немає в наявності'
+                                                : ''}
                                         </span>
                                     </div>
                                 </div>

@@ -44,7 +44,6 @@ const ProductsList = () => {
                     <ProductItem
                         cartData={cartItem}
                         handleProductClick={handleProductClick}
-                        loadingPrefetch={loadingPrefetch}
                     />
                     {errorPrefetch && isLinkClicked.sku === cartItem.skuCode ? (
                         <ErrorMessageSmall text="Помилка завантаження" />

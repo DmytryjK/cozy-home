@@ -77,12 +77,16 @@
             grid-row: 1/1;
         }
         &__info {
+            position: relative;
             align-items: center;
             grid-column: 1 / 1;
             grid-row: 1/1;
         }
-        &__status, &__status-mobile {
+        &__status {
             display: none;
+        }
+        &__status-mobile {
+            display: block;
         }
     }
 

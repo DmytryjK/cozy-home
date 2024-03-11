@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../../hooks/hooks';
 import CartTrashBtn from '../../../../shared-components/CartTrashBtn/CartTrashBtn';
 import ProductItemRight from './ProductItemRight/ProductItemRight';
-import type { CartData, Loading } from '../../../../types/types';
-import type { LinkState } from '../../../../hooks/usePrefetchProduct';
+import type { CartData } from '../../../../types/types';
 import './ProductItem.scss';
 
 type Props = {
@@ -15,18 +14,10 @@ type Props = {
         sku: string,
         hex: string
     ) => Promise<void>;
-    loadingPrefetch?: Loading;
-    isLinkClicked?: LinkState;
 };
 
 const ProductItem = (props: Props) => {
-    const {
-        cartData,
-        setAction,
-        handleProductClick,
-        loadingPrefetch,
-        isLinkClicked,
-    } = props;
+    const { cartData, setAction, handleProductClick } = props;
     const cartBody = useAppSelector((state) => state.cart.cartBody);
     const [isEnoughProductToBuy, setIsEnoughProductToBuy] =
         useState<boolean>(true);

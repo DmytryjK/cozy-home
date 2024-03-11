@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useAppDispatch } from '../../../hooks/hooks';
 import {

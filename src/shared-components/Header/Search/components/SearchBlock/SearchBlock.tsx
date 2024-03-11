@@ -204,6 +204,11 @@ const SearchBlock = (props: Props) => {
                                         ) : (
                                             ''
                                         )}
+                                        {/* <span className="cart-product__status-mobile">
+                                            {availableProductQuantity === 0
+                                                ? 'Немає в наявності'
+                                                : 'В наявності'}
+                                        </span> */}
                                     </div>
                                 </NavLink>
                             </li>

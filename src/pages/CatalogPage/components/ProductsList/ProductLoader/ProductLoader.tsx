@@ -5,21 +5,13 @@ import {
     updateCurrentPage,
 } from '../../../../../store/reducers/catalogFilterSlice';
 import ErrorMessage from '../../../../../shared-components/UserMessages/ErrorMessage';
-import Loader from '../../../../../shared-components/Loaders/components/Loader';
+import { PrefetchProductPageLoader } from '../../../../../shared-components/Loaders';
 import { useAppSelector, useAppDispatch } from '../../../../../hooks/hooks';
+import transliterate from '../../../../../utils/transliterate';
 import './ProductLoader.scss';
 
 const ProductLoader = () => {
     const { categoryParams } = useParams();
-    // const categoryParams = params.categoryName;
-
-    const categoryName = categoryParams?.substring(
-        0,
-        categoryParams.indexOf('&')
-    );
-    const categoryId: string | undefined = categoryParams
-        ?.substring(categoryParams.indexOf('Id='), categoryParams.length)
-        .replace('Id=', '');
     const [clearedFilters, setClearedFilters] = useState<boolean>(false);
     const { loading, error, catalogProducts } = useAppSelector(
         (state) => state.catalogProducts
@@ -30,6 +22,8 @@ const ProductLoader = () => {
     const id = useAppSelector(
         (state) => state.catalogFilters.filtersBody.parentCategoryId
     );
+    const categories = useAppSelector((state) => state.categories.data);
+    const currentCategory = categories.filter((category) => category.id === id);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -40,15 +34,15 @@ const ProductLoader = () => {
     }, [isFiltersCleared, clearedFilters]);
 
     const renderItems = () => {
-        if (catalogProducts.length === 0 && loading === 'pending') return '';
         if (error) {
             return <ErrorMessage />;
         }
-        if (loading !== 'succeeded' && loading !== 'idle') {
+        if (loading === 'pending') {
             return (
-                <div className="catalog-products__loading-wrapper">
-                    <Loader maxHeight="80dvh" />
-                </div>
+                <>
+                    <PrefetchProductPageLoader isLine />
+                    <div className="catalog-products__loading-wrapper" />
+                </>
             );
         }
         if (catalogProducts.length === 0 && loading === 'succeeded') {
@@ -62,13 +56,20 @@ const ProductLoader = () => {
                         className="nothing-to-search__clear-filters"
                         type="button"
                         onClick={() => {
+                            const { name, id } = currentCategory[0];
                             if (!id) return;
-                            // if (subCategoryName) {
-                            //     navigate(`/catalog/${categoryName}`);
-                            //     return;
-                            // }
                             dispatch(resetFilters(id));
                             setClearedFilters(true);
+                            if (
+                                categoryParams &&
+                                categoryParams.indexOf('&subId') > 0
+                            ) {
+                                navigate(
+                                    `/catalog/${transliterate(
+                                        name
+                                    )}&categoryId=${id}`
+                                );
+                            }
                         }}
                     >
                         <div className="nothing-to-search__clear-filters_text">
