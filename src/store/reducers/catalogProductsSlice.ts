@@ -160,7 +160,7 @@ export const catalogProductsSlice = createSlice({
         builder.addCase(
             fetchCatalogProductsByCategories.rejected,
             (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
+                // state.loading = 'failed';
                 state.error = action.payload;
             }
         );
