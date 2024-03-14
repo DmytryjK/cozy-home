@@ -16,6 +16,7 @@ type Props = {
     display?: string;
     background?: string;
     minHeight?: string;
+    closeTimeout?: number;
 };
 
 const Modal = ({
@@ -31,6 +32,7 @@ const Modal = ({
     background,
     minHeightOnSubmit,
     minHeight,
+    closeTimeout,
 }: Props) => {
     const [showChildren, setShowChildren] = useState(true);
 
@@ -66,7 +68,7 @@ const Modal = ({
                 setActive(false);
             }
         };
-        const closeWindowTimeout = setTimeout(closeWindow, 2000);
+        const closeWindowTimeout = setTimeout(closeWindow, closeTimeout);
 
         return () => clearTimeout(closeWindowTimeout);
     }, [isDataLoadedToServer, active]);
@@ -153,6 +155,7 @@ Modal.defaultProps = {
     background: '#fff',
     minHeightOnSubmit: '400px',
     minHeight: '400px',
+    closeTimeout: 2000,
 };
 
 export default memo(Modal);
