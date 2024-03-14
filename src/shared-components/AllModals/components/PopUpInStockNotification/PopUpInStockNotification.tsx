@@ -73,7 +73,6 @@ const PopUpInStockNotification = () => {
         },
         onSubmit: (values, { resetForm }) => {
             setIsSubmitedFormNotification(true);
-            alert(JSON.stringify(values, null, 2));
             resetForm();
         },
     });
@@ -92,6 +91,8 @@ const PopUpInStockNotification = () => {
             isDataLoadedToServer={isSubmitedFormNotification}
             setisDataLoadedToServer={setIsSubmitedFormNotification}
             isSubmitedText="Ваш запит прийнято!"
+            isSubmitedSubText="Ми повідомимо як тільки товар з'явиться у продажі."
+            closeTimeout={3000}
             maxwidth="884px"
         >
             <div className="inStock-window">
