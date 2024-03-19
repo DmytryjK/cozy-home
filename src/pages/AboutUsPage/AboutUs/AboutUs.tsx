@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import Odometer from 'react-odometerjs';
 import { useInView } from 'react-intersection-observer';
 import './AboutUs.scss';
@@ -43,63 +43,67 @@ const AboutUs = ({ offset }: { offset: string }) => {
         <section className="about-us">
             <div className="container">
                 <div className="about-us__content">
-                    <motion.h1
-                        ref={ref1}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: `-${offset} 0px` }}
-                        variants={variants1}
-                        className="about-us__title"
-                    >
-                        Ласкаво просимо до нашої компанії! Ми - команда
-                        фахівців, що займається виготовленням та продажем
-                        високоякісних меблів для вашої оселі. Наша місія -
-                        створювати найкращі рішення для вашого комфорту та
-                        стилю.
-                    </motion.h1>
-                    <motion.ul
-                        ref={ref2}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: `-${offset} 0px` }}
-                        variants={variants1}
-                        className="about-us__statistics"
-                    >
-                        <li className="about-us__statistics-item">
-                            <Odometer
-                                className="about-us__statistics-text"
-                                value={value1}
-                                format="dddd"
-                            />
-                            <h2 className="about-us__statistics-title">
-                                Ми відкрились
-                            </h2>
-                        </li>
-                        <li className="about-us__statistics-item">
-                            <div className="about-us__statistics-text-wrapper">
+                    <LazyMotion features={domAnimation} strict>
+                        <m.h1
+                            ref={ref1}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: `-${offset} 0px` }}
+                            variants={variants1}
+                            className="about-us__title"
+                        >
+                            Ласкаво просимо до нашої компанії! Ми - команда
+                            фахівців, що займається виготовленням та продажем
+                            високоякісних меблів для вашої оселі. Наша місія -
+                            створювати найкращі рішення для вашого комфорту та
+                            стилю.
+                        </m.h1>
+                        <m.ul
+                            ref={ref2}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: `-${offset} 0px` }}
+                            variants={variants1}
+                            className="about-us__statistics"
+                        >
+                            <li className="about-us__statistics-item">
                                 <Odometer
                                     className="about-us__statistics-text"
-                                    value={value2}
-                                    format="ddd"
+                                    value={value1}
+                                    format="dddd"
                                 />
-                                <p className="about-us__statistics-text">+</p>
-                            </div>
+                                <h2 className="about-us__statistics-title">
+                                    Ми відкрились
+                                </h2>
+                            </li>
+                            <li className="about-us__statistics-item">
+                                <div className="about-us__statistics-text-wrapper">
+                                    <Odometer
+                                        className="about-us__statistics-text"
+                                        value={value2}
+                                        format="ddd"
+                                    />
+                                    <p className="about-us__statistics-text">
+                                        +
+                                    </p>
+                                </div>
 
-                            <h2 className="about-us__statistics-title">
-                                Виконаних замовлень
-                            </h2>
-                        </li>
-                        <li className="about-us__statistics-item">
-                            <Odometer
-                                className="about-us__statistics-text"
-                                value={value3}
-                                format="dd ddd"
-                            />
-                            <h2 className="about-us__statistics-title">
-                                Виготовлених меблів
-                            </h2>
-                        </li>
-                    </motion.ul>
+                                <h2 className="about-us__statistics-title">
+                                    Виконаних замовлень
+                                </h2>
+                            </li>
+                            <li className="about-us__statistics-item">
+                                <Odometer
+                                    className="about-us__statistics-text"
+                                    value={value3}
+                                    format="dd ddd"
+                                />
+                                <h2 className="about-us__statistics-title">
+                                    Виготовлених меблів
+                                </h2>
+                            </li>
+                        </m.ul>
+                    </LazyMotion>
                 </div>
             </div>
         </section>

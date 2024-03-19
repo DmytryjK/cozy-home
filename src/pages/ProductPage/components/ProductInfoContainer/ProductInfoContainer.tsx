@@ -1,6 +1,6 @@
 import { useState, MouseEvent, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import { useLenis } from '@studio-freight/react-lenis';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
@@ -33,9 +33,6 @@ const ProductInfoContainer = () => {
     );
     const currentColor = useAppSelector(
         (state) => state.productInformation.currentColor
-    );
-    const currentSku = useAppSelector(
-        (state) => state.productInformation.currentSku
     );
     const loading = useAppSelector((state) => state.productInformation.loading);
     const error = useAppSelector((state) => state.productInformation.error);
@@ -100,52 +97,9 @@ const ProductInfoContainer = () => {
 
     const renderData = () => {
         return (
-            <motion.div
-                className="product-page__wrapper container container_no-padding"
-                variants={variant}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-            >
-                <ProductImagesSlider colorChange={colorChange} />
-                <div className="product-page-right-content-wrapper">
-                    <h1 className="product-page__title">{name}</h1>
-                    <div className="product-page__extra-info">
-                        <p className="product-page__sku">{skuCode}</p>
-                        <ProductRating />
-                        <a
-                            className="product-page__feedbacks-link"
-                            href="#customer-review"
-                            onClick={(event) =>
-                                handleClick(event, '#customer-review')
-                            }
-                        >
-                            {pluralizeUkrainian(countOfReviews, [
-                                'відгуг',
-                                'відгука',
-                                'відгуків',
-                            ])}
-                        </a>
-                    </div>
-                    <ColorSelection setColorChange={setColorChange} />
-                    <ProductPrice />
-                    <AddProductBlock />
-                    <Accordeon />
-                </div>
-            </motion.div>
-        );
-    };
-
-    return (
-        <div className="product-page__wrapper container">
-            {renderServerData({
-                loading,
-                error,
-                content: renderData,
-            })}
-            {/* {loading !== 'pending' ? (
-                <motion.div
-                    className="product-page__wrapper container"
+            <LazyMotion features={domAnimation} strict>
+                <m.div
+                    className="product-page__wrapper container container_no-padding"
                     variants={variant}
                     initial="hidden"
                     whileInView="visible"
@@ -176,10 +130,18 @@ const ProductInfoContainer = () => {
                         <AddProductBlock />
                         <Accordeon />
                     </div>
-                </motion.div>
-            ) : (
-                ''
-            )} */}
+                </m.div>
+            </LazyMotion>
+        );
+    };
+
+    return (
+        <div className="product-page__wrapper container">
+            {renderServerData({
+                loading,
+                error,
+                content: renderData,
+            })}
         </div>
     );
 };

@@ -6,7 +6,7 @@ import {
     useMemo,
     memo,
 } from 'react';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import CabinetNavigation from './CabinetNavigation/CabinetNavigation';
 import CabinetContent from './CabinetContent/CabinetContent';
@@ -45,27 +45,29 @@ const UserCabinet = () => {
     return (
         <>
             <Breadcrumbs />
-            <motion.section
-                initial="hidden"
-                variants={variant}
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="cabinet"
-            >
-                <div className="container">
-                    <div className="cabinet__wrapper">
-                        <UserActiveLinkContext.Provider
-                            value={useMemo(
-                                () => ({ activeLink, setActiveLink }),
-                                [activeLink]
-                            )}
-                        >
-                            <CabinetNavigation />
-                            <CabinetContent />
-                        </UserActiveLinkContext.Provider>
+            <LazyMotion features={domAnimation} strict>
+                <m.section
+                    initial="hidden"
+                    variants={variant}
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="cabinet"
+                >
+                    <div className="container">
+                        <div className="cabinet__wrapper">
+                            <UserActiveLinkContext.Provider
+                                value={useMemo(
+                                    () => ({ activeLink, setActiveLink }),
+                                    [activeLink]
+                                )}
+                            >
+                                <CabinetNavigation />
+                                <CabinetContent />
+                            </UserActiveLinkContext.Provider>
+                        </div>
                     </div>
-                </div>
-            </motion.section>
+                </m.section>
+            </LazyMotion>
         </>
     );
 };

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import CategoryList from './components/CategoryList/CategoryList';
 import ArrowUp from '../../shared-components/ArrowUp';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
@@ -44,42 +44,44 @@ const CatalogPage = () => {
         },
     };
     return (
-        <motion.section
-            initial="hidden"
-            variants={variant}
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="catalog"
-        >
-            <Breadcrumbs
-                dynamicParams={[
-                    {
-                        path: `/${pathWithoutSubCategory.split('/')[3]}`,
-                        name: activeCategory?.name || '',
-                    },
-                ]}
-            />
-            <CategoryList setActiveCategory={setActiveCategory} />
-            <div className="catalog-content" id="catalog-content">
-                <div className="container container_content-wrapper">
-                    <Filters />
-                    <div className="catalog__main-content main-content">
-                        <div className="main-content__top">
-                            <SearchedQuantity />
-                            <OpenFiltersButton />
-                            <SortProducts />
-                        </div>
-                        <div className="main-content__products">
-                            <ProductsList />
-                        </div>
-                        <div className="main-content__bottom">
-                            <Navigation />
+        <LazyMotion features={domAnimation} strict>
+            <m.section
+                initial="hidden"
+                variants={variant}
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="catalog"
+            >
+                <Breadcrumbs
+                    dynamicParams={[
+                        {
+                            path: `/${pathWithoutSubCategory.split('/')[3]}`,
+                            name: activeCategory?.name || '',
+                        },
+                    ]}
+                />
+                <CategoryList setActiveCategory={setActiveCategory} />
+                <div className="catalog-content" id="catalog-content">
+                    <div className="container container_content-wrapper">
+                        <Filters />
+                        <div className="catalog__main-content main-content">
+                            <div className="main-content__top">
+                                <SearchedQuantity />
+                                <OpenFiltersButton />
+                                <SortProducts />
+                            </div>
+                            <div className="main-content__products">
+                                <ProductsList />
+                            </div>
+                            <div className="main-content__bottom">
+                                <Navigation />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <ArrowUp />
-        </motion.section>
+                <ArrowUp />
+            </m.section>
+        </LazyMotion>
     );
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, memo } from 'react';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import nextId from 'react-id-generator';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../../../hooks/hooks';
@@ -105,7 +105,7 @@ const SearchBlock = (props: Props) => {
             );
         }
         return (
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, display: 'none' }}
                 animate={{
                     opacity: loading === 'succeeded' ? 1 : 0,
@@ -320,72 +320,76 @@ const SearchBlock = (props: Props) => {
                         ''
                     )}
                 </ul>
-            </motion.div>
+            </m.div>
         );
     };
 
     return (
-        <motion.div
-            className={`searchBlock ${
-                inputValue && searchValue ? 'searchBlock-active' : ''
-            }`}
-            initial={{ opacity: 0, display: 'none' }}
-            animate={{
-                opacity: searchValue || isMobileSearchOpen ? 1 : 0,
-                display: 'block',
-                transitionEnd: {
-                    display:
-                        !searchValue && !isMobileSearchOpen ? 'none' : 'block',
-                },
-                transition: {
-                    duration: 0.3,
-                    ease: 'easeOut',
-                },
-            }}
-            data-lenis-prevent
-            data-lenis-prevent-wheel
-            data-lenis-prevent-touch
-        >
-            <label className="searchBlock__block-label">
-                <svg
-                    className="searchBlock__block_searchIcon"
-                    width="21"
-                    height="21"
-                >
-                    <use href={`${headerSprite}#search-icon`} />
-                </svg>
-                <input
-                    type="text"
-                    placeholder="Пошук"
-                    className="searchBlock__block_input"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onFocus={() => setIsSearchFocus(true)}
-                />
-                <button
-                    type="button"
-                    className="searchBlock__block_closeIcon"
-                    aria-label="Close search"
-                    onClick={() => {
-                        setIsOpen(false);
-                        setIsMobileSearchOpen(false);
-                    }}
-                >
-                    <svg width="12" height="12">
-                        <use href={`${headerSprite}#close-icon`} />
+        <LazyMotion features={domAnimation} strict>
+            <m.div
+                className={`searchBlock ${
+                    inputValue && searchValue ? 'searchBlock-active' : ''
+                }`}
+                initial={{ opacity: 0, display: 'none' }}
+                animate={{
+                    opacity: searchValue || isMobileSearchOpen ? 1 : 0,
+                    display: 'block',
+                    transitionEnd: {
+                        display:
+                            !searchValue && !isMobileSearchOpen
+                                ? 'none'
+                                : 'block',
+                    },
+                    transition: {
+                        duration: 0.3,
+                        ease: 'easeOut',
+                    },
+                }}
+                data-lenis-prevent
+                data-lenis-prevent-wheel
+                data-lenis-prevent-touch
+            >
+                <label className="searchBlock__block-label">
+                    <svg
+                        className="searchBlock__block_searchIcon"
+                        width="21"
+                        height="21"
+                    >
+                        <use href={`${headerSprite}#search-icon`} />
                     </svg>
-                </button>
-            </label>
-            <div className="searchBlock__content-wrapper">
-                {searchValue && inputValue
-                    ? renderServerData({
-                          error,
-                          loading,
-                          content: searchedResults,
-                      })
-                    : null}
-            </div>
-        </motion.div>
+                    <input
+                        type="text"
+                        placeholder="Пошук"
+                        className="searchBlock__block_input"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onFocus={() => setIsSearchFocus(true)}
+                    />
+                    <button
+                        type="button"
+                        className="searchBlock__block_closeIcon"
+                        aria-label="Close search"
+                        onClick={() => {
+                            setIsOpen(false);
+                            setIsMobileSearchOpen(false);
+                        }}
+                    >
+                        <svg width="12" height="12">
+                            <use href={`${headerSprite}#close-icon`} />
+                        </svg>
+                    </button>
+                </label>
+                <div className="searchBlock__content-wrapper">
+                    {searchValue && inputValue
+                        ? renderServerData({
+                              error,
+                              loading,
+                              content: searchedResults,
+                          })
+                        : null}
+                </div>
+            </m.div>
+        </LazyMotion>
     );
 };
 
