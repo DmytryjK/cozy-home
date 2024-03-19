@@ -10,7 +10,7 @@ type Props = {
 const GoogleAuth = (props: Props) => {
     const { additionalClass, textBtn, isTitleShow } = props;
 
-    const { pathname } = useLocation();
+    const { pathname, search } = useLocation();
     return (
         <div
             className={`auth-popup__login-by-service login-by-service ${additionalClass}`}
@@ -26,7 +26,10 @@ const GoogleAuth = (props: Props) => {
                 className="login-by-service__link"
                 href="https://accounts.google.com/o/oauth2/auth?client_id=920811235941-7mhi8ad1m5qt42bumghsdvncadnj2jkf.apps.googleusercontent.com&redirect_uri=https://teamchallange-web-git-dev-dmytryjk.vercel.app/api/v1/auth/google-login&response_type=code&scope=openid profile email"
                 onClick={() => {
-                    localStorage.setItem('googleAuthLocation', pathname);
+                    localStorage.setItem(
+                        'googleAuthLocation',
+                        pathname + (search || '')
+                    );
                 }}
             >
                 <img src={googleIcon} alt="увійти через гугл аккаунт" />
