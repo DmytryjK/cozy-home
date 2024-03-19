@@ -6,7 +6,6 @@ import {
     ErrorMessageSmall,
     SuccessMessage,
 } from '../../shared-components/UserMessages/UserMessages';
-import ErrorMessage from '../../shared-components/UserMessages/ErrorMessage';
 import './GoogleAuthPage.scss';
 import Loader from '../../shared-components/Loaders/components/Loader';
 
@@ -36,6 +35,7 @@ const GoogleAuthPage = () => {
                         ? `${localStorage.getItem('googleAuthLocation')}`
                         : '/'
                 );
+                localStorage.removeItem('googleAuthLocation');
             }, 1500);
         }
         if (googleAuthError) {
@@ -45,6 +45,7 @@ const GoogleAuthPage = () => {
                         ? `${localStorage.getItem('googleAuthLocation')}`
                         : '/'
                 );
+                localStorage.removeItem('googleAuthLocation');
             }, 3000);
         }
     }, [loginLoading, googleAuthError]);
