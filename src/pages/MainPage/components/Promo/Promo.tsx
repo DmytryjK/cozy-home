@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import promoImg1_webp from '../../../../assets/images/promo/promo-1.webp';
@@ -23,94 +23,96 @@ const Promo = () => {
         },
     };
     return (
-        <motion.section
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: `-80px 0px` }}
-            variants={variants}
-            className="promo"
-        >
-            <div className="container container_pd-off">
-                <Swiper
-                    className="promo__slider"
-                    spaceBetween={32}
-                    modules={[Pagination]}
-                    speed={400}
-                    pagination={{ clickable: false }}
-                    breakpoints={{
-                        0: {
-                            slidesPerView: 1,
-                            spaceBetween: '16px',
-                        },
-                        440: {
-                            slidesPerView: 1,
-                            spaceBetween: '16px',
-                        },
-                        550: {
-                            slidesPerView: 1.3,
-                            spaceBetween: '16px',
-                        },
-                        768: {
-                            slidesPerView: 1.5,
-                            spaceBetween: '24px',
-                        },
-                        1101: {
-                            slidesPerView: 2,
-                            spaceBetween: '32px',
-                        },
-                    }}
-                >
-                    <SwiperSlide key="promo-item-1">
-                        <a className="promo__add-link add-link" href="/">
-                            <picture>
-                                <source
-                                    className="add-link__bg-img"
-                                    type="image/webp"
-                                    srcSet={promoImg1_webp}
-                                />
-                                <img
-                                    className="add-link__bg-img"
-                                    src={promoImg1}
-                                    alt="Vintage Loft Heritage Collection"
-                                />
-                            </picture>
-                            <h2 className="add-link__title">
-                                Vintage Loft Heritage Collection
-                            </h2>
-                            <span className="add-link__decorative">
-                                <span className="add-link__decorative-text">
-                                    Детальніше
+        <LazyMotion features={domAnimation} strict>
+            <m.section
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: `-80px 0px` }}
+                variants={variants}
+                className="promo"
+            >
+                <div className="container container_pd-off">
+                    <Swiper
+                        className="promo__slider"
+                        spaceBetween={32}
+                        modules={[Pagination]}
+                        speed={400}
+                        pagination={{ clickable: false }}
+                        breakpoints={{
+                            0: {
+                                slidesPerView: 1,
+                                spaceBetween: '16px',
+                            },
+                            440: {
+                                slidesPerView: 1,
+                                spaceBetween: '16px',
+                            },
+                            550: {
+                                slidesPerView: 1.3,
+                                spaceBetween: '16px',
+                            },
+                            768: {
+                                slidesPerView: 1.5,
+                                spaceBetween: '24px',
+                            },
+                            1101: {
+                                slidesPerView: 2,
+                                spaceBetween: '32px',
+                            },
+                        }}
+                    >
+                        <SwiperSlide key="promo-item-1">
+                            <a className="promo__add-link add-link" href="/">
+                                <picture>
+                                    <source
+                                        className="add-link__bg-img"
+                                        type="image/webp"
+                                        srcSet={promoImg1_webp}
+                                    />
+                                    <img
+                                        className="add-link__bg-img"
+                                        src={promoImg1}
+                                        alt="Vintage Loft Heritage Collection"
+                                    />
+                                </picture>
+                                <h2 className="add-link__title">
+                                    Vintage Loft Heritage Collection
+                                </h2>
+                                <span className="add-link__decorative">
+                                    <span className="add-link__decorative-text">
+                                        Детальніше
+                                    </span>
                                 </span>
-                            </span>
-                        </a>
-                    </SwiperSlide>
-                    <SwiperSlide key="promo-item-2">
-                        <a className="promo__add-link add-link" href="/">
-                            <picture>
-                                <source
-                                    className="add-link__bg-img"
-                                    type="image/webp"
-                                    srcSet={promoImg2_webp}
-                                />
-                                <img
-                                    className="add-link__bg-img"
-                                    src={promoImg2}
-                                    alt="Vintage Loft Heritage Collection"
-                                />
-                            </picture>
-                            <h2 className="add-link__title">
-                                Urban Industrial Living
-                            </h2>
-                            <span className="add-link__decorative">
-                                <span className="add-link__decorative-text">
-                                    Детальніше
+                            </a>
+                        </SwiperSlide>
+                        <SwiperSlide key="promo-item-2">
+                            <a className="promo__add-link add-link" href="/">
+                                <picture>
+                                    <source
+                                        className="add-link__bg-img"
+                                        type="image/webp"
+                                        srcSet={promoImg2_webp}
+                                    />
+                                    <img
+                                        className="add-link__bg-img"
+                                        src={promoImg2}
+                                        alt="Vintage Loft Heritage Collection"
+                                    />
+                                </picture>
+                                <h2 className="add-link__title">
+                                    Urban Industrial Living
+                                </h2>
+                                <span className="add-link__decorative">
+                                    <span className="add-link__decorative-text">
+                                        Детальніше
+                                    </span>
                                 </span>
-                            </span>
-                        </a>
-                    </SwiperSlide>
-                </Swiper>
-            </div>
-        </motion.section>
+                            </a>
+                        </SwiperSlide>
+                    </Swiper>
+                </div>
+            </m.section>
+        </LazyMotion>
     );
 };
 

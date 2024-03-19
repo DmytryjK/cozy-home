@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect, useCallback, memo } from 'react';
-import { useNavigate } from 'react-router';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import Breadcrumbs from '../../shared-components/Breadcrumbs/Breadcrumbs';
 import SummaryCart from '../ShoppingCartPage/components/SummaryCart/SummaryCart';
@@ -32,7 +31,6 @@ const CheckoutPage = () => {
     const [regularLoggedIn, setRegularLoggedIn] = useState(false);
     const [selectedDeliveryOption, setSelectedDeliveryOption] =
         useState<string>('postal-delivery');
-    const navigate = useNavigate();
     const cartTotal = useAppSelector((state) => state.cart.cartTotal);
     const jwtToken = useAppSelector((state) => state.auth.jwtToken);
     const productsInfoToCheckout = useAppSelector(
@@ -140,113 +138,117 @@ const CheckoutPage = () => {
         <>
             <Breadcrumbs />
             <div className="container">
-                <motion.div
-                    initial="hidden"
-                    variants={variant}
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="checkout"
-                >
-                    <h1 className="checkout__title">Оформлення замовлення</h1>
-                    <div className="checkout__content">
-                        <div className="customer-block">
-                            <div className="customer-handler">
-                                <ul className="customer-handler__list">
-                                    {!jwtToken ? (
+                <LazyMotion features={domAnimation} strict>
+                    <m.div
+                        initial="hidden"
+                        variants={variant}
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        className="checkout"
+                    >
+                        <h1 className="checkout__title">
+                            Оформлення замовлення
+                        </h1>
+                        <div className="checkout__content">
+                            <div className="customer-block">
+                                <div className="customer-handler">
+                                    <ul className="customer-handler__list">
+                                        {!jwtToken ? (
+                                            <li
+                                                onClick={() =>
+                                                    handleCustomerClick(false)
+                                                }
+                                                className={
+                                                    newCustomerActive
+                                                        ? 'customer-handler__list_item active'
+                                                        : 'customer-handler__list_item'
+                                                }
+                                            >
+                                                Новий покупець
+                                            </li>
+                                        ) : (
+                                            ''
+                                        )}
                                         <li
                                             onClick={() =>
-                                                handleCustomerClick(false)
+                                                handleCustomerClick(true)
                                             }
-                                            className={
-                                                newCustomerActive
-                                                    ? 'customer-handler__list_item active'
-                                                    : 'customer-handler__list_item'
-                                            }
+                                            className={`customer-handler__list_item regular-cutomer ${
+                                                regularCustomerActive
+                                                    ? 'active'
+                                                    : ''
+                                            } ${jwtToken ? 'center' : ''}`}
                                         >
-                                            Новий покупець
+                                            Постійний клієнт
                                         </li>
-                                    ) : (
-                                        ''
-                                    )}
-                                    <li
-                                        onClick={() =>
-                                            handleCustomerClick(true)
-                                        }
-                                        className={`customer-handler__list_item regular-cutomer ${
-                                            regularCustomerActive
-                                                ? 'active'
-                                                : ''
-                                        } ${jwtToken ? 'center' : ''}`}
-                                    >
-                                        Постійний клієнт
-                                    </li>
-                                </ul>
-                            </div>
-                            {newCustomerActive || regularLoggedIn ? (
-                                <div className="customer-block__steps">
-                                    <button
-                                        className={
-                                            firstStepActive
-                                                ? 'customer-block__steps_step active'
-                                                : 'customer-block__steps_step'
-                                        }
-                                        type="button"
-                                        onClick={() => {
-                                            setFirstStepActive(true);
-                                            setSecondStepActive(false);
-                                        }}
-                                    >
-                                        <span
+                                    </ul>
+                                </div>
+                                {newCustomerActive || regularLoggedIn ? (
+                                    <div className="customer-block__steps">
+                                        <button
                                             className={
                                                 firstStepActive
-                                                    ? 'customer-block__steps_step_number active'
-                                                    : 'customer-block__steps_step_number'
+                                                    ? 'customer-block__steps_step active'
+                                                    : 'customer-block__steps_step'
                                             }
+                                            type="button"
+                                            onClick={() => {
+                                                setFirstStepActive(true);
+                                                setSecondStepActive(false);
+                                            }}
                                         >
-                                            1
-                                        </span>
-                                        Особисті дані
-                                    </button>
-                                    <button
-                                        className={
-                                            secondStepActive
-                                                ? 'customer-block__steps_step active'
-                                                : 'customer-block__steps_step'
-                                        }
-                                        type="button"
-                                        onClick={() => {
-                                            if (customerForm) {
-                                                customerForm.submitForm();
-                                            }
-                                        }}
-                                    >
-                                        <span
+                                            <span
+                                                className={
+                                                    firstStepActive
+                                                        ? 'customer-block__steps_step_number active'
+                                                        : 'customer-block__steps_step_number'
+                                                }
+                                            >
+                                                1
+                                            </span>
+                                            Особисті дані
+                                        </button>
+                                        <button
                                             className={
                                                 secondStepActive
-                                                    ? 'customer-block__steps_step_number active'
-                                                    : 'customer-block__steps_step_number'
+                                                    ? 'customer-block__steps_step active'
+                                                    : 'customer-block__steps_step'
                                             }
+                                            type="button"
+                                            onClick={() => {
+                                                if (customerForm) {
+                                                    customerForm.submitForm();
+                                                }
+                                            }}
                                         >
-                                            2
-                                        </span>
-                                        Інформація про доставку та оплату
-                                    </button>
-                                </div>
-                            ) : (
-                                ''
-                            )}
-                            {components[activeComponent]}
+                                            <span
+                                                className={
+                                                    secondStepActive
+                                                        ? 'customer-block__steps_step_number active'
+                                                        : 'customer-block__steps_step_number'
+                                                }
+                                            >
+                                                2
+                                            </span>
+                                            Інформація про доставку та оплату
+                                        </button>
+                                    </div>
+                                ) : (
+                                    ''
+                                )}
+                                {components[activeComponent]}
+                            </div>
+                            <div className="summary-block">
+                                <SummaryCart
+                                    title="Ваше замовлення"
+                                    bgColor="#FAFAF9"
+                                >
+                                    <ProductsList />
+                                </SummaryCart>
+                            </div>
                         </div>
-                        <div className="summary-block">
-                            <SummaryCart
-                                title="Ваше замовлення"
-                                bgColor="#FAFAF9"
-                            >
-                                <ProductsList />
-                            </SummaryCart>
-                        </div>
-                    </div>
-                </motion.div>
+                    </m.div>
+                </LazyMotion>
             </div>
             <FormUpdater />
         </>

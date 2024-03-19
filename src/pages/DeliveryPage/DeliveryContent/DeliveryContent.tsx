@@ -1,5 +1,5 @@
 import { useEffect, useRef, Dispatch, SetStateAction, memo } from 'react';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import nextId from 'react-id-generator';
 import LazyLoad from 'react-lazy-load';
 import delivery1 from '../../../assets/images/delivery/delivery1.png';
@@ -162,189 +162,192 @@ const DeliveryContent = (props: Props) => {
 
     return (
         <div className="delivery-content">
-            <motion.section
-                className="delivery-content__conditions"
-                id="delivery-conditions"
-                ref={section1}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: `-${offset} 0px` }}
-                variants={variants}
-                custom={1}
-            >
-                <h2 className="delivery-content__title">Умови доставки</h2>
-                <ul className="delivery-content__conditions-list delivery-content__conditions-list_counter1">
-                    {deliveryConditions.map((item, index) => {
-                        const { title, description, ref } = item;
-                        return (
-                            <li
-                                key={nextId('condition')}
-                                className="delivery-content__conditions-item"
-                            >
-                                <h3 className="delivery-content__conditions-title">
-                                    {title}
-                                </h3>
-                                <p className="delivery-content__conditions-descr">
-                                    {description}
-                                </p>
-                            </li>
-                        );
-                    })}
-                    <li className="delivery-content__conditions-item delivery-content__conditions-item_warning">
-                        <p className="delivery-content__conditions-warning">
-                            У випадку порушення цілісності упаковки або її
-                            деформації складіть акт-претензію в транспортній
-                            компанії, відмовтесь від отримання та повідомте нам
-                            про проблему якнайшвидше зручним для Вас способом!
-                        </p>
-                    </li>
-                    <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
-                        <LazyLoad>
-                            <img src={delivery1} alt="delivery process" />
-                        </LazyLoad>
-                    </li>
-                </ul>
-            </motion.section>
-            <motion.section
-                className="delivery-content__conditions delivery-content__conditions_mgt"
-                id="payment"
-                ref={section2}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: `-${offset} 0px` }}
-                variants={variants}
-                custom={1}
-            >
-                <h2 className="delivery-content__title">
-                    Важливі положення щодо доставки та оплати
-                </h2>
-                <ul className="delivery-content__conditions-list">
-                    {paymentConditions.map((item) => {
-                        const { description } = item;
-                        return (
-                            <li
-                                key={nextId('condition')}
-                                className="delivery-content__conditions-item delivery-content__conditions-item_circle"
-                            >
-                                <p className="delivery-content__conditions-descr">
-                                    {description}
-                                </p>
-                            </li>
-                        );
-                    })}
-                    <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
-                        <LazyLoad>
-                            <img src={delivery2} alt="delivery process" />
-                        </LazyLoad>
-                    </li>
-                </ul>
-            </motion.section>
-            <motion.section
-                className="delivery-content__delivery-status delivery-content__conditions_mgt"
-                id="delivery-status"
-                ref={section3}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: `-${offset} 0px` }}
-                variants={variants}
-                custom={1}
-            >
-                <h2 className="delivery-content__title">
-                    Перевірка статусу замовлення
-                </h2>
-                <ul className="delivery-content__conditions-list delivery-content__conditions-list_counter2">
-                    {deliveryStatusConditions.map((item) => {
-                        const { description } = item;
-                        return (
-                            <li
-                                key={nextId('condition')}
-                                className="delivery-content__conditions-item delivery-content__conditions-item_descr"
-                            >
-                                <p className="delivery-content__conditions-descr delivery-content__conditions-descr_counter">
-                                    {description}
-                                </p>
-                            </li>
-                        );
-                    })}
-                    <li className="delivery-content__conditions-item delivery-content__conditions-item_icons">
-                        <ul className="delivery-content__postal-list">
-                            <li className="delivery-content__postal-item">
-                                <a
-                                    className="delivery-content__postal-link"
-                                    href="https://tracking.novaposhta.ua/"
-                                    target="blank"
+            <LazyMotion features={domAnimation} strict>
+                <m.section
+                    className="delivery-content__conditions"
+                    id="delivery-conditions"
+                    ref={section1}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: `-${offset} 0px` }}
+                    variants={variants}
+                    custom={1}
+                >
+                    <h2 className="delivery-content__title">Умови доставки</h2>
+                    <ul className="delivery-content__conditions-list delivery-content__conditions-list_counter1">
+                        {deliveryConditions.map((item, index) => {
+                            const { title, description, ref } = item;
+                            return (
+                                <li
+                                    key={nextId('condition')}
+                                    className="delivery-content__conditions-item"
                                 >
-                                    <h4 className="delivery-content__postal-title">
-                                        Нова пошта
-                                    </h4>
-                                    <img src={np} alt="" />
-                                </a>
-                            </li>
-                            <li className="delivery-content__postal-item">
-                                <a
-                                    className="delivery-content__postal-link"
-                                    href="https://track.ukrposhta.ua/"
-                                    target="blank"
+                                    <h3 className="delivery-content__conditions-title">
+                                        {title}
+                                    </h3>
+                                    <p className="delivery-content__conditions-descr">
+                                        {description}
+                                    </p>
+                                </li>
+                            );
+                        })}
+                        <li className="delivery-content__conditions-item delivery-content__conditions-item_warning">
+                            <p className="delivery-content__conditions-warning">
+                                У випадку порушення цілісності упаковки або її
+                                деформації складіть акт-претензію в транспортній
+                                компанії, відмовтесь від отримання та повідомте
+                                нам про проблему якнайшвидше зручним для Вас
+                                способом!
+                            </p>
+                        </li>
+                        <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
+                            <LazyLoad>
+                                <img src={delivery1} alt="delivery process" />
+                            </LazyLoad>
+                        </li>
+                    </ul>
+                </m.section>
+                <m.section
+                    className="delivery-content__conditions delivery-content__conditions_mgt"
+                    id="payment"
+                    ref={section2}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: `-${offset} 0px` }}
+                    variants={variants}
+                    custom={1}
+                >
+                    <h2 className="delivery-content__title">
+                        Важливі положення щодо доставки та оплати
+                    </h2>
+                    <ul className="delivery-content__conditions-list">
+                        {paymentConditions.map((item) => {
+                            const { description } = item;
+                            return (
+                                <li
+                                    key={nextId('condition')}
+                                    className="delivery-content__conditions-item delivery-content__conditions-item_circle"
                                 >
-                                    <h4 className="delivery-content__postal-title">
-                                        Укрпошта
-                                    </h4>
-                                    <img src={up} alt="" />
-                                </a>
-                            </li>
-                            <li className="delivery-content__postal-item">
-                                <a
-                                    className="delivery-content__postal-link"
-                                    href="https://ua.meest.com/parcel-track?gad_source=1&gclid=CjwKCAiArfauBhApEiwAeoB7qIZXyKqIKhzAcxfRAa9JkTjFW_zyOZGXra0TOJH6zxaTliHWVGJ6JhoCl70QAvD_BwE"
-                                    target="blank"
+                                    <p className="delivery-content__conditions-descr">
+                                        {description}
+                                    </p>
+                                </li>
+                            );
+                        })}
+                        <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
+                            <LazyLoad>
+                                <img src={delivery2} alt="delivery process" />
+                            </LazyLoad>
+                        </li>
+                    </ul>
+                </m.section>
+                <m.section
+                    className="delivery-content__delivery-status delivery-content__conditions_mgt"
+                    id="delivery-status"
+                    ref={section3}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: `-${offset} 0px` }}
+                    variants={variants}
+                    custom={1}
+                >
+                    <h2 className="delivery-content__title">
+                        Перевірка статусу замовлення
+                    </h2>
+                    <ul className="delivery-content__conditions-list delivery-content__conditions-list_counter2">
+                        {deliveryStatusConditions.map((item) => {
+                            const { description } = item;
+                            return (
+                                <li
+                                    key={nextId('condition')}
+                                    className="delivery-content__conditions-item delivery-content__conditions-item_descr"
                                 >
-                                    <h4 className="delivery-content__postal-title">
-                                        Meest
-                                    </h4>
-                                    <img src={me} alt="" />
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </motion.section>
-            <motion.section
-                className="delivery-content__conditions delivery-content__conditions_mgt"
-                id="refund-orders"
-                ref={section4}
-                initial="hidden"
-                whileInView="visible"
-                variants={variants}
-                custom={1}
-                viewport={{ amount: 0.3, once: true }}
-            >
-                <h2 className="delivery-content__title">
-                    Обмін та повернення товарів
-                </h2>
-                <ul className="delivery-content__conditions-list delivery-content__conditions-list_counter3">
-                    {refundOrdersConditions.map((item) => {
-                        const { title, description } = item;
-                        return (
-                            <li
-                                key={nextId('condition')}
-                                className="delivery-content__conditions-item"
-                            >
-                                <h3 className="delivery-content__conditions-title">
-                                    {title}
-                                </h3>
-                                <p className="delivery-content__conditions-descr">
-                                    {description}
-                                </p>
-                            </li>
-                        );
-                    })}
-                    <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
-                        <LazyLoad>
-                            <img src={delivery3} alt="delivery process" />
-                        </LazyLoad>
-                    </li>
-                </ul>
-            </motion.section>
+                                    <p className="delivery-content__conditions-descr delivery-content__conditions-descr_counter">
+                                        {description}
+                                    </p>
+                                </li>
+                            );
+                        })}
+                        <li className="delivery-content__conditions-item delivery-content__conditions-item_icons">
+                            <ul className="delivery-content__postal-list">
+                                <li className="delivery-content__postal-item">
+                                    <a
+                                        className="delivery-content__postal-link"
+                                        href="https://tracking.novaposhta.ua/"
+                                        target="blank"
+                                    >
+                                        <h4 className="delivery-content__postal-title">
+                                            Нова пошта
+                                        </h4>
+                                        <img src={np} alt="" />
+                                    </a>
+                                </li>
+                                <li className="delivery-content__postal-item">
+                                    <a
+                                        className="delivery-content__postal-link"
+                                        href="https://track.ukrposhta.ua/"
+                                        target="blank"
+                                    >
+                                        <h4 className="delivery-content__postal-title">
+                                            Укрпошта
+                                        </h4>
+                                        <img src={up} alt="" />
+                                    </a>
+                                </li>
+                                <li className="delivery-content__postal-item">
+                                    <a
+                                        className="delivery-content__postal-link"
+                                        href="https://ua.meest.com/parcel-track?gad_source=1&gclid=CjwKCAiArfauBhApEiwAeoB7qIZXyKqIKhzAcxfRAa9JkTjFW_zyOZGXra0TOJH6zxaTliHWVGJ6JhoCl70QAvD_BwE"
+                                        target="blank"
+                                    >
+                                        <h4 className="delivery-content__postal-title">
+                                            Meest
+                                        </h4>
+                                        <img src={me} alt="" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </m.section>
+                <m.section
+                    className="delivery-content__conditions delivery-content__conditions_mgt"
+                    id="refund-orders"
+                    ref={section4}
+                    initial="hidden"
+                    whileInView="visible"
+                    variants={variants}
+                    custom={1}
+                    viewport={{ amount: 0.3, once: true }}
+                >
+                    <h2 className="delivery-content__title">
+                        Обмін та повернення товарів
+                    </h2>
+                    <ul className="delivery-content__conditions-list delivery-content__conditions-list_counter3">
+                        {refundOrdersConditions.map((item) => {
+                            const { title, description } = item;
+                            return (
+                                <li
+                                    key={nextId('condition')}
+                                    className="delivery-content__conditions-item"
+                                >
+                                    <h3 className="delivery-content__conditions-title">
+                                        {title}
+                                    </h3>
+                                    <p className="delivery-content__conditions-descr">
+                                        {description}
+                                    </p>
+                                </li>
+                            );
+                        })}
+                        <li className="delivery-content__conditions-item delivery-content__conditions-item_img">
+                            <LazyLoad>
+                                <img src={delivery3} alt="delivery process" />
+                            </LazyLoad>
+                        </li>
+                    </ul>
+                </m.section>
+            </LazyMotion>
         </div>
     );
 };

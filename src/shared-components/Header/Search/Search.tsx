@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { LazyMotion, m, domAnimation } from 'framer-motion';
 import { useAppDispatch } from '../../../hooks/hooks';
 import {
     fetchResultsBySearchValue,
@@ -129,25 +129,27 @@ const Search = (props: Props) => {
                 isMobileSearchOpen={isMobileSearchOpen}
                 setIsSearchFocus={setIsSearchFocus}
             />
-            <motion.div
-                initial={{ opacity: 0, display: 'none' }}
-                animate={{
-                    opacity: isOpen ? 1 : 0,
-                    display: 'block',
-                    transitionEnd: {
-                        display: !isOpen ? 'none' : 'block',
-                    },
-                    transition: {
-                        duration: 0.3,
-                        ease: 'easeOut',
-                    },
-                }}
-                className="header__search-shadow"
-                onClick={() => {
-                    setIsOpen(false);
-                    setIsMobileSearchOpen(false);
-                }}
-            />
+            <LazyMotion features={domAnimation} strict>
+                <m.div
+                    initial={{ opacity: 0, display: 'none' }}
+                    animate={{
+                        opacity: isOpen ? 1 : 0,
+                        display: 'block',
+                        transitionEnd: {
+                            display: !isOpen ? 'none' : 'block',
+                        },
+                        transition: {
+                            duration: 0.3,
+                            ease: 'easeOut',
+                        },
+                    }}
+                    className="header__search-shadow"
+                    onClick={() => {
+                        setIsOpen(false);
+                        setIsMobileSearchOpen(false);
+                    }}
+                />
+            </LazyMotion>
         </>
     );
 };
