@@ -24,6 +24,7 @@ const NotFoundPage = lazy(() => import('./NotFoundPage/NotFoundPage'));
 const PrefetchProductPage = lazy(
     () => import('./PrefetchProductPage/PrefetchProductPage')
 );
+const Contacts = lazy(() => import('./Contacts/Contacts'));
 
 export {
     MainPage,
@@ -42,4 +43,5 @@ export {
     NotFoundPage,
     CheckoutSuccessPage,
     PrefetchProductPage,
+    Contacts,
 };

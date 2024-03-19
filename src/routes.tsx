@@ -18,6 +18,7 @@ import {
     NotFoundPage,
     CheckoutSuccessPage,
     PrefetchProductPage,
+    Contacts,
 } from './pages';
 
 const RootRouterProvider = () => {
@@ -81,6 +82,10 @@ const RootRouterProvider = () => {
                 {
                     path: 'delivery',
                     element: <DeliveryPage />,
+                },
+                {
+                    path: 'contacts',
+                    element: <Contacts />,
                 },
                 {
                     path: 'cabinet',

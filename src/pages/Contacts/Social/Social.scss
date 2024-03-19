@@ -1,0 +1,73 @@
+@use '../../../style/variables.scss' as *;
+.social {
+    margin-top: 50px;
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+        max-width: 850px;
+        width: 100%;
+    }
+    &__item {
+        color: $accent-color;
+        &-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 15px;
+            border-radius: 5px;
+            border: 1px solid $accent-color;
+            transition: 0.2s ease-out background-color;
+            &:hover {
+                background-color: $accent-color;
+                .social__item-title {
+                    color: $light-color;
+                }
+                .social__item-icon {
+                    fill: $light-color;
+                }
+                .social__item-icon-wrapper {
+                    border-color: $light-color;
+                }
+            }
+        }
+        &-icon-wrapper {
+            background-color: transparent;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            border: 1px solid $accent-color;
+            border-radius: 50%;
+            transition: 0.2s ease-out border-color;
+        }
+        &-icon {
+            fill: $accent-color;
+            transition: 0.2s ease-out fill;
+        }
+        &-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: 0.2s ease-out color;
+        }
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .social {
+        &__list {
+            width: 100%;
+            max-width: 200px;
+            justify-content: flex-start;
+        }
+        &__item {
+            width: auto;
+            max-width: auto;
+            &-link {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+}

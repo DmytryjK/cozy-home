@@ -1,0 +1,27 @@
+@use '../../style/variables.scss' as *;
+.contacts {
+    &__title {
+        font-size: 28px;
+        color: $dark-color;
+        &_no-display {
+            display: none;
+        }
+        &_h2 {
+            font-size: 22px;
+            color: $dark-color;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .contacts {
+        &__title {
+            &_h2 {
+                font-size: 20px;
+                color: $dark-color;
+                margin-bottom: 15px;
+            }
+        }
+    }
+}
