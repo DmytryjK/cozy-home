@@ -1,6 +1,7 @@
 # Cozy Home Online Store
 
 Welcome to Cozy Home, your one-stop destination for high-quality furniture online. Our platform offers a seamless shopping experience, allowing users to explore a wide range of furniture products, create accounts, manage carts, and much more.
+![cozy-home](https://github.com/DmytryjK/teamchallange_web/assets/48493462/ebe91b39-1974-4503-9d86-51b681fd9dba)
 
 ## Features
 
