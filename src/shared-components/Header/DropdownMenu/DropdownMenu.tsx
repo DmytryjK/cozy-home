@@ -1,4 +1,4 @@
-import { MouseEvent, memo } from 'react';
+import { MouseEvent, memo, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import renderServerData from '../../../helpers/renderServerData';
 import { useAppSelector } from '../../../hooks/hooks';
@@ -17,7 +17,8 @@ const DropdownMenu = (props: Props) => {
     const { error, loading, data } = useAppSelector(
         (state) => state.categories
     );
-    const renderedCategories = () => {
+
+    const renderedCategories = useCallback(() => {
         return data.map((category) => {
             const { name, id } = category;
             const transliteratedCategoryName = transliterate(name);
@@ -56,7 +57,7 @@ const DropdownMenu = (props: Props) => {
                 </ul>
             );
         });
-    };
+    }, [loading, error]);
 
     return (
         <div

@@ -1,49 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import throttle from '../../utils/throttle';
 import './ArrowUp.scss';
 
 const ArrowUp = () => {
     const [isActive, setIsActive] = useState<boolean>(false);
-    const [userScrollTop, setUserScrollTop] = useState<number>();
-    const [userScrollBottom, setUserScrollBottom] = useState<number>();
-    const scrollPosition = () => {
+
+    const scrollPosition = useCallback(() => {
         const scrollTop = window.scrollY;
         const { scrollHeight, clientHeight } = document.documentElement;
         const scrollBottom = scrollHeight - clientHeight - scrollTop;
-        setUserScrollTop(scrollTop);
-        setUserScrollBottom(scrollBottom);
-    };
+
+        if (
+            scrollTop &&
+            scrollTop >= 300 &&
+            scrollBottom &&
+            scrollBottom > 300
+        ) {
+            setIsActive(true);
+        } else {
+            setIsActive(false);
+        }
+    }, []);
+
     useEffect(() => {
         document.addEventListener('scroll', throttle(scrollPosition, 300));
         return () => document.removeEventListener('scroll', scrollPosition);
     }, []);
-
-    useEffect(() => {
-        if (
-            userScrollTop &&
-            userScrollTop >= 300 &&
-            userScrollBottom &&
-            userScrollBottom > 300
-        ) {
-            setIsActive(true);
-            return;
-        }
-        setIsActive(false);
-    }, [userScrollTop, userScrollBottom]);
-
-    const handleScrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
-    };
 
     return (
         <button
             className={`arrow-up ${isActive ? 'active' : ''}`}
             type="button"
             aria-label="arrow-up"
-            onClick={handleScrollToTop}
+            onClick={() =>
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                })
+            }
         >
             <svg
                 className="arrow-up__icon"
