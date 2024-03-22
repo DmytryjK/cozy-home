@@ -44,7 +44,6 @@ const Header = () => {
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
-    // const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
     const [isInputFocused, setIsInputFocused] = useState(false);
     const [isPreviewCartActive, setIsPreviewCartActive] =
@@ -123,21 +122,6 @@ const Header = () => {
         const throttleCheckWindowSize = throttle(checkWindowSize, 400);
         window.addEventListener('resize', throttleCheckWindowSize);
     }, []);
-
-    // useEffect(() => {
-    //     const handleScroll = () => {
-    //         const currentScrollPos =
-    //             window.pageYOffset || document.documentElement.scrollTop;
-    //         if (currentScrollPos <= 150) {
-    //             setIsScrolled(false);
-    //         } else if (currentScrollPos > 150) {
-    //             setIsScrolled(true);
-    //         }
-    //     };
-    //     const throttleScroll = throttle(handleScroll, 300);
-    //     window.addEventListener('scroll', throttleScroll);
-    //     return () => window.removeEventListener('scroll', handleScroll);
-    // }, []);
 
     useEffect(() => {
         if (

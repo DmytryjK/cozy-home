@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { NavLink } from 'react-router-dom';
-import nextId from 'react-id-generator';
 import LazyLoad from 'react-lazy-load';
 import Loader from '../../Loaders/components/Loader';
 import imageNotFound from '../../../assets/images/error-images/image-not-found_small.png';
@@ -30,8 +29,6 @@ type ImageSrc = {
 
 type Props = {
     productData: ProductCardType;
-    imagesData: ImagesData;
-    setImagesData: React.Dispatch<React.SetStateAction<ImagesData>>;
     setCurrentColor: React.Dispatch<
         React.SetStateAction<{
             name: string;
@@ -84,20 +81,14 @@ const sortColorByFirstImg = (
 };
 
 const SliderImages = (props: Props) => {
-    const {
-        productData,
-        imagesData,
-        setImagesData,
-        currentColor,
-        setCurrentColor,
-    } = props;
+    const { productData, currentColor, setCurrentColor } = props;
     const { skuCode, name, shortDescription, colorDtoList, imageDtoList } =
         productData;
 
     const [currentIndexColor, setCurrentIndexColor] = useState<number>(0);
     const [sortedColorDto, setSortedColorDto] = useState(colorDtoList);
     const [isColorChosen, setIsColorChosen] = useState(false);
-    const uniqIdForInputName = nextId('color-');
+    const [imagesData, setImagesData] = useState<ImagesData>({});
 
     const [imageSrc, setImageSrc] = useState<string>('');
     const [loading, setLoading] = useState<Loading>('succeeded');
@@ -148,73 +139,51 @@ const SliderImages = (props: Props) => {
         }
     }, [imageSrc, imageDtoList, sortedColorDto]);
 
-    const handleSlideChange = (
-        color: string,
-        index: number,
-        id: string,
-        quantityStatus: string
-    ) => {
-        setCurrentColor({ name: color, hex: id, quantityStatus });
-        setIsColorChosen(true);
-        setCurrentIndexColor(index);
-        setLoading('idle');
-        async function fetchData() {
-            try {
-                setImageSrc('');
-                setLoading('pending');
+    const handleSlideChange = useCallback(
+        (color: string, index: number, id: string, quantityStatus: string) => {
+            setCurrentColor({ name: color, hex: id, quantityStatus });
+            setIsColorChosen(true);
+            setCurrentIndexColor(index);
+            setLoading('idle');
+            async function fetchData() {
+                try {
+                    setImageSrc('');
+                    setLoading('pending');
 
-                const response = await fetch(`${API_BASE}image/product-color`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        productSkuCode: skuCode,
-                        colorHex: id,
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                });
+                    const response = await fetch(
+                        `${API_BASE}image/product-color`,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                productSkuCode: skuCode,
+                                colorHex: id,
+                            }),
+                            headers: {
+                                'Content-type':
+                                    'application/json; charset=UTF-8',
+                            },
+                        }
+                    );
 
-                const result: ImageSrc = await response.json();
+                    const result: ImageSrc = await response.json();
 
-                if (!response.ok) throw new Error('something went wrong');
+                    if (!response.ok) throw new Error('something went wrong');
 
-                setImageSrc(result.imagePath);
-                setError(null);
-                setLoading('succeeded');
-            } catch (errors) {
-                setError(errors);
-                setLoading('failed');
-                setImageSrc(imageNotFound);
+                    setImageSrc(result.imagePath);
+                    setError(null);
+                    setLoading('succeeded');
+                } catch (errors) {
+                    setError(errors);
+                    setLoading('failed');
+                    setImageSrc(imageNotFound);
+                }
             }
-        }
-        if (
-            error === null &&
-            imagesData &&
-            Object.keys(imagesData).length < sortedColorDto.length
-        )
-            fetchData();
-    };
-
-    const renderedImage = (name: string, index: number) => {
-        let result: JSX.Element | null = null;
-        if (loading === 'pending') {
-            result = <Loader />;
-        } else {
-            result = (
-                <LazyLoad height={350}>
-                    <img
-                        className="product-card__image"
-                        src={imagesData[index]?.imageSrc || ''}
-                        loading="lazy"
-                        width={304}
-                        height={350}
-                        alt={name}
-                    />
-                </LazyLoad>
-            );
-        }
-        return result;
-    };
+            if (error === null && imagesData && !imagesData[index]?.imageSrc) {
+                fetchData();
+            }
+        },
+        [imagesData]
+    );
 
     return (
         <>
@@ -227,26 +196,20 @@ const SliderImages = (props: Props) => {
                 }}
             >
                 {loadingPrefetch === 'pending' &&
-                isLinkClicked.isClicked &&
-                isLinkClicked.sku === skuCode &&
-                !isCanceledByUser ? (
-                    <PrefetchProductPageLoader className="product-card-preloader" />
-                ) : (
-                    ''
-                )}
-                {errorPrefetch ? (
+                    isLinkClicked.isClicked &&
+                    isLinkClicked.sku === skuCode &&
+                    !isCanceledByUser && (
+                        <PrefetchProductPageLoader className="product-card-preloader" />
+                    )}
+                {errorPrefetch && (
                     <ErrorMessageSmall text="Помилка завантаження" />
-                ) : (
-                    ''
                 )}
                 <div className="product-card__slider">
                     <div className="product-card__image-overflow">
-                        {loading === 'pending' ? (
+                        {loading === 'pending' && (
                             <div className="product-card__image-wrapper">
                                 <Loader />
                             </div>
-                        ) : (
-                            ''
                         )}
                         {sortedColorDto.length === 0 && (
                             <div className="product-card__image-wrapper">
@@ -267,7 +230,23 @@ const SliderImages = (props: Props) => {
                                     }`}
                                     key={`slider-image-${skuCode}${color.id}`}
                                 >
-                                    {renderedImage(name, index)}
+                                    {loading === 'pending' ? (
+                                        <Loader />
+                                    ) : (
+                                        <LazyLoad height={350}>
+                                            <img
+                                                className="product-card__image"
+                                                src={
+                                                    imagesData[index]
+                                                        ?.imageSrc || ''
+                                                }
+                                                loading="lazy"
+                                                width={304}
+                                                height={350}
+                                                alt={name}
+                                            />
+                                        </LazyLoad>
+                                    )}
                                 </div>
                             );
                         })}
@@ -301,12 +280,12 @@ const SliderImages = (props: Props) => {
                             return (
                                 <label
                                     className="product-card__checkbox-label"
-                                    key={nextId('color-radio')}
+                                    key={`color-label-${skuCode}-${id}`}
                                 >
                                     <input
                                         className="product-card__color-checkbox"
                                         type="radio"
-                                        name={uniqIdForInputName}
+                                        name={`${name}-${skuCode}`}
                                         aria-label={name}
                                         value={id}
                                         checked={
@@ -350,4 +329,4 @@ const SliderImages = (props: Props) => {
     );
 };
 
-export default SliderImages;
+export default memo(SliderImages);

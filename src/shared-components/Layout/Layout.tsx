@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from '../Header';
 import Footer from '../Footer/Footer';
-import { GlobalSiteLoader, PageLazyLoader } from '../Loaders';
+import { PageLazyLoader } from '../Loaders';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
 import './Layout.scss';
 
@@ -29,7 +29,6 @@ const Layout = () => {
             <ScrollToTop />
             <Footer />
             <AllModals />
-            <GlobalSiteLoader />
         </div>
     );
 };
