@@ -7,7 +7,6 @@ import type {
     Loading,
     ProductCardType,
     ColorDtoList,
-    ImageDtoList,
 } from '../../../types/types';
 import { API_BASE } from '../../../utils/API_BASE';
 import usePrefetchProduct from '../../../hooks/usePrefetchProduct';
@@ -41,52 +40,14 @@ type Props = {
         hex: string;
         quantityStatus: string;
     };
-};
-
-export const sortColors = (colorDtoList: ColorDtoList[]) => {
-    const colorDtoSort: ColorDtoList[] = JSON.parse(
-        JSON.stringify(colorDtoList)
-    );
-    return colorDtoSort.sort((a, b) => {
-        const valuesOfAvailability = [
-            'Немає в наявності',
-            'Закінчується',
-            'В наявності',
-        ];
-        const compareA = valuesOfAvailability.indexOf(a.quantityStatus);
-        const compareB = valuesOfAvailability.indexOf(b.quantityStatus);
-        if (compareA < compareB) {
-            return 1;
-        }
-        if (compareA > compareB) {
-            return -1;
-        }
-        return 0;
-    });
-};
-
-const sortColorByFirstImg = (
-    colorDtoList: ColorDtoList[],
-    imageDtoList: ImageDtoList[]
-) => {
-    return sortColors(colorDtoList).sort((a, b) => {
-        if (a.name === imageDtoList[0].color) {
-            return -1;
-        }
-        if (b.name === imageDtoList[0].color) {
-            return 1;
-        }
-        return 0;
-    });
+    sortedColorDto: ColorDtoList[];
 };
 
 const SliderImages = (props: Props) => {
-    const { productData, currentColor, setCurrentColor } = props;
-    const { skuCode, name, shortDescription, colorDtoList, imageDtoList } =
-        productData;
-
+    const { productData, currentColor, setCurrentColor, sortedColorDto } =
+        props;
+    const { skuCode, name, shortDescription, imageDtoList } = productData;
     const [currentIndexColor, setCurrentIndexColor] = useState<number>(0);
-    const [sortedColorDto, setSortedColorDto] = useState(colorDtoList);
     const [isColorChosen, setIsColorChosen] = useState(false);
     const [imagesData, setImagesData] = useState<ImagesData>({});
 
@@ -103,10 +64,6 @@ const SliderImages = (props: Props) => {
     } = usePrefetchProduct();
 
     useEffect(() => {
-        setSortedColorDto(sortColorByFirstImg(colorDtoList, imageDtoList));
-    }, [colorDtoList, imageDtoList]);
-
-    useEffect(() => {
         let timeout: ReturnType<typeof setTimeout> | null = null;
         if (!isColorChosen && imageDtoList.length > 0) {
             timeout = setTimeout(() => {
@@ -116,7 +73,7 @@ const SliderImages = (props: Props) => {
             });
         }
         return () => clearTimeout(timeout || '');
-    }, [isColorChosen, imageDtoList, sortedColorDto]);
+    }, [isColorChosen, imageDtoList]);
 
     useEffect(() => {
         setImagesData({
@@ -137,7 +94,7 @@ const SliderImages = (props: Props) => {
                 }));
             }
         }
-    }, [imageSrc, imageDtoList, sortedColorDto]);
+    }, [imageSrc, imageDtoList]);
 
     const handleSlideChange = useCallback(
         (color: string, index: number, id: string, quantityStatus: string) => {
@@ -316,7 +273,9 @@ const SliderImages = (props: Props) => {
                                                 ? 'product-card__checked-checkbox_not-available'
                                                 : ''
                                         }`}
-                                        style={{ backgroundColor: `${id}` }}
+                                        style={{
+                                            backgroundColor: `${id}`,
+                                        }}
                                     />
                                 </label>
                             );
