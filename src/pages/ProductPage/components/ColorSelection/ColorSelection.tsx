@@ -7,7 +7,7 @@ import {
 } from '../../../../store/reducers/productInformationSlice';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import { ResponseData } from '../ProductImagesSlider/ProductImagesSlider';
-import { sortColors } from '../../../../shared-components/ProductCard/SliderImages/SliderImages';
+import sortColorsByAvailability from '../../../../utils/sortColors';
 import './ColorSelection.scss';
 import transliterate from '../../../../utils/transliterate';
 
@@ -28,7 +28,7 @@ const ColorSelection = ({ setColorChange }: Props) => {
     const currentColor = useAppSelector(
         (state) => state.productInformation.currentColor
     );
-    const colorDtoSort = sortColors(colorDtoList);
+    const colorDtoSort = sortColorsByAvailability(colorDtoList);
     const localColorCurrent = JSON.parse(
         localStorage.getItem('currentColor') ||
             JSON.stringify({

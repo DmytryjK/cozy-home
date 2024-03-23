@@ -11,9 +11,30 @@ import headerSprites from '../../assets/icons/header/header-sprite.svg';
 import SliderImages from './SliderImages/SliderImages';
 import cartAdded from '../../assets/icons/cart/cart-added.svg';
 import addSpaceToPrice from '../../utils/addSpaceToPrice';
+import type { ColorDtoList, ImageDtoList } from '../../types/types';
+import sortColorsByAvailability from '../../utils/sortColors';
 import './ProductCard.scss';
 
+const sortColorByFirstImg = (
+    colorDtoList: ColorDtoList[],
+    imageDtoList: ImageDtoList[]
+) => {
+    return sortColorsByAvailability(colorDtoList).sort((a, b) => {
+        if (a.name === imageDtoList[0].color) {
+            return -1;
+        }
+        if (b.name === imageDtoList[0].color) {
+            return 1;
+        }
+        return 0;
+    });
+};
+
 const ProductCard = ({ product }: { product: ProductCardType }) => {
+    const { colorDtoList, imageDtoList } = product;
+    const [sortedColorDto, setSortedColorDto] = useState<ColorDtoList[] | null>(
+        null
+    );
     const [isElementAddedToCart, setIsElementAddedToCart] =
         useState<boolean>(false);
     const cartBody = useAppSelector((state) => state.cart.cartBody);
@@ -26,6 +47,12 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     const jwtToken = useAppSelector((state) => state.auth.jwtToken);
     const favoriteBtnProductCardRef = useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (colorDtoList.length > 0) {
+            setSortedColorDto(sortColorByFirstImg(colorDtoList, imageDtoList));
+        }
+    }, [colorDtoList, imageDtoList]);
 
     useEffect(() => {
         if (!currentColor.hex || !product || !cartBody) return;
@@ -61,11 +88,14 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
             {discount && (
                 <div className="product-card__sales-text">{discount}%</div>
             )}
-            <SliderImages
-                productData={product}
-                setCurrentColor={setCurrentColor}
-                currentColor={currentColor}
-            />
+            {sortedColorDto && (
+                <SliderImages
+                    productData={product}
+                    setCurrentColor={setCurrentColor}
+                    currentColor={currentColor}
+                    sortedColorDto={sortedColorDto}
+                />
+            )}
             <div className="product-card__purchase-block purchase-block swiper-no-swiping">
                 {currentColor.quantityStatus === 'Немає в наявності' ? (
                     <>
