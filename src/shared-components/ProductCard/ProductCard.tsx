@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useRef, useCallback } from 'react';
+import { useState, useEffect, memo, useRef } from 'react';
 import { ProductCardType } from '../../types/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
@@ -47,12 +47,11 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
     const jwtToken = useAppSelector((state) => state.auth.jwtToken);
     const favoriteBtnProductCardRef = useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
-
     useEffect(() => {
         if (colorDtoList.length > 0) {
             setSortedColorDto(sortColorByFirstImg(colorDtoList, imageDtoList));
         }
-    }, [colorDtoList, imageDtoList]);
+    }, [colorDtoList[0].id, imageDtoList[0].id]);
 
     useEffect(() => {
         if (!currentColor.hex || !product || !cartBody) return;
@@ -95,6 +94,71 @@ const ProductCard = ({ product }: { product: ProductCardType }) => {
                     currentColor={currentColor}
                     sortedColorDto={sortedColorDto}
                 />
+            )}
+            {!sortedColorDto && (
+                <>
+                    <div className="product-card__slider-link">
+                        <div className="product-card__slider">
+                            <div className="product-card__image-overflow">
+                                <div
+                                    className={`product-card__image-wrapper `}
+                                    key={`slider-image-preload-${skuCode}`}
+                                >
+                                    <div
+                                        style={{
+                                            height: '350px',
+                                            maxHeight: '350px',
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="product-card__content swiper-no-swiping">
+                        <div className="product-card__content-top">
+                            <h2 className="product-card__title">
+                                <div className="product-card__title-link">
+                                    {product.name}
+                                </div>
+                            </h2>
+                            <fieldset className="product-card__color-checkboxes">
+                                {colorDtoList.map((color, index) => {
+                                    const { name, id, quantityStatus } = color;
+                                    return (
+                                        <label
+                                            className="product-card__checkbox-label"
+                                            key={`color-label-${skuCode}-${id}`}
+                                        >
+                                            <input
+                                                className="product-card__color-checkbox"
+                                                type="radio"
+                                                name={`${name}-${skuCode}`}
+                                                aria-label={name}
+                                                value={id}
+                                                checked={index === 0}
+                                                onChange={() => index}
+                                            />
+                                            <span
+                                                className={`product-card__checked-checkbox ${
+                                                    quantityStatus ===
+                                                    'Немає в наявності'
+                                                        ? 'product-card__checked-checkbox_not-available'
+                                                        : ''
+                                                }`}
+                                                style={{
+                                                    backgroundColor: `${id}`,
+                                                }}
+                                            />
+                                        </label>
+                                    );
+                                })}
+                            </fieldset>
+                        </div>
+                        <p className="product-card__description">
+                            {product.shortDescription}
+                        </p>
+                    </div>
+                </>
             )}
             <div className="product-card__purchase-block purchase-block swiper-no-swiping">
                 {currentColor.quantityStatus === 'Немає в наявності' ? (
