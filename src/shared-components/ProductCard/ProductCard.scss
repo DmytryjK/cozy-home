@@ -21,7 +21,10 @@
     }
     &.out-of-stock{
         .product-card {
-            &__sales-text, &__slider-link, &__title, &__description {
+            &__sales-text {
+                background-color: rgba($accent-color, 0.4);
+            }
+            &__slider-link, &__title, &__description {
                 opacity: 40%;
             }
             &__favorite .favorite-btn {

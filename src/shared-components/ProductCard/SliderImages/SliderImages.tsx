@@ -64,16 +64,12 @@ const SliderImages = (props: Props) => {
     } = usePrefetchProduct();
 
     useEffect(() => {
-        let timeout: ReturnType<typeof setTimeout> | null = null;
-        if (!isColorChosen && imageDtoList.length > 0) {
-            timeout = setTimeout(() => {
-                const { name, id, quantityStatus } = sortedColorDto[0];
-                setCurrentColor({ name, hex: id, quantityStatus });
-                setCurrentIndexColor(0);
-            });
+        if (imageDtoList.length > 0) {
+            const { name, id, quantityStatus } = sortedColorDto[0];
+            setCurrentColor({ name, hex: id, quantityStatus });
+            setCurrentIndexColor(0);
         }
-        return () => clearTimeout(timeout || '');
-    }, [isColorChosen, imageDtoList]);
+    }, [imageDtoList[0].imagePath, sortedColorDto[0].id]);
 
     useEffect(() => {
         setImagesData({
@@ -81,7 +77,7 @@ const SliderImages = (props: Props) => {
                 imageSrc: imageDtoList[0].imagePath || imageNotFound,
             },
         });
-    }, [imageDtoList]);
+    }, [imageDtoList[0].imagePath]);
 
     useEffect(() => {
         if (imageSrc) {
@@ -94,7 +90,7 @@ const SliderImages = (props: Props) => {
                 }));
             }
         }
-    }, [imageSrc, imageDtoList]);
+    }, [imageSrc, imageDtoList[0].imagePath]);
 
     const handleSlideChange = useCallback(
         (color: string, index: number, id: string, quantityStatus: string) => {
@@ -187,16 +183,12 @@ const SliderImages = (props: Props) => {
                                     }`}
                                     key={`slider-image-${skuCode}${color.id}`}
                                 >
-                                    {loading === 'pending' ? (
-                                        <Loader />
-                                    ) : (
+                                    {loading === 'pending' && <Loader />}
+                                    {imagesData[index]?.imageSrc && (
                                         <LazyLoad height={350}>
                                             <img
                                                 className="product-card__image"
-                                                src={
-                                                    imagesData[index]
-                                                        ?.imageSrc || ''
-                                                }
+                                                src={imagesData[index].imageSrc}
                                                 loading="lazy"
                                                 width={304}
                                                 height={350}
@@ -249,14 +241,14 @@ const SliderImages = (props: Props) => {
                                             currentColor.name === name ||
                                             (!isColorChosen && index === 0)
                                         }
-                                        onChange={() =>
+                                        onChange={() => {
                                             handleSlideChange(
                                                 name,
                                                 index,
                                                 id,
                                                 quantityStatus
-                                            )
-                                        }
+                                            );
+                                        }}
                                         onClick={() => {
                                             setCurrentColor({
                                                 name,
