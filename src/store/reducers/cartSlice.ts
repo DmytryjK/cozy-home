@@ -31,9 +31,12 @@ type CartInitialState = {
     isButtonAddToCartClicked: boolean;
     isCartPageOpen: boolean;
     loading: Loading;
+    loadingAuthCart: Loading;
+    mergeCartLoading: Loading;
     updateAuthCartLoading: Loading;
     updateAuthCartError: ErrorType;
     error: ErrorType;
+    isCheckoutUpdatedOnFirstRender: boolean;
 };
 
 const initialState: CartInitialState = {
@@ -45,9 +48,12 @@ const initialState: CartInitialState = {
     isButtonAddToCartClicked: false,
     isCartPageOpen: false,
     loading: 'idle',
+    loadingAuthCart: 'idle',
+    mergeCartLoading: 'idle',
     updateAuthCartLoading: 'idle',
     updateAuthCartError: null,
     error: null,
+    isCheckoutUpdatedOnFirstRender: false,
 };
 
 let controller: any;
@@ -110,12 +116,12 @@ export const fetchCartDataForAuthUser = createAsyncThunk(
 
 export const mergeCartOnAuth = createAsyncThunk(
     'cart/mergeCartOnAuth',
-    async function (_, thunkAPI) {
+    async function (localCheckoutData: ProductsInfoToCheckout[], thunkAPI) {
         const state = thunkAPI.getState() as RootState;
-        const { productsInfoToCheckout } = state.cart;
+        // const { productsInfoToCheckout } = state.cart;
         const { jwtToken } = state.auth;
 
-        const cartDataForServer = productsInfoToCheckout.map((item) => {
+        const cartDataForServer = localCheckoutData.map((item) => {
             const { skuCode, colorHex, quantityToCheckout } = item;
             return {
                 skuCode,
@@ -139,16 +145,16 @@ export const mergeCartOnAuth = createAsyncThunk(
             });
             if (!response.ok) throw new Error('something went wrong');
 
-            const response2 = await fetch(`${API_SECURE}basket`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${jwtToken}`,
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            });
-            if (!response2.ok) throw new Error('something went wrong');
+            // const response2 = await fetch(`${API_SECURE}basket`, {
+            //     method: 'GET',
+            //     headers: {
+            //         Authorization: `Bearer ${jwtToken}`,
+            //         'Content-type': 'application/json; charset=UTF-8',
+            //     },
+            // });
+            // if (!response2.ok) throw new Error('something went wrong');
 
-            const result = await response2.json();
+            const result = await response.json();
             return result;
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -253,6 +259,7 @@ export const cartSlice = createSlice({
             action: PayloadAction<ProductsInfoToCheckout[] | []>
         ) {
             state.productsInfoToCheckout = action.payload;
+            state.isCheckoutUpdatedOnFirstRender = true;
         },
         updateProductsInfoToCheckout(
             state,
@@ -270,6 +277,7 @@ export const cartSlice = createSlice({
                 (item, index) =>
                     index === indexOfPayloadProduct ? action.payload : item
             );
+            state.isCheckoutUpdatedOnFirstRender = true;
         },
         updateCartTotal(
             state,
@@ -280,6 +288,9 @@ export const cartSlice = createSlice({
             }>
         ) {
             state.cartTotal = action.payload;
+        },
+        resetMergeCartLoading(state) {
+            state.mergeCartLoading = 'idle';
         },
     },
     extraReducers: (builder) => {
@@ -316,12 +327,14 @@ export const cartSlice = createSlice({
             }
         );
         builder.addCase(fetchCartDataForAuthUser.pending, (state) => {
+            state.loadingAuthCart = 'pending';
             state.loading = 'pending';
             state.error = null;
         });
         builder.addCase(
             fetchCartDataForAuthUser.fulfilled,
             (state, action: PayloadAction<CartData[]>) => {
+                state.loadingAuthCart = 'succeeded';
                 state.loading = 'succeeded';
                 const sortedData: CartData[] = JSON.parse(
                     JSON.stringify(
@@ -356,6 +369,7 @@ export const cartSlice = createSlice({
         builder.addCase(
             fetchCartDataForAuthUser.rejected,
             (state, action: PayloadAction<unknown>) => {
+                state.loadingAuthCart = 'failed';
                 state.loading = 'failed';
                 state.error = action.payload;
             }
@@ -377,33 +391,16 @@ export const cartSlice = createSlice({
         );
 
         builder.addCase(mergeCartOnAuth.pending, (state) => {
-            state.loading = 'pending';
+            state.mergeCartLoading = 'pending';
             state.error = null;
         });
-        builder.addCase(
-            mergeCartOnAuth.fulfilled,
-            (state, action: PayloadAction<CartData[]>) => {
-                state.loading = 'succeeded';
-                state.cartData = action.payload.map((item) => {
-                    const { productName } = item;
-                    return {
-                        ...item,
-                        name: productName || '',
-                    };
-                });
-
-                state.cartBody = action.payload.map((item) => {
-                    return {
-                        productSkuCode: item.skuCode,
-                        colorHex: item.colorHex,
-                    };
-                });
-            }
-        );
+        builder.addCase(mergeCartOnAuth.fulfilled, (state) => {
+            state.mergeCartLoading = 'succeeded';
+        });
         builder.addCase(
             mergeCartOnAuth.rejected,
             (state, action: PayloadAction<unknown>) => {
-                state.loading = 'failed';
+                state.mergeCartLoading = 'failed';
                 state.error = action.payload;
             }
         );

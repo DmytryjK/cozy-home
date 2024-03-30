@@ -131,6 +131,7 @@
 }
 
 .header__icons_favorite-counter{
+	position: relative;
 	font-size: 10px;
 	font-weight: 500;
 	position: absolute;
@@ -142,6 +143,21 @@
 	height: 16px;
 	background-color: #C57100;
 	border-radius: 100%;
+	&-loading {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        svg g {
+            fill: white;
+        }
+    }
 }
 
 .header__icons_favorite-counter {

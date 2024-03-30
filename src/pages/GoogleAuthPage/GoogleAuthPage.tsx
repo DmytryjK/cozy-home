@@ -6,6 +6,10 @@ import {
     ErrorMessageSmall,
     SuccessMessage,
 } from '../../shared-components/UserMessages/UserMessages';
+import {
+    mergeCartOnAuth,
+    fetchCartDataForAuthUser,
+} from '../../store/reducers/cartSlice';
 import './GoogleAuthPage.scss';
 import Loader from '../../shared-components/Loaders/components/Loader';
 
@@ -37,6 +41,17 @@ const GoogleAuthPage = () => {
                 );
                 localStorage.removeItem('googleAuthLocation');
             }, 1500);
+
+            if (localStorage.getItem('checkoutInfo')) {
+                const localCartData = JSON.parse(
+                    localStorage.getItem('checkoutInfo') as string
+                );
+                dispatch(mergeCartOnAuth(localCartData)).then(() => {
+                    dispatch(fetchCartDataForAuthUser());
+                    localStorage.setItem('cartBody', JSON.stringify([]));
+                    localStorage.setItem('checkoutInfo', JSON.stringify([]));
+                });
+            }
         }
         if (googleAuthError) {
             setTimeout(() => {

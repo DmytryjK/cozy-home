@@ -33,11 +33,15 @@
     }
     &__close {
         margin-top: 60px;
-        color: $light-grey;
+        color: $grey;
         background-color: transparent;
         border: none;
         text-align: left;
         cursor: pointer;
+        transition: 0.2s ease-out color;
+        &:hover {
+            color: $accent-color;
+        }
     }
 }
 

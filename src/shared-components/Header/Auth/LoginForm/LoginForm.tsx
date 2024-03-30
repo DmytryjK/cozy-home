@@ -9,6 +9,10 @@ import formValidation from '../../../../utils/formValidation';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { openPopUpForgottenPassword } from '../../../../store/reducers/modalsSlice';
 import { userLogIn, setJwtToken } from '../../../../store/reducers/authSlice';
+import {
+    mergeCartOnAuth,
+    fetchCartDataForAuthUser,
+} from '../../../../store/reducers/cartSlice';
 import './LoginForm.scss';
 
 interface FormValues {
@@ -76,7 +80,21 @@ const LoginForm = ({
                     isUserRemember: values.isUserRemember,
                     resetForm,
                 })
-            );
+            ).then(() => {
+                if (localStorage.getItem('checkoutInfo')) {
+                    const localCartData = JSON.parse(
+                        localStorage.getItem('checkoutInfo') as string
+                    );
+                    dispatch(mergeCartOnAuth(localCartData)).then(() => {
+                        dispatch(fetchCartDataForAuthUser());
+                        localStorage.setItem('cartBody', JSON.stringify([]));
+                        localStorage.setItem(
+                            'checkoutInfo',
+                            JSON.stringify([])
+                        );
+                    });
+                }
+            });
             if (setIsLoginBtnClicked) setIsLoginBtnClicked(true);
         },
     });
