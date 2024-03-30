@@ -1,14 +1,10 @@
-import {
-    useEffect,
-    useState,
-    memo,
-    MouseEvent,
-    MouseEventHandler,
-} from 'react';
+import { useEffect, useState, memo, MouseEvent } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
 import { API_SECURE } from '../../../utils/API_BASE';
 import fetchData from '../../../utils/fetchData';
+import { Loader } from '../../Loaders';
+import type { Loading } from '../../../types/types';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
 
 let controller: any;
@@ -27,12 +23,14 @@ const FavoritesIcon = ({
         (state) => state.userActions.loadingUserFavorites
     );
     const jwtToken = useAppSelector((state) => state.auth.jwtToken);
+    const [loadingQuantity, setLoadingQuantity] = useState<Loading>('idle');
 
     function fetchFavorites() {
         if (controller) {
             controller.abort();
+            setLoadingQuantity('idle');
         }
-
+        setLoadingQuantity('pending');
         controller = new AbortController();
 
         fetchData({
@@ -47,8 +45,11 @@ const FavoritesIcon = ({
             .then((res) => {
                 if (!res) return;
                 setFavoritesQuantity(res.countOfProducts || 0);
+                setLoadingQuantity('succeeded');
             })
-            .catch((err) => {});
+            .catch((err) => {
+                setLoadingQuantity('failed');
+            });
     }
 
     useEffect(() => {
@@ -85,7 +86,11 @@ const FavoritesIcon = ({
                 <use href={`${headerSprite}#favorite-icon`} />
             </svg>
             <span className="header__icons_favorite-counter">
-                {favoritesQuantity}
+                {(loadingQuantity === 'succeeded' || !jwtToken) &&
+                    favoritesQuantity}
+                {loadingQuantity === 'pending' && (
+                    <Loader className="header__icons_favorite-counter-loading" />
+                )}
             </span>
             {additionalText ? <div>{additionalText}</div> : ''}
         </NavLink>

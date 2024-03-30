@@ -416,6 +416,7 @@ export const authSlice = createSlice({
             userLogIn.fulfilled,
             (state, action: PayloadAction<JwtPayload | null>) => {
                 state.loginLoading = 'succeeded';
+                state.logoutLoading = 'idle';
                 if (!action.payload) return;
 
                 const { token, isUserRemember } = action.payload;
@@ -432,6 +433,7 @@ export const authSlice = createSlice({
         builderPending(builder, userLogOut, 'logoutLoading', 'logoutError');
         builder.addCase(userLogOut.fulfilled, (state) => {
             state.logoutLoading = 'succeeded';
+            state.loginLoading = 'idle';
             sessionStorage.setItem('token', '');
             localStorage.setItem('token', '');
             state.jwtToken = '';

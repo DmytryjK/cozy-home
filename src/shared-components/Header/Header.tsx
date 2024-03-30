@@ -221,8 +221,8 @@ const Header = () => {
                 handleCloseSearch(event);
                 const target = event.target as HTMLElement;
                 if (
-                    !target.closest('.cart-dropdown-active') &&
-                    !target.closest('.header__icons')
+                    !target.closest('.dropdown-active') &&
+                    isPreviewCartActive
                 ) {
                     setIsPreviewCartActive(false);
                 }

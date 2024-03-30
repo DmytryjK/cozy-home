@@ -11,7 +11,6 @@ import { useAppSelector, useAppDispatch } from '../../../hooks/hooks';
 import {
     fetchCartDataForAuthUser,
     updateCartInfoForAuthUser,
-    mergeCartOnAuth,
     addProductsInfoToCheckout,
     fetchProductCartInfo,
     resetIsButtonAddToCartClicked,
@@ -21,7 +20,9 @@ import {
 } from '../../../store/reducers/cartSlice';
 import debounce from '../../../utils/debounce';
 import type { ProductsInfoToCheckout } from '../../../store/reducers/cartSlice';
+import transformCartDataToCheckoutFormat from '../../../utils/transformCartDataToCheckoutFormat';
 import headerSprite from '../../../assets/icons/header/header-sprite.svg';
+import { Loader, PrefetchProductPageLoader } from '../../Loaders';
 import './CartIcon.scss';
 
 type Props = {
@@ -31,30 +32,38 @@ type Props = {
 };
 
 const CartIcon = (props: Props) => {
-    const cartBody = useAppSelector((state) => state.cart.cartBody);
-    const cartTotal = useAppSelector((state) => state.cart.cartTotal);
-    const cartData = useAppSelector((state) => state.cart.cartData);
-    const isButtonAddToCartClicked = useAppSelector(
-        (state) => state.cart.isButtonAddToCartClicked
-    );
+    const { setIsPreviewCartActive, setIsBurgerOpen, isDesktop } = props;
+    const {
+        cartBody,
+        cartTotal,
+        cartData,
+        loading: cartLoading,
+        loadingAuthCart,
+        isButtonAddToCartClicked,
+        productsInfoToCheckout,
+        isDeletedItemButtonActive,
+        updateAuthCartLoading,
+        mergeCartLoading,
+    } = useAppSelector((state) => state.cart);
     const cartBodyLocal = JSON.parse(
         localStorage.getItem('cartBody') as string
     );
-
-    const loginLoading = useAppSelector((state) => state.auth.loginLoading);
-    const logoutLoading = useAppSelector((state) => state.auth.logoutLoading);
-    const jwtToken = useAppSelector((state) => state.auth.jwtToken);
-    const productsInfoToCheckout = useAppSelector(
-        (state) => state.cart.productsInfoToCheckout
+    const { loginLoading, logoutLoading, jwtToken } = useAppSelector(
+        (state) => state.auth
     );
-    const isDeletedItemButtonActive = useAppSelector(
-        (state) => state.cart.isDeletedItemButtonActive
+    const { orderNumber, loading: orderLoading } = useAppSelector(
+        (state) => state.order
     );
-    const orderNumber = useAppSelector((state) => state.order.orderNumber);
-    const orderLoading = useAppSelector((state) => state.order.loading);
-
-    const { setIsPreviewCartActive, setIsBurgerOpen, isDesktop } = props;
     const dispatch = useAppDispatch();
+
+    const debouncedUpdateCartInfoForAuthUser = useCallback(
+        debounce(() => {
+            if (jwtToken) {
+                dispatch(updateCartInfoForAuthUser({ customData: null }));
+            }
+        }, 700),
+        [jwtToken]
+    );
 
     useEffect(() => {
         if (!cartBodyLocal) return;
@@ -68,14 +77,10 @@ const CartIcon = (props: Props) => {
 
     useEffect(() => {
         if (!jwtToken) return;
-        if (loginLoading !== 'succeeded') {
+        if (loginLoading !== 'succeeded' && loadingAuthCart === 'idle') {
             dispatch(fetchCartDataForAuthUser());
-        } else {
-            dispatch(mergeCartOnAuth());
-            localStorage.setItem('cartBody', JSON.stringify([]));
-            localStorage.setItem('checkoutInfo', JSON.stringify([]));
         }
-    }, [loginLoading, jwtToken]);
+    }, [jwtToken, loginLoading]);
 
     useEffect(() => {
         if (
@@ -109,15 +114,6 @@ const CartIcon = (props: Props) => {
         }
     }, [cartBody.length]);
 
-    const debouncedUpdateCartInfoForAuthUser = useCallback(
-        debounce(() => {
-            if (jwtToken) {
-                dispatch(updateCartInfoForAuthUser({ customData: null }));
-            }
-        }, 700),
-        [jwtToken]
-    );
-
     useEffect(() => {
         if (productsInfoToCheckout.length > 0) {
             localStorage.setItem(
@@ -125,94 +121,68 @@ const CartIcon = (props: Props) => {
                 JSON.stringify(productsInfoToCheckout)
             );
         }
-        if (jwtToken) {
+        if (jwtToken && loadingAuthCart === 'succeeded') {
             debouncedUpdateCartInfoForAuthUser();
         }
     }, [JSON.stringify(productsInfoToCheckout)]);
 
     useEffect(() => {
         let productsLocalCheckout: ProductsInfoToCheckout[] = [];
-
         if (localStorage.getItem('checkoutInfo')) {
             productsLocalCheckout = JSON.parse(
                 localStorage.getItem('checkoutInfo') as string
             );
         }
-        const checkoutProducts = cartData.map((item) => {
-            const {
-                name,
-                skuCode,
-                colorHex,
-                price,
-                priceWithDiscount,
-                colorName,
-                quantity,
-                availableProductQuantity,
-            } = item;
-            let localItemQuantity = 1;
-            if (
-                productsLocalCheckout.some((localItem: any) => {
-                    if (
-                        localItem.skuCode === skuCode &&
-                        localItem.colorHex === colorHex &&
-                        localItem.quantityToCheckout > 1
-                    ) {
-                        localItemQuantity = localItem.quantityToCheckout;
-                        return true;
-                    }
-                    return undefined;
-                })
-            ) {
-                return {
-                    productName: name,
-                    skuCode,
-                    colorHex,
-                    colorName,
-                    price: (priceWithDiscount || price) * localItemQuantity,
-                    quantityToCheckout: localItemQuantity,
-                };
-            }
-            return {
-                productName: name,
-                skuCode,
-                colorHex,
-                colorName,
-                price: priceWithDiscount || price,
-                quantityToCheckout: availableProductQuantity
-                    ? quantity || 1
-                    : availableProductQuantity,
-            };
-        });
+
+        const checkoutProducts = transformCartDataToCheckoutFormat(
+            cartData,
+            productsLocalCheckout
+        );
+        if (mergeCartLoading === 'pending') return;
         dispatch(addProductsInfoToCheckout(checkoutProducts));
     }, [cartData]);
 
-    const openProductCart = (e: MouseEvent) => {
-        if (cartBody.length === 0) {
-            setIsPreviewCartActive(true);
-            e.preventDefault();
-        } else {
-            setIsBurgerOpen(false);
-        }
-    };
     return (
-        <NavLink
-            className="header-icons__cart cart-icon"
-            to="/cart"
-            aria-label="Open cart"
-            onClick={openProductCart}
-            onMouseEnter={() =>
-                isDesktop
-                    ? setIsPreviewCartActive(true)
-                    : setIsPreviewCartActive(false)
-            }
-        >
-            <svg width="21" height="21">
-                <use href={`${headerSprite}#card-icon`} />
-            </svg>
-            <span className="header__icons_cart-counter cart-icon__counter">
-                {cartBody.length > 0 ? cartTotal?.totalQuantity || 0 : 0}
-            </span>
-        </NavLink>
+        <>
+            <NavLink
+                className="header-icons__cart cart-icon"
+                to="/cart"
+                aria-label="Open cart"
+                onClick={(e) => {
+                    if (cartBody.length === 0) {
+                        setIsPreviewCartActive(true);
+                        e.preventDefault();
+                    } else {
+                        setIsBurgerOpen(false);
+                    }
+                }}
+                onMouseEnter={() =>
+                    isDesktop
+                        ? setIsPreviewCartActive(true)
+                        : setIsPreviewCartActive(false)
+                }
+            >
+                <svg width="21" height="21">
+                    <use href={`${headerSprite}#card-icon`} />
+                </svg>
+                <span className="header__icons_cart-counter cart-icon__counter">
+                    {cartLoading === 'succeeded' &&
+                        mergeCartLoading !== 'pending' &&
+                        (cartTotal?.totalQuantity || 0)}
+                    {((cartLoading !== 'succeeded' && cartLoading !== 'idle') ||
+                        mergeCartLoading === 'pending') && (
+                        <Loader className="cart-icon__counter-loading" />
+                    )}
+                    {cartLoading === 'idle' &&
+                        mergeCartLoading !== 'pending' &&
+                        cartBody.length === 0 &&
+                        0}
+                </span>
+            </NavLink>
+            {updateAuthCartLoading === 'pending' && (
+                <PrefetchProductPageLoader isLine />
+            )}
+        </>
     );
 };
 
