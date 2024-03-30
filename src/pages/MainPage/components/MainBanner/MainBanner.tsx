@@ -43,9 +43,9 @@ const MainBanner = () => {
                             , яка ідеально поєднує в собі елегантність і
                             сучасність.{' '}
                         </p>
-                        <a href="/" className="mainBanner__content_link">
+                        {/* <a href="/" className="mainBanner__content_link">
                             Детальніше
-                        </a>
+                        </a> */}
                     </div>
                 </div>
                 <picture>
