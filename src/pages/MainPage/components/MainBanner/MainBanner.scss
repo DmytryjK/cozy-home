@@ -2,7 +2,7 @@
 @import '../../../../style/variables.scss';
 
 .mainBanner {
-	min-height: 700px;
+	min-height: 630px;
 	position: relative;
 
 	&__background-img {
@@ -15,7 +15,7 @@
 		bottom: 0;
 		right: 0;
 		left: 0;
-		height: 700px;
+		height: 630px;
 		width: 100%;
 	}
 	
@@ -78,9 +78,9 @@
 
 @media (max-width: 960px) {
 	.mainBanner {
-		min-height: 530px;
+		min-height: 350px;
 		&__background-img {
-			height: 530px;
+			height: 350px;
 		}
 		&__content {
 			width: 400px;
@@ -116,6 +116,10 @@
 
 @media (max-width: 450px) {
 	.mainBanner {
+		min-height: 400px;
+		&__background-img {
+			height: 400px;
+		}
 		&__content {
 			width: 328px;
 			margin-top: 50px;

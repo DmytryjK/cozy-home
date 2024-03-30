@@ -36,7 +36,8 @@ const Promo = () => {
                         className="promo__slider"
                         spaceBetween={32}
                         modules={[Pagination]}
-                        speed={400}
+                        grabCursor
+                        speed={500}
                         pagination={{ clickable: false }}
                         breakpoints={{
                             0: {
@@ -62,7 +63,7 @@ const Promo = () => {
                         }}
                     >
                         <SwiperSlide key="promo-item-1">
-                            <a className="promo__add-link add-link" href="/">
+                            <div className="promo__add-link add-link">
                                 <picture>
                                     <source
                                         className="add-link__bg-img"
@@ -78,15 +79,15 @@ const Promo = () => {
                                 <h2 className="add-link__title">
                                     Vintage Loft Heritage Collection
                                 </h2>
-                                <span className="add-link__decorative">
+                                {/* <span className="add-link__decorative">
                                     <span className="add-link__decorative-text">
                                         Детальніше
                                     </span>
-                                </span>
-                            </a>
+                                </span> */}
+                            </div>
                         </SwiperSlide>
                         <SwiperSlide key="promo-item-2">
-                            <a className="promo__add-link add-link" href="/">
+                            <div className="promo__add-link add-link">
                                 <picture>
                                     <source
                                         className="add-link__bg-img"
@@ -102,12 +103,12 @@ const Promo = () => {
                                 <h2 className="add-link__title">
                                     Urban Industrial Living
                                 </h2>
-                                <span className="add-link__decorative">
+                                {/* <span className="add-link__decorative">
                                     <span className="add-link__decorative-text">
                                         Детальніше
                                     </span>
-                                </span>
-                            </a>
+                                </span> */}
+                            </div>
                         </SwiperSlide>
                     </Swiper>
                 </div>

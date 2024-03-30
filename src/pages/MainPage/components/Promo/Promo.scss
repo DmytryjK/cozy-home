@@ -34,15 +34,15 @@
         height: 100%;
         padding: 109px 50px 133px 84px;
         color: $light-color;
-        overflow: hidden;
-        &:hover {
-            .add-link__bg-img {
-                transform: scale(1.02);
-            }
-            .add-link__decorative-text:after {
-                right: -42px;
-            }
-        }
+        // overflow: hidden;
+        // &:hover {
+        //     .add-link__bg-img {
+        //         transform: scale(1.02);
+        //     }
+        //     .add-link__decorative-text:after {
+        //         right: -42px;
+        //     }
+        // }
         &__title {
             font-family: 'Montserrat Alternates';
             max-width: 364px;
