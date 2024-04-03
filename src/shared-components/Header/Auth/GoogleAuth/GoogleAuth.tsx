@@ -24,8 +24,7 @@ const GoogleAuth = (props: Props) => {
             )}
             <a
                 className="login-by-service__link"
-                // href="https://accounts.google.com/o/oauth2/auth?client_id=920811235941-7mhi8ad1m5qt42bumghsdvncadnj2jkf.apps.googleusercontent.com&redirect_uri=https://teamchallange-web-git-dev-dmytryjk.vercel.app/api/v1/auth/google-login&response_type=code&scope=openid profile email"
-                href="https://accounts.google.com/o/oauth2/auth?client_id=920811235941-7mhi8ad1m5qt42bumghsdvncadnj2jkf.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth/google-login&response_type=code&scope=openid profile email"
+                href="https://accounts.google.com/o/oauth2/auth?client_id=920811235941-7mhi8ad1m5qt42bumghsdvncadnj2jkf.apps.googleusercontent.com&redirect_uri=https://teamchallange-web-git-dev-dmytryjk.vercel.app/api/v1/auth/google-login&response_type=code&scope=openid profile email"
                 onClick={() => {
                     localStorage.setItem(
                         'googleAuthLocation',
