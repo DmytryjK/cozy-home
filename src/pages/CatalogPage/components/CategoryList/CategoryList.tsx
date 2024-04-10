@@ -21,6 +21,7 @@ import useFetch from '../../../../hooks/useFetch';
 import './CategoryList.scss';
 import { Loading } from '../../../../types/types';
 import transliterate from '../../../../utils/transliterate';
+import useGetCatIdSubIdFromParams from '../../../../hooks/useGetCatIdSubIdFromParams';
 
 type CategoriesType = {
     id: string;
@@ -40,23 +41,8 @@ const CategoryList = (props: Props) => {
     const { pathname } = useLocation();
     const [searchQuery, setSearchQuery] = useSearchParams();
     const searchKeyword = searchQuery.get('search');
-
-    const categoryId: string | undefined = categoryParams
-        ?.substring(
-            categoryParams.indexOf('categoryId='),
-            categoryParams.indexOf('&subId') !== -1
-                ? categoryParams.indexOf('&subId')
-                : categoryParams.length
-        )
-        .replace('categoryId=', '');
-    const subcategoryId: string | undefined = categoryParams
-        ?.substring(
-            categoryParams.indexOf('&subId') !== -1
-                ? categoryParams.indexOf('&subId')
-                : categoryParams.length,
-            categoryParams.length
-        )
-        .replace('&subId=', '');
+    const { categoryId, subcategoryId } =
+        useGetCatIdSubIdFromParams(categoryParams);
 
     const dispatch = useAppDispatch();
     const {
