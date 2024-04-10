@@ -47,10 +47,10 @@ const Footer = () => {
                                 </li>
                                 <li className="footer__list_item">
                                     <NavLink
-                                        to="/"
+                                        to="/contacts"
                                         className="footer__list_link"
                                     >
-                                        Умови співпраці
+                                        Адреси магазинів
                                     </NavLink>
                                 </li>
                             </ul>
@@ -208,7 +208,7 @@ const Footer = () => {
                 <div className="footer__terms-policy">
                     <div className="footer__terms-policy_text">
                         <span className="footer__terms-policy_text_year">
-                            © COZY HOME 2023
+                            © COZY HOME 2024
                         </span>
                         <a href="/" className="footer__terms-policy_text_link">
                             <p className="footer__terms-policy_text_terms">

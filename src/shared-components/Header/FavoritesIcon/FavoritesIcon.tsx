@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, MouseEvent } from 'react';
+import { useEffect, useState, memo, MouseEvent, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/hooks';
 import { API_SECURE } from '../../../utils/API_BASE';
@@ -19,20 +19,15 @@ const FavoritesIcon = ({
     const loadingAddToFavoritesStatus = useAppSelector(
         (state) => state.userActions.loadingAddToFavorite
     );
-    const loadingUserFavorites = useAppSelector(
-        (state) => state.userActions.loadingUserFavorites
-    );
     const jwtToken = useAppSelector((state) => state.auth.jwtToken);
     const [loadingQuantity, setLoadingQuantity] = useState<Loading>('idle');
 
-    function fetchFavorites() {
+    const fetchFavorites = useCallback(() => {
+        setLoadingQuantity('pending');
         if (controller) {
             controller.abort();
-            setLoadingQuantity('idle');
         }
-        setLoadingQuantity('pending');
         controller = new AbortController();
-
         fetchData({
             method: 'GET',
             headers: {
@@ -48,9 +43,13 @@ const FavoritesIcon = ({
                 setLoadingQuantity('succeeded');
             })
             .catch((err) => {
-                setLoadingQuantity('failed');
+                if (err.message.includes('aborted')) {
+                    setLoadingQuantity('pending');
+                } else {
+                    setLoadingQuantity('failed');
+                }
             });
-    }
+    }, [loadingAddToFavoritesStatus === 'succeeded', jwtToken]);
 
     useEffect(() => {
         if (!jwtToken) return;
