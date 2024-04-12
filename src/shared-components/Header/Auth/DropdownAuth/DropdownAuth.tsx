@@ -1,6 +1,5 @@
-import { memo, SetStateAction, Dispatch, useEffect, useState } from 'react';
+import { memo, SetStateAction, Dispatch, useEffect } from 'react';
 import LoginForm from '../LoginForm/LoginForm';
-import googleIcon from '../../../../assets/icons/auth/google-icon.svg';
 import './DropdownAuth.scss';
 import GoogleAuth from '../GoogleAuth/GoogleAuth';
 
