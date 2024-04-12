@@ -250,7 +250,11 @@ const BurgerMenu = (props: Props) => {
                     </div>
                 </div>
             </div>
-            <PopUpAuth isActive={isAuthShow} setIsActive={setIsAuthShow} />
+            <PopUpAuth
+                isActive={isAuthShow}
+                setIsActive={setIsAuthShow}
+                setIsBurgerOpen={setIsOpen}
+            />
         </>
     );
 };

@@ -26,10 +26,14 @@ const LoginForm = ({
     setIsInputFocused,
     styleClass,
     setIsLoginBtnClicked,
+    setIsPopUpMobileOpen,
+    setIsBurgerOpen,
 }: {
     setIsInputFocused?: Dispatch<SetStateAction<boolean>>;
     styleClass?: string;
     setIsLoginBtnClicked?: Dispatch<SetStateAction<boolean>>;
+    setIsPopUpMobileOpen?: Dispatch<SetStateAction<boolean>>;
+    setIsBurgerOpen?: Dispatch<SetStateAction<boolean>>;
 }) => {
     const [isEmailWrong, setIsEmailWrong] = useState<boolean>(false);
     const [isPasswordWrong, setIsPasswordWrong] = useState<boolean>(false);
@@ -126,6 +130,13 @@ const LoginForm = ({
         dispatch(openPopUpForgottenPassword(true));
     }
 
+    const handleMobileActionsOnBtn = () => {
+        if (setIsBurgerOpen && setIsPopUpMobileOpen) {
+            setIsPopUpMobileOpen(false);
+            setIsBurgerOpen(false);
+        }
+    };
+
     return (
         <form
             onSubmit={formik.handleSubmit}
@@ -217,7 +228,12 @@ const LoginForm = ({
                         <span className="submit-button__loading-dot" />
                     </span>
                 </button>
-                <NavLink className="form-login__register-link" to="/signin">
+
+                <NavLink
+                    className="form-login__register-link"
+                    to="/signin"
+                    onClick={handleMobileActionsOnBtn}
+                >
                     Зареєструватись
                 </NavLink>
             </div>
