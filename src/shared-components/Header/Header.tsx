@@ -162,37 +162,31 @@ const Header = () => {
         }
     }, []);
 
-    const handleCloseCartPreview = useCallback(
-        throttle((event: MouseEvent) => {
-            const target = event.target as HTMLElement;
-            if (
-                !target.matches('.header') &&
-                !target.matches('.header__icons') &&
-                !target.closest('.header-icons__cart') &&
-                !target.closest('.cart-dropdown')
-            ) {
-                setIsPreviewCartActive(false);
-            }
-        }, 100),
-        []
-    );
+    const handleCloseCartPreview = throttle((event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (
+            !target.matches('.header') &&
+            !target.matches('.header__icons') &&
+            !target.closest('.header-icons__cart') &&
+            !target.closest('.cart-dropdown')
+        ) {
+            setIsPreviewCartActive(false);
+        }
+    }, 100);
 
-    const handleCloseAuthDropdown = useCallback(
-        throttle((event: MouseEvent) => {
-            const target = event.target as HTMLElement;
-            if (
-                !target.matches('.header') &&
-                !target.matches('.header__icons') &&
-                !target.closest('.header__icons-profile') &&
-                !target.closest('.auth-dropdown')
-            ) {
-                setIsAuthDropdownActive(false);
-            }
-        }, 100),
-        []
-    );
+    const handleCloseAuthDropdown = throttle((event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (
+            !target.matches('.header') &&
+            !target.matches('.header__icons') &&
+            !target.closest('.header__icons-profile') &&
+            !target.closest('.auth-dropdown')
+        ) {
+            setIsAuthDropdownActive(false);
+        }
+    }, 100);
 
-    const handleCloseSearch = useCallback((event: MouseEvent) => {
+    const handleCloseSearch = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (
             !target.closest('.header__search') &&
@@ -200,8 +194,15 @@ const Header = () => {
         ) {
             setIsSearchOpen(false);
         }
-    }, []);
+    };
 
+    const handleCloseBurgerMenu = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (!isBurgerOpen) return;
+        if (!target.closest('.burger-menu-active')) {
+            setIsBurgerOpen(false);
+        }
+    };
     return (
         <div
             className="wrapper"
@@ -219,6 +220,7 @@ const Header = () => {
             }}
             onClick={(event) => {
                 handleCloseSearch(event);
+                handleCloseBurgerMenu(event);
                 const target = event.target as HTMLElement;
                 if (
                     !target.closest('.dropdown-active') &&
