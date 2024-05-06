@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../../hooks/hooks';
 import { fetchCatalogProductsByFilters } from '../../../../store/reducers/catalogProductsSlice';
-import Pagination2 from '../../../../shared-components/Pagination2/Pagination2';
+import Pagination from '../../../../shared-components/Pagination/Pagination';
 import { updateCurrentPage } from '../../../../store/reducers/catalogFilterSlice';
 
 const Navigation = () => {
@@ -45,7 +45,7 @@ const Navigation = () => {
     }, [currentPage]);
 
     return (
-        <Pagination2
+        <Pagination
             countOfPages={countOfPages}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

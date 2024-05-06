@@ -5,9 +5,9 @@ import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import nextId from 'react-id-generator';
 import paginationSprite from '../../assets/icons/pagination/pagination-sprites.svg';
 import moveUserToPageUp from '../../utils/moveUserToPageUp';
-import './Pagination2.scss';
+import './Pagination.scss';
 
-const Pagination2 = ({
+const Pagination = ({
     countOfPages,
     currentPage,
     setCurrentPage,
@@ -162,4 +162,4 @@ const Pagination2 = ({
     );
 };
 
-export default Pagination2;
+export default Pagination;

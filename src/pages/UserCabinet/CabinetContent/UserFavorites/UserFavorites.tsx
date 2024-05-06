@@ -2,7 +2,7 @@ import { useContext, memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import NavigationListOfCategories from '../../../../shared-components/NavigationListOfCategories/NavigationListOfCategories';
 import ProductCard from '../../../../shared-components/ProductCard/ProductCard';
-import Pagination2 from '../../../../shared-components/Pagination2/Pagination2';
+import Pagination2 from '../../../../shared-components/Pagination/Pagination';
 import { useAppSelector } from '../../../../hooks/hooks';
 import Loader from '../../../../shared-components/Loaders/components/Loader';
 import type { ProductCardType } from '../../../../types/types';
