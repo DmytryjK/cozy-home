@@ -1,5 +1,5 @@
 # Cozy Home
-### [Demo Link](https://teamchallange-web-git-dev-dmytryjk.vercel.app/)
+### [Demo Link](https://cozyhome-store.vercel.app/)
 Welcome to Cozy Home, your one-stop destination for high-quality furniture online. Our platform offers a seamless shopping experience, allowing users to explore a wide range of furniture products, create accounts, manage carts, and much more.
 
 ![cozy-home](https://github.com/DmytryjK/teamchallange_web/assets/48493462/dee6314d-d0a9-4707-a461-ab3ab1980a61)
