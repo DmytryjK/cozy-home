@@ -1,10 +1,13 @@
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import RootRouterProvider from './routes';
 import './App.scss';
 
 const App = () => {
     return (
-        <div>
-            <div>App</div>
-        </div>
+        <>
+            <SpeedInsights />
+            <RootRouterProvider />
+        </>
     );
 };
 

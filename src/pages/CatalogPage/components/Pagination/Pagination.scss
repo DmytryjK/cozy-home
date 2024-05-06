@@ -1,0 +1,77 @@
+@use '../../../../style/variables.scss' as *;
+.pagination {
+    display: inline-block;
+    position: relative;
+    padding: 0 44px;
+    &__list {
+        display: flex;
+        gap: 16px;
+    }
+    &__item {
+        display: flex;
+    }
+    &__page-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 7px;
+        background-color: transparent;
+        border-radius: 50%;
+        border: none;
+        font-size: 14px;
+        font-weight: 500;
+        width: 30px;
+        height: 30px;
+        color: $light-grey;
+        user-select: none;
+        cursor: pointer;
+        transition: 0.2s ease-out color;
+        &:hover {
+            color: $accent-color;
+        }
+        &.active {
+            color: #fff;
+            background-color: $accent-color;
+        }
+    }
+    &__dots {
+        align-self: flex-end;
+        user-select: none;
+        pointer-events: none;
+        padding-bottom: 7px;
+        color: $light-grey;
+    }
+
+    &__prev-btn, &__next-btn {
+        position: absolute;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        &:hover {
+            .prev-btn__icon, .next-btn__icon {
+                fill: $accent-color;
+            }
+        }
+        &:disabled {
+            .prev-btn__icon, .next-btn__icon {
+                fill: $light-grey;
+            } 
+        }
+    }
+    &__prev-btn {
+        left: 0;
+    }
+    &__next-btn {
+        right: 0;
+    }
+
+    .prev-btn__icon, .next-btn__icon {
+        fill: $grey;
+        transition: 0.2s ease-out fill;
+    }
+}

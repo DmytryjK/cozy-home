@@ -1,0 +1,306 @@
+@use '../../style/variables.scss' as *;
+
+.product-card {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    max-width: 450px;
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 52px;
+    &:hover {
+        .product-card__favorite {
+            transform: translateX(0);
+        }
+        .product-card__image-wrapper:after {
+            opacity: 0.2;
+        }
+        .product-card__title-link {
+            color: $accent-color;
+        }
+    }
+    &.out-of-stock{
+        .product-card {
+            &__sales-text {
+                background-color: rgba($accent-color, 0.4);
+            }
+            &__slider-link, &__title, &__description {
+                opacity: 40%;
+            }
+            &__favorite .favorite-btn {
+                display: none;
+                pointer-events: none;
+            }
+            &__favorite > .favorite-btn.active {
+                display: flex;
+                pointer-events: auto;
+            }
+        }
+        .purchase-block{
+            &__out-status {
+                font-size: 14px;
+                font-weight: 500;
+                opacity: 40%;
+            }
+            &__cart-btn:hover {
+                background-color: $dark-color;
+                .purchase-block__bell-icon{
+                    stroke: $light-color;
+                }
+            }
+            &__bell-icon{
+                fill: transparent;
+                stroke: $dark-color;
+                transition: 0.2s ease-out stroke;
+            }
+        }
+    }
+
+    &__sales-text {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 10px;
+        top: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background-color: $accent-color;
+        color: $light-color;
+        font-size: 14px;
+        font-family: Montserrat Alternates;
+        font-weight: 500;
+        z-index: 2;
+    }
+
+    &__favorite {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        border-radius: 50%;
+        border: none;
+        overflow: hidden;
+        transform: translateX(calc(100% + 12px));
+        background-color: $light-color;
+        transition: 0.2s ease-out transform;
+        z-index: 2;
+        cursor: grab;
+    }
+
+    &__content {
+        margin-top: 16px;
+    }
+    &__content-top {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__title-link {
+        font-family: 'Montserrat Alternates';
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        color: $dark-color;
+        text-decoration: none;
+        transition: 0.2s ease-out color;
+    }
+    &__color-checkboxes {
+        display: flex;
+        flex-shrink: 1;
+        column-gap: 4px;
+        border: none;
+        padding: 5px 0;
+        position: relative;
+        z-index: 1;
+    }
+    &__checkbox-label {
+        position: relative;
+        display: flex;
+        width: 21px;
+        height: 21px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    &__color-checkbox {
+        width: 16px;
+        height: 16px;
+        appearance: none;
+        cursor: pointer;
+        &:checked ~ .product-card__checked-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+        &:checked ~ .product-card__checked-checkbox:after {
+            border-color: white;
+        }  
+        &:checked ~ .product-card__checked-checkbox_not-available {
+            &:before {
+                content: '';
+                position: absolute;
+                display: block;
+                border-radius: 50%;
+                top: 0px;
+                right: 0px;
+                left: 0px;
+                bottom: 0px;
+                background: url('../../assets/icons/colors/color_out-stock.svg') center center/cover no-repeat;
+            }
+        }
+    }
+    &__checked-checkbox {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        display: block;
+        border-radius: 50%;
+        z-index: -1;
+        border: 2px solid transparent;
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            display: block;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+        &_not-available {
+            &:before {
+                content: '';
+                position: absolute;
+                display: block;
+                border-radius: 50%;
+                top: -8px;
+                right: -8px;
+                left: -8px;
+                bottom: -8px;
+                background: url('../../assets/icons/colors/color_out-stock.svg') center center/cover no-repeat;
+            }
+        }
+    }
+
+    &__description {
+        margin-top: 4px;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        color: $grey;
+    }
+
+    .purchase-block {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-bottom: 1px;
+        color: $dark-color;
+        &__price-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 42px;
+            gap: 4px;
+        }
+        &__price {
+            font-weight: 600;
+            font-size: 18px;
+            color: inherit;
+            &_sale {
+                font-size: 13px;
+                font-weight: 500;
+                color: $light-grey;
+                text-decoration: line-through;
+            }
+        }
+        &__price-block_sale {
+            color: $dark-color; 
+        }
+        &__current-currency {
+            &_not-available {
+                font-size: 18px;
+                font-weight: 600;
+                color: $light-grey;
+            }
+        }
+
+        &__cart-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid $dark-color;
+            border-radius: 50%;
+            background-color: transparent;
+            cursor: pointer;
+            transition: 0.2s ease-out background;
+            &:hover {
+                background-color: $dark-color;
+                .purchase-block__cart-icon {
+                    fill: $light-color;
+                }
+            }
+            &.reset-border {
+                border-color: white;
+            }
+        }
+        &__cart-icon {
+            fill: $dark-color;
+            transition: 0.2s ease-out fill;
+        }
+    }
+
+    &-preloader {
+        z-index: 1;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .product-card {
+        &__favorite {
+            transform: translateX(0);
+        }
+        &:hover {
+            .product-card__image-wrapper:after {
+                opacity: 0;
+            }
+            .product-card__title-link {
+                color: $dark-color;
+            }
+        }
+        &__title-link:hover {
+            color: $dark-color;
+        }
+        &__favorite-btn {
+            &:hover {
+                .product-card__favorite-icon {
+                    transition: 0.2s ease-out fill;
+                    fill: $dark-color;
+                }
+            }
+        }
+
+        .purchase-block__cart-btn:hover {
+            background-color: transparent;
+            .purchase-block__cart-icon {
+                fill: $dark-color;
+            }
+        }
+        &.out-of-stock {
+            .purchase-block__cart-btn:hover {
+                background-color: transparent;
+                .purchase-block__bell-icon{
+                    stroke: $dark-color;
+                }
+            } 
+        }
+    }
+}

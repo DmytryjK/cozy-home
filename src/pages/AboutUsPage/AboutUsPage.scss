@@ -1,0 +1,28 @@
+@use '../../style/variables.scss' as *;
+.about-title {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    color: $dark-color;
+    text-align: center;
+}
+
+.about-descr {
+    font-weight: 500; 
+    font-size: 14px; 
+    line-height: 17px; 
+    color: $grey; 
+    text-align: center;
+}
+
+@media screen and (max-width: 767px) {
+    .about-title {
+        font-size: 24px; 
+        line-height: 30px; 
+    }
+
+    .about-descr {
+        font-size: 12px; 
+        line-height: 14.5px; 
+    }
+}

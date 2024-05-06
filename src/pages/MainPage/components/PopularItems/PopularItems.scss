@@ -1,0 +1,63 @@
+@use '../../../../style/variables.scss' as *;
+.popular-items {
+    margin-top: 130px;
+    &__title {
+        font-size: 28px;
+        font-family: Montserrat Alternates;
+        font-weight: 600;
+        color: $dark-color;
+    }
+
+    &__products {
+        height: 100%;
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        &-item {
+            display: flex;
+            height: 100%;
+        }
+    }
+    
+    &__slider {
+        height: 100%;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        .swiper-wrapper {
+            flex-direction: row !important;
+            row-gap: 80px;
+            width: calc(100% + 45px) !important;
+        }
+        .swiper-slide {
+            margin-top: 0 !important;
+            height: auto;
+        }
+    }
+}
+
+@media screen and (max-width: 1293px) {
+    .popular-items__slider {
+        .swiper-wrapper {
+            width: 100% !important;
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .popular-items {
+        margin-top: 64px;
+        &__title {
+            font-size: 20px;
+        }
+        &__nav {
+            display: none;
+        }
+        &__products {
+            margin-top: 24px;
+        }
+        &__products-item {
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,46 @@
+@import '../../assets/fonts/fonts.scss';
+@import '../../style/variables.scss';
+
+.breadcrumbs {
+	margin-top: 20px;
+	margin-bottom: 40px;
+
+	&__list {
+		display: flex;
+		gap: 40px;
+
+		&_item {
+			color: $light-grey;
+			position: relative;
+			
+			&_link {
+				font-size: 14px;
+			}
+
+			&::after {
+				content: "";
+				position: absolute;
+				background: url('../../assets/icons/catalogue/routing-arrow.svg');
+				background-repeat: no-repeat;
+				width: 15px;
+				height: 8px;
+				top: 7px;
+				right: -25px;
+			}
+
+			&:last-child::after {
+				display: none;
+			}
+			&:last-child {
+				color: $dark-color;
+				pointer-events: none;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.breadcrumbs {
+		display: none;
+	}
+}

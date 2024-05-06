@@ -1,0 +1,35 @@
+.cart-icon {
+    display: block;
+    position: relative;
+    &__counter {
+        position: absolute;
+        top: -5px;
+        right: -8px;
+        font-size: 10px;
+        font-weight: 500;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        width: 16px;
+        height: 16px;
+        background-color: #C57100;
+        border-radius: 100%;
+    }
+    &__counter-loading {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        svg g {
+            fill: white;
+        }
+    }
+}

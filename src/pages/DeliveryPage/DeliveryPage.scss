@@ -1,0 +1,16 @@
+.delivery-page {
+    &__wrapper {
+        display: flex;
+        align-items: stretch;
+        gap: 30px;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .delivery-page {
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

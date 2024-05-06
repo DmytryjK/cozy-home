@@ -1,0 +1,147 @@
+@use '../../../../style/variables.scss' as *;
+
+.information {
+	margin-top: 130px;
+	color: $dark-color;
+
+	&__content {
+		text-align: center;
+		margin-bottom: 80px;
+		
+		&_title {
+			font-family: 'Montserrat Alternates';
+			font-size: 28px;
+			font-weight: 600;
+		}
+		
+		&_text {
+			margin: 12px auto 0;
+			max-width: 640px;
+			font-weight: 400;
+			color: $grey;
+		}
+
+		&_pros {
+			max-width: 304px;
+
+			&_info {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				margin-bottom: 20px;
+
+				&_title {
+					font-family: 'Montserrat Alternates';
+					font-size: 40px;
+					font-weight: 500;
+
+				}
+			}
+
+			&_description {
+				font-weight: 400;
+				color: $grey;
+			}
+		}
+	}
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: 1fr;
+	gap: 32px;
+	&:first-child {
+		grid-column: 0 / 1;
+	}
+	&:nth-child(2) {
+		grid-column: 1 / 2;
+	}
+	&:nth-child(3) {
+		grid-column: 2 / 3;
+	}
+	&:nth-child(4) {
+		grid-column: 3 / 4;
+	}
+}
+
+@media screen and (max-width: 1055px) {
+	.grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.information {
+		margin-top: 64px;
+		color: $dark-color;
+		&__content {
+			margin-bottom: 32px;
+			&_title {
+				font-size: 24px;
+			}
+			&_text {
+				font-size: 14px;
+			}
+			&_pros {
+				&_info_title {
+					font-size: 24px;
+				}
+				&_description {
+					color: $grey;
+					font-size: 14px;
+				}
+				&_info {
+					gap: 4px;
+					margin-bottom: 8px;
+					align-items: flex-start;
+					img {
+						width: 40px;
+						height: 40px;
+					}
+				}
+			}
+		}
+	}
+	.grid {
+		column-gap: 16px;
+		row-gap: 51px;
+	};
+}
+
+@media screen and (max-width: 450px) {
+	.grid {
+		row-gap: 24px;
+	};
+	.information {
+		&__content {
+			&_title {
+				font-size: 20px;
+			}
+			&_text {
+				font-size: 12px;
+			}
+			&_pros {
+				max-width: 100%;
+				&_info_title {
+					font-size: 18px;
+				}
+				&_description {
+					font-size: 11px;
+				}
+			}
+			&_pros_info {
+				flex-direction: row;
+				align-items: center;
+				margin-bottom: 4px;
+				gap: 8px;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 359px) {
+	.grid {
+		grid-template-columns: 1fr;
+	}
+}

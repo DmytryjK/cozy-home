@@ -1,0 +1,49 @@
+.error-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    height: 100px;
+    &_text {
+        font-weight: 500;
+        font-size: 20px;
+        color: rgb(54, 54, 54);
+    }
+    &_reload-page {
+        background-color: transparent;
+        border: none;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        font-size: 16px;
+        font-weight: 500;
+        color: rgb(54, 54, 54);
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .error-message {
+        padding-right: 16px;
+        min-height: 60px;
+        gap: 15px;
+        &_text {
+            text-align: center;
+            font-size: 16px;
+        }
+        &_reload-page {
+            font-size: 14px;
+        }
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .error-message {
+        &_text {
+            font-size: 14px;
+        }
+        &_reload-page {
+            font-size: 12px;
+        }
+    }
+}

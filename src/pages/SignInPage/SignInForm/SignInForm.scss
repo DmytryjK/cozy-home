@@ -1,0 +1,239 @@
+@use '../../../style/variables.scss' as *;
+
+.signin-form {
+    position: relative;
+    margin-top: 40px;
+    max-width: 500px;
+    width: 100%;
+    &.loading-data {
+        user-select: none;
+        pointer-events: none;
+    }
+    &__wrapper {
+        margin-top: 20px;
+        &_checkbox {
+            margin-top: 11px;
+        }
+    }
+    .lastName, .email, .password, .phone-number, .birthdate {
+        margin-top: 20px;
+    }
+    &__label {
+        color: $light-grey;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    &__input-wrapper {
+        position: relative;
+        display: block;
+    }
+    &__input {
+        margin-top: 14px;
+        display: block;
+        width: 100%;
+        height: 42px;
+        padding: 4px 20px;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        background: $filter-background;
+        outline: none;
+        color: $dark-color;
+        font-size: 14px;
+        font-weight: 500;
+        transition: 0.2s ease-out border-color;
+        &:focus {
+            border-color: $dark-color;
+        }
+        &::placeholder {
+            color: $light-grey;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        &.input-wrong {
+            border-color: $warning;
+        }
+    }
+
+    &__checkbox {
+        appearance: none;
+        &:checked ~ .signin-form__checkbox_custom:after {
+            opacity: 1;
+        }
+    }
+    &__checkbox_custom {
+        position: absolute;
+        left: -26px;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-color: transparent;
+        border: 1px solid $grey;
+        overflow: hidden;
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: block;
+            background: url('../../../assets/icons/auth/accept-checkbox.svg') center center/contain no-repeat;
+            opacity: 0;
+        }
+    }
+    &__email-label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        margin-left: 26px;
+        user-select: none;
+        color: $grey;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    &__submit {
+        width: 100%;
+        padding: 16px 10px;
+        margin-top: 60px;
+        border-radius: 2px;
+        border: none;
+        background: $dark-color;
+        color: $light-color;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.2s ease-out background-color;
+        &:hover {
+            background: $grey;
+        }
+    }
+
+    &__loading-dots {
+		display: none
+	}
+	&__loading-dot {
+		animation-delay: .1s;
+		margin: 0 5px;
+		animation: {
+			direction: alternate;
+			duration: .5s;
+			iteration-count: infinite;
+			name: loadingAnimation;
+			play-state: running;
+			timing-function: ease-out;
+		}
+		border-radius: 100%;
+		display: block;
+		height: 10px;
+		margin: 0 5px;
+		width: 10px;
+		&:first-child {
+			animation-delay: 0s;
+			margin: 0;
+		}
+
+		&:last-child {
+			animation-delay: .2s;
+			margin: 0;
+		}
+	}
+	&.loading-data {
+        .signin-form__submit {
+            font-size: 0px;
+            pointer-events: none;
+            padding: 20px 10px;
+        }
+		.submit-button__loading-dots {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+    &__toggle-visible-password {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
+        &:after {
+            content: '';
+            display: block;
+            background: url('../../../assets/icons/auth/show-hide-pass.svg') center center/contain no-repeat;
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    &__confirmation-message {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+        margin-top: 30px;
+        padding: 20px 20px;
+        color: $dark-color;
+        font-size: 15px;
+        font-weight: 500;
+        background: $filter-background;
+        border-radius: 3px;
+
+        img {
+            margin-top: 3px;
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &__loader {
+        position: absolute;
+        top: 0;
+        bottom: 100px;
+        height: auto !important;
+        backdrop-filter: blur(1px);
+        img {
+            width: 45px; 
+            height: 45px;
+        }
+    }
+
+    .error-message_small, .success-message  {
+        margin-top: 10px;
+        justify-content: center;
+    }
+}
+@media screen and (max-width: 991px) {
+    .signin-form {
+        &__submit:hover {
+            background: $dark-color;
+        }
+    }
+}
+@media screen and (max-width: 450px) {
+    .signin-form {
+        &__submit {
+            margin-top: 40px;
+        }
+    }
+}
+
+@keyframes loadingAnimation {
+	0% {
+        transform: scale(.5);
+        background-color: white;
+    }
+    50% {
+        background-color: rgb(202, 202, 202);
+    }
+    100% {
+        transform: scale(1);
+        background-color: white;
+    }
+}

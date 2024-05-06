@@ -1,0 +1,62 @@
+@import '../../../../../../style/variables.scss';
+
+.customers-review {
+
+	&__slider_cards {
+		cursor: grab;
+		pointer-events: none;
+
+		&_card {
+			width: auto;
+			height: auto;
+
+			&_header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				flex-wrap: wrap;
+
+				&_title {
+					color: $dark-color;
+					font-size: 16px;
+					font-weight: 500;
+				}
+				&_date {
+					font-size: 12px;
+					color: $grey;
+				}
+				&_rating {
+					font-size: 14px;
+					flex-basis: 100%;
+					margin-top: 6px;
+				}
+			}
+			&_review {
+				color: $grey;
+				margin-top: 18px;
+				font-size: 14px;
+			}
+		}
+	}
+
+	.review-stars-list {
+		display: flex;
+		gap: 3px;
+	}
+
+}
+
+@media (max-width: 700px) {
+	.customers-review {
+
+		&__slider_cards {
+	
+			&_card {
+	
+				&_header {
+					display: initial;
+				}
+			}
+		}
+	}
+}

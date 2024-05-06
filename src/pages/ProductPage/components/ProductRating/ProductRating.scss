@@ -1,0 +1,9 @@
+.rating {
+    .stars-list {
+        display: inline-flex;
+        gap: 5px;
+        &__item {
+            flex-shrink: 0;
+        }
+    }
+}

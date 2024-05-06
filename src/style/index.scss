@@ -1,0 +1,92 @@
+@import '../assets/fonts/fonts.scss';
+@import './variables.scss';
+@import './mixins.scss';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat';
+	-webkit-tap-highlight-color: transparent;
+}
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1352px;
+  width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+// Scroll-bar
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: $dark-white;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: $accent-color; 
+  border-radius: 50px;
+	border-right: 2px  $dark-white solid;
+	border-left: 2px  $dark-white solid;
+  background-clip: padding-box;
+}
+
+.LazyLoad {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0;
+  transition: 0.4s opacity 0.2s ease-out;
+  &.is-visible {
+      opacity: 1;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    padding: 0 16px;
+  }
+}

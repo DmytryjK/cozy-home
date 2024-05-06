@@ -1,0 +1,76 @@
+@use '../../style/variables.scss' as *;
+.products-slider {
+    .content-loader  {
+        height: 483px !important;
+    }
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__title {
+        font-size: 28px;
+        font-family: Montserrat Alternates;
+        font-weight: 600;
+        color: $dark-color;
+    }
+    &__see-all {
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: underline;
+        text-decoration-skip-ink: none;
+        text-underline-offset: 2px;
+        color: $grey;
+    }
+    &__cards {
+        max-width: 100%;
+        width: 100%;
+        margin-top: 42px;
+    }
+    &__card {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__slider {
+        width: 100%;
+        height: 100%;
+        .swiper-slide {
+            height: auto;
+        }
+    }
+
+    &__navigation{
+        margin-right: -10px;
+        display: flex;
+        gap: 10px;
+    }
+    &__prev-btn, &__next-btn {
+        background-color: transparent;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+    &__prev-icon, &__next-icon {
+        fill: $grey;
+    }
+
+    .swiper-button-disabled svg {
+        fill: $dark-white;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .products-slider {
+        &__cards {
+            margin-top: 24px;
+        }
+        &__title {
+            font-size: 20px;
+        }
+        &__card {
+            width: 100%;
+        }
+    }
+}

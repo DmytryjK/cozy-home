@@ -1,0 +1,67 @@
+@use '../../style/variables.scss' as *;
+.cart {
+    min-height: calc(100vh - 532px);
+    &-content {
+        display: flex;
+        gap: 40px;
+        margin-top: 30px;
+    }
+    &__title {
+        color: $dark-color;
+        font-family: Montserrat Alternates;
+        font-size: 32px;
+        font-weight: 600;
+    }
+
+    &__right-side {
+        margin-left: auto;
+        max-width: 360px;
+    }
+    &__right-sticky {
+        position: sticky;
+        top: 65px;
+    }
+    &__delivery-block {
+        margin-top: 30px;
+    }
+    &__delivery-title {
+        color: $grey;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+    &__delivery_fz11 {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .cart {
+        &-content {
+            flex-wrap: wrap;
+        }
+    }
+}
+
+@media (max-width: 960px) {
+    .cart {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .cart {
+        min-height: auto;
+        &__title {
+            font-size: 20px;
+            font-weight: 500;
+        }
+        &__right-side {
+            max-width: 100%;
+            width: 100%;
+        }
+        &-content {
+            margin-top: 10px;
+        }
+    }
+}

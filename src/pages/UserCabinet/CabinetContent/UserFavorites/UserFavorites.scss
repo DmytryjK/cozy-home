@@ -1,0 +1,74 @@
+@use '../../../../style/variables.scss' as *;
+@import '../../../../style/mixins.scss';
+.user-favorites {
+    &__title {
+        padding-left: 8px;
+        @include user-cabinet_title;
+    };
+    &__empty-block  {
+        margin-top: 30px;
+        padding-left: 8px;
+        h2 {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 22px;
+            color: $dark-color;
+        }
+        p {
+            margin-top: 10px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+            color: $light-grey;
+            a {
+                text-decoration: underline;
+                font-weight: 500;
+                text-underline-offset: 2px;
+            }
+        }
+    }
+    .categories-nav__btn {
+        color: $grey;
+        font-weight: 500;
+        &.active {
+            color: $dark-color;
+            font-weight: 500;
+        }
+    }
+
+    &__products {
+        margin-top: 50px;
+        display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		justify-self: center;
+		align-self: center;
+		justify-content: center;
+		gap: 50px 32px;
+    }
+    &__pagination-wrapper {
+        margin-top: 85px;
+        text-align: center;
+    }
+
+    .content-loader {
+        grid-column: 1 / 4;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .user-favorites {
+        &__empty-block {
+            padding-left: 0;
+            margin-top: 20px;
+            h2 {
+                font-size: 14px;
+                line-height: 17px;
+            }
+            p {
+                margin-top: 6px;
+                font-size: 12px;
+                line-height: 14.5px;
+            }
+        }
+    }
+}

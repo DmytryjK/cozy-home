@@ -1,0 +1,91 @@
+@use '../../../style/variables.scss' as *;
+
+.card-skeleton {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    max-width: 450px;
+    width: 100%;
+    overflow: hidden;
+    &__image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        height: 350px;
+        animation: animateColor;
+        animation-iteration-count: infinite;
+        animation-duration: 2s;
+        &:after {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #000000;
+            opacity: 0;
+            transition: 0.2s ease-out opacity;
+        }
+    }
+    &__content {
+        margin-top: 16px;
+        height: 100%;
+    }
+
+    &__text1 {
+        height: 35px;
+        width: 85%;
+        animation: animateColor;
+        animation-iteration-count: infinite;
+        animation-duration: 2s;
+    }
+    &__text2 {
+        margin-top: 5px;
+        height: 15px;
+        width: 50%;
+        animation: animateColor;
+        animation-iteration-count: infinite;
+        animation-duration: 2s;
+    }
+    &__bottom {
+        margin-top: 10px;
+        height: 52px;
+        animation: animateColor;
+        animation-iteration-count: infinite;
+        animation-duration: 2s;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .product-card {
+        &:hover {
+            .product-card__image-wrapper:after {
+                opacity: 0;
+            }
+            .product-card__title-link {
+                color: $dark-color;
+            }
+        }
+        &__title-link:hover {
+            color: $dark-color;
+        }
+    }
+}
+
+@keyframes animateColor {
+    0% {
+        background-color: #e9e9e9;
+    }
+    50% {
+        background-color: $filter-background;
+    }
+    100% {
+        background-color: #e9e9e9;
+    }
+}
+

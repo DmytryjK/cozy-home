@@ -1,0 +1,93 @@
+@use '../../../../style/variables.scss' as *;
+.sort {
+    display: inline-flex;
+    &__custom-select {
+        width: 100%;
+        position: relative;
+        &.active {
+            .sort__custom-fields {
+                display: flex;
+            }
+            .sort__open-btn::after {
+                transform: translateX(-50%) translateY(-50%) rotate(180deg);
+            }
+        }
+    }
+    &__open-btn {
+        position: relative;
+        padding: 12px 24px 12px 0;
+        min-width: 280px;
+        text-align: right;
+        border: none;
+        background-color: transparent;
+        color: $dark-color;
+        font-size: 14px;
+        font-weight: 400;
+        user-select: none;
+        cursor: pointer;
+        .btn__text {
+            font-weight: 500;
+        }
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: -10px;
+            transform: translateX(-50%) translateY(-50%) rotate(0);
+            width: 20px;
+            height: 20px;
+            background: url('../../../../assets/icons/sort/select-arrow.svg') center center/cover no-repeat;
+        }
+    }
+    &__custom-fields {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        min-width: 224px;
+        right: 0;
+        border: none;
+        background-color: #fff;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+        z-index: 4;
+    }
+    &__field {
+        display: flex;
+        transition: 0.2s ease-out background-color;
+        &:hover {
+            background-color: $dark-white;
+        }
+    }
+    &__label {
+        padding: 12px 10px 12px 20px;
+        display: block;
+        width: 100%;
+        font-size: 14px;
+        font-weight: 400;
+        color: $dark-color;
+        cursor: pointer;
+        transition: 0.2s ease-out background-color;
+    }
+    &__input {
+        appearance: none;
+        position: absolute;
+        &:checked ~ .sort__label {
+            background-color: $dark-white;
+        }
+    }
+}
+
+@media (max-width: 1012px) {
+	.sort {
+        &__open-btn {
+            min-width: auto;
+            width: 100%;
+        }
+	}
+}
+
+@media (max-width: 520px) {
+    .btn__current-option {
+        display: none;
+    }
+}

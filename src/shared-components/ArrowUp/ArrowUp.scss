@@ -1,0 +1,35 @@
+@use '../../style/variables.scss' as *;
+.arrow-up {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 16px;
+    bottom: 3%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: $dark-white;
+    user-select: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.1s ease-out opacity, 0.1s ease-out visibility;
+    cursor: pointer;
+    z-index: 999;
+    &:hover {
+        background-color: $grey;
+        .arrow-up__icon {
+            fill: $dark-white;
+        }
+    }
+    &__icon {
+        fill: $grey;
+        transition: 0.2s ease-out fill;
+    }
+    &.active {
+        opacity: 1;
+        visibility: visible;
+        transition: 0.3s ease-out opacity, 0.3s ease-out visibility, 0.2s ease-out background-color;
+    }
+}

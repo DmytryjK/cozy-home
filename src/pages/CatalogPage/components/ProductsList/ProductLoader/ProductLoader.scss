@@ -1,0 +1,66 @@
+@use '../../../../../style/variables.scss' as *;
+.nothing-to-search {
+	padding: 128px 24px 50px 24px;
+	width: auto;
+    bottom: 0;
+    font-size: 20px;
+    &__text {
+        margin: 0 auto;
+        text-align: center;
+        color: $dark-color;
+        font-size: 16px;
+        max-width: 510px;
+        font-weight: 500;
+    }
+    &__clear-filters {
+        display: inline-block;
+        margin: 0 auto;
+        margin-top: 30px;
+        background: none;
+		font-size: 12px;
+		font-weight: 500;
+		display: flex;
+		align-items: center;
+		border: 2px solid $dark-color;
+        color: $dark-color;
+		border-radius: 2px;
+		padding: 8px 28px 8px 10px;
+		cursor: pointer;
+        transition: 0.2s ease-in-out color, 0.2s ease-in-out background-color;
+        &_text {
+            position: relative;
+            text-transform: uppercase;
+            color: inherit;
+            &::after {
+                content: '';
+                position: absolute;
+                background: url('../../../../../assets/icons/filters/reject-icon.svg') center center/cover no-repeat;
+                width: 12px;
+                height: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                right: -20px;
+                transition: 0.2s ease-out background-image;
+            }
+        }
+        &:hover {
+            background-color: $dark-color;
+            color: $light-color;
+            .nothing-to-search__clear-filters_text::after {
+                background: url('../../../../../assets/icons/filters/reject-icon_active.svg') center center/cover no-repeat;
+            }
+        }
+    }
+};
+
+@media screen and (max-width: 991px) {
+    .nothing-to-search {
+        &__clear-filters:hover {
+            background-color: $light-color;
+            color: $dark-color;
+            .nothing-to-search__clear-filters_text::after {
+                background: url('../../../../../assets/icons/filters/reject-icon.svg') center center/cover no-repeat;
+            }
+        }
+    }  
+}

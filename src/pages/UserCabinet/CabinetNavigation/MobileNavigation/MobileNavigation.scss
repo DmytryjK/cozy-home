@@ -1,0 +1,49 @@
+@use '../../../../style/variables.scss' as *;
+
+.nav-mobile {
+    display: none;
+    &__link, &__close {
+        position: relative;
+        display: block;
+        padding: 14px 0;
+        width: 100%;
+        color: $dark-color;
+        font-size: 14px;
+        font-weight: 500;
+        &-decorative {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            svg {
+                fill: $dark-color;
+            }
+        }
+
+        &-active {
+            color: $accent-color;
+            .nav-mobile__link-decorative {
+                transform: rotate(180deg) translateY(50%);
+                svg {
+                    fill: $accent-color;
+                }
+            }
+        }
+    }
+    &__close {
+        background-color: transparent;
+        border: none;
+        text-align: left;
+        color: $grey;
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 961px) {
+    .nav-mobile {
+        display: block;
+    }
+}

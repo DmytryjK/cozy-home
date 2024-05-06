@@ -1,0 +1,11 @@
+.page-preloader {
+    position: fixed;
+    height: 100dvh;
+    width: 100vw;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+    background-color: #FFFFFE;
+}

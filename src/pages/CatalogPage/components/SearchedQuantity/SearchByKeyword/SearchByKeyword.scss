@@ -1,0 +1,59 @@
+@use '../../../../../style/variables.scss' as *;
+.search-quantity {
+    &__keyword {
+        font-size: 14px;
+        font-weight: 500;
+        color: $grey;
+        display: inline-flex;
+        align-items: center;
+        &_bold {
+            position: relative;
+            display: inline-block;
+            margin: 5px 16px 5px 5px;
+            font-weight: 700;
+        }
+        &_close {
+            position: absolute;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            top: -100%;
+            left: 100%;
+            width: 20px;
+            height: 20px;
+            background-color: transparent;
+            transform: translateY(calc(60%)) translateX(-25%);
+            border: none;
+            cursor: pointer;
+            svg {
+                width: 8px;
+                height: 8px;
+                display: block;
+                path {
+                    transition: 0.2s ease-out fill;
+                }
+            }
+            &:hover {
+                svg path {
+                    fill: $accent-color;
+                }     
+            }
+        }
+    }
+}
+
+@media (max-width: 900px) {
+	.search-quantity {
+        &__keyword {
+            // font-size: 12px;
+        }
+    }
+}
+
+@media (max-width: 890px) {
+	.search-quantity {
+        &__keyword-title {
+            display: none;
+        }
+    }
+}

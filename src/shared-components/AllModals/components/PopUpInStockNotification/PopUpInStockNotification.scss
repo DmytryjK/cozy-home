@@ -1,0 +1,144 @@
+@use '../../../../style/variables.scss' as *;
+.inStock-window {
+    &__title {
+        margin: 0 auto;
+        text-align: center;
+        color: $dark-color;
+        font-family: Montserrat Alternates;
+        font-size: 24px;
+        font-weight: 600;
+        max-width: 454px;
+    }
+    .inStock-form {
+        margin-top: 30px;
+        &__inputs-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .firstName, .phone-number {
+            width: 50%;
+        }
+
+        &__comment-wrapper {
+            position: relative;
+            padding-bottom: 18px;
+        }
+
+        &__comment {
+            position: relative;
+            margin-top: 20px;
+            padding: 12px 20px;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 500;
+            color: $dark-color;
+            background-color: $filter-background;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            outline: none;
+            resize: none;
+            transition: 0.2s ease-out border;
+            &::-webkit-scrollbar {
+                width: 3px;
+            }
+            &::-webkit-scrollbar-track {
+                background: $dark-white;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: rgba($dark-color, 0.7); 
+                border-radius: 50px;
+                border-right: 1.5px  rgba($dark-color, 0.7) solid;
+                border-left: 1.5px  rgba($dark-color, 0.7) solid;
+                background-clip: padding-box;
+            }
+            &::placeholder {
+                color: $light-grey;
+            }
+            &:focus {
+                border: 1px solid $light-grey;
+            }
+        }
+        .comment-counter {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            color: $light-grey;
+            font-size: 14px;
+            font-weight: 500;
+            &.active {
+                color: $warning;
+            }
+        }
+
+        &__submit {
+            display: block;
+            margin: 20px auto 0 auto;
+            padding: 16px 0;
+            max-width: 416px;
+            width: 100%;
+            color: $white;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 2px;
+            border: none;
+            background-color: $dark-color;
+            cursor: pointer;
+            transition: 0.2s ease-out background-color;
+            &:hover {
+                background-color: $grey;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .inStock-window {
+        &__title {
+            font-size: 20px;
+            max-width: 278px;
+        }
+        .inStock-form {
+            display: flex;
+            flex-direction: column;
+            &__inputs-wrapper {
+                flex-wrap: wrap;
+            }
+            input {
+                max-width: 100%;
+            }
+            &__comment-wrapper {
+                margin-bottom: 30px;
+            }
+            &__comment {
+                max-height: 120px;
+            }
+            .firstName, .phone-number {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .inStock-window {
+        .inStock-form {
+            &__submit {
+                margin-top: 102px;
+            }
+        }
+    }
+}
+
+@media screen and (max-height: 620px) {
+    .inStock-window {
+        .inStock-form {
+            &__submit {
+                margin-top: 20px;
+            }
+        }
+    }
+}
+

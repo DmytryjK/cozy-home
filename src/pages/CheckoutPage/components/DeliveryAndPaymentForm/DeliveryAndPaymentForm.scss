@@ -1,0 +1,150 @@
+@import '../../../../style/variables.scss';
+
+.delivery-payment-block {
+	display: flex;
+	flex-direction: column;
+	margin-top: 30px;
+	width: 100%;
+	
+	&__options {
+		max-width: 640px;
+		
+		&_option {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			&:not(:last-child) {
+				margin-bottom: 20px;
+			}
+	
+			&_label {
+				display: flex;
+				align-items: center;
+				font-family: Montserrat;
+				font-size: 16px;
+				font-weight: 500;
+				color: $dark-color;
+				cursor: pointer;
+	
+				&_input {
+					-webkit-appearance: none;
+					margin-right: 16px;
+					width: 20px;
+					height: 20px;
+					border: 1px solid $dark-color;
+					border-radius: 50%;
+					background-color: $white;
+					position: relative;
+	
+					&::before {
+						content: '';
+						width: 10px;
+						height: 10px;
+						position: absolute;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						background-color: $white;
+						opacity: 0;
+						transition: opacity 0.3s ease;
+					}
+	
+					&:checked {
+	
+						&::before {
+							opacity: 1;
+							background-color: $dark-color;
+							border-radius: 50%;
+							width: 12px;
+							height: 12px;
+						}
+					}
+				}
+			}
+	
+			&_description {
+				font-family: Montserrat;
+				font-size: 11px;
+				font-weight: 500;
+				color: $light-grey;
+			}
+		}
+	}
+
+	&__form {
+		margin-top: 30px;
+		.customer-form {
+			.customer-form__item {
+				&_button {
+					text-align: left;
+					padding: 12px 20px;
+					font-family: Montserrat;
+					font-size: 14px;
+					font-weight: 500;
+					color: #262626;
+					border: none;
+					border-radius: 3px;
+					
+	
+					&:after {
+						content: '';
+						display: block;
+						position: absolute;
+						top: 50%;
+						right: -10px;
+						transform: translateX(-50%) translateY(-50%) rotate(0);
+						width: 20px;
+						height: 20px;
+						background: url('../../../../assets/icons/sort/select-arrow.svg') center center/cover no-repeat;
+				}
+
+				&_wrapper {
+					background: #FAFAF9;
+					position: relative;
+					cursor: pointer;
+				}
+				}
+	
+				&.active {
+					.sort__custom-fields {
+							display: flex;
+					}
+					.sort__open-btn::after {
+							transform: translateX(-50%) translateY(-50%) rotate(180deg);
+					}
+			}
+
+			&_dropdown {
+				position: absolute;
+				z-index: 2;
+				background: white;
+				width: 100%;
+				box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+
+				&_list {
+
+					&_item {
+						padding: 12px 20px;
+						color: $dark-color;
+					}
+					&_item:hover {
+						background: $dark-white;
+					}
+
+					&_item.active {
+						background: $dark-white;
+					}
+				}
+			}
+		}
+		}
+	}
+}
+
+@media screen and (max-width: 720px) {
+	.customer-form {
+		&__item {
+			max-width: 100%;
+		}
+	}
+}

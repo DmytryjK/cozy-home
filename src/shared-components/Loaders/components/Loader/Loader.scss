@@ -1,0 +1,13 @@
+.content-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    &_image {
+        width: 70px;
+        height: 70px;
+        g {
+            fill: #C57100;
+        }
+    }
+}

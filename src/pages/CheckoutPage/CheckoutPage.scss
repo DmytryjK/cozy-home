@@ -1,0 +1,148 @@
+@import '../../style/variables.scss';
+
+.checkout {
+	min-height: calc(100vh - 591px);
+	&__title {
+		font-family: Montserrat Alternates;
+		font-size: 32px;
+		font-weight: 600;
+		color: $dark-color;
+	}
+
+	&__content {
+		display: flex;
+		gap: 40px;
+		justify-content: space-between;
+		margin-top: 30px;
+
+		.customer-block {
+			width: 100%;
+			max-width: 792px;
+			position: relative;
+			flex-shrink: 1.1;
+
+			.customer-handler {
+				&__list {
+					display: flex;
+					margin-bottom: 30px;
+	
+					&_item {
+						font-family: Montserrat;
+						font-size: 16px;
+						font-weight: 400;
+						color: $dark-color;
+						max-width: 175px;
+						width: 100%;
+						min-width: 155px;
+						cursor: pointer;
+					}
+					
+					.regular-cutomer {
+						text-align: right;
+						&.center {
+							text-align: center;
+						}
+					}
+	
+					.active {
+						padding-bottom: 10px;
+						border-bottom: 2px solid $dark-color;
+					}
+				}
+			}
+
+			&__steps {
+				display: flex;
+				column-gap: 32px;
+				row-gap: 20px;
+				margin-bottom: 20px;
+				flex-wrap: wrap;
+
+				&_step {
+					font-family: Montserrat;
+					font-size: 16px;
+					font-weight: 500;
+					color: $light-grey;
+					display: flex;
+					gap: 10px;
+					border: none;
+					background-color: transparent;
+					cursor: pointer;
+					
+					&_number {
+						font-family: Montserrat Alternates;
+						font-size: 14px;
+						font-weight: 500;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 18px;
+						height: 18px;
+						color: $white !important;
+						background-color: $light-grey;
+						padding: 10px;
+						border-radius: 100%;
+					}
+
+					.active {
+						background-color: $accent-color !important;
+					}
+				}
+
+				.active {
+					color: $accent-color;
+				}
+			}
+		}
+
+		.summary-block {
+			width: 100%;
+			max-width: 416px;
+			
+			.cart-summary__inner-content {
+				padding: 30px 30px 30px 30px;
+			}
+
+			.cart-summary__checkout {
+				display: none;
+			}
+
+			.cart-summary__title {
+				border-color: $grey;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 960px) {
+	.checkout {
+		margin-top: 24px;
+	}
+}
+
+@media screen and (max-width: 720px) {
+	.checkout {
+		&__title {
+			font-size: 18px;
+		}
+		&__content {
+			flex-wrap: wrap;
+			.customer-block {
+				max-width: 100%;
+				.customer-handler {
+					&__list {
+						display: flex;
+						margin-bottom: 30px;
+						&_item {
+							font-size: 14px;
+							text-align: center;
+							&.regular-cutomer {
+								text-align: center;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

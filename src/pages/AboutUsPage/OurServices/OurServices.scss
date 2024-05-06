@@ -1,0 +1,96 @@
+@use '../../../style/variables.scss' as *;
+.our-services {
+    margin-top: 160px;
+    &__descr {
+        max-width: 632px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    &__list {
+        margin-top: 50px;
+        display: grid;
+        row-gap: 50px;
+        column-gap: 32px;
+        grid-template-columns: repeat(2, auto);
+        justify-items: space-between;
+    }
+    &__item {
+        max-width: 640px;
+        width: 100%;
+        &-top {
+            position: relative;
+            max-width: 640px;
+            height: 320px;
+        }
+        &-photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        &-bottom {
+            margin-top: 30px;
+        }
+        &-title {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 29px;
+            color: $dark-color;
+        }
+        &-descr {
+            margin-top: 10px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 19.5px;
+            color: $dark-color;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .our-services {
+        margin-top: 100px;
+        &__descr {
+            margin-top: 12px;
+        }
+
+        &__list {
+            margin-top: 40px;
+            column-gap: 12px;
+            row-gap: 32px;
+        }
+        &__item {
+            &-top {
+                height: 45.5vw;
+                max-height: 320px;
+                min-height: 165px;
+            }
+            &-bottom {
+                margin-top: 16px;
+            }
+            &-title {
+                font-size: 18px;
+                line-height: 22px;
+            }
+            &-descr {
+                margin-top: 6px;
+                font-size: 12px;
+                line-height: 14.5px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .our-services {
+        &__list {
+            grid-template-columns: repeat(1, auto);
+        }
+    }
+}

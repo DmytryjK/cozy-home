@@ -1,0 +1,65 @@
+@use '../../../../style/variables.scss' as *;
+.filter {
+    &__item {
+        &:not(:first-child) {
+            margin-top: 14px;
+        }
+    }
+    &__label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+    &__label-title {
+        margin-left: 18px;
+        font-size: 14px;
+        font-weight: 400;
+        color: $grey;
+        user-select: none;
+        cursor: pointer;
+        &::first-letter {
+            text-transform: uppercase;
+        }
+    }
+    &__input {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 1px;
+        &:checked ~ .filter__input_custom-input > .filter__input_custom-input_checked {
+            display: block;
+        }
+        &:checked ~ .filter__label-title {
+            font-weight: 600 !important;
+        }
+        &:focus {
+            outline-color: $dark-color;
+        }
+    }
+    &__input_custom-input {
+        position: absolute;
+        left: 0;
+        display: block;
+        width: 16px;
+        height: 16px;
+        border: 1px solid $light-grey;
+        border-radius: 1px;
+        cursor: pointer;
+    }
+    &__input_custom-input_checked, &__input_custom-input_default {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+    &__input_custom-input_default {
+        width: 100%;
+        height: 100%;
+    }
+    &__input_custom-input_checked {
+        display: none;
+        background: url('../../../../assets/icons/filters/checked-arrow-black.svg') center center/cover no-repeat;
+        width: 10px;
+        height: 8px;
+    }
+}

@@ -1,0 +1,24 @@
+@use '../../../style/variables.scss' as *;
+.success-message { 
+    &__inner {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    &__text {
+        font-size: 14px;
+        font-weight: 500;
+        color: $grey;
+        &_additional {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: $light-grey;
+        }
+    }
+    &__icon {
+        margin-top: 2px;
+        width: 16px;
+        height: 16px;
+    }
+}

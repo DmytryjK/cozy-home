@@ -1,0 +1,61 @@
+@use '../../../../style/variables.scss' as *;
+
+.auth-popup {
+    align-self: center;
+    justify-self: center;
+    max-width: 100%;
+    width: 100%;
+    max-height: 100%;
+    &__title {
+        margin: 0 auto;
+        color: $dark-color;
+        text-align: center;
+        font-family: Montserrat Alternates;
+        font-size: 20px;
+        font-weight: 600;
+        max-width: 290px;
+    }
+
+    .login-by-service {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 30px;
+        &__title {
+            margin: 0;
+            padding: 0;
+            color: $dark-color;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        &__link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 3px;
+            border: 1px solid $grey;
+            img {
+                display: block;
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .auth-popup {
+        padding-top: 20px;
+
+        .form-login__input-email  {
+            margin-top: 56px;
+        }
+        .form-login__bottom-nav {
+            margin-top: 102px;
+        }
+
+    }
+}

@@ -1,0 +1,82 @@
+@use '../../../../../style/variables.scss' as *;
+.filter {
+    &__item_color {
+        &:not(:first-child) {
+            margin-top: 14px;
+        }
+        &.black {
+            .filter__input-default {
+                background-color: black;
+            }
+        }
+        &.grey {
+            .filter__input-default {
+                background-color: $grey;
+            }
+        }
+        &.orange {
+            .filter__input-default {
+                background-color: #D99616;
+            }
+        }
+    }
+
+    &__label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+    &__label-title {
+        margin-left: 18px;
+        font-size: 14px;
+        font-weight: 400;
+        color: $grey;
+        user-select: none;
+        cursor: pointer;
+    }
+    &__input {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        &:checked ~ .filter__input-custom > .filter__input-checked {
+            display: block;
+        }
+        &:checked ~ .filter__label-title {
+            font-weight: 600 !important;
+        }
+        &:focus {
+            outline-color: $dark-color;
+        }
+        &_color {
+            border-radius: 50% !important;
+        }
+    }
+    &__input-custom {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        display: block;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        overflow: hidden;
+        transform: translateY(-50%) translateZ(0);
+        cursor: pointer;
+    }
+    &__input-checked, &__input-default {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+    &__input-default {
+        width: 100%;
+        height: 100%;
+    }
+    &__input-checked {
+        display: none;
+        background: url('../../../../../assets/icons/filters/checked-arrow.svg') center center/cover no-repeat;
+        width: 10px;
+        height: 8px;
+    }
+}

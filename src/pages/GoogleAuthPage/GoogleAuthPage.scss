@@ -1,0 +1,11 @@
+.google-auth {
+    padding: 50px 0;
+    min-height: calc(100vh - 525px);
+    &__title {
+        font-size: 22px;
+        text-align: center;
+    }
+    &__notifications {
+        margin-top: 100px;
+    }
+}

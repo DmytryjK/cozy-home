@@ -1,0 +1,24 @@
+.cabinet {
+    min-height: calc(100vh - 600px);
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 70px;
+    }
+}
+
+
+@media screen and (max-width: 961px) {
+    .cabinet {
+        margin-top: 30px;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .cabinet {
+        margin-top: 5px;
+        &__wrapper {
+            flex-wrap: wrap;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+.layout {
+    padding-top: 70px;
+    min-height: calc(100dvh);
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 1130px) {
+    .layout {
+      padding-top: 60px;
+    }
+  }
+
+@media screen and (max-width: 600px) {
+  .layout {
+      padding-top: 50px;
+  }
+}

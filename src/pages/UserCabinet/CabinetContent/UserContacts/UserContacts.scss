@@ -1,0 +1,76 @@
+@use '../../../../style/variables.scss' as *;
+@import '../../../../style/mixins.scss';
+.user-contacts {
+    &__title {
+        @include user-cabinet_title;
+    }
+    &__form {
+        max-width: 380px;
+        width: 100%;
+    }
+    &__form-wrapper {
+        position: relative;
+        margin-top: 40px;
+        // display: grid;
+        gap: 20px;
+    }
+    &__form-left, &__form-right {
+        max-width: 380px;
+        width: 100%;
+        div:not(:first-child) {
+            margin-top: 20px;
+        }
+    }
+
+    &__form-submit {    
+        margin-top: 30px;
+        max-width: 380px;
+        @include dark-btn;
+    }
+
+    &__loader {
+        @include loader-blur;
+    }
+
+    &__update-success, &__update-failed  {
+        position: absolute;
+        bottom: 70px;
+        font-weight: 600;
+        font-size: 12px;
+        
+    }
+    &__update-success {
+        color: rgb(0, 196, 0);
+    }
+    &__update-failed {
+        color: $warning;
+    }
+    .success-message, .error-message_small {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 961px) {
+    .user-contacts {
+        margin-top: 5px;
+        &__form {
+            max-width: 100%;
+            padding-bottom: 40px;
+        }
+        &__form-wrapper {
+            margin-top: 0;
+            grid-column: 1fr;
+            justify-items: stretch;
+        }
+        &__form-left {
+            max-width: 100%;
+        }
+        &__form-right {
+            max-width: 100%;
+        }
+        &__form-submit {
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+    }
+}

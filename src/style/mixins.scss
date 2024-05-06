@@ -1,0 +1,45 @@
+@import './variables.scss';
+
+@mixin dark-btn {
+    width: 100%;
+    padding: 16px 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: $dark-color;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s ease-out background-color;
+    cursor: pointer;
+    &:hover {
+        background-color: $grey;
+    }
+
+    @media screen and (max-width: 991px) {
+        &:hover {
+            background-color: $dark-color;
+        }
+    }
+}
+
+@mixin user-cabinet_title {
+    color: $dark-color;
+    font-size: 32px;
+    font-weight: 500;
+
+    @media screen and (max-width: 961px) {
+        display: none;
+    }
+}
+
+@mixin loader-blur {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(1px);
+    z-index: 3;
+}

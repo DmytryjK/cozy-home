@@ -1,0 +1,78 @@
+@import '../../../../style/variables.scss';
+
+.submit-button {
+	margin-top: 30px;
+	border: none;
+	border-radius: 2px;
+	background: $dark-color;
+	color: $white;
+	padding: 16px 10px;
+	font-family: Montserrat;
+	font-size: 14px;
+	font-weight: 500;
+	width: 200px;
+	cursor: pointer;
+	pointer-events: auto;
+	transition: background .2s ease-out;
+	&:hover {
+		background: $grey;
+	}
+	&__loading-dots {
+		display: none
+	}
+	&__loading-dot {
+		animation-delay: .1s;
+		margin: 0 5px;
+		animation: {
+			direction: alternate;
+			duration: .5s;
+			iteration-count: infinite;
+			name: loading-animation;
+			play-state: running;
+			timing-function: ease-out;
+		}
+		border-radius: 100%;
+		display: block;
+		height: 10px;
+		margin: 0 5px;
+		width: 10px;
+		&:first-child {
+			animation-delay: 0s;
+			margin: 0;
+		}
+
+		&:last-child {
+			animation-delay: .2s;
+			margin: 0;
+		}
+	}
+	&.loading {
+		font-size: 0px;
+		pointer-events: none;
+		padding: 20px 10px;
+		.submit-button__loading-dots {
+			display: flex;
+			justify-content: center;
+		}
+	}
+}
+
+@keyframes loading-animation {
+	0% {
+        transform: scale(.5);
+        background-color: white;
+    }
+    50% {
+        background-color: rgb(202, 202, 202);
+    }
+    100% {
+        transform: scale(1);
+        background-color: white;
+    }
+  }
+
+@media screen and (max-width: 991px) {
+	.submit-button:hover {
+		background: $dark-color;
+	}
+}

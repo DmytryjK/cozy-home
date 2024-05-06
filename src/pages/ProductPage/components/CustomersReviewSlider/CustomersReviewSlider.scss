@@ -1,0 +1,253 @@
+@import '../../../../assets/fonts/fonts.scss';
+@import '../../../../style/variables.scss';
+
+.customers-review {
+	&__slider-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&_title {
+			color: $dark-color;
+			font-family: 'Montserrat Alternates';
+			font-weight: 600;
+			font-size: 28px;
+			font-weight: 600;
+		}
+	}
+
+	.swiper {
+		margin-top: 30px;
+		
+		// .swiper-wrapper {
+		// 	gap: 32px;
+		// }
+
+		// .swiper-slide{
+		// 	max-width: 300px;
+		// 	margin-right: 0 !important; 
+		// }
+	}
+
+	&__navigation{
+		margin-right: -10px;
+		display: flex;
+		gap: 10px;
+}
+
+&__prev-btn, &__next-btn {
+	background-color: transparent;
+	padding: 10px;
+	border: none;
+	cursor: pointer;
+}
+
+&__prev-icon, &__next-icon {
+	fill: $grey;
+}
+
+.swiper-button-disabled svg {
+	fill: $dark-white;
+}
+
+	&__button {
+		color: $white;
+		font-size: 16px;
+		font-weight: 500;
+		margin-top: 30px;
+		display: flex;
+		width: 192px;
+		padding: 12px 10px;
+		justify-content: center;
+		align-items: center;
+		border: none;
+		border-radius: 2px;
+		background: $dark-color;
+		cursor: pointer;
+		transition: 0.2s ease-out background-color;
+
+		&:hover {
+			background: $grey;
+		}
+	}
+}
+
+// Modal window
+
+	.customers-review__modal_title {
+		text-align: center;
+		font-family: 'Montserrat Alternates';
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+
+	.customers-review__modal_rating {
+		margin-top: 30px;
+		color: $dark-color;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		&_title {
+			color: $dark-color;
+			font-size: 20px;
+			font-weight: 500;
+			margin-bottom: 8px;
+		}
+
+		&_stars {
+			display: flex;
+			gap: 8px;
+		}
+	}
+
+	.customers-review__modal_inputs {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+		margin: 14px 0 20px 0;
+		&_input {
+			padding: 12px 20px;
+			color: $dark-color;
+			font-size: 14px;
+			font-weight: 500;
+			max-width: 416px;
+			width: 100%;
+			border-radius: 3px;
+			background-color: $filter-background;
+			border: 1px solid transparent;
+			outline: none;
+			transition: 0.2s ease-out border;
+
+			&:focus {
+				border: 1px solid $light-grey;
+			}
+			&::placeholder {
+				color: $light-grey;
+			}
+		}
+		.firstName, .email {
+			width: 100%;
+		}
+		.inputErrorValidation {
+			border: 1px solid $warning;
+		} 
+	}
+
+	.rating-error {
+		margin-top: 4px;
+		font-size: 10px;
+		font-weight: 500;
+		color: $warning;
+	}
+
+	.customers-review__modal_button {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 16px 10px;
+		border: none;
+		border-radius: 2px;
+		background: $dark-color;
+		color: $white;
+		font-weight: 500;
+		width: 50%;
+		cursor: pointer;
+
+		&:hover {
+			background: $grey;
+		}
+		&:disabled:hover{
+			background: $dark-color;
+		}
+		&.loading {
+			font-size: 0px;
+			pointer-events: none;
+			padding: 19px 10px;
+			.customers-review__loading-dots {
+				display: flex;
+				justify-content: center;
+			}
+		}
+	}
+
+.customers-review {
+	&__error {
+		margin-top: 8px;
+	}
+	&__loading-dots {
+		display: none
+	}
+	&__loading-dot {
+		animation-delay: .1s;
+		margin: 0 5px;
+		animation: {
+			direction: alternate;
+			duration: .5s;
+			iteration-count: infinite;
+			name: loading-animation;
+			play-state: running;
+			timing-function: ease-out;
+		}
+		border-radius: 100%;
+		display: block;
+		height: 10px;
+		margin: 0 5px;
+		width: 10px;
+		&:first-child {
+			animation-delay: 0s;
+			margin: 0;
+		}
+
+		&:last-child {
+			animation-delay: .2s;
+			margin: 0;
+		}
+	}
+}
+
+	.stars-rating {
+		display: flex;
+		gap: 8px;
+		&__button {
+			background: transparent;
+			border: none;
+			cursor: pointer;
+		}
+	}
+
+	@media (max-width: 1150px) {
+		.customers-review {
+			margin-top: 64px;
+		}
+
+		.customers-review__modal_button {
+			min-width: 328px;
+			margin-bottom: 0;
+		}
+}
+
+	@media (max-width: 600px) {
+		.customers-review__modal_inputs {
+			flex-wrap: wrap;
+
+			&_input {
+				max-width: initial;
+			}
+		}
+}
+
+@keyframes loading-animation {
+	0% {
+        transform: scale(.5);
+        background-color: white;
+    }
+    50% {
+        background-color: rgb(202, 202, 202);
+    }
+    100% {
+        transform: scale(1);
+        background-color: white;
+    }
+}

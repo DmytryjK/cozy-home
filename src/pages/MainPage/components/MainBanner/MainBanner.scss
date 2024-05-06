@@ -1,0 +1,149 @@
+@import '../../../../assets/fonts/fonts.scss';
+@import '../../../../style/variables.scss';
+
+.mainBanner {
+	min-height: 630px;
+	position: relative;
+
+	&__background-img {
+		position: absolute;
+		z-index: 0;
+		display: block;
+		object-fit: cover;
+		object-position: center bottom;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		height: 630px;
+		width: 100%;
+	}
+	
+	&__content {
+		position: absolute;
+		width: 690px;
+		margin-top: 130px;
+		margin-left: 150px;
+		z-index: 1;
+
+		&_subtitle {
+			color: $dark-white;
+			font-size: 16px;
+			font-family: 'Montserrat';
+			letter-spacing: 5px;
+			text-transform: uppercase;
+		}
+		
+		&_title {
+			color: $light-color;
+			font-size: 80px;
+			font-family: 'Montserrat';
+			font-weight: 700;
+			text-transform: uppercase;
+			margin-top: 20px;
+		}
+
+		&_text {
+			color: $dark-white;
+			font-family: 'Montserrat';
+			font-weight: 500;
+			line-height: 24px;
+			margin-top: 20px;
+			&_bold {
+				font-weight: 700;
+			}
+		}
+
+		&_link {
+			display: inline-block;
+			text-align: center;
+			font-size: 18px;
+			font-family: 'Montserrat';
+			font-weight: 600;
+			color: $light-color;
+			background-color: $accent-color;
+			border: none;
+			border-radius: 3px;
+			margin-top: 40px;
+			padding: 16px 56px;
+			cursor: pointer;
+			transition: background-color .2s;
+
+			&:hover {
+				background-color: $accent-color-hover;
+			}
+		}
+	}
+}
+
+@media (max-width: 960px) {
+	.mainBanner {
+		min-height: 350px;
+		&__background-img {
+			height: 350px;
+		}
+		&__content {
+			width: 400px;
+			margin-top: 50px;
+			margin-left: 20px;
+
+			&_subtitle {
+				font-size: 12px;
+				font-weight: 600;
+			}
+
+			&_title {
+				font-size: 50px;
+				margin-top: 12px;
+			}
+
+			&_text {
+				font-size: 14px;
+				margin-top: 12px;
+			}
+
+			&_link {
+				margin-top: 70px;
+				cursor: none;
+
+				&:hover {
+				background-color: $accent-color;
+			}
+			}
+		}
+	}
+}
+
+@media (max-width: 450px) {
+	.mainBanner {
+		min-height: 400px;
+		&__background-img {
+			height: 400px;
+		}
+		&__content {
+			width: 328px;
+			margin-top: 50px;
+			margin-left: 0;
+
+			&_subtitle {
+				font-size: 12px;
+				font-weight: 600;
+			}
+
+			&_title {
+				font-size: 50px;
+				margin-top: 12px;
+			}
+
+			&_text {
+				font-size: 14px;
+				margin-top: 12px;
+			}
+
+			&_link {
+				display: block;
+				margin-top: 107px;
+			}
+		}
+	}
+}
