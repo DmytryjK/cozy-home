@@ -1,6 +1,7 @@
 .categories-page {
     margin-top: 0;
     &__list {
+        width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         justify-self: center;
